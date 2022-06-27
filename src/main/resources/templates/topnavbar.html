@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/navbar.css}"/>
+</head>
+<body>
+<nav class="sidebar navbar navbar-inverse header-container">
+    <div class="navbar-brand">
+        <a th:insert="~{sidebar :: sidebar}"></a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right nav-pills">
+            <li> <a class="nav-links" th:action="@{'/home?user=' + ${session.user != null ? session.user.username : 'default' }}"> Home
+                <span class="glyphicon glyphicon-home"></span></a></li>
+        <li> <a class="nav-links cart-links"
+                th:action="@{/home/cart}" onclick="closeNav()"> Cart <span class="glyphicon glyphicon-shopping-cart">
+                            </span><span class="cart-count badge" th:text="${session.user.cart}" onclick="closeNav()"></span></a></li>
+        <li> <a class="nav-links" th:action="@{/about}" onclick="closeNav()"> About
+            <span class="glyphicon glyphicon-info-sign"></span></a></li>
+
+    <div th:if="${session.user} != null">
+        <li class="dropdown-1">
+            <a class="dropdown-toggle nav-links" data-toggle="dropdown" th:text="${session.user.username}">
+                <b class="glyphicon glyphicon-user"></b></a>
+            <ul class="dropdown-menu sublist">
+                <li><span class="glyphicon glyphicon-user icon"></span>
+                <a th:action="@{'home/profile?user=' + ${session.user.username}}"> Account </a> </li>
+                <li><span class="glyphicon glyphicon-glass icon"></span>
+                    <a th:action="@{'home/order?user=' + ${session.user.username}}"> Orders </a> </li>
+                <li><span class="glyphicon glyphicon-heart icon"></span>
+                    <a th:action="@{'home/wishlist?user=' + ${session.user.username}}"> Wishlist </a> </li>
+            </ul>
+        </li>
+    </div>
+         <div th:if="${session.user} == null">
+             <a th:href="@{/login}"> Login </a>
+         </div>
+        </ul>
+        <div class='sub-menu'></div>
+    </div>
+</nav>
+<script>
+</script>
+</body>
+</html>

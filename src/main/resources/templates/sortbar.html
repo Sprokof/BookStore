@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/searchbar.css}"/>
+</head>
+<body>
+<div class="container book-list">
+    <div class="info-bar">
+        <div class="row">
+            <div class="col-xs-4 sort-bar">
+                <div class="dropdown">
+                    <button id="menu" class="btn btn-danger dropdown-toggle selected-sort"
+                            type="button" th:text="${selectedType}">
+                    <span class="caret"></span>
+
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right sort-options" aria-labelledby="menu">
+                        <li th:each="type: ${sortOptions}">
+                            <a th:href="${'/home/book/sort?type=' + ${type}}" th:text="${type}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

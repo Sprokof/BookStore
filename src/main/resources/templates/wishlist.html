@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/wishlist.css}"/>
+</head>
+<body>
+<div class="wishlist-container wrapper">
+    <div class="wishlist-name">
+        <div class="row wishlist-item" th:each="book : ${wishlist.getBooksFromWishlist()}">
+        <div class="title" th:text="${book.title}">
+            <div class="col-sm-2 media">
+                <div class="cover-book">
+                    <img th:src="${book.path}">
+                </div>
+            </div>
+
+        <div class="col-sm-6 info">
+            <section class="">
+                <div class="Authors" th:text="${'Price ' + ${book.price}}"></div>
+                <div class="product-rating"><span th:text="${'Rating:' + ${book.bookRating} + '/100'}">
+                </span>
+                </div>
+
+                <div class="authors" th:text="${'Authors:' + ${book.authors}}"></div>
+                <div class="format" th:text="${'Format: ' + ${book.format}}"></div>
+                <div class="isbn" th:text="${'ISBN: ' + ${book.isbn}}"></div>
+                <div class="publisher" th:text="${'Publisher: ' + ${book.publisher}}"></div>
+                <div class="subject" th:text="${'Subject: ' + ${book.subject}}"></div>
+                <div class="yop" th:text="${'Year of publishing: ' + ${book.yearPub}}"></div>
+
+            </section>
+        </div>
+            <div class="btn-list col-sm-2">
+                <div th:if="${book.availableCopies > 0}">
+                    <form th:action="@{'/home/wislist/addtocart?isbn=' + ${book.isbn}}" method="post">
+                        <button class="btn btn-info btn-item btn-cart">Add to cart</button>
+                    </form>
+                </div>
+                <form th:action="@{'/home/wishlist/remove?isbn=' + ${book.isbn}}" method="post">
+                    <button class='btn btn-info btn-item btn-rm'>Remove from wishlist</button>
+                </form>
+            </div>
+
+        </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

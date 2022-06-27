@@ -1,0 +1,145 @@
+package online.book.store.entity;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Entity
+@Table(name = "BOOKS")
+@NoArgsConstructor
+@Getter
+@Setter
+public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "ISBN")
+    private String isbn;
+    @Column(name = "TITLE")
+    private String title;
+    @Column(name = "PUBLISHER")
+    private String publisher;
+    @Column(name = "PRICE")
+    private double price;
+    @Column(name = "YEAR_OF_PUBLISHER")
+    private String yearPub;
+    @Column(name = "SUBJECT")
+    private String subject;
+    @Column(name = "PATH_TO_IMAGE")
+    private String path;
+    @Column(name = "AVAILABLE")
+    private String available;
+    @Column(name = "AVAILABLE_COPIES")
+    private int availableCopies;
+    @Column(name = "DESCRIPTION")
+    private String description;
+    @Column(name = "AUTHORS")
+    private String authors;
+    @Column(name = "FORMAT")
+    private String format;
+
+
+
+    transient int bookRating = getAvgRating();
+
+
+    public Book(String isbn, String title, String publisher,
+                                double price, String yearPub,
+                                String subject, String path, int availableCopies, String description,
+                                String authors, String format){
+        this.isbn = isbn;
+        this.title = title;
+        this.publisher = publisher;
+        this.price = price;
+        this.yearPub = yearPub;
+        this.subject = subject;
+        this.path = path;
+        this.availableCopies = availableCopies;
+        this.description = description;
+        this.authors = authors;
+        this.format = format;
+
+
+
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.EAGER)
+    private List<Category> categories;
+
+
+    public void addCategory(Category category){
+        if(this.categories == null) this.categories = new LinkedList<>();
+        this.categories.add(category);
+        category.setBook(this);
+    }
+
+    public void removeCategory(Category category){
+        this.categories.remove(category);
+        category.setBook(null);
+    }
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.EAGER)
+    private List<BookReview> bookReviews;
+
+
+    public void addReview(BookReview bookReview){
+        if(this.bookReviews == null) this.bookReviews = new LinkedList<>();
+        this.bookReviews.add(bookReview);
+        bookReview.setBook(this);
+    }
+
+    public void removeBookReview(BookReview bookReview){
+        this.bookReviews.remove(bookReview);
+        bookReview.setBook(null);
+    }
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<WishList> wishLists;
+
+
+    public void addWishList(WishList wishList){
+        if(this.wishLists == null) this.wishLists = new LinkedList<>();
+        wishList.getBooks().add(this);
+    }
+
+    public void removeWishList(WishList wishList){
+        this.wishLists.remove(wishList);
+        wishList.getBooks().remove(this);
+    }
+
+    private String getAvailableStatus(boolean available){
+        String[] availableStatus = {"Not available", "available"};
+        if(!available) {
+            return availableStatus[0];
+        }
+        return availableStatus[1];
+
+    }
+
+    public int getAvgRating() {
+        if(this.bookReviews == null) return 0;
+        Integer[] scores = this.bookReviews.
+                stream().map(BookReview::getBookRating).
+                collect(Collectors.toList()).toArray(Integer[]::new);
+
+        int scoreSum = 0, length = scores.length, index = 0;
+
+        while (index != length) {
+            scoreSum += scores[index++];
+        }
+        return (scoreSum / length);
+    }
+
+    @Override
+    public String toString(){
+        return String.format("%s,%s,%s,%s,%s,%s",
+                        this.isbn, this.title, this.publisher,
+                        this.yearPub, this.subject, this.description);
+    }
+}

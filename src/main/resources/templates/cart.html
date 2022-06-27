@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/cart.css}"/>
+</head>
+<body>
+<div class="container cart-container">
+    <div class="row">
+        <div class="col-sm-12 col-md-10 col-lg-10 col-xs-12 col-md-offset-1">
+         <table class="table table-hover">
+             <thead>
+             <tr>
+                 <th>Product</th>
+                 <th>Quantity</th>
+                 <th class="text-center">Price</th>
+                 <th class="text-center">Total</th>
+                 <th>&nbsp</th>
+             </tr>
+             </thead>
+             <tbody>
+             <tr class="cart-item" th:each="cartItem : ${cart.cartItems}">
+                 <td class="col-lg-8 product">
+                     <div class="media">
+                     <div class="media-left">
+                         <a href=""><img class="item-img img-responsive" th:src="${cartItem.getBook().getPath()}"></a>
+                     </div>
+                     <div class="media-body">
+                         <div class="media-heading" th:text="${cartItem.book.title}"></div>
+                         <div class="" th:text="${'Subject: ' + ${cartItem.book.subject}}"></div>
+                         <div class="" th:text="${'Authors: ' + ${cartItem.book.authors}}"></div>
+                         <div class="" th:text="${'Publisher: ' + ${cartItem.book.publisher}}"></div>
+                         <div class="media-heading" th:text="${'Stock: ' + ${cartItem.book.availableCopies}}"></div>
+                     </div>
+                     </div>
+                 </td>
+                 <td class="col-lg-1 quantity">
+                     <form method="post" th:action="@{'/home/cart/item?=' + ${cartItem.id}}">
+                     <input type="text" class="form-control text-center"
+                            th:value="${cartItem.quantity}" th:field="${quantity}" id="add"/>
+                     </form>
+                 </td>
+                 <td class="col-lg-1 price" th:text="${cartItem.book.price}"> &#8381; </td>
+                 <td class="col-lg-1 total" th:text="${cartItem.total}"></td>
+                 <td class="col-lg-1 remove-item">
+                 <form method="post" th:action="@{'/home/cart/remove/item?=' + ${cartItem.id}}">
+                     <button id="remove" class="btn btn-danger btn-sm btn-remv">
+                         <span class="glyphicon glyphicon-trash btn-rmv-icon"></span>
+                     </button>
+                 </form>
+                 </td>
+
+             </tr>
+             <tr class="subtotal">
+                 <td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td><h5>Subtotal</h5></td>
+                 <td class="text-right"><h5><strong th:text="${cart.subtotal}"> &#8381;</strong></h5></td>
+             </tr>
+             <tr class="shipping-cost">
+                 <td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td><h5>Estimated shipping</h5></td>
+                 <td class="text-right"><h5><strong>17</strong></h5></td>
+             </tr>
+             <tr class="total">
+                 <td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td><h3>Total</h3></td>
+                 <td class="text-right"><h5><strong th:text="${cart.total}"></strong></h5></td>
+             </tr>
+             <tr class="table-footer">
+                 <td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td>&nbsp;</td>
+                 <td>
+                     <button class="btn btn-default btn-continue">
+                             <span class="glyphicon glyphicon-shopping-cart">
+                                 <a style="text-decoration: none; color: white" th:href="@{/home}"> Continue shopping </a></span>
+                         </button></td>
+                  <td>
+                 <form th:action="@{/checkout}" method="get">
+                     <button class="btn btn-success btn-checkout">
+                         <a style="text-decoration: none ; color: white;">Checkout</a><span
+                             class="glyphicon glyphicon-play"></span>
+                     </button>
+                 </form>
+                 </td>
+             </tr>
+
+             </tbody>
+         </table>
+        </div>
+</div>
+</div>
+<script>
+    function updateCart() {
+        let add = document.getElementById("add");
+        add.addEventListener("input", (e) => {
+            $.ajax({
+                type: "GET",
+                url: "/home/cart"
+            })
+        });
+
+        let remove = document.getElementById("remove");
+        remove.addEventListener('click', (e) => {
+            $.ajax({
+                type: "GET",
+                url: "/home/cart"
+            })
+        });
+    }
+</script>
+</body>
+</html>

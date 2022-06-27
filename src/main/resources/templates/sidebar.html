@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="/static/css/sidebar.css"/>
+
+  </head>
+<body>
+
+<div ng-controller="sidebarController" ng-app="online.book.store" th:fragment="sidebar">
+  <button class="openSideBar" onclick="openNav()" id="main">☰ Book Store</button>
+<div id="sidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closeSideBar" onclick="closeNav()" style="color: #f1f1f1">x</a>
+
+  <a> <details ng-repeat="category in categories">
+
+    <summary>Categories</summary>
+    <br>
+    <div onclick="bookByCategory()" style="color: snow" id="category">{{category.category}}</div>
+    </details>
+  </a>
+
+  <div th:if="${session.user} != null">
+  <a onclick="logout()"> Logout </a>
+  </div>
+
+  <div th:if="${session.user} == null">
+    <a th:action="@{/login}"> Login </a>
+  </div>
+
+  <div th:if="${session.user.isAdmin()}">
+    <a th:method="get" th:action="@{/home/addbook}"> Add book</a>
+  </div>
+
+
+</div>
+</div>
+
+</body>
+<script>
+
+  function openNav() {
+    document.getElementById("sidebar").style.width = "250px";
+    document.getElementById("main").style.marginLeft = "250px";
+  }
+
+  function closeNav() {
+    document.getElementById("sidebar").style.width = "0";
+    document.getElementById("main").style.marginLeft = "0";
+
+  }
+
+  function logout() {
+    let answer = confirm("Exit from store?");
+    if (answer) {
+      $.ajax({
+        type: "GET",
+        url: "/home/book/logout"
+      })
+    }
+  }
+
+    function bookByCategory() {
+      let category = document.getElementById("category");
+      category.innerHTML;
+      $.ajax({
+        type: "GET",
+        url: "/home/book?category=" + category
+      })
+  }
+</script>
+<script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
+<script type="text/javascript" src="/static/js/main.js"></script>
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/}"/>
+
+    <title>Title</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="content-wrapper">
+        <div class="item-container"></div>
+
+        <div class="col-md-6">
+            <div th:align="center" id="item-1" class="service1-item-container">
+                <img class="cover-image" th:src="${book.path}" alt="image">
+            </div>
+         </div>
+
+        <div class="col-md-6">
+            <div class="product-title" th:text="${'Title: ' + ${book.title}}"></div>
+            <div class="product-desc" th:text="${'Subject: ' + ${book.subject}}"></div>
+            <div class="product-rating"><span th:text="${'Ratings:' + ${book.bookRating} + '/100'}"></span><div>
+
+           <hr>
+                <div class="product-price" th:text="${'Price: ' + ${book.price}}"></div>
+                <div class="product-stock">In Stock</div>
+           <hr>
+               <form method="post" th:action="@{'/home/book/addtowishlist?isbn=' + ${book.isbn}}">
+                   <button id="toWishList">Add to wishlist</button>
+               </form>
+               <form method="post" th:action="@{'/home/book/addtowishlist?isbn=' + ${book.isbn}}">
+                   <button id="toCart">Add to cart</button>
+               </form>
+            </div>
+            </div>
+        </div>
+        <div class="details-container container-fluid">
+            <div class="col-md-12 product-info">
+
+                <ul id="tab" class="nav nav-tabs nav-tabs">
+                <li class="active"><a href="javascript:location.href::prodDesc" data-toggle="tab">DESCRIPTION</a></li>
+                <li><a href="javascript:location.href::prodInfo" data-toggle="tab">PRODUCT INFO</a></li>
+                <li><a href="javascript:location.href::prodReviews" data-toggle="tab">REVIEWS</a></li>
+
+                </ul>
+            </div>
+        <div name="prodDesc" class="tab-pane fade" id="desc">
+
+        <section
+                th:text="${book.getDescription()}" class="product-desc">
+        </section>
+
+        </div>
+
+            <div class="tab-pane fade" id="info" name="prodInfo">
+
+                <section class="">
+
+                <div class="authors" th:text="${'Authors: ' + ${book.authors}}"></div>
+                <div class="format" th:text="${'Format: ' + ${book.format}}"></div>
+                <div class="isbn" th:text="${'ISBN Number: ' + ${book.isbn}}"></div>
+                <div class="publisher" th:text="${'Publisher: ' + ${book.publisher}}"></div>
+                <div class="subject" th:text="${'Subject: ' + ${book.subject}}"></div>
+                <div class="yop" th:text="${'year of production: ' + ${book.yearPub}}"></div>
+
+                </section>
+
+            <div class="tab-pane fade" id="reviews" name="prodReviews">
+                <div class="ratings-container">
+                    <div class="row-ratings">
+                        <div class="col-sm-8">
+                            <div th:each="review : ${book.getBookReviews()}">
+
+                            <div class="ratee" th:text ="${review.user.username} + ' says..'"></div>
+                            <div class="comments" th:text="${review.comment}"></div>
+
+                            <div class="col-sm-4">
+                                <span th:text="${review.bookRating}"></span>
+                            </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
