@@ -110,13 +110,15 @@ public class ShipmentDto extends AbstractShipmentBuilder {
 
     @Override
     public boolean containsNull() {
+        final int STATE_FIELD_INDEX = 5;
         boolean result = false;
 
         Field[] fields = this.getClass().getFields();
 
         int index = 0;
         while (index != fields.length) {
-            if (fields[index] == null) {
+
+            if (fields[index] == null && index != STATE_FIELD_INDEX) {
                 result = true;
                 break;
             }

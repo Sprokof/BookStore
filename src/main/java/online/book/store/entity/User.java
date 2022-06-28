@@ -20,8 +20,8 @@ public class User {
     private int id;
     @Column(name = "EMAIL")
     private String email;
-    @Column(name = "USERNAME")
-    private String username;
+    @Column(name = "PASSWORD")
+    private String password;
 
     transient boolean admin;
 
@@ -56,10 +56,10 @@ public class User {
 
 
 
-    public User(String email, String username){
+    public User(String email, String password){
         this.email = email;
-        this.username = username;
-        // implement admin logic
+        this.password = password;
+        this.shipment = null;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class User {
         if(this == obj) return true;
         if(!(obj instanceof User)) return false;
         User user = (User) obj;
-        return this.username.equals(user.username) && this.email.equals(user.email);
+        return this.password.equals(user.password) && this.email.equals(user.email);
     }
 
 }
