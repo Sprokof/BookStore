@@ -74,13 +74,4 @@ public class CartController {
         return "cart";
 
     }
-
-    @PostMapping("/home/cart/addbooktocart")
-    public String addBookToCart(@RequestParam("isbn") String isbn){
-        Book book = bookService.getBookByIsbn(isbn);
-        User currentUser = (User) httpSession.getAttribute("user");
-        cartService.addBookToCart(currentUser, book);
-        userService.updateUser(currentUser);
-        return "home";
-    }
 }
