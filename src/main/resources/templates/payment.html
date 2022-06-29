@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/cart.css}"/>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-5 col-lg-offset-3">
+            <div class="panel panel-primary">
+                <div class="panel panel-heading">
+                    <h3 class="panel-title">Payment info</h3>
+                </div>
+            </div>
+            <div class="panel panel-body">
+                <form class="form" th:object="${payment}" th:action="@{/home/payment}" method="post">
+                    <div class="form-group">
+                        <label class="text-left control-label"
+                               for="cardNumber">Enter credit/debit card number</label>
+                        <div class="input-group" th:classappend="${#fields.hasErrors('cardNumber')}? 'has-error:'">
+                            <span class="input-group-addon">
+                                <i class="glyphicon glyphicon-credit-card"></i></span>
+                            <input type="text" th:field="*{cardNumber}" name="cardNumber"
+                                   class="form-control" id="cardNumber">
+                        </div>
+                        <p class="error-message"
+                        th:each="error : ${#fields.errors('cardNumber')}"
+                        th:text="${error}"></p>
+                    </div>
+
+                <div class="form-group">
+
+</body>
+</html>

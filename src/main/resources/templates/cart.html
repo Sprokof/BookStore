@@ -86,7 +86,7 @@
                                  <a style="text-decoration: none; color: white" th:href="@{/home}"> Continue shopping </a></span>
                          </button></td>
                   <td>
-                 <form th:action="@{/checkout}" method="get">
+                 <form th:action="@{/home/shipment}" method="get">
                      <button class="btn btn-success btn-checkout">
                          <a style="text-decoration: none ; color: white;">Checkout</a><span
                              class="glyphicon glyphicon-play"></span>
@@ -101,7 +101,6 @@
 </div>
 </div>
 <script>
-    function updateCart() {
         let add = document.getElementById("add");
         add.addEventListener("input", (e) => {
             $.ajax({
@@ -117,7 +116,7 @@
                 url: "/home/cart"
             })
         });
-    }
+
 </script>
 </body>
 </html>

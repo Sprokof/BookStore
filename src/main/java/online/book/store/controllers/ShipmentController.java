@@ -4,6 +4,9 @@ package online.book.store.controllers;
 
 
 import online.book.store.dto.ShipmentDto;
+import online.book.store.entity.Shipment;
+import online.book.store.entity.User;
+import online.book.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.*;
 
@@ -36,6 +40,12 @@ public class ShipmentController {
     @Autowired
     Validator shipment;
 
+    @Autowired
+    HttpSession httpSession;
+
+    @Autowired
+    UserService userService;
+
     @ModelAttribute("shipment")
     public ShipmentDto getShipment(){
         return new ShipmentDto();
@@ -57,6 +67,8 @@ public class ShipmentController {
     }
 
 
+
+
     @GetMapping("/home/shipment")
     public String shipment(){
         return "shipment";
@@ -71,7 +83,13 @@ public class ShipmentController {
         if(result.hasErrors()){
             return "shipment";
         }
+        if(shipmentDto.getSaveShipmenInfo().equals("true")){
+            User currentUser = ((User) httpSession.getAttribute("user"));
+            Shipment shipment = shipmentDto.doShipmentBuilder(shipmentDto);
+            currentUser.setShipment(shipment);
+            userService.updateUser(currentUser);
 
+        }
         return "payment";
 
 

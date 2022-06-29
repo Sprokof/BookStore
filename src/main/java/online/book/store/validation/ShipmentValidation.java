@@ -39,6 +39,7 @@ public class ShipmentValidation implements Validator {
         }
 
         String phonePattern = "\\d{10}|(?:\\d{3}-){2}\\d{4}|\\(\\d{3}\\)\\d{3}-?\\d{4}";
+
         if(!shipmentDto.getPhoneNumber().matches(phonePattern)){
             errors.rejectValue("phoneNumber", "Incorrect.phoneNumber");
         }
@@ -51,6 +52,39 @@ public class ShipmentValidation implements Validator {
         if(shipmentDto.getCity().isEmpty()){
             errors.rejectValue("city", "City.empty");
         }
+        if(shipmentDto.getStreetName().isEmpty()){
+            errors.rejectValue("streetName", "Street.name.empty");
+        }
 
+        if(shipmentDto.getBuildingNumber().isEmpty()){
+            errors.rejectValue("buildingNumber", "Building.number.empty");
+        }
+
+        if(!isInteger(shipmentDto.getRoomNumber())){
+            errors.rejectValue("roomNumber", "Incorrect.number.format");
+        }
+
+        if(shipmentDto.getRoomNumber().isEmpty()){
+            errors.rejectValue("roomNumber", "Room.number.empty");
+        }
+
+        Pattern zipCode = Pattern.compile("^[0-9]{5}(?:-[0-9]{4})?$");
+
+        if(!zipCode.matcher(shipmentDto.getZipCode()).find()){
+            errors.rejectValue("zipCode", "Incorrect.zip.code");
+        }
+
+
+    }
+
+
+    private boolean isInteger(String number){
+        try{
+            Integer.parseInt(number);
+        }
+        catch (NumberFormatException e){
+            return false;
+        }
+    return true;
     }
 }

@@ -60,7 +60,7 @@ public class HomeController {
 
     }
 
-    @PostMapping("/home/book/addbooktowishlist")
+    @PostMapping("/home/wishilst/addbooktowishlist")
     public String addToWishList(@RequestParam("isbn") String isbn) {
         Book book = null;
         User currentUser = (User) session.getAttribute("user");
@@ -69,16 +69,16 @@ public class HomeController {
         }
         userService.addBookToWishList(currentUser, book);
 
-        return "k";
+        return "home";
     }
 
-    @PostMapping("/home/book/addbooktocart")
+    @PostMapping("/home/cart/addbooktocart")
     public String addBookToCart(@RequestParam("isbn") String isbn){
         Book book = bookService.getBookByIsbn(isbn);
         User currentUser = (User) session.getAttribute("user");
         cartService.addBookToCart(currentUser, book);
         userService.updateUser(currentUser);
-        return "k";
+        return "home";
     }
 
 

@@ -25,8 +25,12 @@ public class ShipmentDto extends AbstractShipmentBuilder {
     private String city;
     private String streetName;
     private String buildingNumber;
-    private int roomNumber;
+    private String roomNumber;
     private String zipCode;
+
+    @Getter
+    @Setter
+    private String saveShipmenInfo = "false";
 
 
     public ShipmentDto(){
@@ -96,7 +100,7 @@ public class ShipmentDto extends AbstractShipmentBuilder {
     }
 
     @Override
-    public AbstractShipmentBuilder roomNumber(int roomNumber) {
+    public AbstractShipmentBuilder roomNumber(String roomNumber) {
         this.roomNumber = roomNumber;
         return this;
     }
@@ -139,7 +143,7 @@ public class ShipmentDto extends AbstractShipmentBuilder {
            shipment.setAddress(new Address(this.country,
                     this.state, this.city,
                     this.streetName, this.buildingNumber,
-                    this.roomNumber, this.zipCode));
+                    Integer.parseInt(this.roomNumber), this.zipCode));
 
         return shipment;
         }

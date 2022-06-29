@@ -46,7 +46,7 @@ public abstract class AbstractShipmentBuilder {
         return null;
     }
 
-    public AbstractShipmentBuilder roomNumber(int roomNumber){
+    public AbstractShipmentBuilder roomNumber(String roomNumber){
         return null;
     }
 
