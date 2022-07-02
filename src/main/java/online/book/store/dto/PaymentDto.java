@@ -14,4 +14,6 @@ public class PaymentDto {
     private String expiryMonth;
     private String expiryYear;
     private String cvv;
+
+    private boolean validDate;
 }

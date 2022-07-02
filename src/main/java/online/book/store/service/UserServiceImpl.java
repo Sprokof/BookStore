@@ -13,11 +13,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-    @Override
-    public void saveUser(User user) {
-        this.userDao.saveUser(user);
-
-    }
 
     @Override
     public void updateUser(User user) {
@@ -47,13 +42,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public void addBookToWishList(User currentUser, Book book) {
-        if(currentUser.getWishList().getBooksId() == null) {
-            currentUser.getWishList().setBooksId(String.valueOf(book.getId()));
-        }
-        String booksId = currentUser.getWishList().getBooksId();
-        booksId += String.format(",%d,", book.getId());
-        currentUser.getWishList().setBooksId(booksId);
-        this.userDao.updateUser(currentUser);
+    public User saveOrGetUser(User user) {
+        return this.userDao.saveOrGetUser(user);
     }
 }

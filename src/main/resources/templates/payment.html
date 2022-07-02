@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.0.2/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/static/css/cart.css}"/>
 </head>
 <body>
@@ -15,6 +15,12 @@
             <div class="panel panel-primary">
                 <div class="panel panel-heading">
                     <h3 class="panel-title">Payment info</h3>
+                    <div th:if="${!payment.validDate}">
+                        <div class="alert alert-danger">
+                            Invalid expiry date.
+                            <a style="color: black" th:href="@{/home/paymnet}">Repeat input</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="panel panel-body">
@@ -25,15 +31,68 @@
                         <div class="input-group" th:classappend="${#fields.hasErrors('cardNumber')}? 'has-error:'">
                             <span class="input-group-addon">
                                 <i class="glyphicon glyphicon-credit-card"></i></span>
-                            <input type="text" th:field="*{cardNumber}" name="cardNumber"
+                            <input type="text" th:field="*{cardNumber}"
                                    class="form-control" id="cardNumber">
                         </div>
-                        <p class="error-message"
+                        <p class="error-message col-lg-offset-1"
                         th:each="error : ${#fields.errors('cardNumber')}"
                         th:text="${error}"></p>
                     </div>
 
-                <div class="form-group">
+                <div class="form-group row"
+                th:classappend="${#fields.hasErrors('expiryMonth')}">
+                    <div class="col-lg-3">
+                        <label class="text-left control-label" for="month">Expiry month</label>
+                        <select id="month" th:size="${months.size()}">
+                            <option th:each="month : ${months}"
+                                    th:field="${payment.expiryMonth}" class="form-control selectpicker" th:text="${month}"></option>
+                        </select>
+                    </div>
+                    <span class="error-message col-lg-offset-1"
+                       th:each="error : ${#fields.errors('expiryMonth')}"
+                       th:text="${error}"></span>
+
+                    <div class="col-lg-3 col-lg-offset-1"
+                    th:classappend="${#fields.hasErrors('expiryYear')}">
+                        <label class="text-left control-label" for="year">Expiry year</label>
+                        <select id="year" th:size="${years.size()}">
+                            <option th:each="year: ${years}"
+                                    th:field="${payment.expiryYear}" class="form-control selectpicker" th:text="${year}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-3 col-lg-offset-1">
+                        <label class="text-left control-label" for="cvv">CVV</label>
+                        <input id="cvv" class="form-control" th:field="${payment.cvv}">
+                    </div>
+                </div>
+
+                    <div th:if="${#fields.hasErrors()}">
+                        <button class="btn btn-danger col-lg-3"
+                                disabled="disabled">Pay</button>
+                    </div>
+                    <div th:if="${!#fields.hasErrors()}">
+                        <button class="btn btn-danger col-lg-3"
+                                onclick="backHome()">Pay</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
+<script>
+    function backHome(){
+        let back = confirm("Payment success. Press 'OK' to go to home");
+        if(back){
+            $.ajax({
+                method: "GET",
+                url: "/home"
+            })
+        }
+    }
+</script>
 </html>

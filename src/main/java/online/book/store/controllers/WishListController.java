@@ -2,10 +2,10 @@ package online.book.store.controllers;
 
 import online.book.store.entity.Book;
 import online.book.store.entity.User;
-import online.book.store.entity.WishList;
+import online.book.store.entity.Wishlist;
 import online.book.store.service.BookService;
-import online.book.store.service.CartService;
 import online.book.store.service.UserService;
+import online.book.store.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,13 +25,14 @@ public class WishListController {
     BookService bookService;
 
     @Autowired
-    CartService cartService;
+    WishlistService wishlistService;
+
 
     @Autowired
     UserService userService;
 
     @ModelAttribute("wishlist")
-    public WishList getWishList(){
+    public Wishlist getWishList(){
         return ((User) session.getAttribute("user")).getWishList();
     }
 
@@ -44,18 +45,14 @@ public class WishListController {
     @PostMapping("/home/wishlist/addtocart")
     public String addToCart(@RequestParam("isbn") String isbn) {
         Book book = bookService.getBookByIsbn(isbn);
-        User currentUser = (User) session.getAttribute("user");
-        cartService.addBookToCart(currentUser, book);
-        cartService.updateCart(currentUser.getCart());
+        wishlistService.addToCart(book);
         return "wishlist";
     }
 
     @PostMapping("/home/wishlist/remove")
     public String removeFromWishlist(@RequestParam("isbn") String isbn){
         Book book = bookService.getBookByIsbn(isbn);
-        User currentUser = (User) session.getAttribute("user");
-        currentUser.getWishList().removeBook(book);
-        userService.updateUser(currentUser);
+        wishlistService.removeFromWishlist(book);
         return "wishlist";
     }
 

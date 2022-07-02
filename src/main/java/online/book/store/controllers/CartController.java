@@ -23,11 +23,6 @@ public class CartController {
     @Autowired
     private HttpSession httpSession;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private BookService bookService;
 
 
     @ModelAttribute("cart")

@@ -15,13 +15,23 @@ public class UserDaoImpl implements UserDao{
             SessionFactorySingleton.getInitializationFactory();
 
     @Override
-    public void saveUser(User user) {
+    public User saveOrGetUser(User user) {
+        User temp = null;
         Session session = null;
-        try {
-            session = sessionFactory.openSession();
-            session.beginTransaction();
+    try{
+        session = sessionFactory.openSession();
+        session.beginTransaction();
+    try {
+        temp = (User) session.createSQLQuery("SELECT * FROM USERS WHERE EMAIL=:email").
+                setParameter("email", user.getEmail()).
+                addEntity(User.class).getSingleResult();
+    }
+    catch (NoResultException e){ temp = null; }
+
+        if (temp == null) {
             session.save(user);
-            session.getTransaction().commit();
+        }
+        session.getTransaction().commit();
         } catch (Exception e) {
             if (session != null) {
                 if (session.getTransaction() != null) {
@@ -34,6 +44,10 @@ public class UserDaoImpl implements UserDao{
             }
 
         }
+    if(temp != null){
+        user = temp;
+    }
+    return user;
     }
 
     @Override

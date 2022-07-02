@@ -99,19 +99,6 @@ public class Book {
         bookReview.setBook(null);
     }
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<WishList> wishLists;
-
-
-    public void addWishList(WishList wishList){
-        if(this.wishLists == null) this.wishLists = new LinkedList<>();
-        wishList.getBooks().add(this);
-    }
-
-    public void removeWishList(WishList wishList){
-        this.wishLists.remove(wishList);
-        wishList.getBooks().remove(this);
-    }
 
     private String getAvailableStatus(boolean available){
         String[] availableStatus = {"Not available", "available"};

@@ -8,6 +8,7 @@ import online.book.store.engines.SearchEngine;
 import online.book.store.service.BookService;
 import online.book.store.service.CartService;
 import online.book.store.service.UserService;
+import online.book.store.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,9 @@ public class HomeController {
     private UserService userService;
 
     @Autowired
+    private WishlistService wishlistService;
+
+    @Autowired
     private @Qualifier("searchEngine")
     SiteEngine searchEngine;
 
@@ -55,33 +59,27 @@ public class HomeController {
 
 
     @GetMapping("/home")
-    public String home(Model model) {
+    public String home() {
         return "home";
 
     }
 
     @PostMapping("/home/wishilst/addbooktowishlist")
     public String addToWishList(@RequestParam("isbn") String isbn) {
-        Book book = null;
-        User currentUser = (User) session.getAttribute("user");
-        if (currentUser != null) {
-            book = bookService.getBookByIsbn(isbn);
-        }
-        userService.addBookToWishList(currentUser, book);
-
+        wishlistService.addBookToWishlist(bookService.getBookByIsbn(isbn));
         return "home";
     }
 
     @PostMapping("/home/cart/addbooktocart")
     public String addBookToCart(@RequestParam("isbn") String isbn){
         Book book = bookService.getBookByIsbn(isbn);
-        User currentUser = (User) session.getAttribute("user");
-        cartService.addBookToCart(currentUser, book);
-        userService.updateUser(currentUser);
+        cartService.addBookToCart(book);
         return "home";
     }
 
 
+
+    //replace that logic in angular
     @PostMapping("/home/book/search")
     public String search(@RequestParam("text") String text, Model model){
     List<Book> books = ((SearchEngine) searchEngine).getBooksByText(text, bookService);

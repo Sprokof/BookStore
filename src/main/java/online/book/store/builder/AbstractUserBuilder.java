@@ -14,14 +14,6 @@ public abstract class AbstractUserBuilder {
         return null;
     }
 
-    public AbstractUserBuilder username(String username){
-        return null;
-    }
-
-    public AbstractUserBuilder password(String password){
-        return null;
-    }
-
     public boolean containsNull(){
         return false;
     }

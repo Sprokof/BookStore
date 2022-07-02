@@ -20,15 +20,14 @@ public class User {
     private int id;
     @Column(name = "EMAIL")
     private String email;
-    @Column(name = "PASSWORD")
-    private String password;
 
+    transient String confirmCode;
     transient boolean admin;
 
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    private WishList wishList;
+    private Wishlist wishList;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
@@ -38,6 +37,21 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Cart cart;
+
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.EAGER)
+    private List<Order> orders;
+
+    public void addOrder(Order order){
+        if(this.orders == null) this.orders = new LinkedList<>();
+        this.orders.add(order);
+        order.setUser(this);
+    }
+
+    public void removeOrder(Order order){
+        this.orders.remove(order);
+        order.setUser(null);
+    }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
     private List<BookReview> bookReviews;
@@ -54,11 +68,8 @@ public class User {
         bookReview.setUser(null);
     }
 
-
-
-    public User(String email, String password){
+    public User(String email){
         this.email = email;
-        this.password = password;
         this.shipment = null;
     }
 
@@ -67,7 +78,8 @@ public class User {
         if(this == obj) return true;
         if(!(obj instanceof User)) return false;
         User user = (User) obj;
-        return this.password.equals(user.password) && this.email.equals(user.email);
+        return this.email.equals(user.email);
     }
+
 
 }

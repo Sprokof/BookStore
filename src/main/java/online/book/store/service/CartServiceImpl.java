@@ -9,11 +9,19 @@ import online.book.store.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpSession;
+
 @Component
 public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartDao cartDao;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private HttpSession httpSession;
 
 
     @Override
@@ -22,7 +30,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void addBookToCart(User user, Book book) {
+    public void addBookToCart(Book book) {
+        User user = (User) httpSession.getAttribute("user");
         int quantity = 1;
         if(user.getCart() == null){
             user.setCart(new Cart());
@@ -37,6 +46,10 @@ public class CartServiceImpl implements CartService {
         cart.setSubtotal(calculateSubTotalPrice(cart));
         cart.setCount(calculateCountCartItems(cart));
         user.setCart(cart);
+
+        httpSession.setAttribute("user", user);
+        userService.updateUser(user);
+
 
     }
 
@@ -68,6 +81,14 @@ public class CartServiceImpl implements CartService {
     public void updateCart(Cart cart) {
         cart.setTotal(calculateTotalPrice(cart));
         this.cartDao.updateCart(cart);
+    }
+
+    @Override
+    public void clearCart() {
+        User user = (User) httpSession.getAttribute("user");
+        user.setCart(null);
+        httpSession.setAttribute("user", user);
+        userService.updateUser(user);
     }
 }
 

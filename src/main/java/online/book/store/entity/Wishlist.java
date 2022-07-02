@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table
 @NoArgsConstructor
-public class WishList {
+public class Wishlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter

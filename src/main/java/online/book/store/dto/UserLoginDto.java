@@ -8,6 +8,8 @@ import online.book.store.builder.AbstractUserBuilder;
 import online.book.store.entity.User;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 
 @NoArgsConstructor
 @Getter
@@ -15,17 +17,16 @@ import java.lang.reflect.Field;
 public class UserLoginDto extends AbstractUserBuilder {
 
     private String email;
-    private String username;
-    private String password;
+    private String confirmCode;
+    private String generatedCode = generateConfirmCode();
+    private boolean accepted;
 
-    public UserLoginDto(String email, String username, String password){
+    public UserLoginDto(String email){
         this.email = email;
-        this.username = username;
-        this.password = password;
     }
 
-    //implementation of builder//
 
+    //implementation of builder//
 
     @Override
     public AbstractUserBuilder builder() {
@@ -38,22 +39,11 @@ public class UserLoginDto extends AbstractUserBuilder {
         return this;
     }
 
-    @Override
-    public AbstractUserBuilder username(String username) {
-        this.username = username;
-        return this;
-    }
-
-    @Override
-    public AbstractUserBuilder password(String password) {
-        this.password = password;
-        return this;
-    }
 
     @Override
     public User buildUser() {
         if(!containsNull()){
-            return new User(this.email, this.password);
+            return new User(this.email);
         }
     return null;
     }
@@ -76,8 +66,28 @@ public class UserLoginDto extends AbstractUserBuilder {
     public User doUserBuilder() {
         return this.builder().
                 email(this.getEmail()).
-                username(this.getUsername()).
-                password(this.getPassword()).
                 buildUser();
     }
+
+
+    private String generateConfirmCode() {
+        String[] temp = new String[7];
+        StringBuilder sb = new StringBuilder("");
+
+        for (int i = 0; i < temp.length; i++) {
+            double d = (Math.random() * 10);
+            temp[i] = String.valueOf((int) d);
+        }
+        int index = 0;
+        while (index != temp.length) {
+            sb.append(temp[index]);
+
+            index ++ ;
+        }
+
+        return sb.toString();
+
+    }
+
+
 }
