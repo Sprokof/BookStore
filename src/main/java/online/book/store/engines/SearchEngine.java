@@ -2,6 +2,7 @@ package online.book.store.engines;
 
 import online.book.store.entity.Book;
 import online.book.store.service.BookService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
@@ -11,8 +12,14 @@ import java.util.List;
 @Component
 public class SearchEngine implements SiteEngine{
 
-    public  List<Book> getBooksByText(String text, BookService bookService){
-        List<Book> books = bookService.getAllBooks();
+    @Autowired
+    private BookService bookService;
+
+    SortEngine sortEngine = SortEngine.instanceSortEngine();
+
+    public  List<Book> getBooksByText(SearchQuery query){
+        String text = query.getQueryText();
+        List<Book> books = this.bookService.getAllBooks();
         List<Book> resultedBooks = new LinkedList<>();
         String[] booksFields = books.toString().split(",");
 
@@ -25,7 +32,8 @@ public class SearchEngine implements SiteEngine{
                 }
             }
         }
-    return resultedBooks;
+            sortEngine.setBookListToSort(resultedBooks);
+    return sortEngine.getSortBooks();
     }
 
     private boolean contains(String text, String field){
@@ -33,10 +41,10 @@ public class SearchEngine implements SiteEngine{
         String[] letters = text.split("");
         String[] fieldContent = field.split("");
 
-    for(int i = 0; i < letters.length; i ++){
-        for(String l : fieldContent){
-            if(l.equals(letters[i])) {
-                if ((countCns++) == cns) {
+        for(int i = 0; i < letters.length; i ++){
+            for(String l : fieldContent){
+                if(l.equals(letters[i])) {
+                    if ((countCns++) == cns) {
                     return true;
                 }
             }
@@ -44,4 +52,6 @@ public class SearchEngine implements SiteEngine{
         }
     return false;
     }
+
+
 }

@@ -31,8 +31,8 @@ public class Book {
     private String yearPub;
     @Column(name = "SUBJECT")
     private String subject;
-    @Column(name = "PATH_TO_IMAGE")
-    private String path;
+    @Column(name = "BOOK_IMAGE_NAME")
+    private String bookImageName;
     @Column(name = "AVAILABLE")
     private String available;
     @Column(name = "AVAILABLE_COPIES")
@@ -51,21 +51,19 @@ public class Book {
 
     public Book(String isbn, String title, String publisher,
                                 double price, String yearPub,
-                                String subject, String path, int availableCopies, String description,
-                                String authors, String format){
+                                String subject, String bookImageName, int availableCopies,
+                                String description, String authors, String format){
         this.isbn = isbn;
         this.title = title;
         this.publisher = publisher;
         this.price = price;
         this.yearPub = yearPub;
         this.subject = subject;
-        this.path = path;
+        this.bookImageName = bookImageName;
         this.availableCopies = availableCopies;
         this.description = description;
         this.authors = authors;
         this.format = format;
-
-
 
     }
 
@@ -99,15 +97,6 @@ public class Book {
         bookReview.setBook(null);
     }
 
-
-    private String getAvailableStatus(boolean available){
-        String[] availableStatus = {"Not available", "available"};
-        if(!available) {
-            return availableStatus[0];
-        }
-        return availableStatus[1];
-
-    }
 
     public int getAvgRating() {
         if(this.bookReviews == null) return 0;

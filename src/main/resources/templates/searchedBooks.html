@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/home.css}"/>
+    <title>Home</title>
+</head>
+<body>
+<div class="container book-list">
+    <div class="info-bar">
+        <div class="row">
+            <div class="col-xs-4 sort-bar">
+                <div class="dropdown">
+                    <button id="menu" class="btn btn-danger dropdown-toggle selected-sort"
+                            type="button" th:text="${sortConfig.selectedType.name()}">
+                        <span class="caret"></span>
+
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right sort-options" aria-labelledby="menu">
+                        <li th:each="type: ${sortTypes}">
+                            <a th:href="${'/home/sort?type=' + ${type.name()}}" th:text="${type.name()}"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="row bookListDir">
+    <div th:each="book : ${books}" class="carousel-panel panel-default col-md-3 col-lg-3 col-sm-4 col-xs-6">
+        <div class="panel-heading book-title" th:text="${book.title}"></div>
+        <div class="panel-body book-details"><a th:method="get" th:action="@{'/home/book/info?isbn=' + ${book.isbn}}">
+        <img class="imp-responsive book-cover" th:src="@{'/images/' + ${book.bookImageName}}" alt="book_image">
+                </a>
+        </div>
+        <div class="panel-footer price">
+            Price
+            <span th:text="${book.price}">&#8381;</span>
+            <form method="post" th:action="@{'/home/book/addbooktowishlist?isbn=' + ${book.isbn}}">
+            <button id="toWishList" class="glyphicon glyphicon-heart icon">Add to wishlist</button>
+            </form>
+            <form method="post" th:action="@{'/home/book/addbooktocart?isbn=' + ${book.isbn}}">
+                <button id="toCart" class="glyphicon glyphicon-shopping-cart">Add to cart</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+</body>
+</html>

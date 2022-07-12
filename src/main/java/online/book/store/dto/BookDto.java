@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.book.store.builder.AbstractBookBuilder;
 import online.book.store.entity.Book;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -16,7 +17,11 @@ import java.lang.reflect.Field;
 @AllArgsConstructor
 public class BookDto extends AbstractBookBuilder {
 
-    private File image;
+    private File directory;
+    @Value("book.images.root")
+    private String directoryLocation;
+
+    private File bookImage;
     private String isbn;
     private String title;
     private String publisher;
@@ -29,18 +34,17 @@ public class BookDto extends AbstractBookBuilder {
     private String authors;
     private String format;
 
-
     @Override
     public AbstractBookBuilder builder() {
         return new BookDto();
     }
 
     @Override
-    public AbstractBookBuilder path(File bookImage) {
-        this.image = bookImage;
+    public AbstractBookBuilder bookImage(File bookImage) {
+        this.bookImage = bookImage;
+        directory = new File(directoryLocation, bookImage.getName());
         return this;
     }
-
 
     @Override
     public AbstractBookBuilder isbn(String isbn) {
@@ -113,13 +117,10 @@ public class BookDto extends AbstractBookBuilder {
     @Override
     public Book build() {
         if(!this.containsNull()){
-
-            String absolutePath = this.getImage().getAbsolutePath();
-            String pathToImage = absolutePath.substring(absolutePath.indexOf("images") - 1);
-
-        return new Book(this.isbn, this.title,
+            return new Book(this.isbn, this.title,
                         this.publisher, this.price,
-                        this.yearPub, this.subject, pathToImage, this.availableCopies, this.description, this.authors, this.format);
+                        this.yearPub, this.subject, this.bookImage.getName(),
+                        this.availableCopies, this.description, this.authors, this.format);
         }
     return null;
     }
@@ -128,7 +129,7 @@ public class BookDto extends AbstractBookBuilder {
         return this.builder().isbn(this.isbn).
                         title(this.title).publisher(this.publisher).
                         price(this.price).yearPub(this.yearPub).
-                        subject(this.subject).path(this.image).
+                        subject(this.subject).bookImage(null).
                         availableCopies(this.availableCopies).
                         description(this.description).
                         authors(this.authors).

@@ -32,7 +32,7 @@ public class UserValidation implements Validator {
         }
 
         if(!userLoginDto.getConfirmCode().equals(userLoginDto.getGeneratedCode())){
-            errors.rejectValue("confirmCode", "Codes.not.equals");
+            errors.rejectValue("confirmCode", "Code.not.equals");
         }
     }
 

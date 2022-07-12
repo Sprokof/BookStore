@@ -11,32 +11,60 @@ import java.util.List;
 
 @Component
 public class SortEngine implements SiteEngine {
+    private static SortEngine instance;
 
-    public static String sortType = "Popularity";
+    public static SortEngine instanceSortEngine(){
+        if(instance == null){
+            instance = new SortEngine();
+        }
+        return instance;
+    }
 
-    public List<Book> getSortBooks(String sortType, List<Book> allBooks) {
-        switch (sortType) {
+    private SortEngine(){}
+
+
+    private List<Book> bookList;
+
+    private SortConfig sortConfig;
+
+    public List<Book> getSortBooks() {
+        if(sortConfig == null) return null;
+
+        switch (sortConfig.getSelectedType().name()) {
             case "Popularity":
-                allBooks.sort(Comparator.comparingInt(Book::getBookRating));
+                this.bookList.sort(Comparator.comparingInt(Book::getBookRating));
                 break;
             case "Low to High":
-                allBooks.sort(Comparator.comparingDouble(Book::getPrice));
+                this.bookList.sort(Comparator.comparingDouble(Book::getPrice));
                 break;
             case "High to Low":
-                allBooks.sort((book, bookNext) -> {
+                this.bookList.sort((book, bookNext) -> {
                     return ((int) bookNext.getPrice() - (int) book.getPrice());
                 });
                 break;
             case "Latest":
-                allBooks.sort(Comparator.comparingInt((b) -> Integer.parseInt(b.getYearPub())));
+                this.bookList.sort(Comparator.comparingInt((b) -> Integer.parseInt(b.getYearPub())));
+                break;
+            default:
+                this.bookList.sort(Comparator.comparingInt(Book::getBookRating));
                 break;
 
         }
-        return allBooks;
+        return this.bookList;
     }
 
-    public static String[] sortTypes(){
-        return new String[]{"Popularity", "Low to High", "High to Low", "Latest"};
+    public void setBookListToSort(List<Book> bookList){
+        this.bookList = bookList;
     }
+
+    public void setSortConfig(SortConfig sortConfig){
+        this.sortConfig = sortConfig;
+    }
+
+    public SortConfig getSortConfig(){
+        if(this.sortConfig == null) return new SortConfig();
+        return this.sortConfig;
+    }
+
 
 }

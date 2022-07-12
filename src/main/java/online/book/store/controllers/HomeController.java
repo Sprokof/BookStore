@@ -1,10 +1,7 @@
 package online.book.store.controllers;
 
-import online.book.store.engines.SearchQuery;
-import online.book.store.engines.SiteEngine;
+import online.book.store.engines.*;
 import online.book.store.entity.Book;
-import online.book.store.entity.User;
-import online.book.store.engines.SearchEngine;
 import online.book.store.service.BookService;
 import online.book.store.service.CartService;
 import online.book.store.service.UserService;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -39,9 +35,11 @@ public class HomeController {
     @Autowired
     private WishlistService wishlistService;
 
-    @Autowired
-    private @Qualifier("searchEngine")
-    SiteEngine searchEngine;
+    SortEngine sortEngine = SortEngine.instanceSortEngine();
+
+
+
+    SearchEngine searchEngine;
 
 
     @Autowired
@@ -78,23 +76,33 @@ public class HomeController {
     }
 
 
-
-    //replace that logic in angular
-    @PostMapping("/home/book/search")
-    public String search(@RequestParam("text") String text, Model model){
-    List<Book> books = ((SearchEngine) searchEngine).getBooksByText(text, bookService);
-    model.addAttribute("books", books);
-    return "searchresult";
-
-    }
-
     @GetMapping("/home/book/info")
     public String info(@RequestParam("isbn") String isbn, Model model){
         Book book = bookService.getBookByIsbn(isbn);
         model.addAttribute("book", book);
 
-        return "info";
+        return "bookInfo";
     }
+
+    @ModelAttribute("sortConfig")
+    public SortConfig sortConfig(){
+        return sortEngine.getSortConfig();
+    }
+
+    @ModelAttribute("sortTypes")
+    public SortTypes[] sortTypes(){
+        return SortConfig.sortTypes();
+    }
+
+    @GetMapping("/home/search")
+    public String search(@RequestParam("text") String text, Model model){
+        List<Book> books = searchEngine.getBooksByText(new SearchQuery(text));
+        model.addAttribute("books", books);
+
+        return "searchedBooks";
+    }
+
+
 
 }
 

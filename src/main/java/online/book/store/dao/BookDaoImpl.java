@@ -1,6 +1,7 @@
 package online.book.store.dao;
 
 import online.book.store.entity.Book;
+import online.book.store.singletons.SessionFactorySingleton;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;

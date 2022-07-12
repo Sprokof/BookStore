@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 @Controller
 public class CartController {
@@ -27,7 +29,8 @@ public class CartController {
 
     @ModelAttribute("cart")
     public Cart getUserCart(){
-        return ((User) httpSession.getAttribute("user")).getCart();
+        return ((User) httpSession.
+                getAttribute("user")).getCart();
     }
 
     @GetMapping("/home/cart")
@@ -44,12 +47,10 @@ public class CartController {
 
         Cart userCart = ((Cart) (model.getAttribute("cart")));
 
+        assert userCart != null;
         CartItem cartItem = userCart.getCartItems().get(cartItemId);
 
-        cartItem.setQuantity((Integer.parseInt(quantity)));
-
-        cartService.updateCart(userCart);
-
+        cartService.updateCartItem(cartItem, Integer.parseInt(quantity));
         return "cart";
 
     }
@@ -58,13 +59,13 @@ public class CartController {
     public String removeCartItem(@RequestParam("item") String itemId, Model model){
         int cartItemId = (Integer.parseInt(itemId));
 
-        Cart userCart = ((Cart) (model.getAttribute("cart")));
+        Cart cart = (Cart) model.getAttribute("cart");
 
-        CartItem cartItem = userCart.getCartItems().get(cartItemId);
+        assert cart != null;
 
-        userCart.removeItem(cartItem);
+        CartItem cartItem = cart.getCartItems().get(cartItemId);
 
-        cartService.updateCart(userCart);
+        cartService.updateCartItem(cartItem);
 
         return "cart";
 

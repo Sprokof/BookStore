@@ -3,6 +3,7 @@ package online.book.store.controllers;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
 import online.book.store.service.BookService;
+import online.book.store.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,16 +18,11 @@ import java.util.stream.Collectors;
 public class SidebarRestController {
 
     @Autowired
-    private BookService bookService;
-
+    CategoryService categoryService;
 
     @RequestMapping ("/home/book/categories")
     public List<Category> category(){
-        List<Category> categories = new LinkedList<>();
-        for(Book book : bookService.getAllBooks()){
-            categories.addAll(book.getCategories());
-        }
-        return categories;
+        return categoryService.allCategory();
     }
 
     @GetMapping("/home/logout")
@@ -37,4 +33,8 @@ public class SidebarRestController {
         return "home";
     }
 
+    @GetMapping("/test")
+    public String test(){
+        return "navbar";
+    }
 }

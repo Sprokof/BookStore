@@ -7,11 +7,16 @@ import online.book.store.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpSession;
+
 @Component
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private HttpSession httpSession;
 
 
     @Override
@@ -35,11 +40,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean authUser(User userToLogin, User userFromDb) {
-
-        return userToLogin.equals(userFromDb);
+    public boolean loginUser() {
+      return (httpSession.getAttribute("user") != null);
     }
-
 
     @Override
     public User saveOrGetUser(User user) {

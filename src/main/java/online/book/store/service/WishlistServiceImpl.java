@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -44,8 +47,21 @@ public class WishlistServiceImpl implements WishlistService{
             }
             String booksId = user.getWishList().getBooksId();
             booksId += String.format(",%d,", book.getId());
-            user.getWishList().setBooksId(booksId);
+            user.getWishList().setBooksId(sortBookList(booksId));
             userService.updateUser(user);
             httpSession.setAttribute("user", user);
+        }
+
+
+        private String sortBookList(String booksId){
+            List<String> sorted = Arrays.stream(booksId.split("//,")).sorted((id1, id2) -> {
+            return (Integer.parseInt(id1) - Integer.parseInt(id2));
+            }).collect(Collectors.toList());
+
+            String result = "";
+            for(String id : sorted){
+                result += id +", ";
+            }
+            return result;
         }
 }

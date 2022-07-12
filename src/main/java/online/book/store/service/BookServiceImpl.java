@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import online.book.store.dao.BookDao;
 import online.book.store.engines.SortEngine;
+import online.book.store.engines.SortTypes;
 import online.book.store.entity.Book;
 import online.book.store.engines.SearchEngine;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,19 +29,25 @@ public class BookServiceImpl implements BookService{
     @Setter
     private List<Book> allBook;
 
+    @Autowired
+    SortEngine engine;
+
     @Override
     public List<Book> getPopularBooks() {
-        return this.bookDao.getPopularBooks();
+        engine.setBookListToSort(bookDao.getPopularBooks());
+        return engine.getSortBooks(SortTypes.DEFAULT);
     }
 
     @Override
     public List<Book> getAllBooks() {
-        return this.bookDao.getAllBooks();
+        engine.setBookListToSort(bookDao.getPopularBooks());
+        return engine.getSortBooks(SortTypes.DEFAULT);
     }
 
     @Override
     public List<Book> getBooksByCategory(String category) {
-        return this.bookDao.getBooksByCategory(category);
+        engine.setBookListToSort(bookDao.getPopularBooks());
+        return engine.getSortBooks(SortTypes.DEFAULT);
     }
 
     @Override

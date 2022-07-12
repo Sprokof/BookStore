@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.0.2/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/order.css}"/>
+    <title>Orders</title>
+</head>
+<body>
+<div class="container-fluid order-dashboard">
+    <article class="row order-main-header">
+        <div class="col-lg-10 order-title">Orders</div>
+    </article>
+
+        <div class="order-container container">
+            <div class="row order-main order" th:each="order : ${orders}">
+                <div class="row col-lg-12 order-header">
+                    <div class='row row-upper'>
+                        <div class='col-xs-2'>Order placed</div>
+                        <div class='col-xs-2'>Total</div>
+                        <div class='col-xs-3'></div>
+                        <div class='col-xs-3 order-id'>Order Id</div>
+                    </div>
+
+                    <div class='row'>
+                        <div class='col-xs-2 order order-date' th:text="${order.orderDate}"></div>
+                        <div class='col-xs-2 order order-total' th:text="${order.total}"></div>
+                        <div class='col-xs-3'></div>
+                        <div class='col-xs-3 order order-id' th:text="${order.id}">&#8381;</div>
+                    </div>
+                </div>
+                <hr/>
+                <div class='row col-sm-12 order order-summary'>
+                    <div class='col-sm-8 media order order-components'>
+                        <div class="media-left">
+                            <a href=""><img class="item-img img-responsive" th:src="${order.path}"></a>
+                        </div>
+
+                        <div class="media-body">
+                            <div class="media-heading" th:text="${order.title}"></div>
+                            <div class="" th:text="${'Price: ' + ${order.total}}"></div>
+                            <div class="" th:text="${'Quantity: ' + ${order.quantity}}"></div>
+                            <div class="media-heading" th:text="${'Status: ' + ${order.status}}"></div>
+                        </div>
+                    </div>
+
+                        <div class="col-lg-4 text-right order-detail-btn">
+                            <button class="btn btn-black" >
+                                <a> Order Details </a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <section class="row order-product_info clearfix"></section>
+            </div>
+        </div>
+</body>
+</html>

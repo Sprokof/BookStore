@@ -10,7 +10,7 @@ public abstract class AbstractBookBuilder {
         return this;
     }
 
-   public AbstractBookBuilder path(File bookImage){
+   public AbstractBookBuilder bookImage(File image){
        return null;
    }
 

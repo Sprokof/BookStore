@@ -7,13 +7,13 @@ import org.hibernate.cfg.Configuration;
 public class SessionFactorySingleton {
     private static SessionFactory instance;
 
-    private SessionFactorySingleton (){}
+    private SessionFactorySingleton(){}
 
     public static SessionFactory getInitializationFactory() {
         if (instance == null) {
             instance = getSessionFactory(new Class[]{Book.class,
                                         Category.class, User.class, CartItem.class, Cart.class,
-                                        BookReview.class, BookRating.class});
+                                        BookReview.class, Wishlist.class, Shipment.class, Order.class, Address.class});
         }
     return instance;
     }

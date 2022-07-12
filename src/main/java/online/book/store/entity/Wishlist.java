@@ -35,17 +35,33 @@ public class Wishlist {
 
 
     public void removeBook(Book book){
-        String removesBookId = (String.valueOf(book.getId()));
-        String[] idArray = this.booksId.split("\\,");
+        int index;
+        if((index = getBookIndex(book)) == - 1) return ;
+            String[] booksIdArray = toArray();
+            booksIdArray[index] = "";
+            this.setBooksId(toString(booksIdArray));
+    }
 
-        int index = 0;
-        while(index != idArray.length){
-            if(idArray[index].equals(removesBookId)){
-                idArray[index] = "";
-            }
-            index ++ ;
+    private int getBookIndex(Book book){
+        int id = book.getId();
+        Integer[] tempArray = Arrays.stream(this.booksId.split("\\,")).
+                map(Integer :: parseInt).
+                collect(Collectors.toList()).
+                toArray(Integer[] :: new);
+        return Arrays.binarySearch(tempArray, id);
+    }
+
+    private String[] toArray(){
+        return this.booksId.split("\\,");
+    }
+
+    private String toString(String[] array){
+        StringBuilder sb = new StringBuilder();
+        for(String bookId : array){
+            String id = (bookId + ", ");
+            sb.append(id);
         }
-
+        return sb.toString();
     }
 
 

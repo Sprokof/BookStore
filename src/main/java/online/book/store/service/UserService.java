@@ -8,5 +8,6 @@ public interface UserService {
     void updateUser(User user);
     User getUserByLogin(String login);
     User loadUserByLogin(String login);
-    boolean authUser(User userToLogin, User userFromDb);
+    boolean loginUser();
+
 }

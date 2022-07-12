@@ -3,12 +3,12 @@ package online.book.store.dao;
 import online.book.store.entity.Book;
 import online.book.store.entity.Cart;
 import online.book.store.entity.CartItem;
+import online.book.store.singletons.SessionFactorySingleton;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.stream.Collectors;
 
 @Component

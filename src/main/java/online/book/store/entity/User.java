@@ -4,6 +4,7 @@ package online.book.store.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -20,6 +21,10 @@ public class User {
     private int id;
     @Column(name = "EMAIL")
     private String email;
+
+
+    @Value("admin.email")
+    transient String adminEmail;
 
     transient String confirmCode;
     transient boolean admin;
@@ -71,6 +76,7 @@ public class User {
     public User(String email){
         this.email = email;
         this.shipment = null;
+        this.admin = admin();
     }
 
     @Override
@@ -81,5 +87,9 @@ public class User {
         return this.email.equals(user.email);
     }
 
+
+    private boolean admin(){
+        return this.email.equals(adminEmail);
+    }
 
 }

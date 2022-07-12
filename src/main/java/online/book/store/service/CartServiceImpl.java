@@ -41,10 +41,7 @@ public class CartServiceImpl implements CartService {
         }
         CartItem cartItem = new CartItem(book.getIsbn(), book.getPrice(), quantity);
         Cart cart = user.getCart();
-        cart.addItem(cartItem);
-        cart.setTotal(calculateTotalPrice(cart));
-        cart.setSubtotal(calculateSubTotalPrice(cart));
-        cart.setCount(calculateCountCartItems(cart));
+        cart.addItem(cartItem).updatePrices();
         user.setCart(cart);
 
         httpSession.setAttribute("user", user);
@@ -54,33 +51,12 @@ public class CartServiceImpl implements CartService {
     }
 
 
-
-    private double calculateTotalPrice(Cart cart){
-        double shippingPrice = 17d;
-        double totalSum = 0;
-        for(CartItem item : cart.getCartItems()){
-            totalSum += item.getTotal();
-        }
-        return totalSum + shippingPrice;
-    }
-
-    private double calculateSubTotalPrice(Cart cart){
-        double subTotalSum = 0;
-        for(CartItem item : cart.getCartItems()){
-            subTotalSum += item.getTotal();
-        }
-        return subTotalSum;
-    }
-
-    private int calculateCountCartItems(Cart cart){
-
-        return cart.getCartItems().size();
-    }
-
     @Override
     public void updateCart(Cart cart) {
-        cart.setTotal(calculateTotalPrice(cart));
         this.cartDao.updateCart(cart);
+        String email = ((User) httpSession.getAttribute("user")).getEmail();
+        User updatedUser = userService.getUserByLogin(email);
+        httpSession.setAttribute("user", updatedUser);
     }
 
     @Override
@@ -89,6 +65,20 @@ public class CartServiceImpl implements CartService {
         user.setCart(null);
         httpSession.setAttribute("user", user);
         userService.updateUser(user);
+    }
+
+    @Override
+    public void updateCartItem(CartItem cartItem) {
+     Cart currentCart =  ((User) httpSession.
+                getAttribute("user")).getCart();
+     currentCart.removeItem(cartItem);
+     updateCart(currentCart);
+    }
+
+    @Override
+    public void updateCartItem(CartItem cartItem, int quantity) {
+        cartItem.setQuantity(quantity);
+        updateCart(cartItem.getCart());
     }
 }
 

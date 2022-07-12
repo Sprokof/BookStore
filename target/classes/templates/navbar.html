@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{webjars/bootstrap/3.3.7/css/bootstrap.min.css}"
+          href="webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" href="/static/css/navbar.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sidebar.css}" href="/static/css/sidebar.css"/>
+
+</head>
+<body>
+<nav class="sibebar" id="sidebar">
+    <div class="text"> Menu </div>
+    <ul>
+        <li>
+            <a id="open"> Categories
+                <span class="fas fa-caret-down"></span>
+            </a>
+
+            <ul class="sub-menu">
+                <li><a href="#"> Detective </a></li>
+                <li><a href="#"> Romantics </a></li>
+            </ul>
+
+        </li>
+        <li><a href="#"> Orders </a></li>
+        <li><a href="#"> Wish list </a></li>
+        <li><a href="#"> Log out </a></li>
+    </ul>
+</nav>
+<nav class="navbar navbar-inverse header-container">
+    <div class="container-fluid">
+
+        <div id="control">
+            <button class="btn bt" onclick="controlNav()" >
+                <span>☰</span>
+            </button>
+        </div>
+
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#"> Online Book Store </a>
+        </div>
+
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="navbar navbar-nav navbar-right nav-pills">
+                <li>
+                    <a class="navbar-link" th:href="@{/home}">
+                    Home <span class="glyphicon glyphicon-home"></span></a>
+                </li>
+
+                <li>
+                    <a class="navbar-link cart-link" th:href="@{/home/cart}">
+                    Cart <span class="glyphicon glyphicon-shopping-cart"></span>
+                         <span class="cart-count badge">0</span>
+                    </a>
+                </li>
+
+                <li class="dropdown-1">
+                    <a class="dropdown-toggle navbar-link" data-toggle="dropdown"> Hi
+                        <b class="glyphicon glyphicon-user"></b>
+                    </a>
+                    <ul class="dropdown-menu sublist">
+
+                        <li> <span class="glyphicon glyphicon-user icon">
+                         <a href="#"> Account </a>
+                        </span>
+                        </li>
+
+                        <li> <span class="glyphicon glyphicon-glass icon>">
+                            <a href="#"> Orders </a>
+                        </span>
+                        </li>
+
+                        <li> <span class="glyphicon glyphicon-heart icon">
+                         <a href="#"> Wish list </a>
+                        </span>
+                        </li>
+
+                    </ul>
+                </li>
+
+
+            </ul>
+        </div>
+
+    </div>
+</nav>
+<script>
+    document.getElementById("open").
+    addEventListener('click', (e) => {
+        let submenu = document.querySelectorAll('nav ul li ul li')
+        for(let item = 0; item < submenu.length; item ++) {
+            submenu[item].style.display =
+                (submenu[item].style.display === 'none' ? 'block' : 'none');
+        }
+    });
+
+    let open;
+
+    function openNav() {
+        document.getElementById("sidebar").style.width = "250px";
+        document.getElementById("control").style.marginLeft = "250px";
+        open = true;
+
+    }
+
+    function closeNav() {
+
+        document.getElementById("sidebar").style.width = "0";
+        document.getElementById("control").style.marginLeft = "0";
+        open = false;
+    }
+
+    function controlNav(){
+        if(!open){
+            openNav();
+        }
+        else {
+            closeNav();
+        }
+    }
+</script>
+</body>
+</html>
