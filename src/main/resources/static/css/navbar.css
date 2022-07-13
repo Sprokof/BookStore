@@ -1,40 +1,134 @@
-@CHARSET "ISO-8859-1";
-.navbar {
-    border-radius: 0;
-    background-color: #261a0d;
-    box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.15);
-    padding: 10px 5px 10px 5px;
-    height: 80px;
+* {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+    font-family: "Calibri", sans-serif;
+    overflow-x: hidden;
 }
-.navbar .container-fluid .navbar-header .navbar-brand {
-    font: normal 28px Cookie, Arial, Helvetica, sans-serif;
-    font-size: x-large;
-    margin: 0 !important; }
-.navbar .container-fluid .navbar-collapse .navbar-nav {
-    float: right; }
-.navbar .container-fluid .navbar-collapse .navbar-nav li {
-    padding: 10px 0 0 10px; }
-.navbar .container-fluid .navbar-collapse .navbar-nav li .nav-links {
-    max-width: 119px;
-    padding-bottom: 8px;
-    padding-top: 8px;
-    background-color: #992600;
-    color: white;
-    line-height: 19px;
-    cursor: pointer; }
-.navbar .container-fluid .navbar-collapse .navbar-nav li .sublist {
-    background: #0d0d0d; }
-.navbar .container-fluid .navbar-collapse .navbar-nav li .sublist li {
-    padding: 7px 0px 7px 10px;
-    font-size: larger; }
-.navbar .container-fluid .navbar-collapse .navbar-nav li .sublist li a {
-    color: white;
-    display: inline-block; }
-.navbar .container-fluid .navbar-collapse .navbar-nav li .sublist li a:hover {
-    background-color: inherit; }
-.navbar .container-fluid .navbar-collapse .navbar-nav li .sublist .icon {
-    color: white; }
-.navbar .container-fluid .navbar-collapse .navbar-nav li .cart-count {
-    color: #992600;
-    background-color: white; }
+
+body {
+    min-height: 100vh;
+    background-size: cover;
+    background: whitesmoke center no-repeat;
+}
+
+.sidebar {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15);
+    width: 290px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    transition: 0.3s ease;
+    transition-property: left;
+    overflow-y: auto;
+}
+
+.sidebar.active{
+    left: 0;
+}
+.container-fluid{
+    padding: 0!important;
+}
+.container-fluid.compression {
+    margin-left: 290px;
+}
+
+#menu.compression {
+    margin-right: 290px;
+}
+
+.sidebar .menu {
+    width: auto;
+    margin-top: 20px;
+}
+
+.sidebar .menu .item {
+    position: relative;
+    cursor: pointer;
+}
+
+.sidebar .menu .item a{
+    color: #b4ad9e;
+    background: white;
+    font-size: 16px;
+    display: block;
+    padding: 5px 30px;
+    line-height: 60px;
+    text-decoration: none;
+    text-align: center;
+
+}
+
+.sidebar .menu .item a:hover {
+    color: #898377;
+    transition: 0.3s ease;
+}
+
+.sidebar .menu .item a::after {
+    content: '';
+    display: block;
+    width: 100%;
+    background-color: black;
+    height: 1px;
+    transform: scale(0);
+    transition: all 0.3s;
+}
+
+.sidebar .menu .item a:hover::after {
+    transform: scale(1);
+}
+
+.sidebar .menu .item i {
+    margin-right: 15px;
+}
+
+.sidebar .menu .item a .dropdown{
+    position: absolute;
+    right: auto;
+    margin: 22px;
+    transition: 0.3s ease;
+}
+
+.sidebar .menu .item .sub-menu {
+    background: rgba(255, 255, 255, 0.1);
+    display: none;
+}
+
+.sidebar .menu .item .sub-menu a {
+    padding-left: 80px;
+}
+
+.rotate {
+    transform: rotate(90deg);
+}
+
+.fa-bars {
+    color: black;
+}
+
+#navbarSupportedContent ul li a {
+    color: #b4ad9e;
+}
+
+#navbarSupportedContent ul li a:hover {
+    color: #898377;
+}
+
+header .nav-item{
+    margin-left: 35px;
+}
+header .nav-item a::after {
+    content: '';
+    display: block;
+    width: 100%;
+    background-color: black;
+    height: 1px;
+    transform: scale(0);
+    transition: all 0.3s;
+}
+
+header .nav-item a:hover::after {
+    transform: scale(1);
+}
