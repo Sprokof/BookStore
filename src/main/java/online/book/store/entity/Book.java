@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,6 +44,8 @@ public class Book {
     private String authors;
     @Column(name = "FORMAT")
     private String format;
+    @Column(name = "ADDED_DATE")
+    private LocalDate addedDate;
 
 
 
@@ -64,6 +67,7 @@ public class Book {
         this.description = description;
         this.authors = authors;
         this.format = format;
+        this.addedDate = currentDate();
 
     }
 
@@ -117,5 +121,9 @@ public class Book {
         return String.format("%s,%s,%s,%s,%s,%s",
                         this.isbn, this.title, this.publisher,
                         this.yearPub, this.subject, this.description);
+    }
+
+    private LocalDate currentDate(){
+        return LocalDate.now();
     }
 }

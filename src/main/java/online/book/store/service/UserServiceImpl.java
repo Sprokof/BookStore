@@ -48,4 +48,9 @@ public class UserServiceImpl implements UserService {
     public User saveOrGetUser(User user) {
         return this.userDao.saveOrGetUser(user);
     }
+
+    @Override
+    public User getCurrentUser() {
+        h
+    }
 }

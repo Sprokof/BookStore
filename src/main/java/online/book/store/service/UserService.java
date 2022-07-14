@@ -9,5 +9,6 @@ public interface UserService {
     User getUserByLogin(String login);
     User loadUserByLogin(String login);
     boolean loginUser();
+    User getCurrentUser();
 
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +44,7 @@ public class SortEngine implements SiteEngine {
                 });
                 break;
             case "Latest":
-                this.bookList.sort(Comparator.comparingInt((b) -> Integer.parseInt(b.getYearPub())));
+                this.bookList.sort((book, bookNext) -> compareAddedDate(book.getAddedDate(), bookNext.getAddedDate()));
                 break;
             default:
                 this.bookList.sort(Comparator.comparingInt(Book::getBookRating));
@@ -66,5 +67,15 @@ public class SortEngine implements SiteEngine {
         return this.sortConfig;
     }
 
+    private int compareAddedDate(LocalDate firstDate, LocalDate secondDate){
+        int result = 0;
+        if(firstDate.isAfter(secondDate)){
+            result = 1;
+        }
+        else {
+            result = - 1;
+        }
+    return result;
+    }
 
 }

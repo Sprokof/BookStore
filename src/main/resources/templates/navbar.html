@@ -34,6 +34,7 @@
             <div class="item"><a href="#"> Log in </a> </div>
         </div>
 </div>
+</div>
 
 <header>
     <div class="container-fluid">
@@ -50,12 +51,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto" id="menu">
-                    <li class="nav-item"><a class="nav-link">Home</a></li>
-                    <li class="nav-item"><a class="nav-link">Cart (0)</a></li>
-                    <li class="nav-item"><a class="nav-link">Account</a></li>
+                    <li class="nav-item"><a class="nav-link"> Home </a></li>
+                    <li class="nav-item"><a class="nav-link" th:text="${'Cart (' + ${session.user != null} ? ${session.user.cart.count} : '0' +')'}"></a></li>
+                    <li class="nav-item"><a class="nav-link"> Account </a></li>
                 </ul>
             </div>
-
         </nav>
     </div>
 </header>
