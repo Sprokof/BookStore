@@ -17,10 +17,11 @@ public class BookValidation implements Validator {
     public void validate(Object o, Errors errors) {
         if (!supports(o.getClass())) return ;
 
+            BookDto bookDto = (BookDto) o;
+
+            if(bookDto.getBookImage() == null){
+                errors.rejectValue("bookImage", "Insert.image");
+            }
     }
 
-    private boolean rightDirectory(String fileLocation){
-        return fileLocation.contains("image");
-
-    }
 }

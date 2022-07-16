@@ -45,7 +45,7 @@ public class PaymentController {
     }
 
     @ModelAttribute("months")
-    public List<String> month(){
+    public List<String> months(){
       List<String> months = new ArrayList<>();
 
       int month = 1, lastMonthInYear = 12;

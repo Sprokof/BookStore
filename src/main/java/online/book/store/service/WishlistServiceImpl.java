@@ -19,9 +19,6 @@ public class WishlistServiceImpl implements WishlistService{
     CartService cartService;
 
     @Autowired
-    HttpSession httpSession;
-
-    @Autowired
     UserService userService;
 
 
@@ -33,29 +30,28 @@ public class WishlistServiceImpl implements WishlistService{
 
     @Override
     public void removeFromWishlist(Book book) {
-        User user = (User) httpSession.getAttribute("user");
+        User user = userService.getCurrentUser();
         user.getWishList().removeBook(book);
-        userService.updateUser(user);
-        httpSession.setAttribute("user", user);
+        userService.updateUserInSession(user);
+
 
     }
 
     @Override
     public void addBookToWishlist(Book book) {
-        User user = (User) httpSession.getAttribute("user");
+        User user = userService.getCurrentUser();
         if(user.getWishList().getBooksId() == null) {
             user.getWishList().setBooksId(String.valueOf(book.getId()));
             }
             String booksId = user.getWishList().getBooksId();
             booksId += String.format(",%d,", book.getId());
             user.getWishList().setBooksId(sortBookList(booksId));
-            userService.updateUser(user);
-            httpSession.setAttribute("user", user);
+            userService.updateUserInSession(user);
         }
 
 
         private String sortBookList(String booksId){
-            List<String> sorted = Arrays.stream(booksId.split("//,")).
+            List<String> sorted = Arrays.stream(booksId.split("\\,")).
                     sorted(Comparator.comparingInt(Integer::parseInt)).
                     collect(Collectors.toList());
             String result = "";

@@ -48,7 +48,7 @@ public class CartController {
         Cart userCart = ((Cart) (model.getAttribute("cart")));
 
         assert userCart != null;
-        CartItem cartItem = userCart.getCartItems().get(cartItemId);
+        CartItem cartItem = cartService.getCartItemById(cartItemId);
 
         cartService.updateCartItem(cartItem, Integer.parseInt(quantity));
         return "cart";
@@ -63,7 +63,7 @@ public class CartController {
 
         assert cart != null;
 
-        CartItem cartItem = cart.getCartItems().get(cartItemId);
+        CartItem cartItem = cartService.getCartItemById(cartItemId);
 
         cartService.updateCartItem(cartItem);
 

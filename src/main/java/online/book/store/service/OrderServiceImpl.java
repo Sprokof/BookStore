@@ -21,20 +21,18 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public void addOrders() {
-        User user = (User) httpSession.getAttribute("user");
+        User user = userService.getCurrentUser();
         List<CartItem> userItems = user.getCart().getCartItems();
 
 
         userItems.forEach((item) -> {
             Order order = new Order(item.getBook().getTitle(), item.getQuantity(), item.getTotal(),
-                    item.getBook().getFileLocation());
+                    item.getBook().getBookImageName());
             order.setStatus("Paid");
             user.addOrder(order);
         });
 
-        httpSession.setAttribute("user", user);
-
-        userService.updateUser(user);
+        userService.updateUserInSession(user);
 
     }
 }

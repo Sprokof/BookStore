@@ -19,9 +19,6 @@ import javax.servlet.http.HttpSession;
 public class WishListController {
 
     @Autowired
-    HttpSession session;
-
-    @Autowired
     BookService bookService;
 
     @Autowired
@@ -33,7 +30,7 @@ public class WishListController {
 
     @ModelAttribute("wishlist")
     public Wishlist getWishList(){
-        return ((User) session.getAttribute("user")).getWishList();
+        return userService.getCurrentUser().getWishList();
     }
 
     @GetMapping("/home/wishlist")

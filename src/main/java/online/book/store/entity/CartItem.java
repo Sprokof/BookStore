@@ -42,4 +42,12 @@ public class CartItem {
 
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) return true;
+        if(!(obj instanceof CartItem)) return false;
+
+        CartItem item = (CartItem) obj;
+        return this.isbn.equals(item.isbn);
+    }
 }

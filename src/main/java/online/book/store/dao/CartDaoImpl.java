@@ -3,7 +3,6 @@ package online.book.store.dao;
 import online.book.store.entity.Book;
 import online.book.store.entity.Cart;
 import online.book.store.entity.CartItem;
-import online.book.store.singletons.SessionFactorySingleton;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
@@ -69,5 +68,30 @@ public class CartDaoImpl implements CartDao{
                 session.close();
             }
         }
+    }
+
+    @Override
+    public CartItem getCartItemById(int id) {
+        Session session = null;
+        CartItem cartItem = null;
+    try{
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        cartItem = (CartItem) session.createSQLQuery("SELECT * FROM CART_ITEMS WHERE id=:id")
+                .setParameter("id", id).addEntity(CartItem.class).getSingleResult();
+        session.getTransaction().commit();
+    } catch (Exception e) {
+        if (session != null) {
+            if (session.getTransaction() != null) {
+                session.getTransaction().rollback();
+                if(e instanceof NoResultException) return null;
+            }
+        }
+    } finally {
+        if (session != null) {
+            session.close();
+        }
+    }
+    return cartItem;
     }
 }

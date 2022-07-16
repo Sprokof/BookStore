@@ -39,6 +39,23 @@ public class Cart {
         return this;
     }
 
+    public void setCartItem(CartItem cartItem){
+        int insertIndex;
+        if((insertIndex = getIndexOfCartItem(cartItem)) == - 1) return;
+        this.cartItems.set(insertIndex, cartItem);
+    }
+
+    private int getIndexOfCartItem(CartItem cartItem) {
+        for (int index = 0; index < this.cartItems.size(); index++) {
+            if (cartItems.get(index).equals(cartItem)) {
+                return index;
+            }
+        }
+    return - 1;
+    }
+
+
+
     public void removeItem(CartItem item){
         this.cartItems.remove(item);
         item.setCart(null);

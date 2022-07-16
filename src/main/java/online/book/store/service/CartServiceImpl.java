@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Component
 public class CartServiceImpl implements CartService {
@@ -44,8 +45,7 @@ public class CartServiceImpl implements CartService {
         cart.addItem(cartItem).updatePrices();
         user.setCart(cart);
 
-        httpSession.setAttribute("user", user);
-        userService.updateUser(user);
+        userService.updateUserInSession(user);
 
 
     }
@@ -53,32 +53,42 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void updateCart(Cart cart) {
-        this.cartDao.updateCart(cart);
-        String email = ((User) httpSession.getAttribute("user")).getEmail();
-        User updatedUser = userService.getUserByLogin(email);
-        httpSession.setAttribute("user", updatedUser);
+        User user = userService.getCurrentUser();
+        user.setCart(cart);
+        userService.updateUserInSession(user);
+
+
     }
 
     @Override
     public void clearCart() {
-        User user = (User) httpSession.getAttribute("user");
+        User user = userService.getCurrentUser();
         user.setCart(null);
-        httpSession.setAttribute("user", user);
-        userService.updateUser(user);
+        userService.updateUserInSession(user);
     }
 
     @Override
     public void updateCartItem(CartItem cartItem) {
-     Cart currentCart =  ((User) httpSession.
-                getAttribute("user")).getCart();
-     currentCart.removeItem(cartItem);
-     updateCart(currentCart);
+     User currentUser =  userService.getCurrentUser();
+     currentUser.getCart().removeItem(cartItem);
+     updateCart(currentUser.getCart());
+     userService.updateUserInSession(currentUser);
+
     }
 
     @Override
     public void updateCartItem(CartItem cartItem, int quantity) {
+        User currentUser = userService.getCurrentUser();
         cartItem.setQuantity(quantity);
-        updateCart(cartItem.getCart());
+        currentUser.getCart().setCartItem(cartItem);
+
+        userService.updateUserInSession(currentUser);
+
+    }
+
+    @Override
+    public CartItem getCartItemById(int id) {
+        return this.cartDao.getCartItemById(id);
     }
 }
 

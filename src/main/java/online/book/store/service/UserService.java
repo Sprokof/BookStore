@@ -10,5 +10,6 @@ public interface UserService {
     User loadUserByLogin(String login);
     boolean loginUser();
     User getCurrentUser();
+    void updateUserInSession(User user);
 
 }

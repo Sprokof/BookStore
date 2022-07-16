@@ -51,6 +51,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getCurrentUser() {
-        h
+        return (User) httpSession.getAttribute("user");
+    }
+
+    @Override
+    public void updateUserInSession(User user){
+        httpSession.setAttribute("user", user);
+        updateUser(user);
     }
 }
