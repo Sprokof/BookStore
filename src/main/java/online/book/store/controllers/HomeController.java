@@ -2,10 +2,8 @@ package online.book.store.controllers;
 
 import online.book.store.engines.*;
 import online.book.store.entity.Book;
-import online.book.store.service.BookService;
-import online.book.store.service.CartService;
-import online.book.store.service.UserService;
-import online.book.store.service.WishlistService;
+import online.book.store.entity.Category;
+import online.book.store.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -30,39 +28,32 @@ public class HomeController {
     private CartService cartService;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private WishlistService wishlistService;
 
     SortEngine sortEngine = SortEngine.instanceSortEngine();
 
-
-
     SearchEngine searchEngine;
-
 
     @Autowired
     HttpSession session;
+
+    @Autowired
+    private CategoryService categoryService;
 
     @ModelAttribute("books")
     public List<Book> popularBooks(){
         return bookService.getPopularBooks();
     }
 
-    @ModelAttribute("query")
-    public SearchQuery query(){
-        return new SearchQuery();
-    }
 
-
-    @GetMapping("/home")
+    @GetMapping(value = {"/", "/home"})
     public String home() {
+        session.setAttribute("booksCategories", categoryService.allCategory());
         return "home";
 
     }
 
-    @PostMapping("/home/wishilst/addbooktowishlist")
+    @PostMapping("/home/wishlist/addbooktowishlist")
     public String addToWishList(@RequestParam("isbn") String isbn) {
         wishlistService.addBookToWishlist(bookService.getBookByIsbn(isbn));
         return "home";
@@ -84,6 +75,8 @@ public class HomeController {
         return "bookInfo";
     }
 
+    //sort section
+
     @ModelAttribute("sortConfig")
     public SortConfig sortConfig(){
         return sortEngine.getSortConfig();
@@ -95,10 +88,9 @@ public class HomeController {
     }
 
     @GetMapping("/home/search")
-    public String search(@RequestParam("text") String text, Model model){
+    public String search(@RequestParam("query") String text, Model model){
         List<Book> books = searchEngine.getBooksByText(new SearchQuery(text));
         model.addAttribute("books", books);
-
         return "searchedBooks";
     }
 

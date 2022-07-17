@@ -1,7 +1,6 @@
 package online.book.store.dao;
 
 import online.book.store.entity.Book;
-import online.book.store.singletons.SessionFactorySingleton;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
@@ -158,5 +157,28 @@ public class BookDaoImpl implements BookDao {
         }
 
         return book;
+    }
+
+    @Override
+    public void saveBook(Book book) {
+        Session session = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(book);
+        session.getTransaction();
+    }
+    catch (Exception e){
+        if(session != null){
+            if(session.getTransaction() != null){
+                session.getTransaction().rollback();
+            }
+        }
+    }
+    finally {
+        if(session != null){
+            session.close();
+        }
+    }
     }
 }

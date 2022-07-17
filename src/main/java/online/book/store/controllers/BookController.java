@@ -22,6 +22,7 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
+
     @Autowired
     private @Qualifier("bookValidation") Validator bookValidator;
 
@@ -35,7 +36,9 @@ public class BookController {
 
     @ModelAttribute("addBook")
     public BookDto bookDto(){
-        return new BookDto();
+        BookDto bookDto = new BookDto();
+        bookDto.setBookImage(null);
+        return bookDto;
     }
 
     @GetMapping("/home/book/add")
@@ -46,11 +49,18 @@ public class BookController {
     @PostMapping("/home/book/add")
     public String addBook(@ModelAttribute("addBook") @Valid BookDto bookDto,
                           BindingResult bindingResult){
+
         bookValidator.validate(bookDto, bindingResult);
-        if(bindingResult.hasErrors()){
+        if(bindingResult.hasErrors()) {
             return "addBook";
         }
+
+        bookDto.setAvailable(BookDto.AVAILABLE_STATUS[0]);
+        bookService.saveBook(bookDto.doBookBuilder());
+
     return "addBook";
     }
+
+
 
 }

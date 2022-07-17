@@ -19,9 +19,7 @@ public class BookValidation implements Validator {
 
             BookDto bookDto = (BookDto) o;
 
-            if(bookDto.getBookImage() == null){
-                errors.rejectValue("bookImage", "Insert.image");
-            }
+            if(bookDto.getBookImage() == null)
     }
 
 }

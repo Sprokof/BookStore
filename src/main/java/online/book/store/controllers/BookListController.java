@@ -25,12 +25,13 @@ public class BookListController {
         return SortConfig.sortTypes();
     }
 
-    @GetMapping("/home/sort")
+    @GetMapping("/home/search/sort")
     public String sortBookList(@RequestParam("type") String type, Model model){
             SortConfig config = new SortConfig();
             config.setSelectedType(SortTypes.getTypeByName(type));
             sortEngine.setSortConfig(config);
             model.addAttribute("books", sortEngine.getSortBooks());
-        return "sortedSearchedBooks";
+        return "sortedBooks";
     }
+
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
 
-    <link rel="stylesheet" type="text/css" href="/static/css/sidebar.css" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/navbar.css" th:href="@{/css/navbar.css}">
     <script type="text/javascript" src="/webjars/jquery/3.2.1/jquery.min.js" th:href="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" th:href="@{webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
     <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
@@ -16,10 +16,10 @@
     <div class="menu">
         <div class="item">
             <a class="sub-btn"> Books categories <i class="fas fa-angle-right dropdown"> </i></a>
-            <div class="sub-menu">
-                <a href="#" class="sub-item"> Detective </a>
-                <a href="#" class="sub-item"> Children </a>
-                <a href="#" class="sub-item"> Romantic </a>
+            <div class="sub-menu" th:each="category : ${session.booksCategories}">
+                <a th:href="@{'/home/search/query?=' + ${category.category}}"
+                   class="sub-item" th:text="${category.category}">
+                </a>
             </div>
         </div>
         <div class="item"><a href="#"> Orders </a> </div>
@@ -33,16 +33,22 @@
         <div th:if="${session.user == null}">
             <div class="item"><a href="#"> Log in </a> </div>
         </div>
-</div>
+    </div>
 </div>
 
 <header>
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light">
-            <a class="navbar-brand" onclick="controlSidebar()">
-                <i class="fas fa-bars"></i>
-                <span style="font-family: Calibri Light, sans-serif"> Online Book Store </span>
+
+            <div onclick="controlSidebar()">
+                <i class="fas fa-bars" style="font-size: 20px; padding-left: 37px; padding-top: 7px">
+                </i>
+            </div>
+
+            <a class="navbar-brand">
+                <span style="font-family: 'Cascadia Code', sans-serif"> Online Book Store </span>
             </a>
+
             <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent"
                     aria-controls="navbarSupportedContent"

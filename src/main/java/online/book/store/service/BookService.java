@@ -11,4 +11,5 @@ public interface BookService {
     List<Book> getBooksByCategory(String category);
     Book getBookByIsbn(String isbn);
     Book getBookById(int id);
+    void saveBook(Book book);
 }

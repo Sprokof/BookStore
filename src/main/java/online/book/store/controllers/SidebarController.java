@@ -1,7 +1,9 @@
 package online.book.store.controllers;
 
+import online.book.store.engines.SearchEngine;
 import online.book.store.engines.SortEngine;
 import online.book.store.entity.Book;
+import online.book.store.entity.Category;
 import online.book.store.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,37 +20,12 @@ public class SidebarController {
     @Autowired
     private BookService bookService;
 
-    @Autowired
-    SortEngine sortEngine;
 
-
-
-    @ModelAttribute("sortTypes")
-    public String[] sortTypes(){
-        return SortEngine.sortTypes();
-    }
-
-
-    private static String bookCategory;
-
-    @GetMapping("/home/book/")
+    @GetMapping("/home/search/")
     public String getBookByCategory(@RequestParam("category") String category, Model model){
-        if(category.isEmpty()){ category = bookCategory;}
-        bookCategory = category;
-
-        List<Book> books = sortEngine.getSortBooks(SortEngine.sortType,
-                            bookService.getBooksByCategory(category));
-
-        model.addAttribute("booksByCat", books);
-
-        return "booksbycategories";
-
-    }
-
-    @GetMapping("/home/book/sort")
-    public String sortBooks(@RequestParam("type") String type){
-        SortEngine.sortType = type;
-        return "redirect:/home/book";
+        List<Book> books = bookService.getBooksByCategory(category);
+        model.addAttribute("books", books);
+        return "booksByCategory";
 
     }
 }

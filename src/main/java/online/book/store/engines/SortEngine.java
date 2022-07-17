@@ -54,8 +54,9 @@ public class SortEngine implements SiteEngine {
         return this.bookList;
     }
 
-    public void setBookListToSort(List<Book> bookList){
+    public SortEngine setBookListToSort(List<Book> bookList){
         this.bookList = bookList;
+        return this;
     }
 
     public void setSortConfig(SortConfig sortConfig){

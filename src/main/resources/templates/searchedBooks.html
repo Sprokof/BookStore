@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -22,7 +22,7 @@
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right sort-options" aria-labelledby="menu">
                         <li th:each="type: ${sortTypes}">
-                            <a th:href="${'/home/sort?type=' + ${type.name()}}" th:text="${type.name()}"></a>
+                            <a th:href="${'/home/search/sort?type=' + ${type.name()}}" th:text="${type.name()}"></a>
                         </li>
                     </ul>
                 </div>

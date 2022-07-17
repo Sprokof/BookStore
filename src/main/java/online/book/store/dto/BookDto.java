@@ -8,7 +8,10 @@ import online.book.store.builder.AbstractBookBuilder;
 import online.book.store.entity.Book;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 @Getter
@@ -17,7 +20,8 @@ import java.lang.reflect.Field;
 @AllArgsConstructor
 public class BookDto extends AbstractBookBuilder {
 
-    private File directory;
+    public static final String[] AVAILABLE_STATUS = {"Is available", "Not available"};
+
     @Value("book.images.root")
     private String directoryLocation;
 
@@ -42,7 +46,12 @@ public class BookDto extends AbstractBookBuilder {
     @Override
     public AbstractBookBuilder bookImage(File bookImage) {
         this.bookImage = bookImage;
-        directory = new File(directoryLocation, bookImage.getName());
+
+    try {
+        writeImage(bookImage);
+    }
+    catch (IOException e){ e.printStackTrace(); }
+
         return this;
     }
 
@@ -135,5 +144,10 @@ public class BookDto extends AbstractBookBuilder {
                         authors(this.authors).
                         format(this.format).
                         build();
+    }
+
+    private void writeImage(File bookImage) throws IOException {
+        BufferedImage image = ImageIO.read(bookImage);
+        ImageIO.write(image, "png", new File(directoryLocation));
     }
 }

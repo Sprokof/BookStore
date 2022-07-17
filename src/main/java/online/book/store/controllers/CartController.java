@@ -4,17 +4,14 @@ import online.book.store.entity.Book;
 import online.book.store.entity.Cart;
 import online.book.store.entity.CartItem;
 import online.book.store.entity.User;
-import online.book.store.service.BookService;
 import online.book.store.service.CartService;
-import online.book.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.concurrent.Callable;
+
 
 @Controller
 public class CartController {
@@ -39,7 +36,7 @@ public class CartController {
     }
 
 
-    @PostMapping("/home/cart/item")
+    @PostMapping("/home/cart/add/item")
     public String addCartItem(@RequestParam("item") String itemId, String quantity, Model model) throws NullPointerException{
         model.addAttribute("quantity", quantity);
 
@@ -57,6 +54,7 @@ public class CartController {
 
     @PostMapping("/home/cart/remove/item")
     public String removeCartItem(@RequestParam("item") String itemId, Model model){
+
         int cartItemId = (Integer.parseInt(itemId));
 
         Cart cart = (Cart) model.getAttribute("cart");

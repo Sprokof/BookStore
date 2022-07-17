@@ -39,7 +39,7 @@
                      </div>
                  </td>
                  <td class="col-lg-1 quantity">
-                     <form method="post" th:action="@{'/home/cart/item?=' + ${item.id}}">
+                     <form method="post" th:action="@{'/home/cart/add/item?=' + ${item.id}}">
                      <input type="text" class="form-control text-center"
                             th:value="${item.quantity}" th:field="${quantity}" id="add"/>
                      </form>
@@ -86,7 +86,7 @@
                                  <a style="text-decoration: none; color: white" th:href="@{/home}"> Continue shopping </a></span>
                          </button></td>
                   <td>
-                 <form th:action="@{/home/shipment}" method="get">
+                 <form th:action="@{/home/checkout}" method="get">
                      <button class="btn btn-success btn-checkout">
                          <a style="text-decoration: none ; color: white;">Checkout</a><span
                              class="glyphicon glyphicon-play"></span>

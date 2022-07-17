@@ -150,17 +150,17 @@ public class ShipmentDto extends AbstractShipmentBuilder {
     return null;
     }
 
-    public Shipment doShipmentBuilder(ShipmentDto shipmentDto){
+    public Shipment doShipmentBuilder(){
         return builder().
-                    firstName(shipmentDto.firstName).
-                    lastName(shipmentDto.lastName).email(shipmentDto.email).
-                    phoneNumber(shipmentDto.phoneNumber).
-                    country(shipmentDto.country).
-                    city(shipmentDto.city).
-                    streetName(shipmentDto.streetName).
-                    buildingNumber(shipmentDto.buildingNumber).
-                    roomNumber(shipmentDto.roomNumber).
-                    zipCode(shipmentDto.zipCode).
+                    firstName(this.firstName).
+                    lastName(this.lastName).email(this.email).
+                    phoneNumber(this.phoneNumber).
+                    country(this.country).
+                    city(this.city).
+                    streetName(this.streetName).
+                    buildingNumber(this.buildingNumber).
+                    roomNumber(this.roomNumber).
+                    zipCode(this.zipCode).
                 build();
     }
 }

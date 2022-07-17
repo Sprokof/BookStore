@@ -35,19 +35,19 @@ public class BookServiceImpl implements BookService{
     @Override
     public List<Book> getPopularBooks() {
         engine.setBookListToSort(bookDao.getPopularBooks());
-        return engine.getSortBooks(SortTypes.DEFAULT);
+        return engine.getSortBooks();
     }
 
     @Override
     public List<Book> getAllBooks() {
         engine.setBookListToSort(bookDao.getPopularBooks());
-        return engine.getSortBooks(SortTypes.DEFAULT);
+        return engine.getSortBooks();
     }
 
     @Override
     public List<Book> getBooksByCategory(String category) {
         engine.setBookListToSort(bookDao.getPopularBooks());
-        return engine.getSortBooks(SortTypes.DEFAULT);
+        return engine.getSortBooks();
     }
 
     @Override
@@ -58,5 +58,10 @@ public class BookServiceImpl implements BookService{
     @Override
     public Book getBookById(int id) {
         return this.bookDao.getBookById(id);
+    }
+
+    @Override
+    public void saveBook(Book book) {
+        this.bookDao.saveBook(book);
     }
 }
