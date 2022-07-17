@@ -15,7 +15,7 @@
     <br>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> ISBN </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('isbn')}">
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('isbn')}? 'has-error':'">
                 <input type="text" th:field="*{isbn}">
                 <p class="error-message"
                    th:each="error : ${#fields.errors('isbn')}"
@@ -24,7 +24,7 @@
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> Title </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('title')}">
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('title')}? 'has-error':'">
                 <input type="text" th:field="*{title}">
                 <p class="error-message"
                    th:each="error : ${#fields.errors('title')}"
@@ -44,7 +44,7 @@
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">  </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('publisher')}">
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('publisher')}? 'has-error':'">
                 <input type="text" th:field="*{publisher}">
                 <p class="error-message"
                    th:each="error : ${#fields.errors('publisher')}"
@@ -54,7 +54,7 @@
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> Price </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('price')}">
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('price')}? 'has-error':'">
                 <input type="text" th:field="*{price}">
                 <p class="error-message"
                    th:each="error : ${#fields.errors('price')}"
@@ -64,7 +64,7 @@
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> Price </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('price')}">
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('price')}? 'has-error':'">
                 <input type="text" th:field="*{price}">
                 <p class="error-message"
                    th:each="error : ${#fields.errors('price')}"
@@ -74,7 +74,7 @@
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> Year of production </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('yearPub')}">
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('yearPub')}? 'has-error':'">
                 <input type="text" th:field="*{yearPub}">
                 <p class="error-message"
                    th:each="error : ${#fields.errors('yearPub')}"
@@ -84,7 +84,7 @@
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> Subject </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('subject')}">
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('subject')}? 'has-error':'">
                 <input type="text" th:field="*{subject}">
                 <p class="error-message"
                    th:each="error : ${#fields.errors('subject')}"
@@ -94,7 +94,7 @@
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> Available Copies </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('availableCopies')}">
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('availableCopies')}? 'has-error':'">
                 <input type="text" th:field="*{availableCopies}">
                 <p class="error-message"
                    th:each="error : ${#fields.errors('availableCopies')}"
@@ -102,9 +102,9 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group">
             <label class="col-sm-2 col-form-label"> Description </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('description')}">
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('description')}? 'has-error':'">
                 <textarea class="desc" type="text" th:field="*{description}"></textarea>
                 <p class="error-message"
                    th:each="error : ${#fields.errors('description')}"
@@ -114,7 +114,7 @@
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> Authors </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('authors')}">
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('authors')}? 'has-error':'">
                 <input type="text" th:field="*{authors}">
                 <p class="error-message"
                    th:each="error : ${#fields.errors('authors')}"
@@ -124,7 +124,7 @@
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> Format </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('format')}">
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('format')}? 'has-error':'">
                 <input type="text" th:field="*{format}">
                 <p class="error-message"
                    th:each="error : ${#fields.errors('format')}"
@@ -136,20 +136,16 @@
             <label class="col-sm-2 col-form-label"> Load Book Image </label>
             <div class="file-load-block">
                 <input type="file" th:field="*{bookImage}" id="file">
-                <div class="fileLoad" th:classappend="${#fields.hasErrors('bookImage')}">
+                <div class="fileLoad" th:classappend="${#fields.hasErrors('bookImage')}? 'has-error':'">
                     <input type="text" value="Book image">
                     <button> Select Image </button>
                 </div>
             </div>
+            <p class="error-message"
+               th:each="error : ${#fields.errors('format')}"
+               th:text="${error}"> Validation error </p>
         </div>
-
-        <div th:if="${#fields.hasErrors()}">
-            <button disabled="disabled" class="btn btn-dark"> Save Book </button>
-        </div>
-
-        <div th:if="${!#fields.hasErrors()}">
-            <button type="submit" class="btn btn-dark" onclick="info()"> Save Book </button>
-        </div>
+        <button type="submit" class="btn btn-dark"> Save Book </button>
 
     </form>
     </div>
@@ -168,9 +164,6 @@
         $(this).parent().find('button').removeClass('button-hover');
     });
 
-    function info(){
-        alert("Book was successfully saved");
-    }
 </script>
 </body>
 </html>

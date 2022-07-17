@@ -71,10 +71,14 @@ input {
     height: 28px;
     border: 1px solid #ccc;
     background: #fff;
-    color: #666;
+    color: #1e1e1e;
     border-radius: 5px;
     box-shadow: inset 0 2px 2px #ccc;
 }
 .file-load-block .button-hover {
     box-shadow: 0 0 2px #ccc;
+}
+
+.error-message {
+    color: red;
 }
