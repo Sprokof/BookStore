@@ -55,7 +55,6 @@ public class BookController {
             return "addBook";
         }
 
-        bookDto.setAvailable(BookDto.AVAILABLE_STATUS[0]);
         bookService.saveBook(bookDto.doBookBuilder());
 
     return "addBook";

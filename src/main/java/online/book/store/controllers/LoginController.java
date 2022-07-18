@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.servlet.http.HttpServletRequest;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Objects;
 
 @Controller
 public class LoginController {
@@ -35,11 +34,6 @@ public class LoginController {
     @ModelAttribute("user")
     public UserLoginDto getUser(){
         return new UserLoginDto();
-    }
-
-    @ModelAttribute("code")
-    public String getCode(){
-        return new String();
     }
 
 
@@ -67,7 +61,7 @@ public class LoginController {
       if(generatedCode.equals(codeFromEmail)){
           userLoginDto.setAccepted(true);
           httpSession.setAttribute("user", userService.
-                                    saveOrGetUser(userLoginDto.buildUser()));
+                                    saveOrGetUser(userLoginDto.doUserBuilder()));
       }
           userLoginDto.setAccepted(false);
           return "code";

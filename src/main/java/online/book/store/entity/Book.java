@@ -54,7 +54,7 @@ public class Book {
 
     public Book(String isbn, String title, String publisher,
                                 double price, String yearPub,
-                                String subject, String bookImageName, int availableCopies,
+                                String subject, String bookImageName, String available, int availableCopies,
                                 String description, String authors, String format){
         this.isbn = isbn;
         this.title = title;
@@ -63,6 +63,7 @@ public class Book {
         this.yearPub = yearPub;
         this.subject = subject;
         this.bookImageName = bookImageName;
+        this.available = available;
         this.availableCopies = availableCopies;
         this.description = description;
         this.authors = authors;

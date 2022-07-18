@@ -128,7 +128,7 @@ public class BookDto extends AbstractBookBuilder {
         if(!this.containsNull()){
             return new Book(this.isbn, this.title,
                         this.publisher, this.price,
-                        this.yearPub, this.subject, this.bookImage.getName(),
+                        this.yearPub, this.subject, this.bookImage.getName(), AVAILABLE_STATUS[0],
                         this.availableCopies, this.description, this.authors, this.format);
         }
     return null;
@@ -138,7 +138,7 @@ public class BookDto extends AbstractBookBuilder {
         return this.builder().isbn(this.isbn).
                         title(this.title).publisher(this.publisher).
                         price(this.price).yearPub(this.yearPub).
-                        subject(this.subject).bookImage(null).
+                        subject(this.subject).bookImage(bookImage).
                         availableCopies(this.availableCopies).
                         description(this.description).
                         authors(this.authors).

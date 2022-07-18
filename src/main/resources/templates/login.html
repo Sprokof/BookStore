@@ -1,7 +1,7 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.0.2/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" href="/static/css/login.css">
     <title>Title</title>
 </head>
@@ -27,14 +27,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <div th:if="${#fields.hasErrors()}">
-                    <button type="button" disabled="disabled" class="btn btn-dark">Continue</button>
-                    <button type="button" class="btn-primary btn">Back home</button>
-                </div>
-                <div th:if="${!#fields.hasErrors()}">
-                    <button type="button" class="btn btn-dark">Continue</button>
-                    <button type="button" class="btn-primary btn">Back home</button>
-                </div>
+                    <a type="button" class="btn btn-dark" th:href="@{/home/code}"> Continue </a>
+                    <a type="button" class="btn btn-light" th:href="@{/home}"> Back home </a>
             </div>
         </div>
     </div>

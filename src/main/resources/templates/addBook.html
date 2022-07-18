@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/addBook.css}" href="/static/css/addBook.css">
-    <script type="text/javascript" src="/webjars/jquery/3.2.1/jquery.min.js" th:href="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
     <title>Add Book</title>
 </head>
 <body>
@@ -38,26 +38,6 @@
                 <input type="text" th:field="*{publisher}">
                 <p class="error-message"
                    th:each="error : ${#fields.errors('publisher')}"
-                   th:text="${error}">Validation error</p>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">  </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('publisher')}? 'has-error':'">
-                <input type="text" th:field="*{publisher}">
-                <p class="error-message"
-                   th:each="error : ${#fields.errors('publisher')}"
-                   th:text="${error}">Validation error</p>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label"> Price </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('price')}? 'has-error':'">
-                <input type="text" th:field="*{price}">
-                <p class="error-message"
-                   th:each="error : ${#fields.errors('price')}"
                    th:text="${error}">Validation error</p>
             </div>
         </div>
@@ -152,17 +132,16 @@
 </div>
 <script>
     $('#file').change(function(){
-        console.log("change")
-        let fileResult = $(this).val();
+        let fileResult = $(this).val().substr(12);
         $(this).parent().find('.fileLoad').find('input').val(fileResult);
     });
 
     $('#file').hover(function(){
-        console.log("hover")
         $(this).parent().find('button').addClass('button-hover');
     }, function(){
         $(this).parent().find('button').removeClass('button-hover');
     });
+
 
 </script>
 </body>

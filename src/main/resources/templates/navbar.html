@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:fragment="head">
     <meta charset="UTF-8">
 
     <link rel="stylesheet" type="text/css" href="/static/css/navbar.css" th:href="@{/css/navbar.css}">
-    <script type="text/javascript" src="/webjars/jquery/3.2.1/jquery.min.js" th:href="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" th:href="@{webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
     <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     <title> Navigation bar </title>
 </head>
-<body>
+<body th:fragment="navbar">
 <div class="sidebar">
     <div class="menu">
         <div class="item">
@@ -22,8 +22,8 @@
                 </a>
             </div>
         </div>
-        <div class="item"><a href="#"> Orders </a> </div>
-        <div class="item"><a href="#"> Wish list </a> </div>
+        <div class="item"><a th:href="@{/home/orders}"> Orders </a> </div>
+        <div class="item"><a th:href="@{/home/wishlist}"> Wish list </a> </div>
         <div class="item"><a href="#"> About </a> </div>
 
         <div th:if="${session.user != null}">
@@ -31,8 +31,13 @@
         </div>
 
         <div th:if="${session.user == null}">
-            <div class="item"><a href="#"> Log in </a> </div>
+            <div class="item"><a th:href="@{/home/login}"> Log in </a> </div>
         </div>
+
+        <div th:if="${session.user.isAdmin()}">
+            <div class="item"><a th:href="@{/home/book/add}"> Add new Book </a> </div>
+        </div>
+
     </div>
 </div>
 
@@ -41,12 +46,16 @@
         <nav class="navbar navbar-expand-lg navbar-light">
 
             <div onclick="controlSidebar()">
-                <i class="fas fa-bars" style="font-size: 20px; padding-left: 37px; padding-top: 7px">
+                <i class="fas fa-bars"
+                   style="font-size: 17px; padding-left:
+                   37px; padding-top: 7px">
                 </i>
             </div>
 
             <a class="navbar-brand">
-                <span style="font-family: 'Cascadia Code', sans-serif"> Online Book Store </span>
+                <span style="padding-left: 10px;
+                font-family: 'Cascadia Code',
+                sans-serif"> Online Book Store </span>
             </a>
 
             <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -57,9 +66,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto" id="menu">
-                    <li class="nav-item"><a class="nav-link"> Home </a></li>
-                    <li class="nav-item"><a class="nav-link" th:text="${'Cart (' + ${session.user != null} ? ${session.user.cart.count} : '0' +')'}"></a></li>
-                    <li class="nav-item"><a class="nav-link"> Account </a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/home}"> Home </a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/home/cart}" th:text="${'Cart (' + ${session.user != null} ? ${session.user.cart.count} : '0' +')'}"></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"> Account </a></li>
                 </ul>
             </div>
         </nav>

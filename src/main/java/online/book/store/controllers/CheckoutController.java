@@ -78,7 +78,7 @@ public class CheckoutController {
         if (userService.getCurrentUser().getShipment() != null) {
             return "redirect:/payment";
         }
-    return "redirect:/checkout";
+    return "redirect:/shipment";
     }
 
 
