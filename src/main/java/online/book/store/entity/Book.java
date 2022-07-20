@@ -72,19 +72,23 @@ public class Book {
 
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.EAGER)
+    @JoinTable(name = "BOOKS_CATEGORIES",
+            joinColumns = {@JoinColumn(name = "fk_book")},
+            inverseJoinColumns = {@JoinColumn(name = "fk_category")})
     private List<Category> categories;
 
 
     public void addCategory(Category category){
         if(this.categories == null) this.categories = new LinkedList<>();
         this.categories.add(category);
-        category.setBook(this);
+        if(category.getBooks() == null) category.setBooks(new LinkedList<Book>());
+        category.getBooks().add(this);
     }
 
     public void removeCategory(Category category){
         this.categories.remove(category);
-        category.setBook(null);
+        category.getBooks().remove(this);
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.EAGER)

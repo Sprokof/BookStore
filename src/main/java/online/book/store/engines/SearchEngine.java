@@ -64,9 +64,10 @@ public class SearchEngine implements SiteEngine{
     }
 
 
+    // rewrite this
     private boolean categorySearch(SearchQuery query){
         List<String> categoriesNames = categoryService.
-                    allCategory().
+                    allCategories().
                     stream().
                     map(Category::getCategory).collect(Collectors.toList());
 

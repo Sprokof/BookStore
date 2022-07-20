@@ -5,10 +5,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@Table(name = "BOOKS_CATEGORY")
+@Table(name = "BOOKS_CATEGORIES")
 @Getter
 @Setter
 public class Category {
@@ -22,8 +23,15 @@ public class Category {
         this.category = category;
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "book_id")
-    private Book book;
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "categories")
+    private List<Book> books;
 
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) return true;
+        if(!(obj instanceof Category)) return false;
+
+        Category cat = (Category) obj;
+        return this.getCategory().equals(cat.getCategory());
+    }
 }

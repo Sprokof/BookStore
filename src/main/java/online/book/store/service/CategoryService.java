@@ -6,5 +6,5 @@ import online.book.store.entity.Category;
 import java.util.List;
 
 public interface CategoryService {
-    List<Category> allCategory();
+    List<Category> allCategories();
 }

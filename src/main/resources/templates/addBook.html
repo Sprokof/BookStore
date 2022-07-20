@@ -85,12 +85,28 @@
         <div class="form-group">
             <label class="col-sm-2 col-form-label"> Description </label>
             <div class="col-sm-6" th:classappend="${#fields.hasErrors('description')}? 'has-error':'">
-                <textarea class="desc" type="text" th:field="*{description}"></textarea>
+                <textarea type="text" th:field="*{description}"></textarea>
                 <p class="error-message"
                    th:each="error : ${#fields.errors('description')}"
                    th:text="${error}">Validation error</p>
             </div>
         </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label"> Book Categories </label>
+            <div th:if="${!#fields.hasErrors()}">
+                <p style="margin-top: 5px; font-size: 14px">
+                    * add one or more category separated by commas
+                </p>
+            </div>
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('bookCategories')}? 'has-error':'">
+                <input type="text" th:field="*{description}">
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('bookCategories')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+        </div>
+
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> Authors </label>

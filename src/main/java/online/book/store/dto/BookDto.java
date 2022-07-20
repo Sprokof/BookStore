@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.book.store.builder.AbstractBookBuilder;
 import online.book.store.entity.Book;
+import online.book.store.entity.Category;
 import org.springframework.beans.factory.annotation.Value;
 
 import javax.imageio.ImageIO;
@@ -13,6 +14,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -37,6 +41,10 @@ public class BookDto extends AbstractBookBuilder {
     private String description;
     private String authors;
     private String format;
+    private String bookCategories;
+
+
+    // implementation of builder
 
     @Override
     public AbstractBookBuilder builder() {
@@ -122,14 +130,18 @@ public class BookDto extends AbstractBookBuilder {
     }
 
 
-
     @Override
     public Book build() {
+        Book book;
         if(!this.containsNull()){
-            return new Book(this.isbn, this.title,
+            book = new Book(this.isbn, this.title,
                         this.publisher, this.price,
                         this.yearPub, this.subject, this.bookImage.getName(), AVAILABLE_STATUS[0],
                         this.availableCopies, this.description, this.authors, this.format);
+
+            addCategoryToBook(book);
+
+        return book;
         }
     return null;
     }
@@ -149,5 +161,16 @@ public class BookDto extends AbstractBookBuilder {
     private void writeImage(File bookImage) throws IOException {
         BufferedImage image = ImageIO.read(bookImage);
         ImageIO.write(image, "png", new File(directoryLocation));
+    }
+
+
+    private void addCategoryToBook(Book book){
+        List<Category> booksCategories = Arrays.stream(this.bookCategories.
+                split("\\,")).map(Category::new).
+                collect(Collectors.toList());
+
+        for(Category category : booksCategories){
+            book.addCategory(category);
+        }
     }
 }

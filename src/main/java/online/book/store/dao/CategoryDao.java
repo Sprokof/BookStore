@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CategoryDao {
     List<Category> allCategory();
+    void saveCategoryIfAbsent(Category bookCategory);
 }

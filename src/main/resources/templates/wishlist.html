@@ -14,7 +14,7 @@
         <div class="title" th:text="${book.title}">
             <div class="col-sm-2 media">
                 <div class="cover-book">
-                    <img th:src="${book.path}">
+                    <img th:src="@{'/images/' + ${book.bookImageName}}">
                 </div>
             </div>
 
@@ -37,12 +37,14 @@
             <div class="btn-list col-sm-2">
                 <div th:if="${book.availableCopies > 0}">
                     <form th:action="@{'/home/wislist/addtocart?isbn=' + ${book.isbn}}" method="post">
-                        <button class="btn btn-info btn-item btn-cart">Add to cart</button>
+                        <button type="submit" class="btn btn-info btn-item btn-cart"> Add to cart </button>
                     </form>
                 </div>
-                <form th:action="@{'/home/wishlist/remove?isbn=' + ${book.isbn}}" method="post">
-                    <button class='btn btn-info btn-item btn-rm'>Remove from wishlist</button>
+
+                <form th:href="@{'/home/wishlist/remove?isbn=' + ${book.isbn}}" method="post">
+                    <button type="submit" class='btn btn-info btn-item btn-rm'> Remove from wish list </button>
                 </form>
+
             </div>
 
         </div>
