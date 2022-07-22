@@ -18,7 +18,6 @@ public class UserLoginDto extends AbstractUserBuilder {
 
     private String email;
     private String confirmCode;
-    private String generatedCode = generateConfirmCode();
     private boolean accepted;
 
     public UserLoginDto(String email){

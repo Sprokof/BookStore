@@ -26,9 +26,9 @@ public class BookListController {
     }
 
     @GetMapping("/home/search/sort")
-    public String sortBookList(@RequestParam("type") String type, Model model){
+    public String sortBookList(@RequestParam("type") String typeName, Model model){
             SortConfig config = new SortConfig();
-            config.setSelectedType(SortTypes.getTypeByName(type));
+            config.setSelectedType(SortTypes.getTypeByName(typeName));
             sortEngine.setSortConfig(config);
             model.addAttribute("books", sortEngine.getSortBooks());
         return "sortedBooks";

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.regex.Pattern;
+
 @Component
 public class BookValidation implements Validator {
 
@@ -26,6 +28,13 @@ public class BookValidation implements Validator {
             if(!imageFile(bookDto.getBookImage().getName())){
                 errors.rejectValue("bookImage", "Not.image.format");
             }
+
+            String yearPubRegExp = "^(19|20)\\d{2}$";
+            if(!bookDto.getYearPub().matches(yearPubRegExp)){
+                errors.rejectValue("yearPub", "Wrong.format");
+            }
+
+
     }
 
 

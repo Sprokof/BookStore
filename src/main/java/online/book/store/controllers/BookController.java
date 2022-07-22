@@ -2,19 +2,19 @@ package online.book.store.controllers;
 
 import online.book.store.dto.BookDto;
 import online.book.store.entity.Book;
+import online.book.store.entity.Category;
 import online.book.store.service.BookService;
+import online.book.store.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class BookController {
@@ -22,44 +22,43 @@ public class BookController {
     @Autowired
     private BookService bookService;
 
+    @Autowired
+    private CategoryService categoryService;
+
+    @ModelAttribute("bookCategories")
+    public List<Category> getCategories(){
+        return categoryService.allCategories();
+    }
 
     @Autowired
     private @Qualifier("bookValidation") Validator bookValidator;
 
     @GetMapping("/home/book/info")
-    public String bookInfo(@RequestParam("isbn") String isbn, Model model){
+    public String info(@RequestParam("isbn") String isbn, Model model){
         Book book = bookService.getBookByIsbn(isbn);
-        model.addAttribute("currentBook", book);
+        model.addAttribute("book", book);
 
-    return "bookInfo";
+        return "bookInfo";
     }
 
-    @ModelAttribute("addBook")
-    public BookDto bookDto(){
-        BookDto bookDto = new BookDto();
-        bookDto.setBookImage(null);
-        return bookDto;
-    }
 
     @GetMapping("/home/book/add")
-    public String addBook(){
+    public String addBook(Model model){
+        model.addAttribute("book", new BookDto());
         return "addBook";
     }
 
     @PostMapping("/home/book/add")
-    public String addBook(@ModelAttribute("addBook") @Valid BookDto bookDto,
-                          BindingResult bindingResult){
+    public String addBook(@Valid BookDto bookDto,
+                          BindingResult bindingResult, Model model){
 
         bookValidator.validate(bookDto, bindingResult);
         if(bindingResult.hasErrors()) {
             return "addBook";
         }
-
         bookService.saveBook(bookDto.doBookBuilder());
+        model.addAttribute("book", bookDto);
 
-    return "addBook";
+        return "addBook";
     }
-
-
-
 }

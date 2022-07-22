@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,7 +42,9 @@ public class BookDto extends AbstractBookBuilder {
     private String description;
     private String authors;
     private String format;
-    private String bookCategories;
+    private List<Category> booksCategory;
+
+
 
 
     // implementation of builder
@@ -117,7 +120,11 @@ public class BookDto extends AbstractBookBuilder {
         return this;
     }
 
-
+    @Override
+    public AbstractBookBuilder description(String description) {
+        this.description = description;
+        return this;
+    }
 
     @Override
     public boolean containsNull() {
@@ -125,10 +132,14 @@ public class BookDto extends AbstractBookBuilder {
         for (int i = 0; i < fields.length; i++) {
             if (fields[i] == null) return true;
         }
-
         return false;
     }
 
+    @Override
+    public AbstractBookBuilder categories(List<Category> categories) {
+        this.booksCategory = categories;
+        return this;
+    }
 
     @Override
     public Book build() {
@@ -165,11 +176,7 @@ public class BookDto extends AbstractBookBuilder {
 
 
     private void addCategoryToBook(Book book){
-        List<Category> booksCategories = Arrays.stream(this.bookCategories.
-                split("\\,")).map(Category::new).
-                collect(Collectors.toList());
-
-        for(Category category : booksCategories){
+        for(Category category : this.booksCategory){
             book.addCategory(category);
         }
     }

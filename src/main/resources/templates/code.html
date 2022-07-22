@@ -1,7 +1,8 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.0.2/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/static/css/code.css}"/>
   <title>Title</title>
 </head>
 <body>
@@ -21,7 +22,7 @@
         th:classappend="${#fields.hasErrors('confirmCode')}? 'has-error':''">
           Code from email
           <input type="text"
-                 th:field="${user.confirmCode}"
+                 th:field="${code.confirmCode}"
                  class="form-control"
                  autofocus="autofocus"
                  placeholder="confirmation code"/>

@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/static/css/home.css}"/>
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
     <title>Home</title>
 </head>
 <body>
@@ -16,7 +17,7 @@
             <div id="search-input">
                 <div class="input-group">
                     <input type="text" id="query" class="searchQuery form-control">
-                    <span class="input-group-addon glyphicon glyphicon-search search-btn" onclick="sendQuery();"></span>
+                    <span class="input-group-addon glyphicon glyphicon-search search-btn" onclick="executeSearchQuery();"></span>
                 </div>
             </div>
         </div>
@@ -43,7 +44,7 @@
                                  </div>
                                      <div class="panel-footer price">
                                      Price
-                                     <span th:text="${book.price}">&#8381;</span>
+                                     <span th:text="${book.price}"> &#8381; </span>
                                              <form method="post" th:action="@{'/home/cart/addtocart?isbn=' + ${book.isbn}}">
                                                  <div class="panel-footer">
                                                      Add to cart
@@ -70,12 +71,18 @@
 </div>
 </body>
 <script>
-    function sendQuery(){
-      let query = document.getElementById("query").innerHTML;
+
+    function executeSearchQuery(){
+        let searchQuery = {
+             queryText: $("#query").val()
+        };
+
         $.ajax({
-            type: "GET",
-            url: "/home/search?query=" + query
+            type: "POST",
+            dataType: "application/json",
+            url: "/home/search",
+            data: JSON.stringify(searchQuery)
         });
-    }
+}
 </script>
 </html>

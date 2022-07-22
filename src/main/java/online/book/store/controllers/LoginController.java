@@ -2,6 +2,7 @@ package online.book.store.controllers;
 
 import online.book.store.dto.UserLoginDto;
 import online.book.store.entity.User;
+import online.book.store.mail.ConfirmCode;
 import online.book.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -36,6 +37,11 @@ public class LoginController {
         return new UserLoginDto();
     }
 
+    @ModelAttribute("code")
+    public ConfirmCode getConfirmCode(){
+        return new ConfirmCode();
+    }
+
 
     @GetMapping("/home/login")
     public String login(){
@@ -49,21 +55,27 @@ public class LoginController {
         if(bindingResult.hasErrors()){
             return "login";
         }
+        ConfirmCode.generateNewCode(userLoginDto);
+        // logic for send code to email //
         return "code";
 
     }
 
     @PostMapping("/home/code")
-    public String code(@ModelAttribute("user") UserLoginDto userLoginDto){
-      String generatedCode = userLoginDto.getGeneratedCode();
-      String codeFromEmail = userLoginDto.getConfirmCode();
+    public String code(@ModelAttribute("code") @Valid ConfirmCode code, Model model){
 
-      if(generatedCode.equals(codeFromEmail)){
-          userLoginDto.setAccepted(true);
+        UserLoginDto user = ((UserLoginDto)
+                                model.getAttribute("user"));
+        if(user == null) {
+            System.out.println("temporary diagnostic message");
+            return "code";
+        }
+        if(user.getConfirmCode().equals(code.getConfirmCode())){
+          user.setAccepted(true);
           httpSession.setAttribute("user", userService.
-                                    saveOrGetUser(userLoginDto.doUserBuilder()));
+                                    saveOrGetUser(user.doUserBuilder()));
       }
-          userLoginDto.setAccepted(false);
+          user.setAccepted(false);
           return "code";
     }
 

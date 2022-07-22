@@ -5,12 +5,12 @@
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/addBook.css}" href="/static/css/addBook.css">
     <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <title>Add Book</title>
+    <title> Add Book </title>
 </head>
 <body>
 <div class="container">
     <div class="container mt-5 pb-5">
-    <form method="post" th:action="@{/home/book/add}" th:object="${addBook}">
+    <form method="post" th:action="@{/home/book/add}" th:object="${book}">
         <h3> Fill Form Under </h3>
     <br>
         <div class="form-group row">
@@ -91,22 +91,6 @@
                    th:text="${error}">Validation error</p>
             </div>
         </div>
-
-        <div class="form-group">
-            <label class="col-sm-2 col-form-label"> Book Categories </label>
-            <div th:if="${!#fields.hasErrors()}">
-                <p style="margin-top: 5px; font-size: 14px">
-                    * add one or more category separated by commas
-                </p>
-            </div>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('bookCategories')}? 'has-error':'">
-                <input type="text" th:field="*{description}">
-                <p class="error-message"
-                   th:each="error : ${#fields.errors('bookCategories')}"
-                   th:text="${error}">Validation error</p>
-            </div>
-        </div>
-
 
         <div class="form-group row">
             <label class="col-sm-2 col-form-label"> Authors </label>

@@ -1,8 +1,10 @@
 package online.book.store.builder;
 
 import online.book.store.entity.Book;
+import online.book.store.entity.Category;
 
 import java.io.File;
+import java.util.List;
 
 public abstract class AbstractBookBuilder {
 
@@ -53,6 +55,8 @@ public abstract class AbstractBookBuilder {
    public AbstractBookBuilder description(String description){
        return null;
    }
+
+   public AbstractBookBuilder categories(List<Category> category){ return null; }
 
 
    public boolean containsNull(){
