@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 
 @Component
-public class SearchEngine implements SiteEngine{
+public class SearchEngine{
 
     @Autowired
     private BookService bookService;
@@ -23,27 +23,31 @@ public class SearchEngine implements SiteEngine{
 
     SortEngine sortEngine = SortEngine.instanceSortEngine();
 
-    public  List<Book> getBooksByText(String text){
-        if(categorySearch(text)){
-            return sortEngine.setBookListToSort(bookService.
-                    getBooksByCategory(text)).getSortBooks();
-
+    public  List<Book> getBooksByQuery(SearchQuery query) {
+        if (query instanceof CategoryQuery) {
+            Category searchCategory = ((CategoryQuery) query).getCategory();
+            List<Book> booksByCategory = bookService.getBooksByCategory(searchCategory);
+            return sortEngine.setBookListToSort(booksByCategory).getSortBooks();
         }
 
-        List<Book> books = this.bookService.getAllBooks();
-        List<Book> resultedBooks = new LinkedList<>();
-        String[] booksFields = books.toString().split("\\,");
+        else {
+            TextQuery textQuery = (TextQuery) query;
+            List<Book> books = this.bookService.getAllBooks();
+            List<Book> resultedBooks = new LinkedList<>();
+            String[] booksFields = books.toString().split("\\,");
 
-        int index = 0;
+            int index = 0;
 
-        while(index != books.size()) {
-                for(String field : booksFields){
-                if (contains(text, field)){
-                    resultedBooks.add(books.get(index));
+            while (index != books.size()) {
+                for (String field : booksFields) {
+                    if (contains(textQuery.getQueryText(), field)) {
+                        resultedBooks.add(books.get(index));
+                    }
                 }
+                index++;
             }
-        }
             return sortEngine.setBookListToSort(resultedBooks).getSortBooks();
+        }
     }
 
     private boolean contains(String text, String field){
@@ -51,27 +55,17 @@ public class SearchEngine implements SiteEngine{
         String[] letters = text.split("");
         String[] fieldContent = field.split("");
 
-        for(int i = 0; i < letters.length; i ++){
-            for(String l : fieldContent){
-                if(l.equals(letters[i])) {
-                    if (( countCns ++ ) == cns) {
-                    return true;
+        for (String letter : letters) {
+            for (String l : fieldContent) {
+                if (l.equals(letter)) {
+                    if ((countCns++) == cns) {
+                        return true;
+                    }
                 }
-            }
             }
         }
     return false;
     }
 
-
-    // rewrite this
-    private boolean categorySearch(String text){
-        List<String> categoriesNames = categoryService.
-                    allCategories().
-                    stream().
-                    map(Category::getCategory).collect(Collectors.toList());
-
-        return categoriesNames.contains(text);
-    }
 
 }

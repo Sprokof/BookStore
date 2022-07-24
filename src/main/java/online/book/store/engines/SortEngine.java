@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-public class SortEngine implements SiteEngine {
+public class SortEngine{
     private static SortEngine instance;
 
     public static SortEngine instanceSortEngine(){

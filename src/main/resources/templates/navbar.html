@@ -17,9 +17,7 @@
         <div class="item">
             <a class="sub-btn"> Books categories <i class="fas fa-angle-right dropdown"> </i></a>
             <div class="sub-menu" th:each="category : ${session.booksCategories}">
-                <a th:href="@{'/home/search/query?=' + ${category.category}}"
-                   class="sub-item" th:text="${category.category}">
-                </a>
+                <a class="sub-item" th:id="${category.id}" th:text="${category.category}"></a>
             </div>
         </div>
         <div class="item"><a th:href="@{/home/orders}"> Orders </a> </div>
@@ -35,7 +33,7 @@
         </div>
 
         <div th:if="${session.user.isAdmin()}">
-            <div class="item"><a th:href="@{/home/book/add}"> Add new Book </a> </div>
+            <div class="item"><a th:href="@{/home/book/add}"> Add New Book </a> </div>
         </div>
 
     </div>
@@ -106,6 +104,27 @@
         }
         else closeSidebar();
     }
+
+
+    function searchRequest(categoryQuery){
+        $.ajax({
+            type: "POST",
+            dataType: "application/json",
+            url: "/home/search?category=" + categoryQuery.category ,
+            data: JSON.stringify(categoryQuery)
+        });
+    }
+
+    let categories = document.querySelectorAll('.sub-item');
+    let categoryQuery = {}
+    for(let i = 0; i < a.length; i ++){
+        categories[i].addEventListener('click', (e) => {
+                categoryQuery['category'] = $(categories[i]).val();
+            searchRequest(categoryQuery);
+            });
+    }
+
+
 
 </script>
 </body>

@@ -3,10 +3,12 @@ package online.book.store.service;
 import lombok.Getter;
 import lombok.Setter;
 import online.book.store.dao.BookDao;
+import online.book.store.dto.BookDto;
 import online.book.store.engines.SortEngine;
 import online.book.store.engines.SortTypes;
 import online.book.store.entity.Book;
 import online.book.store.engines.SearchEngine;
+import online.book.store.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,13 +42,13 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public List<Book> getAllBooks() {
-        engine.setBookListToSort(bookDao.getPopularBooks());
+        engine.setBookListToSort(bookDao.getAllBooks());
         return engine.getSortBooks();
     }
 
     @Override
-    public List<Book> getBooksByCategory(String category) {
-        engine.setBookListToSort(bookDao.getPopularBooks());
+    public List<Book> getBooksByCategory(Category category) {
+        engine.setBookListToSort(bookDao.getBooksByCategory(category.getCategory()));
         return engine.getSortBooks();
     }
 
@@ -63,5 +65,15 @@ public class BookServiceImpl implements BookService{
     @Override
     public void saveBook(Book book) {
         this.bookDao.saveBook(book);
+    }
+
+    @Override
+    public void addOrRemoveCategory(BookDto book, Category category) {
+        List<Category> categories;
+            if((categories = book.getBooksCategory()).contains(category)){
+                categories.remove(category);
+            }
+            else categories.add(category);
+
     }
 }

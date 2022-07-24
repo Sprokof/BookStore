@@ -2,11 +2,8 @@ package online.book.store.controllers;
 
 import online.book.store.engines.*;
 import online.book.store.entity.Book;
-import online.book.store.entity.Category;
 import online.book.store.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -78,10 +75,8 @@ public class HomeController {
     }
 
     @PostMapping("/home/search")
-    public String search(@RequestBody SearchQuery searchQuery, Model model){
-        String text = searchQuery.getQueryText();
-        model.addAttribute("books", searchEngine.getBooksByText(text));
-
+    public String search(@RequestBody TextQuery textQuery, Model model){
+        model.addAttribute("books", searchEngine.getBooksByQuery(textQuery));
         return "searchedBooks";
     }
 
