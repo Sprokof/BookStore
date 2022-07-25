@@ -16,9 +16,7 @@
     <div class="menu">
         <div class="item">
             <a class="sub-btn"> Books categories <i class="fas fa-angle-right dropdown"> </i></a>
-            <div class="sub-menu" th:each="category : ${session.booksCategories}">
-                <a class="sub-item" th:id="${category.id}" th:text="${category.category}"></a>
-            </div>
+            <div class="sub-menu"></div>
         </div>
         <div class="item"><a th:href="@{/home/orders}"> Orders </a> </div>
         <div class="item"><a th:href="@{/home/wishlist}"> Wish list </a> </div>
@@ -82,27 +80,42 @@
 
     });
 
-    let open;
-
-    function openSideBar(){
-        document.querySelector('.sidebar').classList.add('active');
-        document.querySelector(".container-fluid").classList.add("compression");
-        document.querySelector("#menu").classList.add("compression");
-        open = true;
+    function controlSidebar() {
+        document.querySelector('.sidebar').classList.toggle('active');
+        document.querySelector(".container-fluid").classList.toggle("compression");
+        document.querySelector("#menu").classList.toggle("compression");
     }
 
-    function closeSidebar(){
-        document.querySelector('.sidebar').classList.remove('active');
-        document.querySelector(".container-fluid").classList.remove("compression");
-        document.querySelector("#menu").classList.remove("compression");
-        open = false;
-    }
+    document.querySelector("#side-menu").addEventListener("click", (e) => {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/instance",
+            cache: false,
+            dataType: 'json',
+            responseType : 'json',
+            success: function (data) {
+                let categories = JSON.parse(JSON.stringify(data))
 
-    function controlSidebar(){
-        if(!open){
-            openSideBar();
-        }
-        else closeSidebar();
+                for (let i = 0; i < categories.length; i++) {
+                    let category = categories[i]['category']
+
+                    let item = document.createElement("a");
+                    item.innerText = category;
+
+                    control(item, categories);
+
+                }
+            }
+
+        });
+    })
+
+    function control(item, categories){
+            let children  = document.querySelector('.sub-menu').children;
+            if(children.length < categories.length){
+                document.querySelector('.sub-menu').appendChild(item)
+            }
     }
 
 
@@ -119,12 +132,10 @@
     let categoryQuery = {}
     for(let i = 0; i < a.length; i ++){
         categories[i].addEventListener('click', (e) => {
-                categoryQuery['category'] = $(categories[i]).val();
+                categoryQuery['category'] = categories[i].innerText.toLowerCase();
             searchRequest(categoryQuery);
             });
     }
-
-
 
 </script>
 </body>

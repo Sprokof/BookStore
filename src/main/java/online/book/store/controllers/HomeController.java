@@ -2,8 +2,10 @@ package online.book.store.controllers;
 
 import online.book.store.engines.*;
 import online.book.store.entity.Book;
+import online.book.store.entity.Category;
 import online.book.store.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class HomeController {
@@ -43,7 +46,6 @@ public class HomeController {
 
     @GetMapping(value = {"/", "/home"})
     public String home() {
-        session.setAttribute("booksCategories", categoryService.allCategories());
         return "home";
 
     }
@@ -59,6 +61,12 @@ public class HomeController {
         Book book = bookService.getBookByIsbn(isbn);
         cartService.addBookToCart(book);
         return "home";
+    }
+
+    @GetMapping("/instance")
+    public ResponseEntity<?> instance(){
+          List<Category> categories = categoryService.allCategories();
+    return ResponseEntity.ok(categories);
     }
 
 
