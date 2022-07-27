@@ -28,15 +28,15 @@ body {
 .sidebar.active{
     left: 0;
 }
-.container-fluid{
-    padding: 0!important;
-}
-.container-fluid.compression {
-    margin-left: 290px;
-}
 
+.container-fluid.compression {
+    margin-left: 230px;
+}
+.btn-info {
+    background-color: #b4ad9e;
+}
 #menu.compression {
-    margin-right: 290px;
+    margin-right: 230px;
 }
 
 .sidebar .menu {
@@ -47,6 +47,18 @@ body {
 .sidebar .menu .item {
     position: relative;
     cursor: pointer;
+}
+
+.sidebar .menu .item .sub-menu a {
+    color: grey;
+}
+
+.sidebar .menu .item .sub-menu :first-child {
+    border-top: 1px solid gainsboro;
+}
+
+.sidebar .menu .item .sub-menu :last-child {
+    border-bottom: 1px solid gainsboro;
 }
 
 .sidebar .menu .item a{
@@ -62,21 +74,22 @@ body {
 }
 
 .sidebar .menu .item a:hover {
-    color: #898377;
+    color: black;
     transition: 0.3s ease;
 }
 
 .sidebar .menu .item a::after {
     content: '';
-    display: block;
+    display: block ;
     width: 100%;
-    background-color: black;
+    background-color: #1b1b1b;
     height: 1px;
     transform: scale(0);
     transition: all 0.3s;
 }
 
 .sidebar .menu .item a:hover::after {
+    margin-bottom: 1px;
     transform: scale(1);
 }
 
@@ -97,7 +110,7 @@ body {
 }
 
 .sidebar .menu .item .sub-menu a {
-    padding-left: 80px;
+    padding-left: 70px;
 }
 
 .rotate {
@@ -113,7 +126,7 @@ body {
 }
 
 #navbarSupportedContent ul li a:hover {
-    color: #898377;
+    color: black;
 }
 
 header .nav-item{
@@ -123,7 +136,7 @@ header .nav-item a::after {
     content: '';
     display: block;
     width: 100%;
-    background-color: black;
+    background-color: #1b1b1b;;
     height: 1px;
     transform: scale(0);
     transition: all 0.3s;
@@ -132,3 +145,4 @@ header .nav-item a::after {
 header .nav-item a:hover::after {
     transform: scale(1);
 }
+

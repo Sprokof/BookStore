@@ -41,7 +41,7 @@
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light">
 
-            <div onclick="controlSidebar()">
+            <div onclick="controlSidebar()" id="side-menu">
                 <i class="fas fa-bars"
                    style="font-size: 17px; padding-left:
                    37px; padding-top: 7px">
@@ -71,72 +71,6 @@
     </div>
 </header>
 
-<script>
-    $(document).ready(function () {
-        $('.sub-btn').click(function (){
-            $(this).next('.sub-menu').slideToggle();
-            $(this).find('.dropdown').toggleClass('rotate');
-        })
-
-    });
-
-    function controlSidebar() {
-        document.querySelector('.sidebar').classList.toggle('active');
-        document.querySelector(".container-fluid").classList.toggle("compression");
-        document.querySelector("#menu").classList.toggle("compression");
-    }
-
-    document.querySelector("#side-menu").addEventListener("click", (e) => {
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: "/instance",
-            cache: false,
-            dataType: 'json',
-            responseType : 'json',
-            success: function (data) {
-                let categories = JSON.parse(JSON.stringify(data))
-
-                for (let i = 0; i < categories.length; i++) {
-                    let category = categories[i]['category']
-
-                    let item = document.createElement("a");
-                    item.innerText = category;
-
-                    control(item, categories);
-
-                }
-            }
-
-        });
-    })
-
-    function control(item, categories){
-            let children  = document.querySelector('.sub-menu').children;
-            if(children.length < categories.length){
-                document.querySelector('.sub-menu').appendChild(item)
-            }
-    }
-
-
-    function searchRequest(categoryQuery){
-        $.ajax({
-            type: "POST",
-            dataType: "application/json",
-            url: "/home/search?category=" + categoryQuery.category ,
-            data: JSON.stringify(categoryQuery)
-        });
-    }
-
-    let categories = document.querySelectorAll('.sub-item');
-    let categoryQuery = {}
-    for(let i = 0; i < a.length; i ++){
-        categories[i].addEventListener('click', (e) => {
-                categoryQuery['category'] = categories[i].innerText.toLowerCase();
-            searchRequest(categoryQuery);
-            });
-    }
-
-</script>
+<script src="/static/js/navbar.js"></script>
 </body>
 </html>

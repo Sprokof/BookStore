@@ -22,7 +22,7 @@ public class SidebarRestController {
 
     @RequestMapping ("/home/book/categories")
     public List<Category> category(){
-        return categoryService.allCategory();
+        return categoryService.allCategories();
     }
 
     @GetMapping("/home/logout")

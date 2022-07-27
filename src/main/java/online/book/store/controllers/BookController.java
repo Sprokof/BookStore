@@ -71,26 +71,22 @@ public class BookController {
         if(bindingResult.hasErrors()) {
             return "addBook";
         }
-        List<CategoryDto> categories = (List<CategoryDto>) model.
-                getAttribute("categories");
-        bookDto.setBooksCategory(getSelectedCategories(categories));
         bookService.saveBook(bookDto.doBookBuilder());
         return "addBook";
     }
 
 
     @PostMapping("/home/book/add/category")
-    public ResponseEntity<Void> addCategory(@RequestBody CategoryDto category, Model model){
+    public ResponseEntity.BodyBuilder addCategory(@RequestBody List<Category> categories, Model model){
         BookDto currentBook = ((BookDto) model.getAttribute("book"));
-        bookService.addOrRemoveCategory(currentBook, category.doCategoryBuild());
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        currentBook.setBooksCategory(categories);
+        return ResponseEntity.status(200);
     }
 
-
-    private List<Category> getSelectedCategories(List<CategoryDto> categories){
-       if(categories == null) return null;
-       return categories.stream().filter(CategoryDto::isChosen).
-                map(CategoryDto::doCategoryBuild).collect(Collectors.toList());
+    @GetMapping("/instance/all/categories")
+    public ResponseEntity<?> instanceCategories(){
+        List<Category> categories = categoryService.allCategories();
+        return ResponseEntity.ok(categories);
     }
 
 }

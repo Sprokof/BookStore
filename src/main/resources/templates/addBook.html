@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
+<head th:insert="~{selectCategories :: category-menu}">
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/css/addBook.css}" href="/static/css/addBook.css">
     <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <link rel="stylesheet" type="text/css"
-          href="/webjars/fontawesome/4.7.0/css/font-awesome.min.css"
-          th:href="@{/webjars/fontawesome/4.7.0/css/font-awesome.min.css}">
     <title> Add Book </title>
 </head>
 <body>
@@ -128,7 +124,10 @@
                th:each="error : ${#fields.errors('format')}"
                th:text="${error}"> Validation error </p>
         </div>
-        <button type="submit" class="btn btn-dark"> Save Book </button>
+
+        <div th:insert="~{selectCategories ::category-menu}"></div>
+
+        <button type="submit" class="btn btn-dark" id="submit"> Save Book </button>
 
     </form>
     </div>

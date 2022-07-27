@@ -18,9 +18,13 @@ public class Category {
     private int id;
     @Column(name = "CATEGORY")
     private String category;
+    @Column(name = "CATEGORY_RATING")
+    private int rating;
+
 
     public Category(String category){
         this.category = category;
+        this.rating = avgRating();
     }
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "categories")
@@ -33,5 +37,15 @@ public class Category {
 
         Category cat = (Category) obj;
         return this.getCategory().equals(cat.getCategory());
+    }
+
+
+    private int avgRating(){
+        int sumRating = 0;
+        int length = this.books.size();
+        for(Book book : this.books){
+            sumRating += book.bookRating;
+        }
+    return (sumRating / length);
     }
 }

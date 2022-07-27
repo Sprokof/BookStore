@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Locale;
+
 
 @Controller
 public class HomeController {
@@ -61,12 +61,6 @@ public class HomeController {
         Book book = bookService.getBookByIsbn(isbn);
         cartService.addBookToCart(book);
         return "home";
-    }
-
-    @GetMapping("/instance")
-    public ResponseEntity<?> instance(){
-          List<Category> categories = categoryService.allCategories();
-    return ResponseEntity.ok(categories);
     }
 
 
