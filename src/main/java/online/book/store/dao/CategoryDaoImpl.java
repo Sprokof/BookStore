@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
@@ -39,6 +40,37 @@ public class CategoryDaoImpl implements CategoryDao{
 
         }
         return booksCategories;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<Category> popularCategories() {
+        Session session = null;
+        List<Category> result = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            result = session.createSQLQuery("SELECT * FROM " +
+                            "BOOKS_CATEGORIES ORDER BY CATEGORY_RATING").
+                    addEntity(Category.class).list();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null) {
+                if(session.getTransaction() != null){
+                    session.getTransaction().rollback();
+                }
+            }
+        }
+        finally {
+            if(session != null){
+                session.close();
+            }
+        }
+        if(result != null){
+        result = getHighRatingCategory(result, 5);
+        }
+
+    return result;
     }
 
     @Override
@@ -94,5 +126,13 @@ public class CategoryDaoImpl implements CategoryDao{
         }
     }
     return true;
+    }
+
+    private List<Category> getHighRatingCategory(List<Category> categories, int count){
+        Category[] temp = new Category[count];
+        System.arraycopy(categories.toArray(Category[] :: new),
+                0, temp, 0, temp.length);
+        return Arrays.asList(temp);
+
     }
 }

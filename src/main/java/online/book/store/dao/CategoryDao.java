@@ -6,5 +6,7 @@ import java.util.List;
 
 public interface CategoryDao {
     List<Category> allCategory();
+    List<Category> popularCategories();
     void saveCategoryIfAbsent(Category bookCategory);
+
 }

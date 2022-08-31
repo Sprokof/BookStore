@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/home/books/search/",
+            cache: false,
+            dataType: 'json',
+            responseType : 'json',
+            success: function (data) {
+                let books = JSON.parse(JSON.stringify(data));
+                if(books.length === 0){
+                document.location.href = '/noresult';
+                }
+            }
+            }
+</script>
+</body>
+</html>

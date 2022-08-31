@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.0.2/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/static/css/cart.css}"/>
 </head>
 <body>
@@ -27,7 +27,7 @@
                  <td class="col-lg-8 product">
                      <div class="media">
                      <div class="media-left">
-                         <a href=""><img class="item-img img-responsive" th:src="${item.book.bookImageName}"></a>
+                         <a href=""><img class="item-img img-responsive" th:src="@{'/images' + ${item.book.bookImageName}}"></a>
                      </div>
                      <div class="media-body">
                          <div class="media-heading" th:text="${item.book.title}"></div>
@@ -39,19 +39,16 @@
                      </div>
                  </td>
                  <td class="col-lg-1 quantity">
-                     <form method="post" th:action="@{'/home/cart/add/item?=' + ${item.id}}">
-                     <input type="text" class="form-control text-center"
-                            th:value="${item.quantity}" th:field="${quantity}" id="add"/>
-                     </form>
+                     <input th:id="${'add_' + ${item.id}}" type="text" class="form-control text-center"
+                            th:value="${item.quantity}"/>
                  </td>
+
                  <td class="col-lg-1 price" th:text="${item.book.price}"> &#8381; </td>
                  <td class="col-lg-1 total" th:text="${item.total}"></td>
                  <td class="col-lg-1 remove-item">
-                 <form method="post" th:action="@{'/home/cart/remove/item?=' + ${item.id}}">
-                     <button id="remove" class="btn btn-danger btn-sm btn-remv">
-                         <span class="glyphicon glyphicon-trash btn-rmv-icon"></span>
+                     <button th:id="${'remove_' + ${item.id}}" class="btn btn-danger btn-sm btn-remv">
+                         <span class="fas fa-remove"></span>
                      </button>
-                 </form>
                  </td>
 
              </tr>
@@ -100,23 +97,7 @@
         </div>
 </div>
 </div>
-<script>
-        let add = document.getElementById("add");
-        add.addEventListener("input", (e) => {
-            $.ajax({
-                type: "GET",
-                url: "/home/cart"
-            })
-        });
-
-        let remove = document.getElementById("remove");
-        remove.addEventListener('click', (e) => {
-            $.ajax({
-                type: "GET",
-                url: "/home/cart"
-            })
-        });
-
+<script src="/static/js/cart.js">
 </script>
 </body>
 </html>

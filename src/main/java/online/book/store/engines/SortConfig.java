@@ -5,19 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+
 @NoArgsConstructor
+@AllArgsConstructor
 public class SortConfig {
+    private SortType sortType;
 
-   private SortTypes selectedType = SortTypes.DEFAULT;
-
-   public static SortTypes[] sortTypes(){
-        return new SortTypes[]{
-                SortTypes.POPULARITY,
-                SortTypes.HIGHEST,
-                SortTypes.LOWEST,
-                SortTypes.LATEST,
-        };
+    public SortType currentType(){
+        return this.sortType;
     }
 }

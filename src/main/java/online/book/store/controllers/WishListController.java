@@ -24,9 +24,9 @@ public class WishListController {
     @Autowired
     WishlistService wishlistService;
 
-
     @Autowired
     UserService userService;
+
 
     @ModelAttribute("wishlist")
     public Wishlist getWishList(){

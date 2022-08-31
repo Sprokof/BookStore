@@ -1,127 +1,83 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta charset="UTF-8">
 
-    <link rel="stylesheet" type="text/css" th:href="@{webjars/bootstrap/3.3.7/css/bootstrap.min.css}"
-          href="webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}" href="/static/css/navbar.css"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/sidebar.css}" href="/static/css/sidebar.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/css/navbar.css" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/login.css" th:href="@{/css/login.css}">
 
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" th:href="@{webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+    <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <title> Navigation bar </title>
 </head>
-<body>
-<nav class="sibebar" id="sidebar">
-    <div class="text"> Menu </div>
-    <ul>
-        <li>
-            <a id="open"> Categories
-                <span class="fas fa-caret-down"></span>
-            </a>
+<body th:fragment="navbar">
+<div class="sidebar">
+    <div class="menu">
+        <div class="item">
+            <a class="sub-btn"> Books categories <i class="fas fa-angle-right dropdown"> </i></a>
+            <div class="sub-menu"></div>
+        </div>
+        <div class="item"><a class="main"> Orders </a> </div>
+        <div class="item"><a class="main"> Wish list </a> </div>
+        <div class="item"><a class="main"> About </a> </div>
 
-            <ul class="sub-menu">
-                <li><a href="#"> Detective </a></li>
-                <li><a href="#"> Romantics </a></li>
-            </ul>
-
-        </li>
-        <li><a href="#"> Orders </a></li>
-        <li><a href="#"> Wish list </a></li>
-        <li><a href="#"> Log out </a></li>
-    </ul>
-</nav>
-<nav class="navbar navbar-inverse header-container">
-    <div class="container-fluid">
-
-        <div id="control">
-            <button class="btn bt" onclick="controlNav()" >
-                <span>☰</span>
-            </button>
+        <div th:if="${session.user != null}">
+            <div class="item"><a class="main" href="#"> Logout </a> </div>
         </div>
 
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#"> Online Book Store </a>
+        <div th:if="${session.user == null}">
+            <div class="item"><a class="main" id="open-login" onclick="clearForms()"> Log in </a> </div>
         </div>
 
-        <div id="navbar" class="collapse navbar-collapse">
-            <ul class="navbar navbar-nav navbar-right nav-pills">
-                <li>
-                    <a class="navbar-link" th:href="@{/home}">
-                    Home <span class="glyphicon glyphicon-home"></span></a>
-                </li>
-
-                <li>
-                    <a class="navbar-link cart-link" th:href="@{/home/cart}">
-                    Cart <span class="glyphicon glyphicon-shopping-cart"></span>
-                         <span class="cart-count badge">0</span>
-                    </a>
-                </li>
-
-                <li class="dropdown-1">
-                    <a class="dropdown-toggle navbar-link" data-toggle="dropdown"> Hi
-                        <b class="glyphicon glyphicon-user"></b>
-                    </a>
-                    <ul class="dropdown-menu sublist">
-
-                        <li> <span class="glyphicon glyphicon-user icon">
-                         <a href="#"> Account </a>
-                        </span>
-                        </li>
-
-                        <li> <span class="glyphicon glyphicon-glass icon>">
-                            <a href="#"> Orders </a>
-                        </span>
-                        </li>
-
-                        <li> <span class="glyphicon glyphicon-heart icon">
-                         <a href="#"> Wish list </a>
-                        </span>
-                        </li>
-
-                    </ul>
-                </li>
-
-
-            </ul>
+        <div th:if="${session.user.isAdmin()}">
+            <div class="item"><a class="main" th:href="@{/home/book/add}"> Add New Book </a> </div>
         </div>
 
     </div>
-</nav>
-<script>
-    document.getElementById("open").
-    addEventListener('click', (e) => {
-        let submenu = document.querySelectorAll('nav ul li ul li')
-        for(let item = 0; item < submenu.length; item ++) {
-            submenu[item].style.display =
-                (submenu[item].style.display === 'none' ? 'block' : 'none');
-        }
-    });
+</div>
 
-    let open;
+<header>
+    <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg navbar-light">
 
-    function openNav() {
-        document.getElementById("sidebar").style.width = "250px";
-        document.getElementById("control").style.marginLeft = "250px";
-        open = true;
+            <div onclick="controlSidebar()" id="side-menu">
+                <i class="fas fa-bars"
+                   style="font-size: 17px; padding-left:
+                   37px; padding-top: 7px">
+                </i>
+            </div>
 
-    }
+            <a class="navbar-brand">
+                <span style="padding-left: 10px;
+                font-family: 'Cascadia Code',
+                sans-serif"> Online Book Store </span>
+            </a>
 
-    function closeNav() {
-
-        document.getElementById("sidebar").style.width = "0";
-        document.getElementById("control").style.marginLeft = "0";
-        open = false;
-    }
-
-    function controlNav(){
-        if(!open){
-            openNav();
-        }
-        else {
-            closeNav();
-        }
-    }
-</script>
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto" id="menu">
+                    <li class="nav-item"><input id="search-value" type="text" placeholder="search">
+                        <span class="fas fa-search" id="search"></span>
+                    </li>
+                    <li class="nav-item"><a class="nav-link"> Home </a></li>
+                    <li class="nav-item"><a class="nav-link" th:text="${'Cart (' + ${session.user != null} ? ${session.user.cart.count} : '0' +')'}"></a></li>
+                    <li class="nav-item"><a class="nav-link"> Account </a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+    <div th:insert="~{login :: login-body}"></div>
+        <div th:insert="~{registration :: registration-body}"></div>
+            <div th:insert="~{reset :: reset-body}"></div>
+                <div th:insert="~{confirmReset :: confirm-body}"></div>
 </body>
 </html>

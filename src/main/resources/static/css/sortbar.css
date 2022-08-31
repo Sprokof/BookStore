@@ -1,0 +1,92 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Bahnschrift", sans-serif;
+}
+
+.container {
+    position: relative;
+    max-width: 320px;
+    width: 100%;
+    background-color: white;
+}
+
+.select-btn {
+    display: flex;
+    height: 50px;
+    align-items: center;
+    padding: 0 16px;
+    justify-content: space-between;
+    cursor: pointer;
+    border-radius: 10px;
+    border: 1px solid black;
+    background: black;
+    width: 210px;
+}
+
+.select-btn:hover {
+    background: #1b1b1b;
+}
+
+.select-btn .btn-text {
+    font-size: 17px;
+    font-weight: 300;
+    color: white;
+    margin-left: 10px;
+}
+.select-btn .arrow-down {
+    height: 21px;
+    width: 21px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    margin-top: -3px;
+}
+
+.arrow-down.rotate {
+    transform: rotate(180deg);
+}
+
+.sort-types {
+    position: relative;
+    margin-top: 3px;
+    border: 2px solid #cecece;
+    background: #cecece;
+    padding: 16px;
+    display: none;
+    border-radius: 8px;
+    max-height: 500px;
+    overflow-y: auto;
+    width: 210px;
+}
+
+.sort-types .type {
+    list-style: none;
+    align-items: center;
+    display: flex;
+    height: 50px;
+}
+
+.type:hover {
+    background-color: gainsboro;
+    border-radius: 8px;
+}
+
+.type span {
+    color: black;
+}
+
+.type .type-name {
+    font-size: 16px;
+    font-weight: 400;
+    color: black;
+    padding-left: 21px;
+}
+
+.sort-types.active {
+    display: block;
+}
+

@@ -7,10 +7,12 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static online.book.store.entity.BookReview.MAX_POPULAR_RATING;
+import static online.book.store.entity.BookReview.MIN_POPULAR_RATING;
 
 
 @Component
@@ -48,15 +50,20 @@ public class BookDaoImpl implements BookDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<Book> getPopularBooks() {
-        final int MIN_POPULAR_RATING = 10, MAX_POPULAR_RATING = 100;
         Session session = null;
-        List<Book> popularBooks = new LinkedList<>();
+        List<Book> resultedList = new LinkedList<>();
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-            popularBooks = (LinkedList<Book>) session.
-                    createSQLQuery("SELECT * FROM BOOKS").
-                    addEntity(Book.class).list();
+            resultedList = (LinkedList<Book>) session.
+                    createSQLQuery("SELECT * FROM " +
+                            "BOOKS as book JOIN TABLE BOOKS_REVIEWS as reviews" +
+                            " on book.id = review.id WHERE BOOK_RATING " +
+                            "BETWEEN :min_rating and :max_rating ").
+                    addEntity(Book.class).
+                    setParameter("min_rating", MIN_POPULAR_RATING).
+                    setParameter("max_rating", MAX_POPULAR_RATING).list();
+
             session.getTransaction().commit();
         } catch (Exception e) {
             if (session != null) {
@@ -69,13 +76,9 @@ public class BookDaoImpl implements BookDao {
                 session.close();
             }
         }
-        if(popularBooks.isEmpty()) return new LinkedList<>();
-
-        return popularBooks.stream().filter((b) -> {
-            return b.getAvgRating() <= MAX_POPULAR_RATING
-                                && b.getAvgRating() >= MIN_POPULAR_RATING;
-        }).collect(Collectors.toList());
+        return resultedList;
     }
+
 
 
 
@@ -196,5 +199,62 @@ public class BookDaoImpl implements BookDao {
             return book;
         }
     return null;
+    }
+
+    @Override
+    public Book getBookByTitle(String title) {
+        Session session = null;
+        Book book = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            book = (Book) session.createSQLQuery("SELECT * FROM BOOKS WHERE TITLE=:title").
+                    setParameter("isbn", title).addEntity(Book.class).getSingleResult();
+            session.getTransaction().commit();
+        }
+        catch (Exception e) {
+            if (session != null) {
+                if (session.getTransaction() != null) {
+                    session.getTransaction().rollback();
+                    if(e instanceof NoResultException) return null;
+                }
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+
+        return book;
+
+    }
+
+    @Override
+    public double averageRating(Book book) {
+        int bookId = book.getId();
+        Session session = null;
+        double rating = 0;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            rating = (double) session.createSQLQuery("SELECT AVG(BOOK_RATING) FROM " +
+                            "BOOKS_REWIWS WHERE id=:book_id").
+                    setParameter("book_id", bookId).getSingleResult();
+            session.getTransaction().commit();
+        }
+        catch (Exception e) {
+            if (session != null) {
+                if (session.getTransaction() != null) {
+                    session.getTransaction().rollback();
+                    if(e instanceof NoResultException) return 0d;
+                }
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+
+        return rating;
     }
 }

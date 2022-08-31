@@ -1,12 +1,12 @@
 package online.book.store.dao;
 
 import online.book.store.entity.User;
-import online.book.store.singletons.SessionFactorySingleton;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
+import java.util.List;
 import java.util.regex.Pattern;
 
 @Component
@@ -16,22 +16,12 @@ public class UserDaoImpl implements UserDao{
             SessionFactorySingleton.getInitializationFactory();
 
     @Override
-    public User saveOrGetUser(User user) {
-        User temp = null;
+    public void saveUser(User user) {
         Session session = null;
     try{
         session = sessionFactory.openSession();
         session.beginTransaction();
-    try {
-        temp = (User) session.createSQLQuery("SELECT * FROM USERS WHERE EMAIL=:email").
-                setParameter("email", user.getEmail()).
-                addEntity(User.class).getSingleResult();
-    }
-    catch (NoResultException e){ temp = null; }
-
-        if (temp == null) {
-            session.save(user);
-        }
+        session.save(user);
         session.getTransaction().commit();
         } catch (Exception e) {
             if (session != null) {
@@ -45,10 +35,57 @@ public class UserDaoImpl implements UserDao{
             }
 
         }
-    if(temp != null){
-        user = temp;
+
     }
-    return user;
+
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<String> allUsernames() {
+        Session session = null;
+        List<String> usernames = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            usernames = session.createSQLQuery("SELECT USERNAME FROM USERS").list();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null) {
+                if (session.getTransaction() != null) {
+                    session.getTransaction().rollback();
+                }
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    return usernames;
+    }
+
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<String> allEmails() {
+        Session session = null;
+        List<String> emails = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            emails = session.createSQLQuery("SELECT EMAIL FROM USERS").list();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null) {
+                if (session.getTransaction() != null) {
+                    session.getTransaction().rollback();
+                }
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return emails;
     }
 
     @Override
@@ -106,4 +143,32 @@ public class UserDaoImpl implements UserDao{
 
     }
 
+    @Override
+    public User getUserByIP(String ip) {
+        Session session = null;
+        User user = null;
+    try{
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        user = (User) session.createSQLQuery("SELECT * FROM USERS WHERE IP_ADRESS=:ip").
+                setParameter("ip", ip).getSingleResult();
+        session.getTransaction().commit();
+    }
+    catch (Exception e) {
+        if (session != null) {
+            if (session.getTransaction() != null) {
+                session.getTransaction().rollback();
+                if (e instanceof NoResultException) {
+                    return null;
+                }
+            }
+        }
+    }
+    finally {
+        if (session != null) {
+            session.close();
+        }
+    }
+    return user;
+    }
 }

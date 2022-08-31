@@ -29,12 +29,20 @@ body {
     left: 0;
 }
 
+.sidebar .item .sub-menu a:hover {
+    margin-top: 1px;
+    color: dimgrey!important;
+}
+
+.sidebar .item .sub-btn :hover{
+    color: #1b1b1b;
+}
+
+
 .container-fluid.compression {
     margin-left: 230px;
 }
-.btn-info {
-    background-color: #b4ad9e;
-}
+
 #menu.compression {
     margin-right: 230px;
 }
@@ -73,12 +81,12 @@ body {
 
 }
 
-.sidebar .menu .item a:hover {
-    color: black;
+.sidebar .menu .item .main:hover {
+    color: #1b1b1b;
     transition: 0.3s ease;
 }
 
-.sidebar .menu .item a::after {
+.sidebar .menu .item .main::after {
     content: '';
     display: block ;
     width: 100%;
@@ -88,7 +96,8 @@ body {
     transition: all 0.3s;
 }
 
-.sidebar .menu .item a:hover::after {
+
+.sidebar .menu .item .main:hover::after {
     margin-bottom: 1px;
     transform: scale(1);
 }
@@ -119,6 +128,7 @@ body {
 
 .fa-bars {
     color: black;
+    cursor: pointer;
 }
 
 #navbarSupportedContent ul li a {
@@ -131,7 +141,9 @@ body {
 
 header .nav-item{
     margin-left: 35px;
+    cursor: pointer;
 }
+
 header .nav-item a::after {
     content: '';
     display: block;
@@ -146,3 +158,21 @@ header .nav-item a:hover::after {
     transform: scale(1);
 }
 
+.nav-item input {
+    border: solid 1px #b4ad9e;
+    padding-left: 5px;
+    width: 170px;
+    border-radius: 3px;
+    outline: 3px;
+}
+
+.nav-item .fa-search {
+    color: slategray;
+    margin-top: 10px;
+    margin-left: 5px;
+
+}
+
+.nav-item .fa-search:hover {
+    color: #1b1b1b;
+}

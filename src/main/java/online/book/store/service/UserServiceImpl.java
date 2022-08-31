@@ -1,22 +1,24 @@
 package online.book.store.service;
 
 import online.book.store.dao.UserDao;
-import online.book.store.dto.UserLoginDto;
-import online.book.store.entity.Book;
 import online.book.store.entity.User;
+import online.book.store.hash.SHA256;
+
+import online.book.store.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
 
+
 @Component
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserDao userDao;
 
     @Autowired
-    private HttpSession httpSession;
+    private Session httpSession;
 
 
     @Override
@@ -31,32 +33,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User loadUserByLogin(String login) {
-        User user;
-        if ((user = (this.userDao.getUserByLogin(login))) != null) {
-            return user;
-        }
-        return null;
+    public void saveUser(User user){
+        String password = user.getPassword();
+        user.setPassword(SHA256.hash(password));
+        this.userDao.saveUser(user);
     }
 
-    @Override
-    public boolean loginUser() {
-      return (httpSession.getAttribute("user") != null);
-    }
-
-    @Override
-    public User saveOrGetUser(User user) {
-        return this.userDao.saveOrGetUser(user);
-    }
-
-    @Override
-    public User getCurrentUser() {
-        return (User) httpSession.getAttribute("user");
-    }
 
     @Override
     public void updateUserInSession(User user){
-        httpSession.setAttribute("user", user);
+        httpSession.addUser(user);
         updateUser(user);
+    }
+
+    @Override
+    public User getUserByIP(String ip) {
+        return this.userDao.getUserByIP(ip);
+
     }
 }

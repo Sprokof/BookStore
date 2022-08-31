@@ -7,7 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "ADDRESS")
+@Table(name = "ADDRESSES")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -17,9 +17,7 @@ public class Address {
     private int id;
     @Column(name = "COUNTRY")
     private String country;
-    @Column(name = "STATE")
-    private String state;
-    @Column(name = "City")
+    @Column(name = "CITY")
     private String city;
     @Column(name = "STREET_NAME")
     private String streetName;
@@ -30,10 +28,9 @@ public class Address {
     @Column(name = "ZIP_CODE")
     private String zipCode;
 
-    public Address(String country, String state, String city,
+    public Address(String country, String city,
                    String streetName, String buildingNumber, int roomNumber, String zipCode){
         this.country = country;
-        this.state = state;
         this.city = city;
         this.streetName = streetName;
         this.buildingNumber = buildingNumber;

@@ -76,7 +76,7 @@ s
                         <div class="col-sm-8">
                             <div th:each="review : ${book.getBookReviews()}">
 
-                            <div class="ratee" th:text ="${review.user.email} + ' says..'"></div>
+                            <div class="ratee" th:text ="${review.user.username} + ' says..'"></div>
                             <div class="comments" th:text="${review.comment}"></div>
 
                             <div class="col-sm-4">

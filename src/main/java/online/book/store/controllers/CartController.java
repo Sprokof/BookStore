@@ -1,11 +1,14 @@
 package online.book.store.controllers;
 
+import online.book.store.dto.CartItemDto;
 import online.book.store.entity.Book;
 import online.book.store.entity.Cart;
 import online.book.store.entity.CartItem;
 import online.book.store.entity.User;
 import online.book.store.service.CartService;
+import online.book.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +23,11 @@ public class CartController {
     private CartService cartService;
 
     @Autowired
-    private HttpSession httpSession;
-
-
+    private UserService userService;
 
     @ModelAttribute("cart")
     public Cart getUserCart(){
-        return ((User) httpSession.
-                getAttribute("user")).getCart();
+        return userService.getCurrentUser().getCart();
     }
 
     @GetMapping("/home/cart")
@@ -36,36 +36,29 @@ public class CartController {
     }
 
 
-    @PostMapping("/home/cart/add/item")
-    public String addCartItem(@RequestParam("item") String itemId, String quantity, Model model) throws NullPointerException{
-        model.addAttribute("quantity", quantity);
+    @PostMapping("/home/cart/set")
+    public ResponseEntity.BodyBuilder addCartItem(@RequestBody CartItemDto dto){
+        int id = (Integer.parseInt(dto.getCartItemId()));
+        int quantity = (Integer.parseInt(dto.getQuantity()));
 
-        int cartItemId = (Integer.parseInt(itemId));
+        CartItem itemToSet = cartService.getCartItemById(id);
 
-        Cart userCart = ((Cart) (model.getAttribute("cart")));
+        cartService.updateCartItem(itemToSet, quantity);
 
-        assert userCart != null;
-        CartItem cartItem = cartService.getCartItemById(cartItemId);
-
-        cartService.updateCartItem(cartItem, Integer.parseInt(quantity));
-        return "cart";
+        return ResponseEntity.status(200);
 
     }
 
-    @PostMapping("/home/cart/remove/item")
-    public String removeCartItem(@RequestParam("item") String itemId, Model model){
+    @PostMapping("/home/cart/remove/")
+    public ResponseEntity.BodyBuilder removeCartItem(@RequestBody String itemId){
 
         int cartItemId = (Integer.parseInt(itemId));
-
-        Cart cart = (Cart) model.getAttribute("cart");
-
-        assert cart != null;
 
         CartItem cartItem = cartService.getCartItemById(cartItemId);
 
         cartService.updateCartItem(cartItem);
 
-        return "cart";
+        return ResponseEntity.status(200);
 
     }
 }

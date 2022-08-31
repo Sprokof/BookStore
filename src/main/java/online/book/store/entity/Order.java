@@ -26,8 +26,8 @@ public class Order {
     private String status;
     @Column(name = "TOTAL")
     private double total;
-    @Column(name = "PATH_TO_IMAGE")
-    private String path;
+    @Column(name = "BOOK_IMAGE_NAME")
+    private String bookImageName;
 
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -38,12 +38,12 @@ public class Order {
         return LocalDate.now().toString();
     }
 
-    public Order(String title, int quantity, double total, String path){
+    public Order(String title, int quantity, double total, String bookImageName){
         this.title = title;
         this.quantity = quantity;
         this.total = total;
         this.orderDate = getCurrentDate();
-        this.path = path;
+        this.bookImageName = bookImageName;
     }
 
 }

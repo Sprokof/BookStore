@@ -1,88 +1,67 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/test.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
+    <script type="text/javascript" src="/webjars/jquery/3.2.1/jquery.min.js" th:href="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" th:href="@{webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+    <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/static/css/home.css}"/>
-    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <title>Home</title>
 </head>
 <body>
-<div class="layout-main container">
-    <div class="search-bar container">
-        <div class="row">
-            <div id="search-input">
-                <div class="input-group">
-                    <input type="text" id="query" class="textQuery form-control">
-                    <span class="input-group-addon fas fa-search" onclick="executeTextQuery()"></span>
+<div th:insert="~{navbar :: navbar}"></div>
+<main class="books-slider">
+
+    <header>
+        <h1> Trending Today </h1>
+        <p class="control-slider">
+            <span>&#139;</span>
+            <span>&#155;</span>
+        </p>
+    </header>
+
+    <section>
+        <div class="book" th:each="book : ${books}">
+
+            <picture>
+                <img th:src="@{'/images/' + ${book.bookImageName}}" alt="book image">
+            </picture>
+
+            <div class="book-desc">
+                <p>
+                    <b th:text="${book.title}"></b>
+                </p>
+
+                <small th:text="${'Author: ' + ${book.authors}}"></small>
+                <br>
+                <samp th:text="${'Price: ' + ${book.price} + '₽'}"></samp>
+                <br>
+                <div class="rating" th:text="${book.bookRating}"></div>
+
+
+                <div class="book-button">
+                    <button> Add to cart </button>
+                    <br>
+                    <button style="width: 170px" >Add to wish list</button>
                 </div>
+
             </div>
         </div>
-        </div>
-
-                <h3>Trending today</h3>
-
-             <div class="container mt-5">
-                 <div class="row">
-                     <div class="col-sm-12">
-                         <div id="booksCarousel" class="carousel slide" data-ride="carousel">
-                             <div class="carousel-inner" role="listbox">
-                                 <div class="carousel-item active">
-                                     <div class="container">
-                                         <div class="row">
-                                 <div class="col-lg-3 d-flex align-items-stretch" th:each="book : ${books}">
-                                     <div class="panel-heading book-title"
-                                          th:text="${book.title}">
-                                     </div>
-                                     <div class="panel-body">
-                                         <a th:href="${'/home/book/info?isbn=' + ${book.isbn}}">
-                                             <img class="img-responsive book-cover" th:src="${book.bookImageName}">
-                                         </a>
-                                 </div>
-                                     <div class="panel-footer price">
-                                     Price
-                                     <span th:text="${book.price}"> &#8381; </span>
-                                             <form method="post" th:action="@{'/home/cart/addtocart?isbn=' + ${book.isbn}}">
-                                                 <div class="panel-footer">
-                                                     Add to cart
-                                                     <div class="glyphicon-shopping-cart"></div>
-                                                 </div>
-                                             </form>
-                                         </div>
-                                     </div>
-                                 </div>
-                             </div>
-                        </div>
-                    </div>
-                         <div class="container pt-3">
-                             <ol class="carousel-indicators">
-                                 <li data-target="#booksCarosel" data-slide-to="0" class="active" style="background-color: white"></li>
-                                 <li data-target="#booksCarousel" data-slide-to="1" style="background-color: white"></li>
-                                 <li data-target="#booksCarousel" data-slide-to="2" style="background-color: white"></li>
-                             </ol>
-                         </div>
-                    </div>
-                </div>
-             </div>
-             </div>
-</div>
+    </section>
+</main>
+<script th:src="@{/static/js/navbar.js}"></script>
+<script th:src="@{/static/js/login.js}"></script>
+<script th:src="@{/static/js/reset.js}"></script>
+<script th:src="@{/static/js/confirmReset.js}"></script>
+<script th:src="@{/static/js/validation.js}"></script>
+<script th:src="@{/js/home.js}"></script>
+<script th:src="@{/js/main.js}"></script>
 </body>
-<script>
-
-    function executeTextQuery(){
-        let textQuery = {
-             queryText: $("#query").val()
-        };
-
-        $.ajax({
-            type: "POST",
-            dataType: "application/json",
-            url: "/home/search?text=" + textQuery.queryText,
-            data: JSON.stringify(textQuery)
-        });
-}
-</script>
 </html>

@@ -15,12 +15,12 @@ public class MailSender {
     @Autowired
     private JavaMailSender mailSender;
 
-    public void send(String emailTo, String subject, String message){
+    public void send(String emailTo, MailSubjects subject, String message){
         SimpleMailMessage mailMessage = new SimpleMailMessage();
 
         mailMessage.setFrom(username);
         mailMessage.setTo(emailTo);
-        mailMessage.setSubject(subject);
+        mailMessage.setSubject(subject.content());
         mailMessage.setText(message);
 
         mailSender.send(mailMessage);

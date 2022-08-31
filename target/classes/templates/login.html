@@ -1,42 +1,35 @@
-<!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.0.2/css/bootstrap.min.css}"/>
-    <title>Title</title>
-</head>
-<body>
-<form method="post" th:action="@{/home/login}">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Log in</h5>
-            </div>
-            <div class="modal-body">
-                <div class="form-group"
-                th:classappend="${#fields.hasErrors('email')}">
-                    Email address
-                    <input type="text"
-                           th:field="${user.email}"
-                           class="form-control"
-                           autofocus="autofocus"
-                           placeholder="e-mail address"/>
-                    <p class="error-message"
-                    th:each="error : ${#fields.errors('email')}"
-                    th:text="${error}">Validation error</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <div th:if="${#fields.hasErrors()}">
-                    <button type="button" disabled="disabled" class="btn btn-dark">Continue</button>
-                    <button type="button" class="btn-primary btn">Back home</button>
-                </div>
-                <div th:if="${!#fields.hasErrors()}">
-                    <button type="button" class="btn btn-dark">Continue</button>
-                    <button type="button" class="btn-primary btn">Back home</button>
-                </div>
-            </div>
+<div class="auth-form login" id="popup-login" th:fragment="login-body">
+    <div class="close-login-btn" id="close-login"> &times; </div>
+    <div class="form">
+        <h2> Log in </h2>
+
+        <div class="form-element" id="input-login">
+            <label for="login"> Login </label>
+            <input type="text" id="login" placeholder="Enter Username Or Email">
         </div>
+
+        <div class="form-element" id="input-password">
+            <label for="log-password"> Password </label>
+            <input type="password" id="log-password" placeholder="Enter password">
+        </div>
+
+        <div class="remember-me">
+            <input id="remember-me" type="checkbox">
+            <label for="remember-me" id="rem-label"> Remember me </label>
+        </div>
+
+        <div class="form-element">
+            <button id="login-btn"> Log in </button>
+        </div>
+
+        <div class="form-element">
+            <a href="#" style="margin-top: 10px" id="sign-in"> Sign In </a>
+        </div>
+
+        <div class="form-element">
+            <a href="#" id="reset"> Reset password </a>
+        </div>
+
     </div>
-</form>
-</body>
-</html>
+</div>
+

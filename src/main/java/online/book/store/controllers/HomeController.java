@@ -2,15 +2,16 @@ package online.book.store.controllers;
 
 import online.book.store.engines.*;
 import online.book.store.entity.Book;
-import online.book.store.entity.Category;
+import online.book.store.entity.User;
 import online.book.store.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -28,15 +29,15 @@ public class HomeController {
     @Autowired
     private WishlistService wishlistService;
 
-    SortEngine sortEngine = SortEngine.instanceSortEngine();
-
-    SearchEngine searchEngine;
 
     @Autowired
     HttpSession session;
 
     @Autowired
-    private CategoryService categoryService;
+    UserService userService;
+
+    @Autowired
+    private SignInService signInService;
 
     @ModelAttribute("books")
     public List<Book> popularBooks(){
@@ -45,42 +46,30 @@ public class HomeController {
 
 
     @GetMapping(value = {"/", "/home"})
-    public String home() {
-        return "home";
-
-    }
-
-    @PostMapping("/home/wishlist/addbooktowishlist")
-    public String addToWishList(@RequestParam("isbn") String isbn) {
-        wishlistService.addBookToWishlist(bookService.getBookByIsbn(isbn));
+    public String home(HttpServletRequest servletRequest) {
+        String ip = signInService.getCurrentIP(servletRequest);
+        User currentUser;
+        if((currentUser = userService.getUserByIP(ip)) != null && currentUser.isRemembered()){
+            userService.updateUserInSession(currentUser);
+        }
         return "home";
     }
 
-    @PostMapping("/home/cart/addbooktocart")
-    public String addBookToCart(@RequestParam("isbn") String isbn){
-        Book book = bookService.getBookByIsbn(isbn);
+    @PostMapping("/home/wishlist/add")
+    public ResponseEntity<?> addToWishList(@RequestParam("title") String title) {
+        Book book = bookService.getBookByTitle(title);
+        wishlistService.addBookToWishlist(book);
+        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping("/home/cart/add")
+    public ResponseEntity<?> addBookToCart(@RequestParam("title") String title){
+        Book book = bookService.getBookByTitle(title);
         cartService.addBookToCart(book);
-        return "home";
+        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+
     }
 
-
-    //sort section
-
-    @ModelAttribute("sortConfig")
-    public SortConfig sortConfig(){
-        return sortEngine.getSortConfig();
-    }
-
-    @ModelAttribute("sortTypes")
-    public SortTypes[] sortTypes(){
-        return SortConfig.sortTypes();
-    }
-
-    @PostMapping("/home/search")
-    public String search(@RequestBody TextQuery textQuery, Model model){
-        model.addAttribute("books", searchEngine.getBooksByQuery(textQuery));
-        return "searchedBooks";
-    }
 
 }
 

@@ -9,7 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Entity
-@Table(name = "CART")
+@Table(name = "CARTS")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,7 +22,7 @@ public class Cart {
     private double total;
     @Column(name = "SUBTOTAL")
     private double subtotal;
-    @Column(name = "COUNT")
+    @Column(name = "QUANTITY")
     private int count;
 
     private static final double SHIPPING_PRICE = 17d;

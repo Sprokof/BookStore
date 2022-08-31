@@ -12,7 +12,10 @@ public interface BookService {
     List<Book> getAllBooks();
     List<Book> getBooksByCategory(Category category);
     Book getBookByIsbn(String isbn);
+    Book getBookByTitle(String title);
     Book getBookById(int id);
     void saveBook(Book book);
+    double averageRating(Book book);
     void addOrRemoveCategory(BookDto book, Category category);
+
 }

@@ -1,0 +1,23 @@
+.result-message{
+    margin-left: 40%;
+    margin-top: 10%;
+    justify-content: space-between;
+    font-family: Calibri, sans-serif;
+    font-weight: lighter;
+    font-size: 25px;
+    display: inline-block;
+
+}
+
+.home-btn {
+    width: 100px;
+    border-radius: 8px;
+    background-color: black;
+    color: white;
+    margin-left: 550px;
+    margin-top: 5px;
+}
+
+.home-btn:hover {
+    background-color: #1e1e1e;
+}

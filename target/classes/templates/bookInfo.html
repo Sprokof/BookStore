@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/static/css/}"/>
 
     <title>Title</title>
@@ -17,10 +17,10 @@
 
         <div class="col-md-6">
             <div th:align="center" id="item-1" class="service1-item-container">
-                <img class="cover-image" th:src="${currentBook.fileLocation}" alt="image">
+                <img class="cover-image" th:src="${'/images/' + ${book.bookImageName}}" alt="image">
             </div>
          </div>
-
+s
         <div class="col-md-6">
             <div class="product-title" th:text="${'Title: ' + ${book.title}}"></div>
             <div class="product-desc" th:text="${'Subject: ' + ${book.subject}}"></div>

@@ -5,8 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.0.2/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/static/css/cart.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/shipment.css}"/>
+    <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="container">
@@ -171,13 +172,11 @@
                     </label>
                 </div>
             </div>
+
             <div class="form-group">
                 <label class="col-md-4 control-label"></label>
                 <div class="col-md-4">
-                    <div th:if="${#fields.hasErrors()}">
-                    <button class="btn btn-warning" disabled="disabled">Send <span class="glyphicon glyphicon-send"></span></button>
-                    </div>
-                    <button class="btn btn-warning" type="submit">Send <span class="glyphicon glyphicon-send"></span></button>
+                    <button class="btn btn-warning" type="submit">Send <span class="fas fa-send"></span></button>
                 </div>
             </div>
         </form>

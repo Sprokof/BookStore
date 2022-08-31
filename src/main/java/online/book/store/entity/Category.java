@@ -5,11 +5,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
 @NoArgsConstructor
-@Table(name = "BOOKS_CATEGORIES")
+@Table(name = "CATEGORIES")
 @Getter
 @Setter
 public class Category {
@@ -18,8 +19,8 @@ public class Category {
     private int id;
     @Column(name = "CATEGORY")
     private String category;
-    @Column(name = "CATEGORY_RATING")
-    private int rating;
+
+    private transient double rating;
 
 
     public Category(String category){
@@ -27,7 +28,7 @@ public class Category {
         this.rating = avgRating();
     }
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "categories")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "category")
     private List<Book> books;
 
     @Override
@@ -36,7 +37,7 @@ public class Category {
         if(!(obj instanceof Category)) return false;
 
         Category cat = (Category) obj;
-        return this.getCategory().equals(cat.getCategory());
+        return this.getCategory().equalsIgnoreCase(cat.getCategory());
     }
 
 

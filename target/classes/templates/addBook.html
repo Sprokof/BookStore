@@ -1,10 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{selectCategories :: category-menu}">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/addBook.css}" href="/static/css/addBook.css">
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <title> Add Book </title>
 </head>
 <body>
+<div class="container">
+    <div class="container mt-5 pb-5">
+    <form method="post" th:action="@{/home/book/add}" th:object="${book}">
+        <h3> Fill Form Under </h3>
+    <br>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> ISBN </label>
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('isbn')}? 'has-error':'">
+                <input type="text" th:field="*{isbn}">
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('isbn')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> Title </label>
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('title')}? 'has-error':'">
+                <input type="text" th:field="*{title}">
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('title')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+        </div>
 
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> Publisher </label>
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('Publisher')}">
+                <input type="text" th:field="*{publisher}">
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('publisher')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> Price </label>
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('price')}? 'has-error':'">
+                <input type="text" th:field="*{price}">
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('price')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> Year of production </label>
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('yearPub')}? 'has-error':'">
+                <input type="text" th:field="*{yearPub}">
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('yearPub')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> Subject </label>
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('subject')}? 'has-error':'">
+                <input type="text" th:field="*{subject}">
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('subject')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> Available Copies </label>
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('availableCopies')}? 'has-error':'">
+                <input type="text" th:field="*{availableCopies}">
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('availableCopies')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 col-form-label"> Description </label>
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('description')}? 'has-error':'">
+                <textarea type="text" th:field="*{description}"></textarea>
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('description')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> Authors </label>
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('authors')}? 'has-error':'">
+                <input type="text" th:field="*{authors}">
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('authors')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> Format </label>
+            <div class="col-sm-6" th:classappend="${#fields.hasErrors('format')}? 'has-error':'">
+                <input type="text" th:field="*{format}">
+                <p class="error-message"
+                   th:each="error : ${#fields.errors('format')}"
+                   th:text="${error}">Validation error</p>
+            </div>
+        </div>
+
+        <div class="fileload">
+            <label class="col-sm-2 col-form-label"> Load Book Image </label>
+            <div class="file-load-block">
+                <input type="file" th:field="*{bookImage}" id="file">
+                <div class="fileLoad" th:classappend="${#fields.hasErrors('bookImage')}? 'has-error':'">
+                    <input type="text" value="Book image">
+                    <button> Select Image </button>
+                </div>
+            </div>
+            <p class="error-message"
+               th:each="error : ${#fields.errors('format')}"
+               th:text="${error}"> Validation error </p>
+        </div>
+
+        <div th:insert="~{selectCategories ::category-menu}"></div>
+    </form>
+
+    </div>
+</div>
+<script>
+    $('#file').change(function(){
+        let fileResult = $(this).val().substr(12);
+        $(this).parent().find('.fileLoad').find('input').val(fileResult);
+    });
+
+    $('#file').hover(function(){
+        $(this).parent().find('button').addClass('button-hover');
+    }, function(){
+        $(this).parent().find('button').removeClass('button-hover');
+    });
+
+
+</script>
 </body>
 </html>

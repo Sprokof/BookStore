@@ -1,13 +1,10 @@
 package online.book.store.service;
 
-import lombok.Getter;
-import lombok.Setter;
+
 import online.book.store.dao.BookDao;
 import online.book.store.dto.BookDto;
-import online.book.store.engines.SortEngine;
-import online.book.store.engines.SortTypes;
 import online.book.store.entity.Book;
-import online.book.store.engines.SearchEngine;
+import online.book.store.engines.SiteEngine;
 import online.book.store.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,39 +14,26 @@ import java.util.List;
 @Component
 public class BookServiceImpl implements BookService{
 
-
     @Autowired
     private BookDao bookDao;
 
     @Autowired
-    SearchEngine searchEngine;
+    SiteEngine siteEngine;
 
-    @Autowired
-    SortEngine sortEngine;
-
-    @Getter
-    @Setter
-    private List<Book> allBook;
-
-    @Autowired
-    SortEngine engine;
 
     @Override
     public List<Book> getPopularBooks() {
-        engine.setBookListToSort(bookDao.getPopularBooks());
-        return engine.getSortBooks();
+        return this.bookDao.getPopularBooks();
     }
 
     @Override
     public List<Book> getAllBooks() {
-        engine.setBookListToSort(bookDao.getAllBooks());
-        return engine.getSortBooks();
+        return this.bookDao.getAllBooks();
     }
 
     @Override
     public List<Book> getBooksByCategory(Category category) {
-        engine.setBookListToSort(bookDao.getBooksByCategory(category.getCategory()));
-        return engine.getSortBooks();
+        return this.bookDao.getBooksByCategory(category.getCategory());
     }
 
     @Override
@@ -74,6 +58,15 @@ public class BookServiceImpl implements BookService{
                 categories.remove(category);
             }
             else categories.add(category);
+    }
 
+    @Override
+    public Book getBookByTitle(String title) {
+        return this.bookDao.getBookByTitle(title);
+    }
+
+    @Override
+    public double averageRating(Book book) {
+        return this.bookDao.averageRating(book);
     }
 }

@@ -3,11 +3,16 @@ package online.book.store.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import online.book.store.service.BookService;
+import online.book.store.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Entity
@@ -16,6 +21,10 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 public class Book {
+
+    @Autowired
+    private transient BookService bookService;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -28,7 +37,7 @@ public class Book {
     private String publisher;
     @Column(name = "PRICE")
     private double price;
-    @Column(name = "YEAR_OF_PUBLISHER")
+    @Column(name = "YEAR_OF_PUBLISHING")
     private String yearPub;
     @Column(name = "SUBJECT")
     private String subject;
@@ -49,7 +58,7 @@ public class Book {
 
 
 
-    transient int bookRating = getAvgRating();
+    transient double bookRating = bookService.averageRating(this);
 
 
     public Book(String isbn, String title, String publisher,
@@ -72,7 +81,7 @@ public class Book {
 
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "category", fetch = FetchType.EAGER)
     @JoinTable(name = "BOOKS_CATEGORIES",
             joinColumns = {@JoinColumn(name = "fk_book")},
             inverseJoinColumns = {@JoinColumn(name = "fk_category")})
@@ -106,26 +115,19 @@ public class Book {
         bookReview.setBook(null);
     }
 
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "wishlist")
+    private List<Wishlist> wishlists;
 
-    public int getAvgRating() {
-        if(this.bookReviews == null) return 0;
-        Integer[] scores = this.bookReviews.
-                stream().map(BookReview::getBookRating).
-                collect(Collectors.toList()).toArray(Integer[]::new);
 
-        int scoreSum = 0, length = scores.length, index = 0;
-
-        while (index != length) {
-            scoreSum += scores[index++];
-        }
-        return (scoreSum / length);
-    }
 
     @Override
     public String toString(){
-        return String.format("%s,%s,%s,%s,%s,%s",
-                        this.isbn, this.title, this.publisher,
-                        this.yearPub, this.subject, this.description);
+        return String.format("%s%s%s%s%s%s%s",
+                        this.isbn.toLowerCase(Locale.ROOT),
+                        this.title.toLowerCase(Locale.ROOT),
+                        this.publisher.toLowerCase(Locale.ROOT),
+                        this.yearPub.toLowerCase(Locale.ROOT), this.subject,
+                        this.description.toLowerCase(Locale.ROOT), this.price);
     }
 
     private LocalDate currentDate(){

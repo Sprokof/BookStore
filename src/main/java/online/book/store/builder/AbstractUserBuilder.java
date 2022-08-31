@@ -10,9 +10,22 @@ public abstract class AbstractUserBuilder {
         return null;
     }
 
+    public AbstractUserBuilder username(String username){
+        return null;
+    }
+
     public AbstractUserBuilder email(String email){
         return null;
     }
+
+    public AbstractUserBuilder password(String password){
+        return null;
+    }
+
+    public AbstractUserBuilder ipAddress(String ip){return null;}
+
+    public AbstractUserBuilder remembered(boolean remembered){return null;}
+
 
     public boolean containsNull(){
         return false;

@@ -17,7 +17,8 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public List<Category> popularCategories() {
-        return getPopularCategories();
+
+        return this.categoryDao.popularCategories();
     }
 
     @Override
@@ -25,19 +26,4 @@ public class CategoryServiceImpl implements CategoryService{
         return this.categoryDao.allCategory();
     }
 
-    private List<Category> getPopularCategories(){
-    List<Category> categories;
-      categories = this.categoryDao.allCategory();
-      categories.sort(Comparator.comparingInt(Category::getRating));
-    return getFewFirstCategories(categories);
-
-    }
-
-    private List<Category> getFewFirstCategories(List<Category> categories){
-        Category[] sourceArray = categories.toArray(Category[]::new);
-        Category[] targetArray = new Category[5];
-        System.arraycopy(sourceArray, 0, targetArray, 0, 5);
-    return Arrays.asList(targetArray);
-
-    }
 }

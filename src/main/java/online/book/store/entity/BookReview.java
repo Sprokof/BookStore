@@ -12,13 +12,15 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class BookReview {
+   public static final double MIN_POPULAR_RATING = 3.0d, MAX_POPULAR_RATING = 5.0d;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "REVIEW")
     private String comment;
     @Column(name = "BOOK_RATING")
-    private int bookRating;
+    private double bookRating;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
