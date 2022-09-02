@@ -113,22 +113,17 @@ public class CheckoutDto extends AbstractCheckoutBuilder {
 
     @Override
     public boolean containsNull() {
-        final int STATE_FIELD_INDEX = 5;
-        boolean result = false;
-
-        Field[] fields = this.getClass().getFields();
+        Field[] fields = this.getClass().getDeclaredFields();
 
         int index = 0;
         while (index != fields.length) {
 
-            if (fields[index] == null && index != STATE_FIELD_INDEX) {
-                result = true;
-                break;
-            }
+            if (fields[index] == null) return true;
+
             index++;
         }
 
-        return result;
+        return false;
 
     }
 

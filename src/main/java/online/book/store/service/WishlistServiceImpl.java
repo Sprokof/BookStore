@@ -24,23 +24,15 @@ public class WishlistServiceImpl implements WishlistService{
 
 
     @Override
-    public void addToCart(Book book) {
-        cartService.addBookToCart(book);
-
+    public void removeFromWishlist(Book book, Wishlist wishlist) {
+        wishlist.remove(book);
+        userService.updateUserInSession(wishlist.getUser());
     }
 
     @Override
-    public void removeFromWishlist(Book book) {
-        User user = userService.getCurrentUser();
-        user.getWishList().remove(book);
-        userService.updateUserInSession(user);
-    }
-
-    @Override
-    public void addBookToWishlist(Book book) {
-        User user = userService.getCurrentUser();
-        user.getWishList().addBook(book);
-        userService.updateUserInSession(user);
+    public void addBookToWishlist(Book book, Wishlist wishlist) {
+        wishlist.addBook(book);
+        userService.updateUserInSession(wishlist.getUser());
 
         }
 }

@@ -26,6 +26,10 @@ public abstract class AbstractUserBuilder {
 
     public AbstractUserBuilder remembered(boolean remembered){return null;}
 
+    public String getLogin(){
+        return null;
+    }
+
 
     public boolean containsNull(){
         return false;

@@ -67,6 +67,13 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public double averageRating(Book book) {
-        return this.bookDao.averageRating(book);
+        return round(this.bookDao.averageRating(book));
+    }
+
+    private double round(double value) {
+        long factor = (long) Math.pow(10, 1);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
     }
 }

@@ -46,7 +46,7 @@ public class UserDto extends AbstractUserBuilder {
 
     @Override
     public boolean containsNull() {
-        Field[] userFields = this.getClass().getFields();
+        Field[] userFields = this.getClass().getDeclaredFields();
         for(Field field : userFields){
             if(field == null) return true;
         }
@@ -81,5 +81,10 @@ public class UserDto extends AbstractUserBuilder {
                 ipAddress(this.ipAddress).
                 remembered(this.remembered).
                 buildUser();
+    }
+
+    @Override
+    public String getLogin() {
+        return this.email;
     }
 }

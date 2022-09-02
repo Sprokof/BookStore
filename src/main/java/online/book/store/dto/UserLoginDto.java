@@ -12,17 +12,19 @@ import java.lang.reflect.Field;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserLoginDto{
+public class UserLoginDto extends AbstractUserBuilder{
 
     private String login;
     private String password;
     private boolean remembered;
+    private String ipAddress;
 
 
-    public UserLoginDto(String login, String password, boolean remembered) {
+    public UserLoginDto(String login, String password, boolean remembered, String ipAddress) {
         this.login = login;
         this.password = password;
         this.remembered = remembered;
+        this.ipAddress = ipAddress;
     }
 
 }

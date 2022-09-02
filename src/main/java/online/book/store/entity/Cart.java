@@ -31,6 +31,9 @@ public class Cart {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart", fetch = FetchType.EAGER)
     private List<CartItem> cartItems;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "cart", fetch = FetchType.EAGER)
+    private User user;
+
 
     public Cart addItem(CartItem item){
         if(this.cartItems ==  null) cartItems = new LinkedList<>();

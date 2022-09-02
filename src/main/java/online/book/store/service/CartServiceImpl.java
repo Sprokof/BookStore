@@ -1,14 +1,17 @@
 package online.book.store.service;
 
 
+import lombok.Setter;
 import online.book.store.dao.CartDao;
 import online.book.store.entity.Book;
 import online.book.store.entity.Cart;
 import online.book.store.entity.CartItem;
 import online.book.store.entity.User;
+import online.book.store.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -22,7 +25,7 @@ public class CartServiceImpl implements CartService {
     private UserService userService;
 
     @Autowired
-    private HttpSession httpSession;
+    private SignInService signInService;
 
 
     @Override
@@ -31,21 +34,16 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void addBookToCart(Book book) {
-        User user = (User) httpSession.getAttribute("user");
+    public void addBookToCart(Book book, Cart cart) {
         int quantity = 1;
-        if(user.getCart() == null){
-            user.setCart(new Cart());
-        }
-        if(bookAdded(user.getId(), book)){
+
+        if(bookAdded(cart.getUser().getId(), book)){
             quantity += 1;
         }
         CartItem cartItem = new CartItem(book.getIsbn(), book.getPrice(), quantity);
-        Cart cart = user.getCart();
         cart.addItem(cartItem).updatePrices();
-        user.setCart(cart);
 
-        userService.updateUserInSession(user);
+        userService.updateUserInSession(cart.getUser());
 
 
     }
@@ -53,7 +51,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void updateCart(Cart cart) {
-        User user = userService.getCurrentUser();
+        User user = cart.getUser();;
         user.setCart(cart);
         userService.updateUserInSession(user);
 
@@ -61,28 +59,26 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void clearCart() {
-        User user = userService.getCurrentUser();
+    public void clearCart(Cart cart) {
+        User user = cart.getUser();;
         user.setCart(null);
         userService.updateUserInSession(user);
     }
 
     @Override
-    public void updateCartItem(CartItem cartItem) {
-     User currentUser =  userService.getCurrentUser();
-     currentUser.getCart().removeItem(cartItem);
-     updateCart(currentUser.getCart());
-     userService.updateUserInSession(currentUser);
+    public void updateCartItem(CartItem cartItem, Cart cart) {
+     cart.removeItem(cartItem);
+     updateCart(cart);
+     userService.updateUserInSession(cart.getUser());
 
     }
 
     @Override
-    public void updateCartItem(CartItem cartItem, int quantity) {
-        User currentUser = userService.getCurrentUser();
+    public void updateCartItem(CartItem cartItem, int quantity, Cart cart) {
         cartItem.setQuantity(quantity);
-        currentUser.getCart().setCartItem(cartItem);
+        cart.setCartItem(cartItem);
 
-        userService.updateUserInSession(currentUser);
+        userService.updateUserInSession(cart.getUser());
 
     }
 

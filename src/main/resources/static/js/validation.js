@@ -4,6 +4,7 @@ login.addEventListener('click', () => {
     user['login'] = document.getElementById('login').value;
     user['password'] = hash(document.getElementById('log-password').value);
     user['remembered'] = document.querySelector('.remember-me input').checked;
+    user['ipAddress'] = '0';
 
     doValidateRequest(user, "/home/login");
 

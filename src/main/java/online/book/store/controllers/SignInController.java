@@ -43,9 +43,10 @@ public class SignInController {
 
 
     @PostMapping("/home/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginDto user){
+    public ResponseEntity<?> login(@RequestBody UserLoginDto user, HttpServletRequest request){
         loginValidation.validation(user);
         if(!loginValidation.hasErrors()){
+            user.setIpAddress(signInService.getIpAddressFromRequest(request));
             signInService.loginUser(user);
         }
         Map<String, String> errors = loginValidation.validationErrors();
@@ -57,7 +58,7 @@ public class SignInController {
     public ResponseEntity<?> registration(@RequestBody UserDto userDto, HttpServletRequest request){
         registrationValidation.validation(userDto);
         if(!registrationValidation.hasErrors()){
-            String currentIp = signInService.getCurrentIP(request);
+            String currentIp = signInService.getIpAddressFromRequest(request);
             userDto.setIpAddress(currentIp);
             userService.saveUser(userDto.doUserBuilder());
             signInService.loginUser(userDto);
@@ -76,8 +77,7 @@ public class SignInController {
     public ResponseEntity.BodyBuilder reset(@RequestBody String newPassword,
                                             HttpServletRequest httpServletRequest){
         signInService.addPassword(newPassword);
-        String ipAddress = signInService.getCurrentIP(httpServletRequest);
-        User currentUser = signInService.getCurrentUser(ipAddress);
+        User currentUser = signInService.getCurrentUser(httpServletRequest);
         sender.send(currentUser.getEmail(), MailSubjects.RESET_PASSWORD,
                 signInService.getResetDto().getConfirmCode());
         return ResponseEntity.status(200);
@@ -88,8 +88,7 @@ public class SignInController {
         boolean correct = false;
         if(code.equals(signInService.getResetDto().getConfirmCode())){
             correct = true;
-            String ipAddress = signInService.getCurrentIP(httpServletRequest);
-            User currentUser = signInService.getCurrentUser(ipAddress);
+            User currentUser = signInService.getCurrentUser(httpServletRequest);
             currentUser.setPassword(signInService.getResetDto().getPassword());
             userService.updateUserInSession(currentUser);
         }

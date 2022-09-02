@@ -65,7 +65,6 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "cart_id")
-    @Getter
     @Setter
     private Cart cart;
 
@@ -126,6 +125,11 @@ public class User {
     public Wishlist getWishList() {
         if(this.wishList == null) this.wishList = new Wishlist();
         return wishList;
+    }
+
+    public Cart getCart() {
+        if(this.cart == null) this.cart = new Cart();
+        return this.cart;
     }
 
     public void setWishList(Wishlist wishList) {

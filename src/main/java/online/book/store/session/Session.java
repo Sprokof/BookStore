@@ -1,5 +1,6 @@
 package online.book.store.session;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import online.book.store.entity.User;
 import org.apache.catalina.connector.Request;
@@ -14,8 +15,8 @@ import java.util.TreeMap;
 @Component
 @NoArgsConstructor
 public class Session {
-
-    private static final HttpSession httpSession = new WiredSession().getHttpSession();
+    @Autowired
+    private HttpSession httpSession;
 
     public void addUser(User user){
         String userIp = user.getIpAddress();

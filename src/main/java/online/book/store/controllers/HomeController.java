@@ -47,29 +47,13 @@ public class HomeController {
 
     @GetMapping(value = {"/", "/home"})
     public String home(HttpServletRequest servletRequest) {
-        String ip = signInService.getCurrentIP(servletRequest);
         User currentUser;
-        if((currentUser = userService.getUserByIP(ip)) != null && currentUser.isRemembered()){
+        if((currentUser = signInService.getCurrentUser(servletRequest))
+                != null && currentUser.isRemembered()){
             userService.updateUserInSession(currentUser);
         }
         return "home";
     }
-
-    @PostMapping("/home/wishlist/add")
-    public ResponseEntity<?> addToWishList(@RequestParam("title") String title) {
-        Book book = bookService.getBookByTitle(title);
-        wishlistService.addBookToWishlist(book);
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
-    }
-
-    @PostMapping("/home/cart/add")
-    public ResponseEntity<?> addBookToCart(@RequestParam("title") String title){
-        Book book = bookService.getBookByTitle(title);
-        cartService.addBookToCart(book);
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
-
-    }
-
 
 }
 

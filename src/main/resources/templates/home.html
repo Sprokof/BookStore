@@ -28,30 +28,23 @@
     </header>
 
     <section>
-        <div class="book" th:each="book : ${books}">
+        <div class="card" th:each="book : ${books}">
+            <img class="book-img" th:src="@{'/images/' + ${book.bookImageName}}" alt="book-image">
+            <div class="book-info">
+                <span th:text="${book.title}"></span>
+                <div class="star-rating"
+                     th:text="${book.bookRating + '(' + ${book.getBookReviews().size()} + 'scores)'}"></div>
 
-            <picture>
-                <img th:src="@{'/images/' + ${book.bookImageName}}" alt="book image">
-            </picture>
-
-            <div class="book-desc">
-                <p>
-                    <b th:text="${book.title}"></b>
-                </p>
-
-                <small th:text="${'Author: ' + ${book.authors}}"></small>
-                <br>
-                <samp th:text="${'Price: ' + ${book.price} + '₽'}"></samp>
-                <br>
-                <div class="rating" th:text="${book.bookRating}"></div>
-
-
-                <div class="book-button">
-                    <button> Add to cart </button>
-                    <br>
-                    <button style="width: 170px" >Add to wish list</button>
+                <p th:text="${book.description}"></p>
+                <div class="buttons">
+                    <div class="price">
+                        300 ₽
+                    </div>
+                    <button class="cart btn"> Add to cart</button>
+                    <button class="wishlist btn">
+                        <i class="far fa-heart" style="margin-top: 5px"></i>
+                    </button>
                 </div>
-
             </div>
         </div>
     </section>

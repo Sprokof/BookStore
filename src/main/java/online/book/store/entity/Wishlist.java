@@ -26,6 +26,7 @@ public class Wishlist {
             inverseJoinColumns = {@JoinColumn(name = "fk_book")})
     private List<Book> books;
 
+
     public void addBook(Book book){
         if(this.books == null) this.books = new LinkedList<>();
         this.books.add(book);
@@ -37,6 +38,11 @@ public class Wishlist {
         this.books.remove(book);
         book.getWishlists().remove(this);
     }
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "wishlist", fetch = FetchType.EAGER)
+    @Getter
+    @Setter
+    private User user;
 
 
 
