@@ -1,30 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+
+    <link rel="shortcut icon" href="#">
     <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
-    <link rel="script" type="text/css" th:href="@{/css/registration.css}">
-    <link rel="script" type="text/css" th:href="@{/css/reset.css}">
-    <link rel="script" type="text/css" th:href="@{/css/noresult.css}">
-    <link rel="script" type="text/css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/noresult.css}">
 
 
     <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" th:href="@{webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
     <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://raw.github.com/bigomega/crypto.js/master/src/sha256.js"></script>
+
+
 </head>
 <body>
+<div th:insert="~{navbar :: navbar}"></div>
 <div class="result-message">
     <span class="result-message"> No related results</span>
     <button class="home-btn" onclick="goHome()"> Back home </button>
 </div>
 
-<script src="/static/js/navbar.js"></script>
-<script src="/static/js/login.js"></script>
-<script src="/static/js/reset.js"></script>
-<script src="/static/js/confirmReset.js"></script>
-<script src="/static/js/validation.js"></script>
+<script type="module" th:src="@{/js/login.js}"></script>
+<script type="module" th:src="@{/js/reset.js}"></script>
+<script type="module" th:src="@{/js/confirmReset.js}"></script>
+<script type="module" th:src="@{/js/validation.js}"></script>
+<script type="module" th:src="@{/js/registration.js}"></script>
+<script type="module" th:src="@{/js/navbar.js}"></script>
+
+
 <script>
     function goHome(){
         document.location.href = "/home";

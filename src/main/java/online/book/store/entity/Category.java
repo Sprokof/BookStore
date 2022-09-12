@@ -1,5 +1,6 @@
 package online.book.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,7 +29,7 @@ public class Category {
         this.rating = avgRating();
     }
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "category")
+    @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL)
     private List<Book> books;
 
     @Override
@@ -45,7 +46,7 @@ public class Category {
         int sumRating = 0;
         int length = this.books.size();
         for(Book book : this.books){
-            sumRating += book.bookRating;
+            //sumRating += book.bookRating;
         }
     return (sumRating / length);
     }

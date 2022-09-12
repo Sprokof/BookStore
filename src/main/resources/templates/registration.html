@@ -1,30 +1,35 @@
-<div class="auth-form sign" id="popup-sign-in" th:fragment="registration-body">
+<div class="sign" id="popup-sign-in" th:fragment="registration-body">
     <div class="close-sign-btn" id="close-sign-in"> &times; </div>
     <div class="form">
         <h2> Sign In </h2>
 
         <div class="form-element">
-            <label for="username"> Username </label>
+            <label for="username"> <span class="error-symbol"> &#033; </span> Username </label>
             <input type="text" id="username" placeholder="Enter username">
+            <p class="error-message" id="username-error"></p>
         </div>
 
         <div class="form-element">
-            <label for="reg-email"> Email </label>
-            <input type="text" id="reg-email" placeholder="Enter email address">
+            <label for="reg-email"> <span class="error-symbol"> &#033; </span> Email </label>
+            <input type="email" id="reg-email" placeholder="Enter email address">
+            <p class="error-message" id="reg-email-error"></p>
         </div>
 
         <div class="form-element">
-            <label for="reg-password"> Password </label>
+            <label for="reg-password"> <span class="error-symbol"> &#033; </span> Password </label>
             <input type="password" id="reg-password" placeholder="Enter password">
+            <p class="error-message" id="reg-password-error"></p>
         </div>
 
         <div class="form-element">
-            <label for="confirm-reg-password"> Confirm Password </label>
+            <label for="confirm-reg-password">
+                <span class="error-symbol"> &#033; </span> Confirm Password </label>
             <input type="password" id="confirm-reg-password" placeholder="Repeat password">
+            <p class="error-message" id="confirm-reg-password-error"></p>
         </div>
 
         <div class="form-element">
-            <button id="sign-in-btn"> Sign  In </button>
+            <button id="sign-in-btn"> Sign In </button>
         </div>
 
     </div>

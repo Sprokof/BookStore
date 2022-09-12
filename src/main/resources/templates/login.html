@@ -1,21 +1,25 @@
-<div class="auth-form login" id="popup-login" th:fragment="login-body">
+<div class="login" id="popup-login" th:fragment="login-body">
     <div class="close-login-btn" id="close-login"> &times; </div>
     <div class="form">
         <h2> Log in </h2>
 
-        <div class="form-element" id="input-login">
-            <label for="login"> Login </label>
-            <input type="text" id="login" placeholder="Enter Username Or Email">
-        </div>
+            <div class="form-element" id="input-login">
+                <label for="login"> <span class="error-symbol"> &#033; </span> Login </label>
+                <input type="text" id="login" placeholder="Enter Username Or Email">
+                <p class="error-message" id="login-error"></p>
+            </div>
+
 
         <div class="form-element" id="input-password">
-            <label for="log-password"> Password </label>
+            <label for="log-password"> <span class="error-symbol"> &#033; </span> Password </label>
             <input type="password" id="log-password" placeholder="Enter password">
+            <p class="error-message" id="log-password-error"></p>
         </div>
 
         <div class="remember-me">
-            <input id="remember-me" type="checkbox">
-            <label for="remember-me" id="rem-label"> Remember me </label>
+            <label for="rem-me" style="margin-left: 5px; font-size: 15px"> Remember me </label>
+            <input id="rem-me" type="checkbox">
+            <p class="error-message"></p>
         </div>
 
         <div class="form-element">

@@ -2,7 +2,7 @@ package online.book.store.controllers;
 
 
 import online.book.store.dto.UserLoginDto;
-import online.book.store.dto.UserDto;
+import online.book.store.dto.UserSignInDto;
 import online.book.store.entity.User;
 import online.book.store.mail.MailSender;
 import online.book.store.mail.MailSubjects;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @Controller
@@ -43,34 +44,35 @@ public class SignInController {
 
 
     @PostMapping("/home/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginDto user, HttpServletRequest request){
+    public ResponseEntity<?> login(@RequestBody UserLoginDto user, HttpServletResponse response,
+                                   HttpServletRequest request){
         loginValidation.validation(user);
         if(!loginValidation.hasErrors()){
             user.setIpAddress(signInService.getIpAddressFromRequest(request));
-            signInService.loginUser(user);
+            signInService.loginUser(request, user);
         }
+
         Map<String, String> errors = loginValidation.validationErrors();
         return ResponseEntity.ok(errors);
     }
 
 
     @PostMapping("/home/registration")
-    public ResponseEntity<?> registration(@RequestBody UserDto userDto, HttpServletRequest request){
-        registrationValidation.validation(userDto);
+    public ResponseEntity<?> registration(@RequestBody UserSignInDto userSignInDto,
+                                          HttpServletRequest request){
+        registrationValidation.validation(userSignInDto);
         if(!registrationValidation.hasErrors()){
-            String currentIp = signInService.getIpAddressFromRequest(request);
-            userDto.setIpAddress(currentIp);
-            userService.saveUser(userDto.doUserBuilder());
-            signInService.loginUser(userDto);
+            signInService.loginUser(request, userSignInDto);
         }
         Map<String, String> errors = registrationValidation.validationErrors();
         return ResponseEntity.ok(errors);
     }
 
+
     @PostMapping("/home/logout")
-    public ResponseEntity.BodyBuilder logout(HttpServletRequest request){
-        int code = signInService.logout(request);
-        return ResponseEntity.status(code);
+    public ResponseEntity<String> logout(HttpServletRequest request){
+        String code = (String.valueOf(signInService.logout(request)));
+        return ResponseEntity.ok(code);
     }
 
     @PostMapping("/home/reset")

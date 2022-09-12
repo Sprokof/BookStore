@@ -1,3 +1,4 @@
+import { loginClose } from './login.js'
 let resetPopup = document.querySelector('#popup-reset');
 let closeReset = document.querySelector('#close-reset');
 let openReset = document.querySelector('#reset');
@@ -13,11 +14,9 @@ closeReset.addEventListener('click', (e) => {
 
 function resetOpen(){
     resetPopup.classList.add('down', 'visible');
-    blockScroll(resetPopup);
 }
 
-function resetClose(){
+export function resetClose(){
     resetPopup.classList.remove('visible', 'down');
-    unblockScroll();
 }
 

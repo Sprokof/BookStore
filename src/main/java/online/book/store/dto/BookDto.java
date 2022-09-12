@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class BookDto extends AbstractBookBuilder {
 
-    public static final String[] AVAILABLE_STATUS = {"Is available", "Not available"};
+    public static final String[] AVAILABLE_STATUS = {"is available", "not available"};
 
     @Value("book.images.root")
     private String directoryLocation;

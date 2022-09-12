@@ -4,22 +4,19 @@ package online.book.store.service;
 import online.book.store.dao.BookDao;
 import online.book.store.dto.BookDto;
 import online.book.store.entity.Book;
-import online.book.store.engines.SiteEngine;
 import online.book.store.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 @Component
 public class BookServiceImpl implements BookService{
 
     @Autowired
     private BookDao bookDao;
-
-    @Autowired
-    SiteEngine siteEngine;
-
 
     @Override
     public List<Book> getPopularBooks() {
@@ -66,8 +63,8 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public double averageRating(Book book) {
-        return round(this.bookDao.averageRating(book));
+    public double averageRating(Integer bookId) {
+        return round(this.bookDao.averageRating(bookId));
     }
 
     private double round(double value) {

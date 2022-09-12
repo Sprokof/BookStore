@@ -1,12 +1,9 @@
 package online.book.store.engines;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 @Getter
-@Component
-@AllArgsConstructor
 public enum SortType {
 
     POPULARITY("Popularity"),
@@ -14,7 +11,12 @@ public enum SortType {
     LOWEST("Price Low To High"),
     LATEST("Latest Release");
 
-    String sortType;
+    private final String type;
+
+
+    SortType (String type){
+        this.type = type;
+    }
 
 
 

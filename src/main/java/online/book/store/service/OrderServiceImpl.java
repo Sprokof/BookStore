@@ -5,34 +5,35 @@ import online.book.store.entity.Order;
 import online.book.store.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 
+@Service
 @Component
 public class OrderServiceImpl implements OrderService{
 
     @Autowired
-    HttpSession httpSession;
+    private UserService userService;
 
     @Autowired
-    UserService userService;
+    private SignInService signInService;
 
     @Override
     public void addOrders() {
-        User user = userService.getCurrentUser();
-        List<CartItem> userItems = user.getCart().getCartItems();
+        User savedUser = signInService.getSavedUser();
+        List<CartItem> userItems = savedUser.getCart().getCartItems();
 
 
         userItems.forEach((item) -> {
             Order order = new Order(item.getBook().getTitle(), item.getQuantity(), item.getTotal(),
                     item.getBook().getBookImageName());
             order.setStatus("Paid");
-            user.addOrder(order);
+            savedUser.addOrder(order);
         });
 
-        userService.updateUserInSession(user);
+        userService.updateUserInSession(savedUser);
 
     }
 }

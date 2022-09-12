@@ -1,18 +1,13 @@
 package online.book.store.controllers;
 
-import online.book.store.engines.*;
-import online.book.store.entity.Book;
-import online.book.store.entity.User;
-import online.book.store.service.*;
+
+import online.book.store.entity.Book;import online.book.store.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -24,33 +19,25 @@ public class HomeController {
     private BookService bookService;
 
     @Autowired
-    private CartService cartService;
-
-    @Autowired
-    private WishlistService wishlistService;
-
-
-    @Autowired
-    HttpSession session;
-
-    @Autowired
     UserService userService;
 
-    @Autowired
-    private SignInService signInService;
 
     @ModelAttribute("books")
-    public List<Book> popularBooks(){
-        return bookService.getPopularBooks();
+    public List<Book> books() {
+        List<Book> books;
+        if((books = bookService.getPopularBooks()).isEmpty()){
+            books = bookService.getAllBooks();
+        }
+    return books;
     }
 
 
     @GetMapping(value = {"/", "/home"})
-    public String home(HttpServletRequest servletRequest) {
-        User currentUser;
-        if((currentUser = signInService.getCurrentUser(servletRequest))
-                != null && currentUser.isRemembered()){
-            userService.updateUserInSession(currentUser);
+    @SuppressWarnings("unchecked")
+    public String home(Model model) {
+        List<Book> books = (List<Book>) model.getAttribute("books");
+        if(books == null || books.isEmpty()){
+            return "noresult";
         }
         return "home";
     }

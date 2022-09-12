@@ -40,7 +40,7 @@ public class CartController {
 
     @PostMapping("/home/cart/set")
     public ResponseEntity.BodyBuilder addCartItem(@RequestBody CartItemDto dto){
-        User user = signInService.savedUser();
+        User user = signInService.getSavedUser();
         int id = (Integer.parseInt(dto.getCartItemId()));
         int quantity = (Integer.parseInt(dto.getQuantity()));
 
@@ -54,7 +54,7 @@ public class CartController {
 
     @PostMapping("/home/cart/remove/")
     public ResponseEntity.BodyBuilder removeCartItem(@RequestBody String itemId){
-        User user = signInService.savedUser();
+        User user = signInService.getSavedUser();
         int cartItemId = (Integer.parseInt(itemId));
 
         CartItem cartItem = cartService.getCartItemById(cartItemId);
@@ -67,7 +67,7 @@ public class CartController {
 
     @PostMapping("/home/cart/add")
     public ResponseEntity<?> addBookToCart(@RequestParam("title") String title){
-        User user = signInService.savedUser();
+        User user = signInService.getSavedUser();
         Book book = bookService.getBookByTitle(title);
         cartService.addBookToCart(book, user.getCart());
         return ResponseEntity.ok(HttpStatus.ACCEPTED);

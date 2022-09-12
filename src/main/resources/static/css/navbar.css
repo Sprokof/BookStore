@@ -9,7 +9,7 @@
 body {
     min-height: 100vh;
     background-size: cover;
-    background: whitesmoke center no-repeat;
+    background: white;
 }
 
 .sidebar {
@@ -34,7 +34,7 @@ body {
     color: dimgrey!important;
 }
 
-.sidebar .item .sub-btn :hover{
+.sidebar .item .sub-btn:hover{
     color: #1b1b1b;
 }
 
@@ -160,10 +160,11 @@ header .nav-item a:hover::after {
 
 .nav-item input {
     border: solid 1px #b4ad9e;
-    padding-left: 5px;
+    padding-left: 10px;
     width: 170px;
     border-radius: 3px;
     outline: 3px;
+    height: 30px;
 }
 
 .nav-item .fa-search {

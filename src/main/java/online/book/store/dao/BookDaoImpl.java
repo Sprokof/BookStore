@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import javax.persistence.NoResultException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static online.book.store.entity.BookReview.MAX_POPULAR_RATING;
 import static online.book.store.entity.BookReview.MIN_POPULAR_RATING;
@@ -57,8 +56,8 @@ public class BookDaoImpl implements BookDao {
             session.beginTransaction();
             resultedList = (LinkedList<Book>) session.
                     createSQLQuery("SELECT * FROM " +
-                            "BOOKS as book JOIN TABLE BOOKS_REVIEWS as reviews" +
-                            " on book.id = review.id WHERE BOOK_RATING " +
+                            "BOOKS as book JOIN BOOKS_REVIEWS as reviews" +
+                            " on book.id = reviews.id WHERE BOOK_RATING " +
                             "BETWEEN :min_rating and :max_rating ").
                     addEntity(Book.class).
                     setParameter("min_rating", MIN_POPULAR_RATING).
@@ -230,15 +229,14 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public double averageRating(Book book) {
-        int bookId = book.getId();
+    public double averageRating(Integer bookId) {
         Session session = null;
         double rating = 0;
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
             rating = (double) session.createSQLQuery("SELECT AVG(BOOK_RATING) FROM " +
-                            "BOOKS_REWIWS WHERE id=:book_id").
+                            "BOOKS_REVIEWS WHERE id=:book_id").
                     setParameter("book_id", bookId).getSingleResult();
             session.getTransaction().commit();
         }

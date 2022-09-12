@@ -8,6 +8,7 @@ import online.book.store.entity.Book;
 import online.book.store.entity.Category;
 import online.book.store.service.BookService;
 import online.book.store.service.CategoryService;
+import org.hibernate.validator.internal.util.stereotypes.Lazy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,7 @@ public class SiteEngine {
     private List<Row> rows = new LinkedList<>();
 
     @Setter
+    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Row {
@@ -112,7 +114,7 @@ public class SiteEngine {
     private void sortResultedList(SortConfig config) {
         switch (config.currentType()) {
             case POPULARITY:
-                this.bookList.sort(Comparator.comparingDouble(Book::getBookRating));
+                //this.bookList.sort(Comparator.comparingDouble(Book::getBookRating));
                 break;
             case LOWEST:
                 this.bookList.sort(Comparator.comparingDouble(Book::getPrice));
@@ -149,7 +151,7 @@ public class SiteEngine {
     }
 
     public List<Row> mapResultToRow() {
-        int rowSize = 3;
+        int rowSize = 4;
         this.rows = new LinkedList<>();
         for (int i = 0; i < this.bookList.size(); i += rowSize) {
             Row row = new Row(this.bookList.subList(i,

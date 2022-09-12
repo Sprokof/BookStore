@@ -13,7 +13,8 @@ public class SessionFactorySingleton {
         if (instance == null) {
             instance = getSessionFactory(new Class[]{Book.class,
                                         Category.class, User.class, CartItem.class, Cart.class,
-                                        BookReview.class, Wishlist.class, Checkout.class, Order.class, Address.class});
+                                        BookReview.class, Wishlist.class,
+                    Checkout.class, Order.class, Address.class});
         }
     return instance;
     }

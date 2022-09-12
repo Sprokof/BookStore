@@ -27,26 +27,30 @@ public class LoginValidation extends AbstractValidation {
 
 
     public void validation(Object target) {
-        if(!supports(target.getClass())) return ;
-            User loadedUser;
+        if (!supports(target.getClass())) return;
+        User loadedUser;
 
         UserLoginDto userDto = (UserLoginDto) target;
 
         deleteErrorsMessages();
 
 
+        if(userDto.getLogin().isEmpty()){
+            response.addError("login", "Login can't be empty");
+        }
         if ((loadedUser = userService.getUserByLogin(userDto.getLogin())) == null) {
+            System.out.println(userDto.getLogin());
             response.addError("login", "Login not exist");
         }
         else {
-            if (!userDto.getPassword().equals(loadedUser.getPassword())) {
+            if (!userDto.getPassword().equalsIgnoreCase(loadedUser.getPassword())) {
                 response.addError("log-password", "Wrong password");
             }
         }
     }
 
     @Override
-    public boolean hasErrors(){
+    public boolean hasErrors() {
         return !response.getFieldErrors().isEmpty();
     }
 
@@ -57,6 +61,7 @@ public class LoginValidation extends AbstractValidation {
 
     @Override
     public void deleteErrorsMessages() {
-        super.deleteErrorsMessages();
+        this.response = new ValidateResponse();
+
     }
 }

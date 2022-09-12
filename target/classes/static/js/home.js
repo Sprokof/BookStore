@@ -1,5 +1,5 @@
 let sliderControlBtn = document.querySelectorAll('.control-slider span')
-let books = document.querySelectorAll('.book');
+let books = document.querySelectorAll('.card');
 let book_page = Math.ceil(books.length/4);
 let left = 0;
 let sliderStep = 25.34;
@@ -42,55 +42,43 @@ sliderControlBtn[0].onclick = () => {
     leftMover();
 }
 
-let titles = document.querySelectorAll('.book-desc p b');
-for(let i = 0; i < titles.length; i ++){
-    titles[i].onclick = () => {
-        let title = titles[i].innerText;
-        document.location.href = '/home/book?title=' + title;
+let infos = document.querySelectorAll('.book-info');
+for(let i = 0; i < infos.length; i ++){
+    infos[i].onclick = () => {
+        let child = infos[i].firstChild;
+        document.location.href = '/home/book?title=' +
+            child.innerText.replaceAll('\s', '').toLowerCase();
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    let booksRatings = document.querySelectorAll('.rating');
 
-    for (let i = 0; i < booksRatings.length; i++) {
-        let stars = []
-        for (let l = 0; l < 10; l++) {
-            stars[l] = document.createElement('li');
-            if (l < (Number(booksRatings[i].innerText))) {
-                stars[l].classList.add('fas', 'fa-star');
-            } else {
-                stars[l].classList.add('far', 'fa-star');
-            }
-        }
-        booksRatings[i].innerText = '';
-        for (let star of stars) {
-            booksRatings[i].appendChild(star);
-        }
-    }
-});
-
-let buttons = document.querySelectorAll('.book-button button');
-for(let button of buttons) {
-    button.addEventListener('click', () => {
+let cartBtn = document.querySelectorAll('.cart');
+cartBtn.forEach((btn) => {
+    btn.addEventListener('click', () => {
+        if (btn.children.length !== 0) return;
         let url = "/home/cart/add";
-        let buttonText = button.innerText;
-        if (buttonText.includes('wishlist', 0)) {
-            url = '/home/wishlist/add';
+        let btnText = btn.innerText;
+        if (btnText === "Remove from cart") {
+            url = "/home/cart/remove";
         }
-        let className = button.parentNode.parentNode.className;
-        let bookTitle = document.querySelector('.' + className + ' p b').innerText;
+        let title = getBookTitle(btn);
 
         $.ajax({
             type: "POST",
             contentType: "application/json",
             url: url,
             cache: false,
-            dataType: 'text',
-            data: bookTitle,
-            success: function (data) {
-                console.log(data);
+            dataType: "text",
+            data: title,
+            success: function () {
+                if (btnText === "Remove from cart") {
+                    btnText = "Add to cart";
+                } else {
+                    btnText = "Remove from cart";
+                }
             }
         })
+
     })
-}
+})
+

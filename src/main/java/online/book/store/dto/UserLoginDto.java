@@ -27,4 +27,13 @@ public class UserLoginDto extends AbstractUserBuilder{
         this.ipAddress = ipAddress;
     }
 
+    @Override
+    public String toString() {
+        return "UserLoginDto{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", remembered=" + remembered +
+                ", ipAddress='" + ipAddress + '\'' +
+                '}';
+    }
 }

@@ -1,6 +1,7 @@
 package online.book.store.validation;
 
 import online.book.store.dto.UserDto;
+import online.book.store.dto.UserSignInDto;
 import online.book.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,56 +18,63 @@ public class RegistrationValidation extends AbstractValidation {
     @Autowired
     private ValidateResponse response;
 
+
     @Override
     public boolean supports(Class<?> aClass) {
-        return UserDto.class.equals(aClass);
+        return UserSignInDto.class.equals(aClass);
     }
 
     @Override
     public void validation(Object target) {
         if (!supports(target.getClass())) return;
-        UserDto userDto = (UserDto) target;
+        UserSignInDto userSignInDto = (UserSignInDto) target;
         deleteErrorsMessages();
 
-        if (userDto.getUsername().isEmpty()) {
-            this.response.addError("username", "Username must not be empty");
+        if (userSignInDto.getUsername().isEmpty()) {
+            this.response.addError("username", "Username can't be empty");
         }
 
-        String usernamePattern = "^[a-z0-9]{3,10}$";
-        if ((userDto.getUsername().matches(usernamePattern))) {
-            if (userService.getUserByLogin(userDto.getUsername()) != null) {
-                this.response.addError("username", "Username already taken");
-            }
-        } else {
-            this.response.addError("username", "Username length must be " +
-                    "between 3 and 10 characters and not contains special symbols.");
+        if (userService.getUserByLogin(userSignInDto.getUsername()) != null) {
+            this.response.addError("username", "Username already taken");
         }
 
-        if (userService.getUserByLogin(userDto.getEmail()) != null) {
+        if(userSignInDto.getEmail().isEmpty()){
+            this.response.addError("reg-email", "Email can't be empty");
+        }
+
+        if (userService.getUserByLogin(userSignInDto.getEmail()) != null) {
             this.response.addError("reg-email", "Email already taken");
         }
 
-        if (userDto.getPassword().isEmpty()) {
-            this.response.addError("reg-password", "Password must not be empty");
+        String password = userSignInDto.getPassword();
+        System.out.println(password);
+
+        if (password.isEmpty()) {
+            this.response.addError("reg-password", "Password can't be empty");
         }
 
-        Pattern passwordPattern = Pattern.
-                compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$");
-
-        if (!passwordPattern.matcher(userDto.getPassword()).find()) {
-            this.response.addError("reg-password", "Password must not contains whitespaces, " +
-                    " must contains at least one digit," +
-                    "  one letter in lower case and in upper case, must contains at least one special symbols," +
-                    "  and be between 8 and 20 characters. ");
+        if (password.length() < 8 || password.length() > 15) {
+            this.response.addError("reg-password","Password must be between 8 and 15 characters");
         }
 
-        if (userDto.getConfirmPassword().isEmpty()) {
-            this.response.addError("confirm-reg-password", "Confirm password must not be empty");
-        } else {
-            String password = userDto.getPassword(), confirmPassword = userDto.getConfirmPassword();
-            if (!password.equals(confirmPassword)) {
-                this.response.addError("confirm-reg-password", "Passwords not equals");
-            }
+        Pattern pattern = Pattern.compile("[a-z]");
+
+        if (!pattern.matcher(password).find()) {
+            this.response.addError("reg-password","Password must contains at least one letter");
+        }
+
+        pattern = Pattern.compile("[0-9]");
+
+        if (!pattern.matcher(password).find()) {
+            this.response.addError("reg-password", "Password must contains at least one digit");
+        }
+
+        if(userSignInDto.getConfirmPassword().isEmpty()){
+            this.response.addError("confirm-reg-password", "Confirm password can't be empty");
+        }
+
+        if(!userSignInDto.getConfirmPassword().equals(userSignInDto.getPassword())){
+            this.response.addError("confirm-reg-password", "Passwords not equals");
         }
     }
 
@@ -82,6 +90,8 @@ public class RegistrationValidation extends AbstractValidation {
 
     @Override
     public void deleteErrorsMessages() {
-        super.deleteErrorsMessages();
+        this.response = new ValidateResponse();
     }
+
+
 }

@@ -1,11 +1,14 @@
+import { signInClose } from "./registration.js";
+import { resetClose } from "./reset.js";
+import { closeResetTwoPopup  } from "./confirmReset.js";
+import { clearInputs} from "./validation.js";
+
+
 let loginPopup = document.querySelector('#popup-login');
 let openLogin = document.querySelector('#open-login');
 let closeLogin = document.querySelector('#close-login');
 
 openLogin.addEventListener('click', (e) => {
-    signInClose();
-    closeResetTwoPopup();
-    resetClose();
     loginOpen();
 
 });
@@ -15,16 +18,17 @@ closeLogin.addEventListener('click', (e) => {
 
 });
 
-function loginClose(){
+export function loginClose(){
     loginPopup.classList.remove('visible', 'down');
-    unblockScroll();
 
 }
 
-function loginOpen(){
+export function loginOpen(){
+    clearInputs();
+    signInClose();
+    resetClose();
+    closeResetTwoPopup();
     loginPopup.classList.add('down', 'visible');
-    blockScroll(loginPopup);
-
 }
 
 

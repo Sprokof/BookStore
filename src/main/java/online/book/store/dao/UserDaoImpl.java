@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 @Component
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl implements UserDao {
 
     private final SessionFactory sessionFactory =
             SessionFactorySingleton.getInitializationFactory();
@@ -18,11 +18,11 @@ public class UserDaoImpl implements UserDao{
     @Override
     public void saveUser(User user) {
         Session session = null;
-    try{
-        session = sessionFactory.openSession();
-        session.beginTransaction();
-        session.save(user);
-        session.getTransaction().commit();
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.save(user);
+            session.getTransaction().commit();
         } catch (Exception e) {
             if (session != null) {
                 if (session.getTransaction() != null) {
@@ -41,13 +41,12 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<String> allUsernames() {
+    public void saveOrUpdate(User user) {
         Session session = null;
-        List<String> usernames = null;
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-            usernames = session.createSQLQuery("SELECT USERNAME FROM USERS").list();
+            session.saveOrUpdate(user);
             session.getTransaction().commit();
         } catch (Exception e) {
             if (session != null) {
@@ -60,7 +59,6 @@ public class UserDaoImpl implements UserDao{
                 session.close();
             }
         }
-    return usernames;
     }
 
 
@@ -147,28 +145,78 @@ public class UserDaoImpl implements UserDao{
     public User getUserByIP(String ip) {
         Session session = null;
         User user = null;
-    try{
-        session = this.sessionFactory.openSession();
-        session.beginTransaction();
-        user = (User) session.createSQLQuery("SELECT * FROM USERS WHERE IP_ADRESS=:ip").
-                setParameter("ip", ip).getSingleResult();
-        session.getTransaction().commit();
-    }
-    catch (Exception e) {
-        if (session != null) {
-            if (session.getTransaction() != null) {
-                session.getTransaction().rollback();
-                if (e instanceof NoResultException) {
-                    return null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            user = (User) session.createSQLQuery("SELECT * FROM USERS WHERE IP_ADDRESS=:ip").
+                    setParameter("ip", ip).addEntity(User.class).getSingleResult();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null) {
+                if (session.getTransaction() != null) {
+                    session.getTransaction().rollback();
+                    if (e instanceof NoResultException) {
+                        return null;
+                    }
                 }
             }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
+        return user;
     }
+
+    @Override
+    public User getUserById(int id) {
+        Session session = null;
+        User user = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            user = session.get(User.class, id);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null)
+                if (session.getTransaction() != null) {
+                    session.getTransaction().rollback();
+                }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return user;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<User> getUsersInSession() {
+        Session session = null;
+        List<User> users = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        users = session.createSQLQuery("SELECT * FROM " +
+                "USERS WHERE IN_SESSION is true").addEntity(User.class).list();
+        session.getTransaction().commit();
+    }
+    catch (Exception e){
+           if(session != null) {
+               if (session.getTransaction() != null) {
+                   session.getTransaction().rollback();
+               }
+           }
+    }
+
     finally {
-        if (session != null) {
+        if(session != null){
             session.close();
         }
     }
-    return user;
+    return users;
+
     }
 }
+

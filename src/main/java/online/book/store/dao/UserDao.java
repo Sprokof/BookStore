@@ -9,7 +9,9 @@ public interface UserDao {
     void saveUser(User user);
     User getUserByLogin(String login);
     void updateUser(User user);
-    List<String> allUsernames();
+    void saveOrUpdate(User user);
     List<String> allEmails();
     User getUserByIP(String ip);
+    User getUserById(int id);
+    List<User> getUsersInSession();
 }

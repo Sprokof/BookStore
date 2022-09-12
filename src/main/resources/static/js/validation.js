@@ -1,26 +1,31 @@
+import {closeResetTwoPopup} from "./confirmReset.js";
+
 let login = document.getElementById('login-btn');
-login.addEventListener('click', () => {
-    let user = {};
-    user['login'] = document.getElementById('login').value;
-    user['password'] = hash(document.getElementById('log-password').value);
-    user['remembered'] = document.querySelector('.remember-me input').checked;
-    user['ipAddress'] = '0';
+login.addEventListener('click', async () => {
+    let user = {
+        'login': document.getElementById('login').value,
+        'password': await hash(document.getElementById('log-password').value),
+        'remembered': document.querySelector('.remember-me input').checked,
+        'ipAddress': '0'
+    };
 
-    doValidateRequest(user, "/home/login");
-
+    validation(user, "/home/login");
 });
 
 let registration = document.getElementById("sign-in-btn");
 registration.addEventListener("click", () => {
-    let user = {}
-    user['username'] = document.getElementById('username').value;
-    user['email'] = document.getElementById("reg-email").value;
-    user['password'] = hash(document.getElementById('reg-password').value);
-    user['confirmPassword'] = hash(document.getElementById("confirm-reg-password"));
-    user['ipAddress'] = '0';
-    user['remembered'] = false;
-    doValidateRequest(user, "/home/registration");
+    let user = {
+        'username': document.getElementById('username').value,
+        'email': document.getElementById("reg-email").value,
+        'password': document.getElementById("reg-password").value,
+        'confirmPassword': document.getElementById("confirm-reg-password").value,
+        'ipAddress': '',
+        'remembered': false
+    };
+    validation(user, "/home/registration");
 });
+
+
 
 let reset = document.getElementById("continue-btn");
 reset.addEventListener("click", () => {
@@ -79,7 +84,7 @@ confirm.addEventListener("click", () => {
     })
 })
 
-function doValidateRequest(user, url){
+function validation(user, url){
     $.ajax({
         type: "POST",
         contentType: "application/json",
@@ -91,35 +96,99 @@ function doValidateRequest(user, url){
         success: function (data) {
             deleteErrorMessages();
             let validationErrors = JSON.parse(JSON.stringify(data));
-            if (validationErrors.length > 0) {
-                for (let [field, message] of validationErrors) {
-                    let wrongInput = document.getElementById(field);
-                    let error = document.createElement('p');
-                    error.classList.add('error-message');
-                    error.innerText = message;
-                    wrongInput.parentNode.appendChild(error);
-                    let rem = document.querySelector('.remember-me input');
-                    rem.checked = false;
-                }
+            let errorMap = new Map(Object.entries(validationErrors));
+            if (errorMap.size > 0) {
+                addErrors(errorMap);
+                document.querySelector('.remember-me input').checked = false;
             } else {
-                   loginClose();
-                   signInClose();
+                setTimeout(reload, 130);
             }
         }
     })
 }
 
-function deleteErrorMessages(){
-    let errorsMessages = document.querySelectorAll(".error-message")
-    errorsMessages.forEach(message => message.remove());
-}
 
-function hash(string) {
+export function deleteErrorMessages(){
+    let errorsMessages = document.querySelectorAll(".error-message")
+    let errorsSymbols = document.querySelectorAll('.error-symbol.symbol-active');
+    let labels = document.querySelectorAll('.form-element label');
+    let formElements = document.querySelectorAll('.form-element');
+    errorsMessages.forEach(message => message.classList.remove('active'));
+    errorsSymbols.forEach(symbol => symbol.classList.remove('symbol-active'));
+    labels.forEach(label => label.style.marginLeft = '-5px');
+    formElements.forEach(element => element.classList.remove('compression'));
+
+}
+async function hash(string) {
     const utf8 = new TextEncoder().encode(string);
-    return crypto.subtle.digest('SHA-256', utf8).then((hashBuffer) => {
+    return crypto.subtle.digest('SHA-256', utf8).then(async (hashBuffer) => {
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         return hashArray
             .map((bytes) => bytes.toString(16).padStart(2, '0'))
-            .join('');
+            .join('')
     });
 }
+
+
+export function clearInputs() {
+    let elements = document.querySelectorAll('.form-element input');
+    for (let i = 0; i < elements.length; i++) {
+        elements[i].value = "";
+    }
+    deleteErrorMessages();
+}
+
+    function closeAnotherMessages(id, parent) {
+        let messages = document.querySelectorAll('.error-message.active');
+        for (let message of messages) {
+            if (message.parentNode.children[1].id === id) {
+                continue;
+            }
+            message.classList.remove('active');
+            parent.classList.remove('compression');
+        }
+
+    }
+
+export function logout() {
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: '/home/logout',
+        cache: false,
+        dataType: 'text',
+        responseType: "text",
+        success: function (code) {
+            if (Number(code) === 200) {
+                setTimeout(reload, 100);
+            }
+        }
+    })
+}
+function reload(){
+    window.location.reload();
+}
+
+function addErrors(errors){
+    for(let [field, message] of errors) {
+        let wrongInput = document.getElementById(field);
+        let error = document.getElementById(field + '-error')
+        error.innerText = (String(message));
+        let parentNode = wrongInput.parentNode;
+        let errorSymbol = parentNode.children[0].children[0];
+        let label = parentNode.children[0];
+        activateErrorSymbol(errorSymbol, parentNode, error);
+        label.style.marginLeft = '5px';
+    }
+}
+
+function activateErrorSymbol(errorSymbol, parentNode, message){
+    errorSymbol.classList.add('symbol-active');
+    errorSymbol.addEventListener('click', () => {
+        closeAnotherMessages(parentNode.children[1].id, parentNode)
+        parentNode.classList.toggle('compression')
+        message.classList.toggle('active');
+    })
+}
+
+

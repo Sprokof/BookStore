@@ -20,7 +20,7 @@ public class Wishlist {
     @Getter
     private int id;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "wishlist", fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "BOOK_WISHLISTS",
             joinColumns = {@JoinColumn(name = "fk_wishlist")},
             inverseJoinColumns = {@JoinColumn(name = "fk_book")})
@@ -39,11 +39,15 @@ public class Wishlist {
         book.getWishlists().remove(this);
     }
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "wishlist", fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "wishList", fetch = FetchType.EAGER)
     @Getter
     @Setter
     private User user;
 
+
+    public boolean isEmpty(){
+        return this.books == null || this.books.isEmpty();
+    }
 
 
 

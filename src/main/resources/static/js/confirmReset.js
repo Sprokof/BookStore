@@ -9,11 +9,8 @@ closeTwoPopup.addEventListener('click', () => {
 
 function openResetTwoPopup(){
     resetTwoPopup.classList.add('down', 'visible');
-    blockScroll(resetTwoPopup);
 }
 
-function closeResetTwoPopup(){
-    resetTwoPopup.classList.add('visible', 'down');
-    unblockScroll();
-
+export function closeResetTwoPopup(){
+    resetTwoPopup.classList.remove('visible', 'down');
 }

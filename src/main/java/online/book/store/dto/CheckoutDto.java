@@ -158,7 +158,4 @@ public class CheckoutDto extends AbstractCheckoutBuilder {
                 build();
     }
 
-    public static Checkout notSaved(){
-        return new Checkout(null, null, null, null);
-    }
 }

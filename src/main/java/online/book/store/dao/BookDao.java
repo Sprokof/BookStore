@@ -12,7 +12,7 @@ public interface BookDao {
     Book getBookByTitle(String title);
     Book getBookById(int id);
     void saveBook(Book book);
-    double averageRating(Book book);
+    double averageRating(Integer bookId);
 
 
 }

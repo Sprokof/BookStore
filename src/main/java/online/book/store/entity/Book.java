@@ -1,5 +1,6 @@
 package online.book.store.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,8 +23,6 @@ import java.util.stream.Collectors;
 @Setter
 public class Book {
 
-    @Autowired
-    private transient BookService bookService;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,7 +57,7 @@ public class Book {
 
 
 
-    transient double bookRating = bookService.averageRating(this);
+    transient double bookRating;
 
 
     public Book(String isbn, String title, String publisher,
@@ -81,7 +80,7 @@ public class Book {
 
     }
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "category", fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "BOOKS_CATEGORIES",
             joinColumns = {@JoinColumn(name = "fk_book")},
             inverseJoinColumns = {@JoinColumn(name = "fk_category")})
@@ -100,7 +99,7 @@ public class Book {
         category.getBooks().remove(this);
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
     private List<BookReview> bookReviews;
 
 
@@ -115,7 +114,8 @@ public class Book {
         bookReview.setBook(null);
     }
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "wishlist")
+    @ManyToMany(mappedBy = "books",
+            cascade = CascadeType.ALL)
     private List<Wishlist> wishlists;
 
 
@@ -124,7 +124,7 @@ public class Book {
     public String toString(){
         return String.format("%s%s%s%s%s%s%s",
                         this.isbn.toLowerCase(Locale.ROOT),
-                        this.title.toLowerCase(Locale.ROOT),
+                        this.title.toLowerCase(Locale.ROOT).replaceAll("\\s", ""),
                         this.publisher.toLowerCase(Locale.ROOT),
                         this.yearPub.toLowerCase(Locale.ROOT), this.subject,
                         this.description.toLowerCase(Locale.ROOT), this.price);
@@ -133,4 +133,5 @@ public class Book {
     private LocalDate currentDate(){
         return LocalDate.now();
     }
+
 }

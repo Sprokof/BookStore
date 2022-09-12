@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 @Component
@@ -17,15 +18,14 @@ public class CategoryDaoImpl implements CategoryDao{
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Category> allCategory() {
+    public List<String> allCategory() {
         Session session = null;
-        List<Category> booksCategories = null;
+        List<String> booksCategories = null;
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
             booksCategories = session.
-                    createSQLQuery("SELECT * FROM BOOKS_CATEGORIES").
-                    addEntity(Category.class).list();
+                    createSQLQuery("SELECT CATEGORY FROM CATEGORIES").list();
             session.getTransaction().commit();
         } catch (Exception e) {
             if (session != null) {
@@ -44,15 +44,13 @@ public class CategoryDaoImpl implements CategoryDao{
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Category> popularCategories() {
+    public List<String> popularCategories() {
         Session session = null;
-        List<Category> result = null;
+        List<String> result = new LinkedList<>();
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-            result = session.createSQLQuery("SELECT * FROM " +
-                            "BOOKS_CATEGORIES ORDER BY CATEGORY_RATING").
-                    addEntity(Category.class).list();
+            result = session.createSQLQuery("SELECT CATEGORY FROM CATEGORIES").list();
             session.getTransaction().commit();
         } catch (Exception e) {
             if (session != null) {
@@ -66,11 +64,12 @@ public class CategoryDaoImpl implements CategoryDao{
                 session.close();
             }
         }
-        if(result != null){
-        result = getHighRatingCategory(result, 5);
+        if(!result.isEmpty()) {
+            return extractSubList(result);
         }
 
-    return result;
+        System.out.println(allCategory());
+        return extractSubList(allCategory());
     }
 
     @Override
@@ -128,11 +127,8 @@ public class CategoryDaoImpl implements CategoryDao{
     return true;
     }
 
-    private List<Category> getHighRatingCategory(List<Category> categories, int count){
-        Category[] temp = new Category[count];
-        System.arraycopy(categories.toArray(Category[] :: new),
-                0, temp, 0, temp.length);
-        return Arrays.asList(temp);
+    private List<String> extractSubList(List<String> categories){
+        return categories.subList(0, 5);
 
     }
 }

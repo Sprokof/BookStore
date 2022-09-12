@@ -153,3 +153,8 @@ section .card {
 .left {
     margin-right: 245px;
 }
+
+.book-info span:hover {
+    transition: 0.3s ease-in-out;
+    border-bottom: white 1px;
+}

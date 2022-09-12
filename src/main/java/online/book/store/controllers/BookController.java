@@ -27,9 +27,6 @@ public class BookController {
     private BookService bookService;
 
     @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
     private SiteEngine engine;
 
 
@@ -39,6 +36,8 @@ public class BookController {
     @GetMapping("/home/book")
     public String info(@RequestParam("title") String title, Model model){
         Book book = bookService.getBookByTitle(title);
+        double rating = bookService.averageRating(book.getId());
+        book.setBookRating(rating);
         model.addAttribute("book", book);
         return "bookInfo";
     }
@@ -71,13 +70,6 @@ public class BookController {
         return ResponseEntity.status(200);
     }
 
-    @GetMapping("/instance/all/categories")
-    public ResponseEntity<?> instanceCategories(){
-        List<Category> categories = categoryService.allCategories();
-        return ResponseEntity.ok(categories);
-    }
-
-
 
     @GetMapping ("/home/books/search/")
     public String booksList (@RequestParam Map<String, String> params, Model model){
@@ -97,7 +89,8 @@ public class BookController {
 
     @GetMapping("/last/query/param")
     public ResponseEntity<String> urlParams (){
-        return ResponseEntity.ok(this.engine.getLastQueryValue());
+        String value = this.engine.getLastQueryValue();
+        return ResponseEntity.ok(value);
     }
 
 

@@ -1,13 +1,11 @@
 package online.book.store.validation;
 
+import online.book.store.dto.UserSignInDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 
 public abstract class AbstractValidation {
-
-    @Autowired
-    private ValidateResponse response;
 
     public boolean supports(Class<?> aClass){ return false; }
 
@@ -18,10 +16,12 @@ public abstract class AbstractValidation {
     public Map<String, String> validationErrors(){ return null; }
 
     public void deleteErrorsMessages() {
-        if (!hasErrors()) return;
-        Map<String, String> errors = this.response.getFieldErrors();
-        for (Map.Entry<String, String> entry : errors.entrySet()) {
-            errors.remove(entry.getKey());
-        }
+    }
+
+    public void addUserDto(UserSignInDto userDto){
+    }
+
+    public UserSignInDto getUserDto () {
+        return null;
     }
 }

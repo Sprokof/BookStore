@@ -1,20 +1,17 @@
 package online.book.store.service;
 
 
-import lombok.Setter;
 import online.book.store.dao.CartDao;
 import online.book.store.entity.Book;
 import online.book.store.entity.Cart;
 import online.book.store.entity.CartItem;
 import online.book.store.entity.User;
-import online.book.store.session.Session;
+import online.book.store.session.SessionStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.List;
-
+@Service
 @Component
 public class CartServiceImpl implements CartService {
 
@@ -23,9 +20,6 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private SignInService signInService;
 
 
     @Override
@@ -43,7 +37,7 @@ public class CartServiceImpl implements CartService {
         CartItem cartItem = new CartItem(book.getIsbn(), book.getPrice(), quantity);
         cart.addItem(cartItem).updatePrices();
 
-        userService.updateUserInSession(cart.getUser());
+        updateCart(cart);
 
 
     }
@@ -51,34 +45,22 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void updateCart(Cart cart) {
-        User user = cart.getUser();;
-        user.setCart(cart);
-        userService.updateUserInSession(user);
-
-
-    }
-
-    @Override
-    public void clearCart(Cart cart) {
-        User user = cart.getUser();;
-        user.setCart(null);
+        User user = cart.getUser();
         userService.updateUserInSession(user);
     }
+
 
     @Override
     public void updateCartItem(CartItem cartItem, Cart cart) {
-     cart.removeItem(cartItem);
-     updateCart(cart);
-     userService.updateUserInSession(cart.getUser());
-
+        cart.removeItem(cartItem);
+        updateCart(cart);
     }
 
     @Override
     public void updateCartItem(CartItem cartItem, int quantity, Cart cart) {
         cartItem.setQuantity(quantity);
         cart.setCartItem(cartItem);
-
-        userService.updateUserInSession(cart.getUser());
+        updateCart(cart);
 
     }
 

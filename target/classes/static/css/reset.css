@@ -1,5 +1,18 @@
 .reset {
-   top: -450%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.25);
+    width: 300px;
+    padding: 20px 30px;
+    background: #F6F6f6;
+    box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    opacity: 0;
+    overflow-y: hidden;
+    z-index: 1;
+    top: -450%;
+    border: solid 1px #b4ad9e;
+
 }
 
 .reset .form {

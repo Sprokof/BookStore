@@ -5,8 +5,8 @@ import online.book.store.entity.Category;
 import java.util.List;
 
 public interface CategoryDao {
-    List<Category> allCategory();
-    List<Category> popularCategories();
+    List<String> allCategory();
+    List<String> popularCategories();
     void saveCategoryIfAbsent(Category bookCategory);
 
 }

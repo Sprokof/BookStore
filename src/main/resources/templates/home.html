@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="#">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/test.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}">
@@ -13,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" th:href="@{webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
     <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
     <script type="text/javascript" src="webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://raw.github.com/bigomega/crypto.js/master/src/sha256.js"></script>
 
 </head>
 <body>
@@ -33,13 +33,11 @@
             <div class="book-info">
                 <span th:text="${book.title}"></span>
                 <div class="star-rating"
-                     th:text="${book.bookRating + '(' + ${book.getBookReviews().size()} + 'scores)'}"></div>
+                     th:text="${book.price + '(' + ${book.getBookReviews().size()} + 'scores)'}"></div>
 
                 <p th:text="${book.description}"></p>
                 <div class="buttons">
-                    <div class="price">
-                        300 ₽
-                    </div>
+                    <div class="price" th:text="${book.price}"></div>
                     <button class="cart btn"> Add to cart</button>
                     <button class="wishlist btn">
                         <i class="far fa-heart" style="margin-top: 5px"></i>
@@ -56,5 +54,7 @@
 <script th:src="@{/static/js/validation.js}"></script>
 <script th:src="@{/js/home.js}"></script>
 <script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/generateRating.js}"></script>
+<script th:src="@{/js/card.js}"></script>
 </body>
 </html>
