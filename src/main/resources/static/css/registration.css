@@ -30,12 +30,7 @@
 .sign .form .form-element {
     margin: 10px 0;
 }
-.sign .form .form-element label {
-    font-size: 12px;
-    color: #222;
-    margin-left: -5px;
 
-}
 
 .sign .form .form-element input[type="text"],
 .sign .form .form-element input[type="email"],
@@ -60,9 +55,10 @@
     color: #f5f5f5;
     border-radius: 10px;
     cursor: pointer;
+    margin-top: 7px;
 }
 
-.sign .form .form-element button{
+.sign .form .form-element button:hover{
     background-color: #1e1e1e;
 }
 
@@ -76,7 +72,7 @@
 }
 
 
-.close-sign-btn {
+.sign .close-sign-btn {
     position: absolute;
     right: 10px;
     top: 8px;
@@ -103,33 +99,13 @@
     opacity: 1;
 }
 
-.form .form-element .error-symbol {
-    color: red;
-    font-weight: 700;
-    margin-right: 2px;
-    pointer-events: none;
-    opacity: 0;
-    cursor: pointer;
-    z-index: 0;
-}
-
-.form .form-element .error-symbol:hover {
-    color: darkred;
-}
-
-.form .form-element .error-symbol.symbol-active {
-    opacity: 1;
-    pointer-events: auto;
-    z-index: 1;
-}
-
 .sign .form .form-element .error-message.active {
     transition: 0.2s ease-in-out;
     display: block;
 }
 
 .sign .form .form-element.compression {
-    margin-bottom: -5px;
+    margin-bottom: -20px;
 }
 
 .sign .form-element .error-message {

@@ -28,15 +28,13 @@
 
 .login .form .form-element {
     margin: 10px 0;
-
 }
 
-.login .form .form-element label {
+.form .form-element label {
     font-size: 14px;
     color: #222;
     margin-bottom: -10px;
-    margin-left: -5px;
-    z-index: 1;
+    margin-left: 5px!important;
 }
 
 .login .form .form-element input[type="text"],
@@ -131,33 +129,20 @@
     font-family: "Cascadia Code", sans-serif;
     display: none;
     padding-bottom: -10px;
+    font-size: 12px;
 }
 
-.form .form-element .error-symbol {
-    color: red;
-    font-weight: 700;
-    margin-right: 2px;
-    pointer-events: none;
-    opacity: 0;
-    cursor: pointer;
-    z-index: 0;
-}
-
-.form .form-element .error-symbol:hover {
-    color: darkred;
-}
-
-.form .form-element .error-symbol.symbol-active {
-    opacity: 1;
-    pointer-events: auto;
-    z-index: 1;
-}
 
 .form .form-element .error-message.active {
     transition: 0.2s ease-in-out;
     display: block;
 }
 
-.form .form-element.compression {
+.login .form .form-element.compression {
     margin-bottom: -20px;
+}
+
+.form .remember-me {
+    margin-left: 1px;
+    margin-bottom: -5px;
 }

@@ -171,14 +171,15 @@ function reload(){
 
 function addErrors(errors){
     for(let [field, message] of errors) {
-        let wrongInput = document.getElementById(field);
-        let error = document.getElementById(field + '-error')
-        error.innerText = (String(message));
-        let parentNode = wrongInput.parentNode;
-        let errorSymbol = parentNode.children[0].children[0];
-        let label = parentNode.children[0];
-        activateErrorSymbol(errorSymbol, parentNode, error);
-        label.style.marginLeft = '5px';
+        let error = document.getElementById(field + '-error');
+        let parentNode = error.parentNode;
+            error.innerText = (String(message));
+        error.classList.add('active');
+        parentNode.classList.add('compression');
+        //let parentNode = wrongInput.parentNode;
+        //let errorSymbol = parentNode.children[0].children[0];
+        //let label = parentNode.children[0];
+        //activateErrorSymbol(errorSymbol, parentNode, error);
     }
 }
 

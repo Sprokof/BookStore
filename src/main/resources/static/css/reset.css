@@ -30,12 +30,7 @@
 .reset .form .form-element {
     margin: 10px 0;
 }
-.reset .form .form-element label {
-    font-size: 14px;
-    color: #222;
-    margin-bottom: -10px;
-    margin-left: 2px;
-}
+
 
 .reset .form .form-element input[type="text"],
 .reset .form .form-element input[type="password"]{

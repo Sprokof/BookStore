@@ -1,4 +1,4 @@
-.container {
+#card-container {
     margin-left: 130px;
     margin-top: 90px;
     z-index: 0;
@@ -87,8 +87,8 @@
     color: white;
 }
 
-.right{
-    margin-left: 320px;
+#card-container.right{
+    margin-left: 320px!important;
 }
 
 .squeeze {

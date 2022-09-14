@@ -1,3 +1,5 @@
+import {getBookTitle} from "./cards.js";
+
 let sliderControlBtn = document.querySelectorAll('.control-slider span')
 let books = document.querySelectorAll('.card');
 let book_page = Math.ceil(books.length/4);

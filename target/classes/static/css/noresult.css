@@ -9,15 +9,14 @@
 
 }
 
-.home-btn {
-    width: 100px;
+.result-message .home-btn {
+    width: 170px;
     border-radius: 8px;
     background-color: black;
     color: white;
-    margin-left: 550px;
     margin-top: 5px;
 }
 
-.home-btn:hover {
+.result-message .home-btn:hover {
     background-color: #1e1e1e;
 }

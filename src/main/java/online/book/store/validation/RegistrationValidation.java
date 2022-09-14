@@ -47,7 +47,6 @@ public class RegistrationValidation extends AbstractValidation {
         }
 
         String password = userSignInDto.getPassword();
-        System.out.println(password);
 
         if (password.isEmpty()) {
             this.response.addError("reg-password", "Password can't be empty");
