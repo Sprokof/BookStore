@@ -48,33 +48,11 @@ public class RegistrationValidation extends AbstractValidation {
 
         String password = userSignInDto.getPassword();
 
-        if (password.isEmpty()) {
-            this.response.addError("reg-password", "Password can't be empty");
-        }
+        String confirmPassword  = userSignInDto.getConfirmPassword();
 
-        if (password.length() < 8 || password.length() > 15) {
-            this.response.addError("reg-password","Password must be between 8 and 15 characters");
-        }
+        validatePassword(this.response, password, confirmPassword,
+                "reg-password", "confirm-reg-password");
 
-        Pattern pattern = Pattern.compile("[a-z]");
-
-        if (!pattern.matcher(password).find()) {
-            this.response.addError("reg-password","Password must contains at least one letter");
-        }
-
-        pattern = Pattern.compile("[0-9]");
-
-        if (!pattern.matcher(password).find()) {
-            this.response.addError("reg-password", "Password must contains at least one digit");
-        }
-
-        if(userSignInDto.getConfirmPassword().isEmpty()){
-            this.response.addError("confirm-reg-password", "Confirm password can't be empty");
-        }
-
-        if(!userSignInDto.getConfirmPassword().equals(userSignInDto.getPassword())){
-            this.response.addError("confirm-reg-password", "Passwords not equals");
-        }
     }
 
     @Override
@@ -92,5 +70,9 @@ public class RegistrationValidation extends AbstractValidation {
         this.response = new ValidateResponse();
     }
 
-
+    @Override
+    public void validatePassword(ValidateResponse response, String password, String confirmPassword,
+                                 String passwordFieldId, String confirmPasswordFieldId) {
+        super.validatePassword(response, password, confirmPassword, passwordFieldId, confirmPasswordFieldId);
+    }
 }

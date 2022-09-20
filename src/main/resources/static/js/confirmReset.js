@@ -7,10 +7,21 @@ closeTwoPopup.addEventListener('click', () => {
     }
 )
 
-function openResetTwoPopup(){
+export function openResetTwoPopup(){
     resetTwoPopup.classList.add('down', 'visible');
 }
 
 export function closeResetTwoPopup(){
     resetTwoPopup.classList.remove('visible', 'down');
+}
+
+let resendCode = document.getElementById("resend-code");
+resendCode.addEventListener("click", () => {
+    navigator.sendBeacon("/home/resend/code");
+    resendCode.classList.add('disable');
+    setTimeout(setActive, 60000);
+})
+
+function setActive(){
+    resendCode.classList.remove('disable');
 }

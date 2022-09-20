@@ -14,7 +14,6 @@ body {
 
 .sidebar {
     background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(15);
     width: 290px;
     height: 100vh;
     position: fixed;
@@ -23,6 +22,7 @@ body {
     transition: 0.3s ease;
     transition-property: left;
     overflow-y: auto;
+    z-index: 1;
 }
 
 .sidebar.active{

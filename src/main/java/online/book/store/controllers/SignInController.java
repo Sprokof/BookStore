@@ -1,14 +1,18 @@
 package online.book.store.controllers;
 
 
+import online.book.store.dto.ResetDto;
 import online.book.store.dto.UserLoginDto;
 import online.book.store.dto.UserSignInDto;
 import online.book.store.entity.User;
 import online.book.store.mail.MailSender;
-import online.book.store.mail.MailSubjects;
+import online.book.store.mail.Subject;
 import online.book.store.service.SignInService;
 import online.book.store.service.UserService;
+import online.book.store.session.SessionStorage;
 import online.book.store.validation.AbstractValidation;
+import online.book.store.validation.ResetValidation;
+import online.book.store.validation.ValidateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -30,13 +35,21 @@ public class SignInController {
     @Autowired
     private UserService userService;
 
+
     @Autowired
     @Qualifier("loginValidation")
-    AbstractValidation loginValidation;
+    private AbstractValidation loginValidation;
 
     @Autowired
     @Qualifier("registrationValidation")
-    AbstractValidation registrationValidation;
+    private AbstractValidation registrationValidation;
+
+    @Autowired
+    @Qualifier("resetValidation")
+    private AbstractValidation resetValidation;
+
+    private final ResetValidation.ConfirmValidation confirmValidation =
+            new ResetValidation.ConfirmValidation();
 
     @Autowired
     private MailSender sender;
@@ -44,14 +57,11 @@ public class SignInController {
 
 
     @PostMapping("/home/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginDto user, HttpServletResponse response,
-                                   HttpServletRequest request){
+    public ResponseEntity<?> login(@RequestBody UserLoginDto user, HttpServletRequest request){
         loginValidation.validation(user);
         if(!loginValidation.hasErrors()){
-            user.setIpAddress(signInService.getIpAddressFromRequest(request));
             signInService.loginUser(request, user);
         }
-
         Map<String, String> errors = loginValidation.validationErrors();
         return ResponseEntity.ok(errors);
     }
@@ -76,24 +86,36 @@ public class SignInController {
     }
 
     @PostMapping("/home/reset")
-    public ResponseEntity.BodyBuilder reset(@RequestBody String newPassword,
+    public ResponseEntity<Map<String, String>> reset(@RequestBody ResetDto resetDto,
                                             HttpServletRequest httpServletRequest){
-        signInService.addPassword(newPassword);
-        User currentUser = signInService.getCurrentUser(httpServletRequest);
-        sender.send(currentUser.getEmail(), MailSubjects.RESET_PASSWORD,
-                signInService.getResetDto().getConfirmCode());
-        return ResponseEntity.status(200);
+        resetValidation.validation(resetDto);
+        if(!resetValidation.hasErrors()){
+            signInService.addResetDto(resetDto);
+
+            User user = signInService.getCurrentUser(httpServletRequest);
+            sender.send(user.getEmail(), Subject.RESET_PASSWORD, this.signInService);
+        }
+        return ResponseEntity.ok(resetValidation.validationErrors());
     }
 
     @PostMapping("/home/reset/confirm")
-    public ResponseEntity<?> confirm(@RequestBody String code, HttpServletRequest httpServletRequest){
-        boolean correct = false;
-        if(code.equals(signInService.getResetDto().getConfirmCode())){
-            correct = true;
-            User currentUser = signInService.getCurrentUser(httpServletRequest);
-            currentUser.setPassword(signInService.getResetDto().getPassword());
-            userService.updateUserInSession(currentUser);
+    public ResponseEntity<Map<String, String>> confirm(@RequestBody String code, HttpServletRequest httpServletRequest){
+        ResetDto resetDto = signInService.getResetDto();
+        resetDto.setInputCode(code);
+        if(!confirmValidation.hasErrors()){
+            User user = signInService.getUserFromRequest(httpServletRequest);
+            user.setPassword(resetDto.getNewPassword());
+            userService.saveOrUpdate(user);
         }
-    return ResponseEntity.ok(correct);
+    return ResponseEntity.ok(confirmValidation.validationErrors());
+    }
+
+
+    @PostMapping("/home/resend/code")
+    public ResponseEntity<Integer> resendCode(HttpServletRequest request){
+        User user = signInService.getCurrentUser(request);
+        signInService.generateNewCode();
+        sender.send(user.getEmail(), Subject.RESET_PASSWORD, this.signInService);
+        return ResponseEntity.ok(200);
     }
 }

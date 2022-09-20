@@ -1,147 +1,122 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{selectCategories :: category-menu}">
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/addBook.css}" href="/static/css/addBook.css">
+<head>
+
+    <link rel="stylesheet" type="text/css" th:href="@{/css/addbook.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/categories.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}">
     <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <title> Add Book </title>
+    <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
+
 </head>
 <body>
+<div th:insert="~{navbar :: navbar}"></div>
 <div class="container">
-    <div class="container mt-5 pb-5">
-    <form method="post" th:action="@{/home/book/add}" th:object="${book}">
-        <h3> Fill Form Under </h3>
-    <br>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label"> ISBN </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('isbn')}? 'has-error':'">
-                <input type="text" th:field="*{isbn}">
-                <p class="error-message"
-                   th:each="error : ${#fields.errors('isbn')}"
-                   th:text="${error}">Validation error</p>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label"> Title </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('title')}? 'has-error':'">
-                <input type="text" th:field="*{title}">
-                <p class="error-message"
-                   th:each="error : ${#fields.errors('title')}"
-                   th:text="${error}">Validation error</p>
-            </div>
-        </div>
+    <h3> Add book </h3>
 
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label"> Publisher </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('Publisher')}">
-                <input type="text" th:field="*{publisher}">
-                <p class="error-message"
-                   th:each="error : ${#fields.errors('publisher')}"
-                   th:text="${error}">Validation error</p>
-            </div>
-        </div>
+    <div class="add-element">
+        <label for="isbn"> ISBN </label>
+        <input type="text" id="isbn" placeholder="ISBN">
+        <p class="error-message" id="isbn-error"></p>
+    </div>
 
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label"> Price </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('price')}? 'has-error':'">
-                <input type="text" th:field="*{price}">
-                <p class="error-message"
-                   th:each="error : ${#fields.errors('price')}"
-                   th:text="${error}">Validation error</p>
-            </div>
-        </div>
 
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label"> Year of production </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('yearPub')}? 'has-error':'">
-                <input type="text" th:field="*{yearPub}">
-                <p class="error-message"
-                   th:each="error : ${#fields.errors('yearPub')}"
-                   th:text="${error}">Validation error</p>
-            </div>
-        </div>
+    <div class="add-element">
+        <label for="title"> Title </label>
+        <input type="text" id="title" placeholder="Title">
+        <p class="error-message" id="title-error"></p>
+    </div>
 
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label"> Subject </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('subject')}? 'has-error':'">
-                <input type="text" th:field="*{subject}">
-                <p class="error-message"
-                   th:each="error : ${#fields.errors('subject')}"
-                   th:text="${error}">Validation error</p>
-            </div>
-        </div>
+    <div class="add-element">
+        <label for="publisher"> Publisher </label>
+        <input type="text" id="publisher" placeholder="Publisher">
+        <p class="error-message" id="publisher-error"></p>
+    </div>
 
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label"> Available Copies </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('availableCopies')}? 'has-error':'">
-                <input type="text" th:field="*{availableCopies}">
-                <p class="error-message"
-                   th:each="error : ${#fields.errors('availableCopies')}"
-                   th:text="${error}">Validation error</p>
-            </div>
-        </div>
+    <div class="add-element">
+        <label for="year"> Year Of Publication </label>
+        <input type="text" id="year" placeholder="Year Of Publication">
+        <p class="error-message" id="year-error"></p>
+    </div>
 
-        <div class="form-group">
-            <label class="col-sm-2 col-form-label"> Description </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('description')}? 'has-error':'">
-                <textarea type="text" th:field="*{description}"></textarea>
-                <p class="error-message"
-                   th:each="error : ${#fields.errors('description')}"
-                   th:text="${error}">Validation error</p>
-            </div>
-        </div>
 
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label"> Authors </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('authors')}? 'has-error':'">
-                <input type="text" th:field="*{authors}">
-                <p class="error-message"
-                   th:each="error : ${#fields.errors('authors')}"
-                   th:text="${error}">Validation error</p>
-            </div>
-        </div>
+    <div class="add-element">
+        <label for="subject"> Subject </label>
+        <input type="text" id="subject" placeholder="Subject">
+        <p class="error-message" id="subject-error"></p>
+    </div>
 
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label"> Format </label>
-            <div class="col-sm-6" th:classappend="${#fields.hasErrors('format')}? 'has-error':'">
-                <input type="text" th:field="*{format}">
-                <p class="error-message"
-                   th:each="error : ${#fields.errors('format')}"
-                   th:text="${error}">Validation error</p>
-            </div>
-        </div>
 
-        <div class="fileload">
-            <label class="col-sm-2 col-form-label"> Load Book Image </label>
-            <div class="file-load-block">
-                <input type="file" th:field="*{bookImage}" id="file">
-                <div class="fileLoad" th:classappend="${#fields.hasErrors('bookImage')}? 'has-error':'">
-                    <input type="text" value="Book image">
-                    <button> Select Image </button>
-                </div>
-            </div>
-            <p class="error-message"
-               th:each="error : ${#fields.errors('format')}"
-               th:text="${error}"> Validation error </p>
-        </div>
+    <div class="add-element">
+        <label for="copies"> Available Copies </label>
+        <input type="text" id="copies" placeholder="Available Copies">
+        <p class="error-message" id="copies-error"></p>
+    </div>
 
-        <div th:insert="~{selectCategories ::category-menu}"></div>
-    </form>
+
+    <div class="add-element">
+        <label for="desc"> Description </label>
+        <textarea type="text" id="desc" placeholder="Description"></textarea>
+        <p class="error-message" id="desc-error"></p>
+    </div>
+
+    <div class="add-element">
+        <label for="author"> Author </label>
+        <input type="text" id="author" placeholder="Author">
+        <p class="error-message" id="author-error"></p>
+    </div>
+
+    <div class="add-element">
+        <label for="format"> Format </label>
+        <input type="text" id="format" placeholder="Format">
 
     </div>
+
+    <div class="file-load" id="image">
+        <label> Select Book Image </label>
+        <div class="file-load-block">
+            <input type="file" id="file">
+            <div class="fileLoad">
+                <input type="text" value="Book Image">
+                <button class="image-btn"> Select Image </button>
+            </div>
+        </div>
+        <p class="error-message" id="image-error"></p>
+    </div>
+
+        <div class="select-btn">
+            <span class="btn-text"> Select Book Categories </span>
+            <span class="arrow-down" id="arrow">
+                <i class="fas fa-chevron-down"></i>
+            </span>
+        </div>
+        <ul class="list-items">
+            <li class="item" th:each="category : ${categories}">
+                <span class="checkbox">
+                    <i class="fas fa-check"></i>
+                </span>
+                <span class="item-text" th:text="${category.category}"></span>
+            </li>
+        </ul>
+
+    <button class="save-btn"> <span> Save Book </span></button>
+
 </div>
-<script>
-    $('#file').change(function(){
-        let fileResult = $(this).val().substr(12);
-        $(this).parent().find('.fileLoad').find('input').val(fileResult);
-    });
 
-    $('#file').hover(function(){
-        $(this).parent().find('button').addClass('button-hover');
-    }, function(){
-        $(this).parent().find('button').removeClass('button-hover');
-    });
-
+<script type="module" th:src="@{/js/navbar.js}"></script>
+<script type="module" th:src="@{/js/login.js}"></script>
+<script type="module" th:src="@{/js/reset.js}"></script>
+<script type="module" th:src="@{/js/confirmReset.js}"></script>
+<script type="module" th:src="@{/js/validation.js}"></script>
+<script type="module" th:src="@{/js/generateRating.js}"></script>
+<script type="module" th:src="@{/js/cards.js}"></script>
+<script th:src="@{/js/categories.js}">
 
 </script>
 </body>

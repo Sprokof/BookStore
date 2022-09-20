@@ -59,23 +59,10 @@ public class UserSignInDto extends AbstractUserBuilder {
         User user = null;
         if(!containsNull()){
             user = new User(this.username, this.email,
-                    this.password, this.ipAddress, this.remembered, this.inSession);
+                    this.password, this.inSession);
         }
     return user;
     }
-
-    @Override
-    public AbstractUserBuilder ipAddress(String ip) {
-        this.ipAddress = ip;
-        return this;
-    }
-
-    @Override
-    public AbstractUserBuilder remembered(boolean remembered) {
-        this.remembered = remembered;
-        return this;
-    }
-
 
 
     public User doUserBuilder(){
@@ -83,8 +70,6 @@ public class UserSignInDto extends AbstractUserBuilder {
                     username(this.username).
                     email(this.email).
                     password(this.password).
-                    ipAddress(this.ipAddress).
-                    remembered(this.remembered).
                 buildUser();
     }
 

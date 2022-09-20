@@ -4,6 +4,7 @@ package online.book.store.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import online.book.store.dto.UserDto;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -17,7 +18,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     @Setter
-    private int id;
+    private Integer id;
 
     @Column(name = "EMAIL")
     @Getter
@@ -39,6 +40,16 @@ public class User {
     @Setter
     private boolean inSession;
 
+    @Column(name = "COUNT_RESET_PASSWORD")
+    @Getter
+    @Setter
+    private int countResetPassword;
+
+    @Column(name = "USER_ID")
+    @Getter
+    @Setter
+    private String userID;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @Setter
@@ -50,17 +61,6 @@ public class User {
     @Getter
     @Setter
     private boolean admin = false;
-
-    @Column(name = "REMEMBERED")
-    @Getter
-    @Setter
-    private boolean remembered;
-
-
-    @Column(name = "IP_ADDRESS")
-    @Getter
-    @Setter
-    private String ipAddress;
 
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -91,6 +91,8 @@ public class User {
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @Getter
+    @Setter
     private List<BookReview> bookReviews;
 
 
@@ -105,13 +107,10 @@ public class User {
         bookReview.setUser(null);
     }
 
-    public User(String username, String email, String password,
-                String ipAddress, boolean remembered, boolean inSession) {
+    public User(String username, String email, String password, boolean inSession) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.ipAddress = ipAddress;
-        this.remembered = remembered;
         this.inSession = inSession;
 
     }
@@ -145,10 +144,8 @@ public class User {
         return "User{" +
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", ipAddress='" + ipAddress + '\'';
+                ", password='" + password + '\'' + "";
     }
-
 
 
 }

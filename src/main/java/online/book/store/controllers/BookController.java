@@ -1,11 +1,14 @@
 package online.book.store.controllers;
 
 import online.book.store.dto.BookDto;
+import online.book.store.dto.CategoryDto;
 import online.book.store.engines.*;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
+import online.book.store.expections.ResourceNotFoundException;
 import online.book.store.service.BookService;
 import online.book.store.service.CategoryService;
+import online.book.store.service.SignInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -16,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +33,21 @@ public class BookController {
     @Autowired
     private SiteEngine engine;
 
+    @Autowired
+    private CategoryService categoryService;
+
+    @Autowired
+    private SignInService signInService;
+
 
     @Autowired
     private @Qualifier("bookValidation") Validator bookValidator;
+
+    @ModelAttribute("categories")
+    public List<CategoryDto> categories(){
+        return categoryService.popularCategories();
+    }
+
 
     @GetMapping("/home/book")
     public String info(@RequestParam("title") String title, Model model){
@@ -44,7 +60,10 @@ public class BookController {
 
 
     @GetMapping("/home/book/add")
-    public String addBook(Model model){
+    public String addBook(Model model, HttpServletRequest request){
+        if(!signInService.adminsRequest(request)){
+            throw new ResourceNotFoundException();
+        }
         model.addAttribute("book", new BookDto());
         return "addBook";
     }
@@ -52,12 +71,11 @@ public class BookController {
     @PostMapping("/home/book/add")
     @SuppressWarnings("unchecked")
     public String addBook(@ModelAttribute("addBook") @Valid BookDto bookDto,
-                          BindingResult bindingResult){
-
-        bookValidator.validate(bookDto, bindingResult);
-        if(bindingResult.hasErrors()) {
-            return "addBook";
-        }
+                          HttpServletRequest request){
+        //bookValidator.validate(bookDto, bindingResult);
+        //if(bindingResult.hasErrors()) {
+            //return "addBook";
+        //}
         bookService.saveBook(bookDto.doBookBuilder());
         return "addBook";
     }

@@ -26,7 +26,7 @@
     font-family: "Cascadia Mono", sans-serif;
 }
 
-.login .form .form-element {
+.form .form-element {
     margin: 10px 0;
 }
 
@@ -65,17 +65,30 @@
     background-color: #1e1e1e;
 }
 
-.login .form-element a {
+.form-element a {
     display: block;
     text-align: right;
     font-size: 15px;
-    color: steelblue;
+    color: steelblue!important;
     text-decoration: none;
     font-weight: 600;
+    cursor: pointer;
+
 }
 
-.login .form-element a:hover {
-    color: darkblue;
+#sign-link {
+    width: 45px;
+    margin-left: 79%;
+}
+
+#reset-link {
+    width: 100px;
+    margin-left: 56%;
+}
+
+
+.form-element a:hover {
+    color: darkblue!important;
 }
 
 .login.down {
@@ -122,23 +135,25 @@
     float: left;
 }
 
-.login .form .form-element .error-message {
+.error-message {
     margin-left: 5px;
     margin-top: 2px;
     color: red;
     font-family: "Cascadia Code", sans-serif;
     display: none;
     padding-bottom: -10px;
-    font-size: 12px;
 }
 
+.form .form-element .error-message{
+    font-size: 12px;
+}
 
 .form .form-element .error-message.active {
     transition: 0.2s ease-in-out;
     display: block;
 }
 
-.login .form .form-element.compression {
+.form .form-element.compression {
     margin-bottom: -20px;
 }
 
@@ -146,3 +161,53 @@
     margin-left: 1px;
     margin-bottom: -5px;
 }
+
+.notice-message{
+    width: 310px;
+    border: 5px solid #b4ad9e;
+    border-radius: 20px;
+    background-color: whitesmoke;
+    height: 100px;
+    display: none;
+    margin-left: 38%;
+    z-index: 2;
+    position: absolute;
+    box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+.notice-message #message {
+    margin-left: 37px;
+    font-size: 16px;
+    font-family: "Cascadia Code", sans-serif;
+    color: black;
+    font-weight: 600;
+
+}
+
+.notice-message button {
+    margin-top: 4%;
+    margin-left: 33%;
+    border-radius: 10%;
+    background-color: #333333;
+    font-family: "Cascadia Code", sans-serif;
+    border: 3px solid #b4ad9e;
+    width: 100px;
+    justify-content: center;
+    height: 50px;
+}
+
+.notice-message button span {
+    margin-bottom: 5px;
+    color: white;
+}
+
+.notice-message button:hover {
+    background-color: #555555;
+}
+
+.notice-message.show{
+    display: block;
+    top: 35%;
+}
+
+

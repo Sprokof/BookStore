@@ -1,12 +1,11 @@
-import {closeResetTwoPopup} from "./confirmReset.js";
+import {resetClose} from "./reset.js";
+import {openResetTwoPopup} from "./confirmReset.js";
 
 let login = document.getElementById('login-btn');
 login.addEventListener('click', async () => {
     let user = {
         'login': document.getElementById('login').value,
         'password': await hash(document.getElementById('log-password').value),
-        'remembered': document.querySelector('.remember-me input').checked,
-        'ipAddress': '0'
     };
 
     validation(user, "/home/login");
@@ -19,8 +18,6 @@ registration.addEventListener("click", () => {
         'email': document.getElementById("reg-email").value,
         'password': document.getElementById("reg-password").value,
         'confirmPassword': document.getElementById("confirm-reg-password").value,
-        'ipAddress': '',
-        'remembered': false
     };
     validation(user, "/home/registration");
 });
@@ -29,62 +26,22 @@ registration.addEventListener("click", () => {
 
 let reset = document.getElementById("continue-btn");
 reset.addEventListener("click", () => {
-    deleteErrorMessages();
-    let newPassword = document.getElementById("new-password").value;
-    let confirmPassword = document.getElementById("confirm-reset-password").value;
-    if(newPassword !== confirmPassword){
-        let confirmElement = document.getElementById("confirm-reset-password").parentNode;
-        let error = document.createElement("p");
-        error.classList.add("error-message");
-        error.innerText = "Passwords not equals";
-        confirmElement.appendChild(error);
+    let resetDto = {
+        "newPassword" : document.getElementById('new-password').value,
+        "confirmResetPassword" : document.getElementById('confirm-reset-password').value,
+        "generatedCode" : "0",
+        "inputCode" : "0",
     }
-    else {
-        let hashPassword = hash(newPassword);
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            cache: false,
-            url: '/home/reset',
-            dataType: 'text',
-            data: JSON.stringify(hashPassword),
-            success: function () {
-                resetClose();
-                openResetTwoPopup();
-            }
-        })
-
-    }
+    validation(resetDto, "/home/reset")
 })
 
 let confirm = document.getElementById("done-btn");
 confirm.addEventListener("click", () => {
     let code = document.getElementById("code").value;
-    $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: "/home/reset/confirm",
-        cache: false,
-        dataType: 'text',
-        responseType: "json",
-        data: JSON.stringify(code),
-        success: function (data) {
-            deleteErrorMessages();
-            let correct = JSON.parse(JSON.stringify(data));
-            if(!correct){
-                let error = document.createElement('p');
-                error.classList.add('error-message');
-                error.innerText = "Wrong confirmation code";
-                document.getElementById("code").parentNode.appendChild(error);
-            }
-            else {
-                closeResetTwoPopup();
-            }
-        }
-    })
+    validation(code, "/home/reset/confirm");
 })
 
-function validation(user, url){
+function validation(obj, url){
     $.ajax({
         type: "POST",
         contentType: "application/json",
@@ -92,16 +49,33 @@ function validation(user, url){
         cache: false,
         dataType: 'json',
         responseType: "json",
-        data: JSON.stringify(user),
+        data: JSON.stringify(obj),
         success: function (data) {
             deleteErrorMessages();
             let validationErrors = JSON.parse(JSON.stringify(data));
             let errorMap = new Map(Object.entries(validationErrors));
+            let rememberMe = document.querySelector('.remember-me input');
             if (errorMap.size > 0) {
                 addErrors(errorMap);
-                document.querySelector('.remember-me input').checked = false;
+                rememberMe.checked = false;
             } else {
-                setTimeout(reload, 130);
+                let value = url.substr(url.lastIndexOf("/") + 1);
+                if (value === 'reset') {
+                    resetClose();
+                    openResetTwoPopup();
+
+                } else {
+                    saveUser(obj);
+                    if (value === 'login') {
+                        let login = obj['login'];
+                        if (rememberMe.checked) {
+                            rememberUser(login, true)
+                        } else {
+                            rememberUser(login, false);
+                        }
+                    }
+                    setTimeout(reload, 130);
+                }
             }
         }
     })
@@ -110,13 +84,9 @@ function validation(user, url){
 
 export function deleteErrorMessages(){
     let errorsMessages = document.querySelectorAll(".error-message")
-    let errorsSymbols = document.querySelectorAll('.error-symbol.symbol-active');
-    let labels = document.querySelectorAll('.form-element label');
-    let formElements = document.querySelectorAll('.form-element');
-    errorsMessages.forEach(message => message.classList.remove('active'));
-    errorsSymbols.forEach(symbol => symbol.classList.remove('symbol-active'));
-    labels.forEach(label => label.style.marginLeft = '-5px');
-    formElements.forEach(element => element.classList.remove('compression'));
+    let elements = document.querySelectorAll('.form-element')
+    errorsMessages.forEach((error) => error.classList.remove('active'));
+    elements.forEach((element) => element.classList.remove('compression'));
 
 }
 async function hash(string) {
@@ -138,17 +108,6 @@ export function clearInputs() {
     deleteErrorMessages();
 }
 
-    function closeAnotherMessages(id, parent) {
-        let messages = document.querySelectorAll('.error-message.active');
-        for (let message of messages) {
-            if (message.parentNode.children[1].id === id) {
-                continue;
-            }
-            message.classList.remove('active');
-            parent.classList.remove('compression');
-        }
-
-    }
 
 export function logout() {
     $.ajax({
@@ -160,14 +119,23 @@ export function logout() {
         responseType: "text",
         success: function (code) {
             if (Number(code) === 200) {
-                setTimeout(reload, 100);
+                setTimeout(toHome, 100);
+
             }
         }
     })
 }
+
+
+
 function reload(){
     window.location.reload();
 }
+
+function toHome() {
+    window.location.href = "/";
+}
+
 
 function addErrors(errors){
     for(let [field, message] of errors) {
@@ -176,20 +144,32 @@ function addErrors(errors){
             error.innerText = (String(message));
         error.classList.add('active');
         parentNode.classList.add('compression');
-        //let parentNode = wrongInput.parentNode;
-        //let errorSymbol = parentNode.children[0].children[0];
-        //let label = parentNode.children[0];
-        //activateErrorSymbol(errorSymbol, parentNode, error);
     }
 }
 
-function activateErrorSymbol(errorSymbol, parentNode, message){
-    errorSymbol.classList.add('symbol-active');
-    errorSymbol.addEventListener('click', () => {
-        closeAnotherMessages(parentNode.children[1].id, parentNode)
-        parentNode.classList.toggle('compression')
-        message.classList.toggle('active');
-    })
+function rememberUser(login, flag){
+    flag ? localStorage.setItem("remember", 'true') :
+       localStorage.setItem("remember", 'false');
 }
+
+function extractLogin(obj) {
+    let values = [];
+    for (let key of Object.keys(obj)) {
+        if (obj.hasOwnProperty(key)) {
+            values.push(key);
+        }
+    }
+    return obj[values[0]];
+}
+
+function saveUser(obj){
+    let login = extractLogin(obj);
+    localStorage.setItem("user", login);
+}
+
+
+
+
+
 
 

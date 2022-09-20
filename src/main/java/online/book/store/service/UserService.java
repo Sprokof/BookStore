@@ -3,15 +3,14 @@ package online.book.store.service;
 import online.book.store.entity.User;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface UserService{
-    void saveUser(User user);
-    void updateUser(User user);
     User getUserByLogin(String login);
     void updateUserInSession(User user);
-    User getUserByIP(String ip);
     void saveOrUpdate(User user);
-    User getUserById(int id);
+    User getUserByUUID(String uuid);
     List<User> getUsersInSession();
-
+    String generateUUID();
+    String extractValidLogin(String login);
 }

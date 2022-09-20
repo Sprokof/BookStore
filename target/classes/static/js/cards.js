@@ -27,7 +27,7 @@ wishlistBtn.forEach((btn) => {
     })
 })
 
-function getBookTitle(btn) {
+export function getBookTitle(btn) {
     let bookInfo = btn.parentNode.parentNode;
     return bookInfo.firstChild.innerText;
 

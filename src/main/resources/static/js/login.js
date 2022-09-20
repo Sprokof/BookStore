@@ -31,4 +31,18 @@ export function loginOpen(){
     loginPopup.classList.add('down', 'visible');
 }
 
+export function blockLoginPage(flag){
+    let value;
+    flag ? value = "none" : value = "auto";
+    console.log(value)
+    loginPopup.style.pointerEvents = value;
+}
+
+let noticeButton = document.querySelector('.notice-message button');
+noticeButton.addEventListener('click', () => {
+    blockLoginPage(false);
+    let noticeMessage = noticeButton.parentNode;
+    noticeMessage.classList.remove('show');
+})
+
 

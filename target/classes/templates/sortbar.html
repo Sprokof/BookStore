@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/sortbar.css}"/>
-</head>
-<body>
-<div class="container" th:fragment="sort">
+<div id="sort-container" class="container" th:fragment="sort">
     <div class="select-btn" onclick="controlSublist()">
         <span class="btn-text"> Choice Sort Type </span>
         <span class="arrow-down" id="arrow">
@@ -34,7 +23,3 @@
         </li>
     </ul>
 </div>
-<script th:src="@{/js/sortbar.js}"></script>
-
-</body>
-</html>

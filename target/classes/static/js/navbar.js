@@ -12,8 +12,11 @@ $(document).ready(function () {
 
 document.addEventListener('DOMContentLoaded', () => {
     autologin();
-    let user = userDto();
-    if (user['inSession']) {
+    console.log(localStorage.getItem("user") + " " + localStorage.getItem("remember"))
+    let sessionDto = validateSession();
+    if(sessionDto === undefined) return ;
+    if (sessionDto['activeSession']) {
+        console.log(sessionDto);
         let menu = document.querySelector('.menu');
         let lastChild = menu.children[4];
         let newChild = createChild(['item', 'main'], ['div', 'a'],
@@ -21,12 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
         newChild.children[0].onclick = () => logout();
         menu.replaceChild(newChild, lastChild);
 
-        if(Boolean(user['isAdmin'])){
+        if(sessionDto['userAdmin']){
             newChild = createChild(['item', 'main'], ['div', 'a'],
                 'Add book');
             newChild.children[0].onclick = () => addBook();
             menu.appendChild(newChild);
         }
+        setUser(sessionDto['userLogin']);
     }
 })
 
@@ -76,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     document.getElementById('search').addEventListener('click', (e) => {
-        console.log("in")
         let text = document.getElementById('search-input').value;
         executeQuery(text)
     });
@@ -116,31 +119,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-    export function userDto() {
-        let user;
+function validateSession() {
+        let sessionData;
+        let userDto = {
+            'login': localStorage.getItem("user")
+        }
         $.ajax({
-            type: "GET",
+            type: "POST",
             contentType: "application/json",
-            url: "/user/data",
+            url: "/session/validate",
             cache: false,
             dataType: 'json',
             responseType: 'json',
+            data: JSON.stringify(userDto),
             async: false,
             success: (data) => {
-                user = JSON.parse(JSON.stringify(data));
+                sessionData = JSON.parse(JSON.stringify(data));
             }
         })
-        return user;
+        return sessionData;
     }
 
-    function createCookie() {
-        document.cookie = 'status=reload'
-    }
-
-    function autologin() {
-        if(!loaded()) return ;
-        navigator.sendBeacon("/autologin");
-        createCookie();
+    function setUser(login) {
+        localStorage.setItem("user", login);
+        document.cookie = "set=true";
 
     }
 
@@ -158,7 +160,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return div;
     }
 
-   export function addBook(){
-        document.location = '/home/book/add';
-    }
+   export function addBook() {
+       document.location = '/home/book/add';
+   }
+
+   function autologin() {
+       let userDto = {
+           "login" : localStorage.getItem("user")
+       };
+       let remember = Boolean(localStorage.getItem("remember"));
+       if (loaded() && remember) {
+           navigator.sendBeacon("/autologin", JSON.stringify(userDto));
+       }
+   }
 

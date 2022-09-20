@@ -39,7 +39,6 @@ public class LoginValidation extends AbstractValidation {
             response.addError("login", "Login can't be empty");
         }
         if ((loadedUser = userService.getUserByLogin(userDto.getLogin())) == null) {
-            System.out.println(userDto.getLogin());
             response.addError("login", "Login not exist");
         }
         else {
@@ -62,6 +61,5 @@ public class LoginValidation extends AbstractValidation {
     @Override
     public void deleteErrorsMessages() {
         this.response = new ValidateResponse();
-
     }
 }

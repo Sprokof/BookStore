@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Component
@@ -63,37 +64,15 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List<String> allEmails() {
-        Session session = null;
-        List<String> emails = null;
-        try {
-            session = this.sessionFactory.openSession();
-            session.beginTransaction();
-            emails = session.createSQLQuery("SELECT EMAIL FROM USERS").list();
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            if (session != null) {
-                if (session.getTransaction() != null) {
-                    session.getTransaction().rollback();
-                }
-            }
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-        return emails;
-    }
-
-    @Override
     public User getUserByLogin(String login) {
         Pattern email = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
                 Pattern.CASE_INSENSITIVE);
 
         String column = "USERNAME";
 
-        if (email.matcher(login).find()) column = "EMAIL";
+        if (email.matcher(login).find()) {
+            column = "EMAIL";
+        }
 
         User user = null;
         Session session = null;
@@ -121,11 +100,19 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void updateUser(User user) {
+
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<User> getUsersInSession() {
         Session session = null;
+        List<User> users = null;
         try {
-            session = sessionFactory.openSession();
+            session = this.sessionFactory.openSession();
             session.beginTransaction();
-            session.update(user);
+            users = session.createSQLQuery("SELECT * FROM " +
+                    "USERS WHERE IN_SESSION is true").addEntity(User.class).list();
             session.getTransaction().commit();
         } catch (Exception e) {
             if (session != null) {
@@ -138,18 +125,51 @@ public class UserDaoImpl implements UserDao {
                 session.close();
             }
         }
+        return users;
 
     }
 
     @Override
-    public User getUserByIP(String ip) {
+    public boolean existUUID(UUID uuid) {
+        String stringUUID = uuid.toString();
+        Session session = null;
+        String value = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            value = (String) session.createSQLQuery("SELECT USER_ID FROM " +
+                            "USERS WHERE USER_ID=:uuid").
+                    setParameter("uuid", stringUUID).getSingleResult();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null) {
+                if (session.getTransaction() != null) {
+                    session.getTransaction().rollback();
+                    if (e instanceof NoResultException) {
+                        return false;
+                    }
+                }
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return value != null;
+    }
+
+    @Override
+    public User getUserByUUID(UUID uuid) {
+        String stringUUID = uuid.toString();
         Session session = null;
         User user = null;
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-            user = (User) session.createSQLQuery("SELECT * FROM USERS WHERE IP_ADDRESS=:ip").
-                    setParameter("ip", ip).addEntity(User.class).getSingleResult();
+            user = (User) session.createSQLQuery("SELECT * FROM " +
+                            "USERS WHERE USER_ID=:uuid").
+                    setParameter("uuid", stringUUID).addEntity(User.class).
+                    getSingleResult();
             session.getTransaction().commit();
         } catch (Exception e) {
             if (session != null) {
@@ -168,55 +188,6 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
-    @Override
-    public User getUserById(int id) {
-        Session session = null;
-        User user = null;
-        try {
-            session = this.sessionFactory.openSession();
-            session.beginTransaction();
-            user = session.get(User.class, id);
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            if (session != null)
-                if (session.getTransaction() != null) {
-                    session.getTransaction().rollback();
-                }
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-        return user;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<User> getUsersInSession() {
-        Session session = null;
-        List<User> users = null;
-    try {
-        session = this.sessionFactory.openSession();
-        session.beginTransaction();
-        users = session.createSQLQuery("SELECT * FROM " +
-                "USERS WHERE IN_SESSION is true").addEntity(User.class).list();
-        session.getTransaction().commit();
-    }
-    catch (Exception e){
-           if(session != null) {
-               if (session.getTransaction() != null) {
-                   session.getTransaction().rollback();
-               }
-           }
-    }
-
-    finally {
-        if(session != null){
-            session.close();
-        }
-    }
-    return users;
-
-    }
 }
+
 

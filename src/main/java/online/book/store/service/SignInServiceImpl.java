@@ -1,7 +1,8 @@
 package online.book.store.service;
 
+import lombok.NoArgsConstructor;
 import online.book.store.builder.AbstractUserBuilder;
-import online.book.store.dto.ResetPasswordDto;
+import online.book.store.dto.ResetDto;
 import online.book.store.dto.UserSignInDto;
 import online.book.store.dto.UserLoginDto;
 import online.book.store.entity.User;
@@ -11,10 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 @Service
 @Component
+@NoArgsConstructor
 public class SignInServiceImpl implements SignInService {
 
     @Autowired
@@ -23,51 +27,49 @@ public class SignInServiceImpl implements SignInService {
     @Autowired
     private UserService userService;
 
-    private ResetPasswordDto passwordDto;
+    private ResetDto passwordDto;
 
     private User user;
-
-
-    public SignInServiceImpl () {
-    }
 
     @Override
     public int loginUser(HttpServletRequest request,
                          AbstractUserBuilder userBuilder) {
         User user;
+        String uuid;
+        ServletContext context = request.getServletContext();;
         if (userBuilder instanceof UserLoginDto) {
             user = this.userService.getUserByLogin(userBuilder.getLogin());
-            UserLoginDto userLoginDto = (UserLoginDto) userBuilder;
-            user.setRemembered(userLoginDto.isRemembered());
+            uuid = user.getUserID();
         }
 
         else {
             user = ((UserSignInDto) userBuilder).doUserBuilder();
-            String ipAddress = getIpAddressFromRequest(request);
-            user.setIpAddress(ipAddress);
+            uuid = this.userService.generateUUID();
+            user.setUserID(uuid);
         }
+        context.setAttribute("id", uuid);
         sessionStorage.addUser(user);
         userService.saveOrUpdate(user);
-        return sessionStorage.containsInSession(user) ? 200 : 501;
+        return sessionStorage.containsInSession(UUID.fromString(uuid)) ? 200 : 501;
 
     }
 
 
     @Override
     public int logout(HttpServletRequest request) {
-        String ipAddress = getIpAddressFromRequest(request);
-        User user = userService.getUserByIP(ipAddress);
+        User user = getUserFromRequest(request);
         sessionStorage.removeUser(user);
-        userService.updateUser(user);
-        return !sessionStorage.containsInSession(user) ? 200 : 501;
+        userService.saveOrUpdate(user);
+        return !sessionStorage.containsInSession(UUID.fromString(user.getUserID())) ? 200 : 501;
     }
 
 
     @Override
-    public void addPassword(String hashPassword) {
-        if (this.passwordDto == null) this.passwordDto = new ResetPasswordDto();
-        this.passwordDto.setPassword(hashPassword);
-        this.passwordDto.setConfirmCode(generateCode());
+    public void addResetDto(ResetDto resetDto) {
+        String password = resetDto.getNewPassword();
+        resetDto.setNewPassword(SHA256.hash(password));
+        this.passwordDto = resetDto;
+        this.passwordDto.setGeneratedCode(generateCode());
     }
 
     private String generateCode() {
@@ -80,7 +82,7 @@ public class SignInServiceImpl implements SignInService {
     }
 
     @Override
-    public ResetPasswordDto getResetDto() {
+    public ResetDto getResetDto() {
         return this.passwordDto;
     }
 
@@ -89,24 +91,7 @@ public class SignInServiceImpl implements SignInService {
         return this.user;
     }
 
-    @Override
-    public String getIpAddressFromRequest(HttpServletRequest request) {
-        String ip = request.getHeader("X-FORWARDED-FOR");
-        if (ip == null) {
-            ip = request.getRemoteAddr();
-        }
-        return SHA256.hash(ip);
-    }
 
-
-
-    @Override
-    public void autologin(HttpServletRequest request) {
-        User user = getUserFromRequest(request);
-        if (user.isInSession()) logout(request);
-        if (user.isRemembered()) userService.updateUserInSession(user);
-
-    }
 
     @Override
     public User getSavedUser() {
@@ -114,8 +99,49 @@ public class SignInServiceImpl implements SignInService {
     }
 
     @Override
-    public User getUserFromRequest(HttpServletRequest request) {
-        String ipAddress = getIpAddressFromRequest(request);
-        return userService.getUserByIP(ipAddress);
+    public User getUserFromRequest(HttpServletRequest request){
+        ServletContext context = request.getServletContext();
+        String uuid = (String) context.getAttribute("id");
+        System.out.println("uuid is null?" + uuid == null);
+        if(uuid == null) return null;
+        return userService.getUserByUUID(uuid);
+    }
+
+    @Override
+    public boolean adminsRequest(HttpServletRequest request) {
+        User user = getUserFromRequest(request);
+        if(user == null || !user.isInSession()) return false;
+        return user.isAdmin();
+    }
+
+    @Override
+    public void generateNewCode() {
+        this.passwordDto.setGeneratedCode(generateCode());
+    }
+
+    @Override
+    public String getConfirmationCode() {
+        return getResetDto().getGeneratedCode();
+    }
+
+
+    private void loginUser(User user) {
+        sessionStorage.addUser(user);
+        userService.saveOrUpdate(user);
+    }
+
+    @Override
+    public void autologin(String login, HttpServletRequest request) {
+        ServletContext context = request.getServletContext();
+        User user = userService.getUserByLogin(login);
+        loginUser(user);
+        context.setAttribute("id", user.getUserID());
+    }
+
+    @Override
+    public void logout(String login) {
+        User user = userService.getUserByLogin(login);
+        user.setInSession(false);
+        userService.saveOrUpdate(user);
     }
 }

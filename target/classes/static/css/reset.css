@@ -27,13 +27,9 @@
     font-family: "Cascadia Mono", sans-serif;
 }
 
-.reset .form .form-element {
-    margin: 10px 0;
-}
 
 
-.reset .form .form-element input[type="text"],
-.reset .form .form-element input[type="password"]{
+.reset .form .form-element input{
     margin-top: 10px;
     display: block;
     width: 100%;
@@ -55,9 +51,6 @@
     cursor: pointer;
 }
 
-.reset .form .form-element button{
-    background-color: #1e1e1e;
-}
 
 .reset .form-element a:hover {
     color: darkblue;
@@ -90,3 +83,15 @@
 .close-reset-btn:hover {
     background-color: #333333;
 }
+
+#resend-link {
+    width: 82px;
+    margin-left: 64%;
+}
+
+.reset .form .form-element a.disable {
+    pointer-events: none;
+    color: red!important;
+}
+
+

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -28,22 +29,10 @@ public class UserServiceImpl implements UserService{
     private SessionStorage sessionStorage;
 
 
-    @Override
-    public void updateUser(User user) {
-        this.userDao.updateUser(user);
-
-    }
 
     @Override
     public User getUserByLogin(String login) {
-        return this.userDao.getUserByLogin(login);
-    }
-
-    @Override
-    public void saveUser(User user){
-        user.setAdmin(user.getEmail().equals(adminEmail));
-
-        this.userDao.saveUser(user);
+        return this.userDao.getUserByLogin(login.replaceAll("\".*\"", ""));
     }
 
 
@@ -51,30 +40,59 @@ public class UserServiceImpl implements UserService{
     public void updateUserInSession(User user){
         user.setAdmin(user.getEmail().equals(adminEmail));
         sessionStorage.addUser(user);
-        updateUser(user);
+        saveOrUpdate(user);
     }
 
-    @Override
-    public User getUserByIP(String ip) {
-        return this.userDao.getUserByIP(ip);
-
-    }
 
     @Override
     public void saveOrUpdate(User user) {
-        String password = user.getPassword();
-        user.setPassword(SHA256.hash(password));
-        user.setAdmin(user.getEmail().equals(adminEmail));
+        if (!existUser(user)) {
+            String password = SHA256.hash(user.getPassword());
+            user.setPassword(password);
+            user.setAdmin(user.getEmail().equals(adminEmail));
+        }
         this.userDao.saveOrUpdate(user);
     }
 
     @Override
-    public User getUserById(int id) {
-        return this.userDao.getUserById(id);
+    public User getUserByUUID(String uuid) {
+        return this.userDao.getUserByUUID(UUID.fromString(uuid));
     }
 
     @Override
     public List<User> getUsersInSession() {
         return this.userDao.getUsersInSession();
+    }
+
+    private boolean existUser(User user){
+        return user.getId() != null;
+    }
+
+
+    private boolean existUUID(UUID uuid) {
+        return userDao.existUUID(uuid);
+    }
+
+
+    @Override
+    public String generateUUID(){
+        UUID uuid = UUID.randomUUID();
+        if(existUUID(uuid)) {
+            do {
+                uuid = UUID.randomUUID();
+            } while (existUUID(uuid));
+        }
+    return uuid.toString();
+    }
+
+    @Override
+    public String extractValidLogin(String login) {
+        if(login.replaceAll("%22%22=", "").isEmpty()){
+            return "";
+        }
+        else {
+            login = login.replaceAll("%22", "");
+            return login.substring(login.indexOf("=") + 1);
+        }
     }
 }

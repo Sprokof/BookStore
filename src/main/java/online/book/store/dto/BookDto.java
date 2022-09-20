@@ -171,7 +171,7 @@ public class BookDto extends AbstractBookBuilder {
 
     private void writeImage(File bookImage) throws IOException {
         BufferedImage image = ImageIO.read(bookImage);
-        ImageIO.write(image, "png", new File(directoryLocation));
+        ImageIO.write(image, "jpg", new File(directoryLocation));
     }
 
 

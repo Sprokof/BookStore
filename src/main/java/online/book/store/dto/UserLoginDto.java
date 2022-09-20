@@ -16,15 +16,14 @@ public class UserLoginDto extends AbstractUserBuilder{
 
     private String login;
     private String password;
-    private boolean remembered;
-    private String ipAddress;
 
 
-    public UserLoginDto(String login, String password, boolean remembered, String ipAddress) {
+
+
+    public UserLoginDto(String login, String password) {
         this.login = login;
         this.password = password;
-        this.remembered = remembered;
-        this.ipAddress = ipAddress;
+
     }
 
     @Override
@@ -32,8 +31,6 @@ public class UserLoginDto extends AbstractUserBuilder{
         return "UserLoginDto{" +
                 "login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", remembered=" + remembered +
-                ", ipAddress='" + ipAddress + '\'' +
                 '}';
     }
 }

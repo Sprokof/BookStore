@@ -10,7 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
-    private String isAdmin;
-    private boolean inSession;
+    private String login;
 
 }
