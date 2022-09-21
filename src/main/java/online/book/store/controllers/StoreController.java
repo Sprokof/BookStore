@@ -49,15 +49,15 @@ public class StoreController{
     }
 
 
-    @PostMapping("/session/out")
-    public ResponseEntity<Integer> out(@RequestBody UserDto userDto){
-        signInService.logout(userDto.getLogin());
+    @PostMapping(value = "/invalidate")
+    public ResponseEntity<Integer> out(@RequestBody String user, HttpServletRequest request){
+        signInService.logout(user).invalidate(request);
         return ResponseEntity.ok(200);
     }
 
-    @PostMapping("/autologin")
-    public ResponseEntity<Integer> autologin(@RequestBody UserDto userDto, HttpServletRequest request){
-        signInService.autologin(userDto.getLogin(), request);
+    @PostMapping(value = "/autologin")
+    public ResponseEntity<Integer> autologin(@RequestBody String user, HttpServletRequest request){
+        signInService.autologin(user, request);
         return ResponseEntity.ok(200);
     }
 

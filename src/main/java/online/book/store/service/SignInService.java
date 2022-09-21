@@ -18,5 +18,6 @@ public interface SignInService {
     String getConfirmationCode();
     void generateNewCode();
     void autologin(String login, HttpServletRequest request);
-    void logout(String login);
+    SignInService logout(String login);
+    void invalidate(HttpServletRequest request);
 }

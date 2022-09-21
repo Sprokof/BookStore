@@ -12,8 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.ServletContext;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.UUID;
 
 @Service
@@ -36,7 +37,7 @@ public class SignInServiceImpl implements SignInService {
                          AbstractUserBuilder userBuilder) {
         User user;
         String uuid;
-        ServletContext context = request.getServletContext();;
+        HttpSession session = request.getSession();
         if (userBuilder instanceof UserLoginDto) {
             user = this.userService.getUserByLogin(userBuilder.getLogin());
             uuid = user.getUserID();
@@ -47,7 +48,7 @@ public class SignInServiceImpl implements SignInService {
             uuid = this.userService.generateUUID();
             user.setUserID(uuid);
         }
-        context.setAttribute("id", uuid);
+        session.setAttribute("id", uuid);
         sessionStorage.addUser(user);
         userService.saveOrUpdate(user);
         return sessionStorage.containsInSession(UUID.fromString(uuid)) ? 200 : 501;
@@ -59,6 +60,7 @@ public class SignInServiceImpl implements SignInService {
     public int logout(HttpServletRequest request) {
         User user = getUserFromRequest(request);
         sessionStorage.removeUser(user);
+        invalidate(request);
         userService.saveOrUpdate(user);
         return !sessionStorage.containsInSession(UUID.fromString(user.getUserID())) ? 200 : 501;
     }
@@ -92,7 +94,6 @@ public class SignInServiceImpl implements SignInService {
     }
 
 
-
     @Override
     public User getSavedUser() {
         return this.user;
@@ -100,9 +101,8 @@ public class SignInServiceImpl implements SignInService {
 
     @Override
     public User getUserFromRequest(HttpServletRequest request){
-        ServletContext context = request.getServletContext();
-        String uuid = (String) context.getAttribute("id");
-        System.out.println("uuid is null?" + uuid == null);
+        HttpSession session = request.getSession(true);
+        String uuid = (String) session.getAttribute("id");
         if(uuid == null) return null;
         return userService.getUserByUUID(uuid);
     }
@@ -132,16 +132,23 @@ public class SignInServiceImpl implements SignInService {
 
     @Override
     public void autologin(String login, HttpServletRequest request) {
-        ServletContext context = request.getServletContext();
         User user = userService.getUserByLogin(login);
         loginUser(user);
-        context.setAttribute("id", user.getUserID());
+        request.getSession().setAttribute("id", user.getUserID());
     }
 
     @Override
-    public void logout(String login) {
+    public SignInService logout(String login) {
         User user = userService.getUserByLogin(login);
         user.setInSession(false);
         userService.saveOrUpdate(user);
+        return this;
+    }
+
+    @Override
+    public void invalidate(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if(session.isNew()) return ;
+        session.invalidate();
     }
 }

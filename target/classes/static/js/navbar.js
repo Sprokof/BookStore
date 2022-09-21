@@ -9,14 +9,18 @@ $(document).ready(function () {
 
 });
 
+let userDto = {
+    "login" : localStorage.getItem("user")
+};
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("user = " + localStorage.getItem("user") + " remembered = "  + Boolean(localStorage.getItem("remember")))
+    invalidateSession();
     autologin();
-    console.log(localStorage.getItem("user") + " " + localStorage.getItem("remember"))
     let sessionDto = validateSession();
     if(sessionDto === undefined) return ;
+    console.log(sessionDto)
     if (sessionDto['activeSession']) {
-        console.log(sessionDto);
         let menu = document.querySelector('.menu');
         let lastChild = menu.children[4];
         let newChild = createChild(['item', 'main'], ['div', 'a'],
@@ -30,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             newChild.children[0].onclick = () => addBook();
             menu.appendChild(newChild);
         }
-        setUser(sessionDto['userLogin']);
+        setCookie(sessionDto['userLogin']);
     }
 })
 
@@ -121,9 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function validateSession() {
         let sessionData;
-        let userDto = {
-            'login': localStorage.getItem("user")
-        }
         $.ajax({
             type: "POST",
             contentType: "application/json",
@@ -140,9 +141,8 @@ function validateSession() {
         return sessionData;
     }
 
-    function setUser(login) {
-        localStorage.setItem("user", login);
-        document.cookie = "set=true";
+    function setCookie(login) {
+        document.cookie = "user=" + login;
 
     }
 
@@ -164,13 +164,17 @@ function validateSession() {
        document.location = '/home/book/add';
    }
 
+
+
    function autologin() {
-       let userDto = {
-           "login" : localStorage.getItem("user")
-       };
-       let remember = Boolean(localStorage.getItem("remember"));
-       if (loaded() && remember) {
-           navigator.sendBeacon("/autologin", JSON.stringify(userDto));
+       let remember = localStorage.getItem("remember");
+       if (loaded() && remember === 'true') {
+           navigator.sendBeacon('/autologin', userDto['login']);
+
        }
    }
 
+   function invalidateSession() {
+        if(!loaded()) return ;
+          navigator.sendBeacon("/invalidate", userDto['login']);
+   }

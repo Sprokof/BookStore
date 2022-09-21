@@ -82,6 +82,7 @@ public class SignInController {
     @PostMapping("/home/logout")
     public ResponseEntity<String> logout(HttpServletRequest request){
         String code = (String.valueOf(signInService.logout(request)));
+        request.getSession().invalidate();
         return ResponseEntity.ok(code);
     }
 

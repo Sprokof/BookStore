@@ -32,7 +32,7 @@ public class CartController {
 
     @GetMapping("/home/cart")
     public String cart(Model model, HttpServletRequest request){
-        Cart cart = signInService.getCurrentUser(request).getCart();
+        Cart cart = signInService.getUserFromRequest(request).getCart();
         model.addAttribute("cart", cart);
         return "cart";
     }

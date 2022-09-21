@@ -14,10 +14,11 @@ let userDto = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    exitFromSession();
-    autologin(userDto);
+    invalidateSession();
+    autologin();
     let sessionDto = validateSession();
     if(sessionDto === undefined) return ;
+    console.log(sessionDto)
     if (sessionDto['activeSession']) {
         let menu = document.querySelector('.menu');
         let lastChild = menu.children[4];
@@ -32,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
             newChild.children[0].onclick = () => addBook();
             menu.appendChild(newChild);
         }
-        setUser(sessionDto['userLogin']);
+        setCookie(sessionDto['userLogin']);
     }
 })
 
@@ -123,9 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function validateSession() {
         let sessionData;
-        let userDto = {
-            'login': localStorage.getItem("user")
-        }
         $.ajax({
             type: "POST",
             contentType: "application/json",
@@ -142,9 +140,8 @@ function validateSession() {
         return sessionData;
     }
 
-    function setUser(login) {
-        localStorage.setItem("user", login);
-        document.cookie = "set=true";
+    function setCookie(login) {
+        document.cookie = "user=" + login;
 
     }
 
@@ -169,14 +166,14 @@ function validateSession() {
 
 
    function autologin() {
-       let remember = Boolean(localStorage.getItem("remember"));
-       if (loaded() && remember) {
-           navigator.sendBeacon("/autologin", JSON.stringify(userDto));
+       let remember = localStorage.getItem("remember");
+       if (loaded() && remember === 'true') {
+           navigator.sendBeacon('/autologin', userDto['login']);
+
        }
    }
 
-   function exitFromSession(){
-        if(loaded()){
-            navigator.sendBeacon("/session/out", JSON.stringify(userDto));
-        }
+   function invalidateSession() {
+        if(!loaded()) return ;
+          navigator.sendBeacon("/invalidate", userDto['login']);
    }
