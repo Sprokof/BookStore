@@ -27,6 +27,7 @@ registration.addEventListener("click", () => {
 let reset = document.getElementById("continue-btn");
 reset.addEventListener("click", () => {
     let resetDto = {
+        "login" : localStorage.getItem("user");
         "newPassword" : document.getElementById('new-password').value,
         "confirmResetPassword" : document.getElementById('confirm-reset-password').value,
         "generatedCode" : "0",

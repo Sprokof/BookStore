@@ -87,13 +87,13 @@ public class SignInController {
     }
 
     @PostMapping("/home/reset")
-    public ResponseEntity<Map<String, String>> reset(@RequestBody ResetDto resetDto,
-                                            HttpServletRequest httpServletRequest){
+    public ResponseEntity<Map<String, String>> reset(@RequestBody ResetDto resetDto){
         resetValidation.validation(resetDto);
         if(!resetValidation.hasErrors()){
             signInService.addResetDto(resetDto);
 
-            User user = signInService.getCurrentUser(httpServletRequest);
+            String login = resetDto.getLogin();
+            User user = userService.getUserByLogin(login);
             sender.send(user.getEmail(), Subject.RESET_PASSWORD, this.signInService);
         }
         return ResponseEntity.ok(resetValidation.validationErrors());

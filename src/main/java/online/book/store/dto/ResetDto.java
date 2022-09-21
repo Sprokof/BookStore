@@ -10,6 +10,10 @@ public class ResetDto {
 
     @Getter
     @Setter
+    private String login;
+
+    @Getter
+    @Setter
     private String newPassword;
 
     @Getter
