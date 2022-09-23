@@ -65,7 +65,7 @@ public class Book {
                                 String subject, String bookImageName, String available, int availableCopies,
                                 String description, String authors, String format){
         this.isbn = isbn;
-        this.title = title;
+        this.title = titleToUpperCase(title);
         this.publisher = publisher;
         this.price = price;
         this.yearPub = yearPub;
@@ -132,6 +132,12 @@ public class Book {
 
     private LocalDate currentDate(){
         return LocalDate.now();
+    }
+
+
+    private String titleToUpperCase(String title){
+        String upperCaseLetter = (String.valueOf(title.charAt(0)).toUpperCase());
+        return String.format("%s%s", upperCaseLetter, title.substring(1));
     }
 
 }

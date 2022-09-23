@@ -33,19 +33,6 @@ export function resetClose(){
 }
 
 function findUser(){
-    let user;
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "/user/data",
-        cache: false,
-        dataType: 'json',
-        responseType: 'json',
-        async: false,
-        success: (userDto) => {
-         user = JSON.parse(JSON.stringify(userDto));
-        }
-    })
-    return user !== undefined;
+    return localStorage.getItem("user") != null;
 }
 

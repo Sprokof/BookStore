@@ -70,12 +70,8 @@ public class BookController {
 
     @PostMapping("/home/book/add")
     @SuppressWarnings("unchecked")
-    public String addBook(@ModelAttribute("addBook") @Valid BookDto bookDto,
-                          HttpServletRequest request){
-        //bookValidator.validate(bookDto, bindingResult);
-        //if(bindingResult.hasErrors()) {
-            //return "addBook";
-        //}
+    public String addBook(BookDto bookDto){
+        bookValidator.validate(bookDto);
         bookService.saveBook(bookDto.doBookBuilder());
         return "addBook";
     }

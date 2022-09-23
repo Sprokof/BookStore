@@ -14,7 +14,6 @@ let userDto = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("user = " + localStorage.getItem("user") + " remembered = "  + Boolean(localStorage.getItem("remember")))
     invalidateSession();
     autologin();
     let sessionDto = validateSession();
