@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/instance/popular/categories",
+            url: "categories",
             cache: false,
             dataType: 'json',
             responseType: 'json',

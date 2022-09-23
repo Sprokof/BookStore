@@ -42,7 +42,7 @@ confirm.addEventListener("click", () => {
     validation(code, "/home/reset/confirm");
 })
 
-function validation(obj, url){
+export function validation(obj, url){
     $.ajax({
         type: "POST",
         contentType: "application/json",

@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface CategoryService {
     List<CategoryDto> allCategories();
-    List<CategoryDto> popularCategories();
+    boolean existCategory(String category);
 }

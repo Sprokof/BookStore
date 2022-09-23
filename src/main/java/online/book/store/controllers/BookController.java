@@ -9,6 +9,7 @@ import online.book.store.expections.ResourceNotFoundException;
 import online.book.store.service.BookService;
 import online.book.store.service.CategoryService;
 import online.book.store.service.SignInService;
+import online.book.store.validation.AbstractValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -41,7 +42,8 @@ public class BookController {
 
 
     @Autowired
-    private @Qualifier("bookValidation") Validator bookValidator;
+    private @Qualifier("bookValidation")
+    AbstractValidation bookValidation;
 
     @ModelAttribute("categories")
     public List<CategoryDto> categories(){
@@ -71,7 +73,10 @@ public class BookController {
     @PostMapping("/home/book/add")
     @SuppressWarnings("unchecked")
     public String addBook(BookDto bookDto){
-        bookValidator.validate(bookDto);
+        bookValidation.validation(bookDto);
+        if(!bookValidation.hasErrors()){
+            bookService.saveBook(bookDto.doBookBuilder());
+        }
         bookService.saveBook(bookDto.doBookBuilder());
         return "addBook";
     }

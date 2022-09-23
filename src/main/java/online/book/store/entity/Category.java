@@ -21,16 +21,15 @@ public class Category {
     @Column(name = "CATEGORY")
     private String category;
 
-    private transient double rating;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "book_id")
+    private Book book;
 
 
     public Category(String category){
         this.category = category;
-        this.rating = avgRating();
     }
 
-    @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL)
-    private List<Book> books;
 
     @Override
     public boolean equals(Object obj) {
@@ -39,15 +38,5 @@ public class Category {
 
         Category cat = (Category) obj;
         return this.getCategory().equalsIgnoreCase(cat.getCategory());
-    }
-
-
-    private int avgRating(){
-        int sumRating = 0;
-        int length = this.books.size();
-        for(Book book : this.books){
-            //sumRating += book.bookRating;
-        }
-    return (sumRating / length);
     }
 }

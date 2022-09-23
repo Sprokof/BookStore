@@ -63,10 +63,27 @@ public class BookValidation extends AbstractValidation {
                 this.response.addError("year", "Wrong year format");
             }
 
+            String subject = bookDto.getSubject();
+
+            if(subject.isEmpty()){
+                this.response.addError("subject", "Subject can't be empty");
+            }
+
+            Pattern subjectPat = Pattern.compile("([a-zA-Z0-9\\-]+)");
+
+            if(subjectPat.matcher(subject).find()){
+                this.response.addError("subject", "Wrong format");
+            }
+
+            if(bookDto.getBookImage() == null){
+                this.response.addError("image", "Image not selected");
+            }
 
             if(!imageFile(bookDto.getBookImage().getName())){
-                errors.rejectValue("bookImage", "Not.image.format");
+                this.response.addError("image", "Selected file not image");
             }
+
+
 
 
 

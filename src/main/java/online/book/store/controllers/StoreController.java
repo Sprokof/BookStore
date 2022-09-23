@@ -35,9 +35,9 @@ public class StoreController{
 
 
 
-    @GetMapping("/instance/popular/categories")
+    @GetMapping("/categories")
     public ResponseEntity<List<CategoryDto>> popularCategories() {
-        List<CategoryDto> categories = categoryService.popularCategories();
+        List<CategoryDto> categories = categoryService.allCategories();
         return ResponseEntity.ok(categories);
     }
 

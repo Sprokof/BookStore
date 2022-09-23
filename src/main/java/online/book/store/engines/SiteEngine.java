@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import online.book.store.dto.CategoryDto;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
 import online.book.store.service.BookService;
@@ -107,14 +108,13 @@ public class SiteEngine {
     }
 
     private boolean category(SearchQuery query){
-        return this.categoryService.allCategories().
-                contains(new Category(query.getQueryText()));
+        return this.categoryService.existCategory(query.getQueryText());
     }
 
     private void sortResultedList(SortConfig config) {
         switch (config.currentType()) {
             case POPULARITY:
-                //this.bookList.sort(Comparator.comparingDouble(Book::getBookRating));
+                this.bookList.sort(Comparator.comparingDouble(Book::getBookRating));
                 break;
             case LOWEST:
                 this.bookList.sort(Comparator.comparingDouble(Book::getPrice));

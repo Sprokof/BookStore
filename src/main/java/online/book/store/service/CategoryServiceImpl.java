@@ -19,11 +19,6 @@ public class CategoryServiceImpl implements CategoryService{
     @Autowired
     private CategoryDao categoryDao;
 
-    @Override
-    public List<CategoryDto> popularCategories() {
-        return this.categoryDao.popularCategories().
-                stream().map(CategoryDto::new).collect(Collectors.toList());
-    }
 
     @Override
     public List<CategoryDto> allCategories() {
@@ -31,4 +26,8 @@ public class CategoryServiceImpl implements CategoryService{
                 stream().map(CategoryDto::new).collect(Collectors.toList());
     }
 
+    @Override
+    public boolean existCategory(String category) {
+        return this.categoryDao.existCategory(new Category(category));
+    }
 }

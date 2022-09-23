@@ -91,8 +91,9 @@ public class BookDaoImpl implements BookDao {
         session = this.sessionFactory.openSession();
         session.beginTransaction();
         books = (LinkedList<Book>) session.
-                createSQLQuery("SELECT * FROM BOOKS").
-                addEntity(Category.class);
+                createSQLQuery("SELECT * FROM BOOKS as b " +
+                        "JOIN CATEGORIES as c on c.book_id=b.id").
+                addEntity(Category.class).list();
         session.getTransaction().commit();
     }
     catch (Exception e) {
@@ -106,16 +107,7 @@ public class BookDaoImpl implements BookDao {
             session.close();
         }
     }
-    List<Book> resultedBooksList = new LinkedList<>();
-    for(Book book : books){
-        if(getBookByCategory(book, currentCategory) != null){
-            if(resultedBooksList.contains(book)){
-                continue;
-            }
-            resultedBooksList.add(book);
-        }
-    }
-    return resultedBooksList;
+    return books;
 
     }
 
