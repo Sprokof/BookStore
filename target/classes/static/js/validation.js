@@ -27,7 +27,7 @@ registration.addEventListener("click", () => {
 let reset = document.getElementById("continue-btn");
 reset.addEventListener("click", () => {
     let resetDto = {
-        "login" : localStorage.getItem("user"),
+        "login" : JSON.parse(localStorage.getItem("user"))['login'],
         "newPassword" : document.getElementById('new-password').value,
         "confirmResetPassword" : document.getElementById('confirm-reset-password').value,
         "generatedCode" : "0",
@@ -42,7 +42,7 @@ confirm.addEventListener("click", () => {
     validation(code, "/home/reset/confirm");
 })
 
-function validation(obj, url){
+export function validation(obj, url){
     $.ajax({
         type: "POST",
         contentType: "application/json",
@@ -68,12 +68,7 @@ function validation(obj, url){
                 } else {
                     saveUser(obj);
                     if (value === 'login') {
-                        let login = obj['login'];
-                        if (rememberMe.checked) {
-                            rememberUser(login, true)
-                        } else {
-                            rememberUser(login, false);
-                        }
+                        rememberUser(rememberMe.checked);
                     }
                     setTimeout(reload, 130);
                 }
@@ -148,9 +143,11 @@ function addErrors(errors){
     }
 }
 
-function rememberUser(login, flag){
-    flag ? localStorage.setItem("remember", 'true') :
-       localStorage.setItem("remember", 'false');
+function rememberUser(flag){
+    let user = JSON.parse(localStorage.getItem("user"));
+    user['remember'] = flag.toString();
+    updateUser(user);
+
 }
 
 function extractLogin(obj) {
@@ -164,9 +161,18 @@ function extractLogin(obj) {
 }
 
 function saveUser(obj){
-    let login = extractLogin(obj);
-    localStorage.setItem("user", login);
+    let user = {
+        "login" : extractLogin(obj),
+        "remember" : "false",
+    }
+    localStorage.setItem("user", JSON.stringify(user));
 }
+
+function updateUser(user){
+    localStorage.setItem("user", JSON.stringify(user));
+}
+
+
 
 
 

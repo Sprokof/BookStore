@@ -1,6 +1,7 @@
 package online.book.store.dao;
 
 import online.book.store.entity.Category;
+import online.book.store.entity.ExistCategory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
@@ -18,14 +19,15 @@ public class CategoryDaoImpl implements CategoryDao{
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<String> allCategory() {
+    public List<ExistCategory> allCategories() {
         Session session = null;
-        List<String> booksCategories = null;
+        List<ExistCategory> booksCategories = null;
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
             booksCategories = session.
-                    createSQLQuery("SELECT CATEGORY FROM CATEGORIES").list();
+                    createSQLQuery("SELECT * FROM EXIST_CATEGORIES").
+                    addEntity(ExistCategory.class).list();
             session.getTransaction().commit();
         } catch (Exception e) {
             if (session != null) {
@@ -43,7 +45,7 @@ public class CategoryDaoImpl implements CategoryDao{
     }
 
 
-    private List<String> extractSubList(List<String> categories){
+    private List<ExistCategory> extractSubList(List<ExistCategory> categories){
         if(categories.size() >= 10) {
             return categories.subList(0, 10);
         }

@@ -6,12 +6,12 @@ let notice = document.querySelector('.notice-message');
 
 
 openReset.addEventListener("click", () => {
+    loginClose();
     if(!findUser()){
-        blockLoginPage(true)
         notice.classList.add('show');
         return;
     }
-    loginClose();
+    notice.classList.remove('show');
     resetOpen();
 })
 
@@ -19,13 +19,9 @@ closeReset.addEventListener('click', (e) => {
     resetClose();
 })
 
-function resetOpen(){
-    if(!findUser()){
-        blockLoginPage(true)
-        notice.classList.add('show');
-        return;
-    }
+function resetOpen() {
     resetPopup.classList.add('down', 'visible');
+
 }
 
 export function resetClose(){

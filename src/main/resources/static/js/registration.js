@@ -9,7 +9,7 @@ export function signInClose(){
 
 }
 
-function signInOpen(){
+export function signInOpen(){
     singInPopup.classList.add('down', 'visible');
 }
 

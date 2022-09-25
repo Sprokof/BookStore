@@ -5,6 +5,7 @@ import online.book.store.dto.CategoryDto;
 import online.book.store.engines.*;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
+import online.book.store.entity.ExistCategory;
 import online.book.store.expections.ResourceNotFoundException;
 import online.book.store.service.BookService;
 import online.book.store.service.CategoryService;
@@ -46,8 +47,8 @@ public class BookController {
     AbstractValidation bookValidation;
 
     @ModelAttribute("categories")
-    public List<CategoryDto> categories(){
-        return categoryService.popularCategories();
+    public List<ExistCategory> categories(){
+        return categoryService.getAllCategories();
     }
 
 

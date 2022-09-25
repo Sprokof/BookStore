@@ -3,6 +3,7 @@ package online.book.store.controllers;
 import online.book.store.dto.CategoryDto;
 import online.book.store.dto.SessionDto;
 import online.book.store.dto.UserDto;
+import online.book.store.entity.ExistCategory;
 import online.book.store.entity.User;
 import online.book.store.service.CategoryService;
 import online.book.store.service.SignInService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -36,8 +38,8 @@ public class StoreController{
 
 
     @GetMapping("/categories")
-    public ResponseEntity<List<CategoryDto>> popularCategories() {
-        List<CategoryDto> categories = categoryService.allCategories();
+    public ResponseEntity<List<ExistCategory>> popularCategories() {
+        List<ExistCategory> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(categories);
     }
 

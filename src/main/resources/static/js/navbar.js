@@ -9,16 +9,12 @@ $(document).ready(function () {
 
 });
 
-let userDto = {
-    "login" : localStorage.getItem("user")
-};
 
 document.addEventListener('DOMContentLoaded', () => {
     invalidateSession();
     autologin();
     let sessionDto = validateSession();
-    if(sessionDto === undefined) return ;
-    console.log(sessionDto)
+    if(sessionDto === null || sessionDto === undefined) return ;
     if (sessionDto['activeSession']) {
         let menu = document.querySelector('.menu');
         let lastChild = menu.children[4];
@@ -41,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "categories",
+            url: "/categories",
             cache: false,
             dataType: 'json',
             responseType: 'json',
@@ -57,18 +53,20 @@ document.addEventListener('DOMContentLoaded', () => {
         let newNode;
         let currentNode;
         let childrenNodes = document.querySelector('.sub-menu').children;
+        let subMenu = document.querySelector('.sub-menu');
         if (childrenNodes.length < categories.length) {
             for (let i = childrenNodes.length; i < categories.length; i++) {
                 newNode = document.createElement('a');
+                newNode.classList.add('sub-item')
                 newNode.innerText = categories[i]['category'];
-                document.querySelector('.sub-menu').appendChild(newNode);
+                subMenu.appendChild(newNode);
             }
         } else {
             for (let i = 0; i < categories.length; i++) {
                 newNode = document.createElement('a');
                 newNode.innerText = categories[i]['category'];
                 currentNode = childrenNodes.item(i);
-                document.querySelector('.sub-menu').replaceChild(newNode, currentNode);
+                subMenu.replaceChild(newNode, currentNode);
             }
         }
     }
@@ -102,6 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('.books-slider').classList.toggle('right');
             document.querySelector('.control-slider').classList.toggle('left');
         }
+        if (window.location.pathname.split('/')[3] === 'add') {
+            document.querySelector('.sub-menu').classList.add('none');
+        }
         document.querySelector(".container-fluid").classList.toggle('compression');
         document.querySelector("#menu").classList.toggle('compression');
 
@@ -123,6 +124,8 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
 function validateSession() {
+        let user;
+        if((user = getUser()) == null) return null;
         let sessionData;
         $.ajax({
             type: "POST",
@@ -131,7 +134,7 @@ function validateSession() {
             cache: false,
             dataType: 'json',
             responseType: 'json',
-            data: JSON.stringify(userDto),
+            data: JSON.stringify(user),
             async: false,
             success: (data) => {
                 sessionData = JSON.parse(JSON.stringify(data));
@@ -166,14 +169,23 @@ function validateSession() {
 
 
    function autologin() {
-       let remember = localStorage.getItem("remember");
-       if (loaded() && remember === 'true') {
-           navigator.sendBeacon('/autologin', userDto['login']);
+       let user = getUser();
+       if(user === null) return ;
+       if (loaded() && user['remember'] === 'true') {
+           navigator.sendBeacon('/autologin', user['login']);
 
        }
    }
 
    function invalidateSession() {
-        if(!loaded()) return ;
-          navigator.sendBeacon("/invalidate", userDto['login']);
+       let user = getUser();
+       if(user === null) return ;
+       if (!loaded()) return;
+       navigator.sendBeacon("/invalidate", user['login']);
+   }
+
+
+   function getUser(){
+        if(localStorage.getItem('user') === null) return null;
+        return JSON.parse(localStorage.getItem('user'));
    }

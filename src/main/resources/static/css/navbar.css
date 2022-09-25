@@ -29,7 +29,7 @@ body {
     left: 0;
 }
 
-.sidebar .item .sub-menu a:hover {
+.sidebar .item .sub-menu .sub-item:hover {
     margin-top: 1px;
     color: dimgrey!important;
 }
@@ -37,7 +37,6 @@ body {
 .sidebar .item .sub-btn:hover{
     color: #1b1b1b;
 }
-
 
 .container-fluid.compression {
     margin-left: 230px;
@@ -57,17 +56,10 @@ body {
     cursor: pointer;
 }
 
-.sidebar .menu .item .sub-menu a {
+.sidebar .menu .item .sub-menu .sub-item {
     color: grey;
 }
 
-.sidebar .menu .item .sub-menu :first-child {
-    border-top: 1px solid gainsboro;
-}
-
-.sidebar .menu .item .sub-menu :last-child {
-    border-bottom: 1px solid gainsboro;
-}
 
 .sidebar .menu .item a{
     color: #b4ad9e;
@@ -116,9 +108,11 @@ body {
 .sidebar .menu .item .sub-menu {
     background: rgba(255, 255, 255, 0.1);
     display: none;
+    border-top: 1px solid gainsboro;
+    border-bottom: 1px solid gainsboro;
 }
 
-.sidebar .menu .item .sub-menu a {
+.sidebar .menu .item .sub-menu .sub-item {
     padding-left: 70px;
 }
 
@@ -176,4 +170,8 @@ header .nav-item a:hover::after {
 
 .nav-item .fa-search:hover {
     color: #1b1b1b;
+}
+
+.sidebar .item .sub-menu.none {
+    border-top: none;
 }
