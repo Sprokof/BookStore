@@ -75,18 +75,54 @@ public class BookValidation extends AbstractValidation {
                 this.response.addError("subject", "Wrong format");
             }
 
-            if(bookDto.getBookImage() == null){
+            if(bookDto.getBookImage().isEmpty()){
                 this.response.addError("image", "Image not selected");
             }
 
-            if(!imageFile(bookDto.getBookImage().getName())){
+            if(!imageFile(bookDto.getBookImage())){
                 this.response.addError("image", "Selected file not image");
             }
 
+            String availableCopies = bookDto.getAvailableCopies();
 
+            if(availableCopies.isEmpty()){
+                this.response.addError("copies", "Available copies");
+            }
 
+            Pattern availableCopiesPat = Pattern.compile("[^0-9]");
 
+            if(availableCopiesPat.matcher(availableCopies).find()){
+                this.response.addError("copies", "Must be integer");
+            }
 
+            String description = bookDto.getBookImage();
+
+            if(description.isEmpty()){
+                this.response.addError("desc", "Description can't be empty");
+            }
+
+            int length = description.length();
+            if(length < 30 || length > 210){
+                this.response.addError("desc", "Description min length 30, max 210");
+            }
+
+            String author = bookDto.getAuthors();
+
+            if(author.isEmpty()){
+                this.response.addError("author", "Authors can't be empty");
+            }
+
+            String format = bookDto.getFormat();
+
+            if(format.isEmpty()){
+                this.response.addError("format", "Format can't be empty");
+            }
+
+            String formatPattern = "[1-9]{2}\\p{P}[1-9]{3}\\/[1-9]";
+
+            if(!format.matches(formatPattern)){
+                this.response.addError("format", "Wrong format value");
+            }
     }
 
 

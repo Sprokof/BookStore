@@ -41,10 +41,10 @@ public class BookController {
     @Autowired
     private SignInService signInService;
 
-
     @Autowired
-    private @Qualifier("bookValidation")
-    AbstractValidation bookValidation;
+    @Qualifier("bookValidation")
+    private AbstractValidation bookValidation;
+
 
     @ModelAttribute("categories")
     public List<ExistCategory> categories(){
@@ -63,23 +63,21 @@ public class BookController {
 
 
     @GetMapping("/home/book/add")
-    public String addBook(Model model, HttpServletRequest request){
+    public String addBook(HttpServletRequest request){
         if(!signInService.adminsRequest(request)){
             throw new ResourceNotFoundException();
         }
-        model.addAttribute("book", new BookDto());
         return "addBook";
     }
 
     @PostMapping("/home/book/add")
-    @SuppressWarnings("unchecked")
-    public String addBook(BookDto bookDto){
+    public ResponseEntity<Map<String, String>> addBook(@RequestBody BookDto bookDto){
         bookValidation.validation(bookDto);
         if(!bookValidation.hasErrors()){
-            bookService.saveBook(bookDto.doBookBuilder());
+            Book book = bookDto.doBookBuilder();
+            bookService.saveBook(book);
         }
-        bookService.saveBook(bookDto.doBookBuilder());
-        return "addBook";
+        return ResponseEntity.ok(bookValidation.validationErrors());
     }
 
 

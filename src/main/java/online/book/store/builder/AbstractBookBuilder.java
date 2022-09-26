@@ -12,7 +12,7 @@ public abstract class AbstractBookBuilder {
         return this;
     }
 
-   public AbstractBookBuilder bookImage(File image){
+   public AbstractBookBuilder bookImage(String imageName){
        return null;
    }
 
@@ -40,7 +40,7 @@ public abstract class AbstractBookBuilder {
        return null;
    }
 
-   public AbstractBookBuilder availableCopies(int availableCopies){
+   public AbstractBookBuilder availableCopies(String availableCopies){
        return null;
    }
 

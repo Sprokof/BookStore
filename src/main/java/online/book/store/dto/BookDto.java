@@ -14,10 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -27,10 +24,13 @@ public class BookDto extends AbstractBookBuilder {
 
     public static final String[] AVAILABLE_STATUS = {"is available", "not available"};
 
-    @Value("book.images.root")
+    @Value("${images}")
     private String directoryLocation;
 
-    private File bookImage;
+    @Value("${root}")
+    private String root;
+
+    private String bookImage;
     private String isbn;
     private String title;
     private String publisher;
@@ -38,7 +38,7 @@ public class BookDto extends AbstractBookBuilder {
     private String yearPub;
     private String subject;
     private String available;
-    private int availableCopies;
+    private String availableCopies;
     private String description;
     private String authors;
     private String format;
@@ -55,14 +55,9 @@ public class BookDto extends AbstractBookBuilder {
     }
 
     @Override
-    public AbstractBookBuilder bookImage(File bookImage) {
-        this.bookImage = bookImage;
-
-    try {
-        writeImage(bookImage);
-    }
-    catch (IOException e){ e.printStackTrace(); }
-
+    public AbstractBookBuilder bookImage(String bookImageName) {
+        findAndRewriteImage(bookImageName);
+        this.bookImage = bookImageName;
         return this;
     }
 
@@ -103,7 +98,7 @@ public class BookDto extends AbstractBookBuilder {
     }
 
     @Override
-    public AbstractBookBuilder availableCopies(int availableCopies) {
+    public AbstractBookBuilder availableCopies(String availableCopies) {
         this.availableCopies = availableCopies;
         return this;
     }
@@ -147,8 +142,8 @@ public class BookDto extends AbstractBookBuilder {
         if(!this.containsNull()){
             book = new Book(this.isbn, this.title,
                         this.publisher, this.price,
-                        this.yearPub, this.subject, this.bookImage.getName(), AVAILABLE_STATUS[0],
-                        this.availableCopies, this.description, this.authors, this.format);
+                        this.yearPub, this.subject, this.bookImage, AVAILABLE_STATUS[0],
+                        Integer.parseInt(this.availableCopies), this.description, this.authors, this.format);
 
             addCategoryToBook(book);
 
@@ -169,9 +164,23 @@ public class BookDto extends AbstractBookBuilder {
                         build();
     }
 
-    private void writeImage(File bookImage) throws IOException {
-        BufferedImage image = ImageIO.read(bookImage);
-        ImageIO.write(image, "jpg", new File(directoryLocation));
+    private void findAndRewriteImage(String bookImage) {
+        File root = new File(this.root);
+        BufferedImage image = null;
+        File[] files = root.listFiles();
+
+        try {
+            for (File file : files) {
+                if (file.getName().equals(bookImage)) {
+                    File path = new File(file.getAbsolutePath());
+                    image = ImageIO.read(path);
+                }
+            }
+            assert image != null;
+            ImageIO.write(image, "jpg", new File(directoryLocation));
+        } catch (NullPointerException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
