@@ -49,7 +49,7 @@
 .books-slider section {
     margin-top: 25px;
     display: flex;
-    margin-left: 10px;
+    margin-left: 5%;
 }
 
 section .card {
@@ -70,7 +70,7 @@ section .card {
 
 .books-slider section .card .book-info {
     width: 300px;
-    height: 200px;
+    height: 260px;
     background-color: #21222d;
     font-family: "Cascadia Code", sans-serif;
     color: #fff;
@@ -102,7 +102,7 @@ section .card {
 
 .books-slider  .card .buttons {
     height: 65px;
-    margin-top: 35px;
+    margin-top: 8%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -112,6 +112,7 @@ section .card {
 .books-slider .card .price {
     font-weight: 700;
     font-size: 1.1rem;
+    color: white;
 }
 
 .books-slider .card .btn {
@@ -148,7 +149,7 @@ section .card {
 }
 
 .right{
-    margin-left: 285px;
+    margin-left: 290px;
 }
 .left {
     margin-right: 245px;

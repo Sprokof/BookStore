@@ -72,21 +72,17 @@ public class BookController {
 
     @PostMapping("/home/book/add")
     public ResponseEntity<Map<String, String>> addBook(@RequestBody BookDto bookDto){
+
         bookValidation.validation(bookDto);
         if(!bookValidation.hasErrors()){
             Book book = bookDto.doBookBuilder();
             bookService.saveBook(book);
+            System.out.println(book.getCategories());
         }
         return ResponseEntity.ok(bookValidation.validationErrors());
     }
 
 
-    @PostMapping("/home/book/add/category")
-    public ResponseEntity.BodyBuilder addCategory(@RequestBody List<Category> categories, Model model){
-        BookDto currentBook = ((BookDto) model.getAttribute("book"));
-        currentBook.setBooksCategory(categories);
-        return ResponseEntity.status(200);
-    }
 
 
     @GetMapping ("/home/books/search/")

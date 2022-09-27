@@ -35,9 +35,9 @@ public class Book {
     @Column(name = "PUBLISHER")
     private String publisher;
     @Column(name = "PRICE")
-    private double price;
+    private int price;
     @Column(name = "YEAR_OF_PUBLISHING")
-    private String yearPub;
+    private int yearPub;
     @Column(name = "SUBJECT")
     private String subject;
     @Column(name = "BOOK_IMAGE_NAME")
@@ -61,7 +61,7 @@ public class Book {
 
 
     public Book(String isbn, String title, String publisher,
-                                double price, String yearPub,
+                                int price, int yearPub,
                                 String subject, String bookImageName, String available, int availableCopies,
                                 String description, String authors, String format){
         this.isbn = isbn;
@@ -88,11 +88,13 @@ public class Book {
     public void addCategory(Category category){
         if(this.categories == null) this.categories = new LinkedList<>();
         this.categories.add(category);
+        category.setBook(this);
 
     }
 
     public void removeCategory(Category category){
         this.categories.remove(category);
+        category.setBook(null);
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
@@ -118,11 +120,11 @@ public class Book {
 
     @Override
     public String toString(){
-        return String.format("%s%s%s%s%s%s%s",
+        return String.format("%s%s%s%d%s%s%s",
                         this.isbn.toLowerCase(Locale.ROOT),
                         this.title.toLowerCase(Locale.ROOT).replaceAll("\\s", ""),
                         this.publisher.toLowerCase(Locale.ROOT),
-                        this.yearPub.toLowerCase(Locale.ROOT), this.subject,
+                        this.yearPub, this.subject,
                         this.description.toLowerCase(Locale.ROOT), this.price);
     }
 

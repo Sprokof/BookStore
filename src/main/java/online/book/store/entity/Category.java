@@ -39,4 +39,13 @@ public class Category {
         Category cat = (Category) obj;
         return this.getCategory().equalsIgnoreCase(cat.getCategory());
     }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "id=" + id +
+                ", category='" + category + '\'' +
+                ", book=" + book.getYearPub() +
+                '}';
+    }
 }

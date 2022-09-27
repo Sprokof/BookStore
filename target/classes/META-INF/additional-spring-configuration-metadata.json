@@ -4,5 +4,10 @@
       "name": "email",
       "type": "java.lang.String",
       "description": "Description for email."
-  }
-] }
+    },
+    {
+      "name": "images",
+      "type": "java.lang.String",
+      "description": "Description for images."
+    }
+  ] }

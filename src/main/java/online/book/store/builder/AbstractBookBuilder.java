@@ -24,7 +24,7 @@ public abstract class AbstractBookBuilder {
        return null;
    }
 
-   public AbstractBookBuilder price(Double price){
+   public AbstractBookBuilder price(String price){
        return null;
    }
 
@@ -56,7 +56,7 @@ public abstract class AbstractBookBuilder {
        return null;
    }
 
-   public AbstractBookBuilder categories(List<Category> category){ return null; }
+   public AbstractBookBuilder categories(String categories){ return null; }
 
 
    public boolean containsNull(){

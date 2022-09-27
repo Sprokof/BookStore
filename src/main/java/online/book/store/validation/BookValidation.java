@@ -1,11 +1,13 @@
 package online.book.store.validation;
 
 import online.book.store.dto.BookDto;
+import online.book.store.entity.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -58,7 +60,7 @@ public class BookValidation extends AbstractValidation {
                 this.response.addError("year", "Year Of Publication can't be empty");
             }
 
-            String  yearRegExp = "^(19|20)\\d{2}$";
+            String yearRegExp = "^(19|20)\\d{2}$";
             if(!yearPub.matches(yearRegExp)){
                 this.response.addError("year", "Wrong year format");
             }
@@ -69,13 +71,9 @@ public class BookValidation extends AbstractValidation {
                 this.response.addError("subject", "Subject can't be empty");
             }
 
-            Pattern subjectPat = Pattern.compile("([a-zA-Z0-9\\-]+)");
+            String image = bookDto.getBookImage();
 
-            if(subjectPat.matcher(subject).find()){
-                this.response.addError("subject", "Wrong format");
-            }
-
-            if(bookDto.getBookImage().isEmpty()){
+            if(image.isEmpty()){
                 this.response.addError("image", "Image not selected");
             }
 
@@ -86,24 +84,24 @@ public class BookValidation extends AbstractValidation {
             String availableCopies = bookDto.getAvailableCopies();
 
             if(availableCopies.isEmpty()){
-                this.response.addError("copies", "Available copies");
+                this.response.addError("copies", "Available copies can't be empty");
             }
 
-            Pattern availableCopiesPat = Pattern.compile("[^0-9]");
+            Pattern availableCopiesPat = Pattern.compile("[0-9]");
 
-            if(availableCopiesPat.matcher(availableCopies).find()){
+            if(!availableCopiesPat.matcher(availableCopies).find()){
                 this.response.addError("copies", "Must be integer");
             }
 
-            String description = bookDto.getBookImage();
+            String description = bookDto.getDescription();
 
             if(description.isEmpty()){
                 this.response.addError("desc", "Description can't be empty");
             }
 
             int length = description.length();
-            if(length < 30 || length > 210){
-                this.response.addError("desc", "Description min length 30, max 210");
+            if(length < 200 || length > 1000){
+                this.response.addError("desc", "Description min length 200, max 100");
             }
 
             String author = bookDto.getAuthors();
@@ -118,15 +116,40 @@ public class BookValidation extends AbstractValidation {
                 this.response.addError("format", "Format can't be empty");
             }
 
-            String formatPattern = "[1-9]{2}\\p{P}[1-9]{3}\\/[1-9]";
-
+            String formatPattern = "^\\d{3}(x)\\d{3}";
             if(!format.matches(formatPattern)){
                 this.response.addError("format", "Wrong format value");
+            }
+
+            String price = bookDto.getPrice();
+
+            if(price.isEmpty()){
+                this.response.addError("price", "Price can't be empty");
+            }
+
+            Pattern pricePat = Pattern.compile("[0-9]");
+
+            if(!pricePat.matcher(price).find()) {
+                this.response.addError("price", "Must be integer value");
+            }
+
+            String selectedCategories = bookDto.getBooksCategories();
+
+
+            if(selectedCategories == null || selectedCategories.isEmpty()){
+                this.response.addError("categories", "Categories not selected");
+            }
+
+            String publisher = bookDto.getPublisher();
+
+            if(publisher.isEmpty()){
+                this.response.addError("publisher", "Publisher can't be empty");
             }
     }
 
 
     private boolean imageFile(String name){
+        if(name.isEmpty()) return false;
         String currentFormat = name.substring(name.indexOf("."));
         String[] imagesFormat = {".png", ".jpg", ".bmp", ".ico", ".jpeg", ".pnm"};
         for(String format : imagesFormat){

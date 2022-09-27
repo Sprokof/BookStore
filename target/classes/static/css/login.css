@@ -148,7 +148,7 @@
     font-size: 12px;
 }
 
-.form .form-element .error-message.active {
+.error-message.active {
     transition: 0.2s ease-in-out;
     display: block;
 }

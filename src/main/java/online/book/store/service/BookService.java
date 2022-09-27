@@ -16,6 +16,5 @@ public interface BookService {
     Book getBookById(int id);
     void saveBook(Book book);
     double averageRating(Integer bookId);
-    void addOrRemoveCategory(BookDto book, Category category);
 
 }

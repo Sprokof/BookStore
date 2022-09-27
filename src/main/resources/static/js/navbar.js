@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let sideMenu = document.getElementById('side-menu');
     sideMenu.addEventListener('click', () => {
         document.querySelector('.sidebar').classList.toggle('active');
-        if (window.location.pathname.split('/').pop() === 'home') {
+        if (window.location.pathname.split('/').length === 2) {
             document.querySelector('.books-slider').classList.toggle('right');
             document.querySelector('.control-slider').classList.toggle('left');
         }
@@ -187,5 +187,5 @@ function validateSession() {
 
    function getUser(){
         if(localStorage.getItem('user') === null) return null;
-        return JSON.parse(localStorage.getItem('user'));
+           return JSON.parse(localStorage.getItem('user'));
    }

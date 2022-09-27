@@ -79,11 +79,12 @@ export function validation(obj, url){
 
 
 export function deleteErrorMessages(){
-    let errorsMessages = document.querySelectorAll(".error-message")
-    let elements = document.querySelectorAll('.form-element')
+    let errorsMessages = document.querySelectorAll(".error-message");
+    let formElements = document.querySelectorAll('.form-element');
+    let addElements = document.querySelectorAll('.add-element');
     errorsMessages.forEach((error) => error.classList.remove('active'));
-    elements.forEach((element) => element.classList.remove('compression'));
-
+    formElements.forEach((element) => element.classList.remove('compression'));
+    addElements.forEach((element) => element.classList.remove('compression'));
 }
 async function hash(string) {
     const utf8 = new TextEncoder().encode(string);
@@ -151,6 +152,7 @@ function rememberUser(flag){
 }
 
 function extractLogin(obj) {
+    if(Object.keys(obj).length > 4) return null;
     let values = [];
     for (let key of Object.keys(obj)) {
         if (obj.hasOwnProperty(key)) {
@@ -161,8 +163,10 @@ function extractLogin(obj) {
 }
 
 function saveUser(obj){
+    let login = extractLogin(obj);
+    if(login == null) return ;
     let user = {
-        "login" : extractLogin(obj),
+        "login" : login,
         "remember" : "false",
     }
     localStorage.setItem("user", JSON.stringify(user));

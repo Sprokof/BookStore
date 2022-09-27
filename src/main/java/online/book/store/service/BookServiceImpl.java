@@ -25,7 +25,12 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public List<Book> getAllBooks() {
-        return this.bookDao.getAllBooks();
+        List<Book> books = this.bookDao.getAllBooks();
+        for(Book book : books){
+            String trimDesc = (book.getDescription().substring(0, 205) + "...");
+            book.setDescription(trimDesc);
+        }
+        return books;
     }
 
     @Override
@@ -48,14 +53,6 @@ public class BookServiceImpl implements BookService{
         this.bookDao.saveBook(book);
     }
 
-    @Override
-    public void addOrRemoveCategory(BookDto book, Category category) {
-        List<Category> categories;
-            if((categories = book.getBooksCategory()).contains(category)){
-                categories.remove(category);
-            }
-            else categories.add(category);
-    }
 
     @Override
     public Book getBookByTitle(String title) {

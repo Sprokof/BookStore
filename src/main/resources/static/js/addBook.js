@@ -4,45 +4,37 @@ let saveBook = document.querySelector('.save-btn');
 saveBook.addEventListener('click', () => {
     let book = {
         "isbn" : document.querySelector('#isbn').value,
-        "title" : document.querySelector('#title'),
+        "title" : document.querySelector('#title').value,
         "publisher" : document.querySelector('#publisher').value,
         "price" : document.querySelector('#price').value,
         "yearPub" : document.querySelector('#year').value,
         "subject" : document.querySelector('#subject').value,
-        "bookImage" : document.querySelector('#file')[0].name,
+        "bookImage" : fileName(document.querySelector('#file')),
         "availableCopies" : document.querySelector('#copies').value,
         "description" : document.querySelector('#desc').value,
         "authors" : document.querySelector('#author').value,
         "format" : document.querySelector('#format').value,
-        "booksCategories" : selectedCategories()
+        "booksCategories" : getCategories(),
     }
     validation(book, "/home/book/add");
 })
 
 
 document.querySelector(".select-btn").addEventListener('click', (e) => {
+    selectCategory();
     document.querySelector('.list-items').classList.toggle("active");
     document.querySelector('.fas.fa-chevron-down').classList.toggle('rotate');
 });
 
 
-function selectedCategories() {
-    let items = document.querySelectorAll(".item")
-    let categories;
-    let category = {};
+function selectCategory() {
+    let items = document.querySelectorAll(".item");
     items.forEach(item => {
         item.addEventListener('click', () => {
             item.classList.toggle('select');
 
-            let selected = document.querySelectorAll(".select");
-            categories = [selected.length];
-            for (let i = 0; i < selected.length; i++) {
-                category['category'] = selected[i].children[1].innerText;
-                categories[i] = category;
-            }
-
             let btnText = document.querySelector(".btn-text");
-            let length = selected.length;
+            let length =  document.querySelectorAll('.item.select').length;
             let text;
             if (length > 0) {
                 if (length === 1) {
@@ -57,12 +49,10 @@ function selectedCategories() {
 
         })
     })
-    return categories;
 }
 
 $('#file').change(function(){
     let fileResult = $(this).val();
-    console.log($(this));
     $(this).parent().find('.fileLoad').find('input').val(fileResult);
 });
 
@@ -71,3 +61,20 @@ $('#file').hover(function(){
 }, function(){
     $(this).parent().find('button').removeClass('button-hover');
 });
+
+function fileName (file) {
+    let start = (file.value.lastIndexOf("\\") + 1);
+    return file.value.substr(start);
+}
+
+function getCategories(){
+    let allCategories = '';
+    let selected = document.querySelectorAll(".item.select");
+    for (let i = 0; i < selected.length; i++) {
+         let category = selected[i].children[1].innerText;
+         if(category === '') continue;
+         allCategories += selected[i].children[1].innerText + ',';
+    }
+
+    return allCategories;
+}

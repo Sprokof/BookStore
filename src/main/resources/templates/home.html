@@ -32,10 +32,9 @@
             <img class="book-img" th:src="@{'/images/' + ${book.bookImageName}}" alt="book-image">
             <div class="book-info">
                 <span th:text="${book.title}"></span>
-                <div class="star-rating"
-                     th:text="${book.price + '(' + ${book.getBookReviews().size()} + 'scores)'}"></div>
+                <div class="star-rating" th:text="${book.bookRating}"></div>
+                    <p th:text="${book.description}"></p>
 
-                <p th:text="${book.description}"></p>
                 <div class="buttons">
                     <div class="price" th:text="${book.price}"></div>
                     <button class="cart btn"> Add to cart</button>

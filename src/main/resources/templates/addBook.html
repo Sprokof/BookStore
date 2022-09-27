@@ -59,6 +59,13 @@
         <p class="error-message" id="copies-error"></p>
     </div>
 
+    <div class="add-element">
+        <label for="price"> Price </label>
+        <input type="text" id="price" placeholder="Price">
+        <p class="error-message" id="price-error"></p>
+    </div>
+
+
 
     <div class="add-element">
         <label for="desc"> Description </label>
@@ -75,7 +82,7 @@
     <div class="add-element">
         <label for="format"> Format </label>
         <input type="text" id="format" placeholder="Format">
-
+        <p class="error-message" id="format-error"></p>
     </div>
 
     <div class="file-load" id="image">
@@ -90,7 +97,8 @@
         <p class="error-message" id="image-error"></p>
     </div>
 
-        <div class="select-btn">
+    <div id="categories">
+        <div class="select-btn" >
             <span class="btn-text"> Select Book Categories </span>
             <span class="arrow-down" id="arrow">
                 <i class="fas fa-chevron-down"></i>
@@ -104,6 +112,8 @@
                 <span class="item-text" th:text="${category.category}"></span>
             </li>
         </ul>
+        <p class="error-message" id="categories-error"></p>
+    </div>
 
     <button class="save-btn"> <span> Save Book </span></button>
 

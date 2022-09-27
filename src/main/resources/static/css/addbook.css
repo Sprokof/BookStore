@@ -131,3 +131,16 @@
 .container .save-btn:hover{
     background-color: #1b1b1b;
 }
+
+.error-message{
+    font-size: 13px;
+}
+
+.error-message.active {
+    transition: 0.2s ease-in-out;
+    display: block;
+}
+
+.add-element.compression {
+    margin-bottom: -10px;
+}

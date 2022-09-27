@@ -42,7 +42,7 @@
     margin-top: -10px;
 }
 
-.buttons {
+.card .buttons {
     height: 65px;
     display: flex;
     align-items: center;
@@ -51,7 +51,7 @@
     padding: 0.8rem;
 }
 
-.btn {
+.card .btn {
     position: relative;
     border: none;
     outline: none;
