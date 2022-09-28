@@ -1,7 +1,7 @@
 import {getBookTitle} from "./cards.js";
 
-let sliderControlBtn = document.querySelectorAll('.control-slider span')
-let books = document.querySelectorAll('.card');
+let sliderControlBtn = document.querySelectorAll('.control-slider span');
+let books = document.querySelector('section .card').children;
 let book_page = Math.ceil(books.length/4);
 let left = 0;
 let sliderStep = 25.34;
@@ -13,7 +13,6 @@ let rightMover = () => {
         left = 0;
     }
     for (const item of books) {
-
         if (left > maxMove) {
             left = (left - sliderStep);
         }

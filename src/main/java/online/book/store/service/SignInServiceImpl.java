@@ -104,7 +104,8 @@ public class SignInServiceImpl implements SignInService {
         HttpSession session = request.getSession(true);
         String uuid = (String) session.getAttribute("id");
         if(uuid == null) return null;
-        return userService.getUserByUUID(uuid);
+        this.user = userService.getUserByUUID(uuid);
+        return this.user;
     }
 
     @Override

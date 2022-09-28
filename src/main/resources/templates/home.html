@@ -34,15 +34,16 @@
                 <span th:text="${book.title}"></span>
                 <div class="star-rating" th:text="${book.bookRating}"></div>
                     <p th:text="${book.description}"></p>
+                    <p class="isbn" th:text="${book.isbn}"></p>
+                </div>
 
                 <div class="buttons">
                     <div class="price" th:text="${book.price}"></div>
-                    <button class="cart btn"> Add to cart</button>
-                    <button class="wishlist btn">
-                        <i class="far fa-heart" style="margin-top: 5px"></i>
-                    </button>
+                    <span id="home-cart-btn" class="cart btn"> Add to cart</span>
+                    <span id="home-wishlist-btn" class="wishlist btn">
+                        <i class="far fa-heart" style="margin-top: 5px;"></i>
+                    </span>
                 </div>
-            </div>
         </div>
     </section>
 </main>

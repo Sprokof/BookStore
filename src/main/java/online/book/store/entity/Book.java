@@ -112,9 +112,11 @@ public class Book {
         bookReview.setBook(null);
     }
 
-    @ManyToMany(mappedBy = "books",
-            cascade = CascadeType.ALL)
-    private List<Wishlist> wishlists;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "wishlist_id")
+    @Getter
+    @Setter
+    private Wishlist wishlist;
 
 
 

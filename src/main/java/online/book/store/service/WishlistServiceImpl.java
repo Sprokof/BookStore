@@ -28,6 +28,10 @@ public class WishlistServiceImpl implements WishlistService{
     public void addBookToWishlist(Book book, Wishlist wishlist) {
         wishlist.addBook(book);
         userService.updateUserInSession(wishlist.getUser());
+    }
 
-        }
+    @Override
+    public boolean contains(Book book, Wishlist wishlist) {
+        return wishlist.getBooks().contains(book);
+    }
 }

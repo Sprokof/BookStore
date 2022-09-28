@@ -1,5 +1,6 @@
 package online.book.store.controllers;
 
+import online.book.store.dto.BookDto;
 import online.book.store.entity.Book;
 import online.book.store.entity.User;
 import online.book.store.entity.Wishlist;
@@ -13,10 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -39,24 +37,35 @@ public class WishListController {
 
     @GetMapping("/home/wishlist")
     public String wishlist(HttpServletRequest request, Model model){
-       User user = signInService.getCurrentUser(request);
+       User user = signInService.getUserFromRequest(request);
        Wishlist wishlist = user.getWishList();
        model.addAttribute("wishlist", wishlist);
        return "wishlist";
     }
 
     @PostMapping("/home/wishlist/remove")
-    public ResponseEntity<?> removeFromWishlist(@RequestParam("title") String title){
-        Book book = bookService.getBookByTitle(title);
-        wishlistService.removeFromWishlist(book, signInService.getSavedUser().getWishList());
+    public ResponseEntity<?> removeFromWishlist(@RequestBody String isbn){
+        Book book = bookService.getBookByIsbn(isbn);
+        Wishlist userWishlist = signInService.getSavedUser().getWishList();
+        wishlistService.removeFromWishlist(book, userWishlist);
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
     @PostMapping("/home/wishlist/add")
-    public ResponseEntity<?> addToWishList(@RequestParam("title") String title) {
-        Book book = bookService.getBookByTitle(title);
-        wishlistService.addBookToWishlist(book, signInService.getSavedUser().getWishList());
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+    public ResponseEntity<Integer> addToWishList(@RequestBody String isbn) {
+        Book book = bookService.getBookByIsbn(isbn);
+        Wishlist userWishlist = signInService.getSavedUser().getWishList();
+        wishlistService.addBookToWishlist(book, userWishlist);
+        return ResponseEntity.ok(200);
+    }
+
+
+    @GetMapping("/home/wishlist/contains")
+    public ResponseEntity<String> contains(@RequestBody String isbn){
+        Book book = bookService.getBookByIsbn(isbn);
+        Wishlist userWishlist = signInService.getSavedUser().getWishList();
+        String contains = String.valueOf(wishlistService.contains(book, userWishlist));
+        return ResponseEntity.ok(contains);
     }
 
 }

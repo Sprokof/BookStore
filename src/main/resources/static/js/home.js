@@ -1,7 +1,7 @@
 import {getBookTitle} from "./cards.js";
 
-let sliderControlBtn = document.querySelectorAll('.control-slider span')
-let books = document.querySelectorAll('.card');
+let sliderControlBtn = document.querySelectorAll('.control-slider span');
+let books = document.querySelector('section .card').children;
 let book_page = Math.ceil(books.length/4);
 let left = 0;
 let sliderStep = 25.34;
@@ -13,7 +13,6 @@ let rightMover = () => {
         left = 0;
     }
     for (const item of books) {
-
         if (left > maxMove) {
             left = (left - sliderStep);
         }
@@ -83,4 +82,46 @@ cartBtn.forEach((btn) => {
 
     })
 })
+
+let wishListBtn = document.getElementById('home-wishlist-btn');
+wishListBtn.addEventListener('click', () => {
+    let isbn = wishListBtn.parentNode.parentNode.children[1].children[3];
+    let flag;
+    if(!(flag = contains(isbn))) {
+        navigator.sendBeacon('/home/wishlist/add', isbn.innerText);
+    }
+    else {
+        navigator.sendBeacon('/home/wishlist/remove', isbn.innerText);
+    }
+    fullHeart(wishListBtn, flag)
+})
+
+
+function contains (isbn) {
+    let result = false;
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: '/home/wishlist/contains',
+        cache: false,
+        dataType: 'text',
+        data: isbn.innerText,
+        responseType: 'text',
+        async: false,
+        success: (contains) => {
+            result = (contains === 'true');
+        }
+    })
+    return result;
+}
+
+function fullHeart(wishlistBtn, flag){
+    if(flag){
+        wishlistBtn.classList.replace('far', 'fa');
+    }
+    else {
+        wishlistBtn.classList.replace('fa', 'far');
+    }
+}
+
 

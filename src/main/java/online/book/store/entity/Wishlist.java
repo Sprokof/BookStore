@@ -20,23 +20,22 @@ public class Wishlist {
     @Getter
     private int id;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "BOOK_WISHLISTS",
-            joinColumns = {@JoinColumn(name = "fk_wishlist")},
-            inverseJoinColumns = {@JoinColumn(name = "fk_book")})
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "wishList")
+    @Getter
+    @Setter
     private List<Book> books;
+
 
 
     public void addBook(Book book){
         if(this.books == null) this.books = new LinkedList<>();
         this.books.add(book);
-        if(book.getWishlists() == null) book.setWishlists(new LinkedList<Wishlist>());
-        book.getWishlists().add(this);
+        book.setWishlist(this);
     }
 
     public void remove(Book book){
         this.books.remove(book);
-        book.getWishlists().remove(this);
+        book.setWishlist(null);
     }
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "wishList", fetch = FetchType.EAGER)

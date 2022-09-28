@@ -116,7 +116,7 @@ public class BookValidation extends AbstractValidation {
                 this.response.addError("format", "Format can't be empty");
             }
 
-            String formatPattern = "^\\d{3}(x)\\d{3}";
+            String formatPattern = "^\\d{2,3}(x)\\d{2,3}";
             if(!format.matches(formatPattern)){
                 this.response.addError("format", "Wrong format value");
             }

@@ -49,7 +49,6 @@
 .books-slider section {
     margin-top: 25px;
     display: flex;
-    margin-left: 5%;
 }
 
 section .card {
@@ -58,6 +57,9 @@ section .card {
     transition: 0.5s;
     min-width: 24%;
     margin: 0 15px 0 0;
+    overflow-y: hidden;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 
 }
 
@@ -75,8 +77,6 @@ section .card {
     font-family: "Cascadia Code", sans-serif;
     color: #fff;
     padding: 0.8rem;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
     overflow-y: hidden;
 }
 
@@ -101,11 +101,14 @@ section .card {
 }
 
 .books-slider  .card .buttons {
-    height: 65px;
-    margin-top: 8%;
+    height: 50px;
+    margin-top: -20%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    z-index: 0;
+    padding: 0.8rem;
+    overflow-y: hidden;
 
 
 }
@@ -117,7 +120,6 @@ section .card {
 
 .books-slider .card .btn {
     position: relative;
-    border: none;
     outline: none;
     background-color: #1b1b1b;
     color: #fff;
@@ -126,6 +128,7 @@ section .card {
     font-size: 0.9rem;
     font-family: "Cascadia Code", sans-serif;
     cursor: pointer;
+    border: 3px solid #b4ad9e;
 }
 
 .books-slider .card .cart {
@@ -141,7 +144,11 @@ section .card {
     margin-right: 5px;
     width: 40px;
     border-radius: 50%;
+    border: 3px solid #b4ad9e;
+    overflow-y: hidden;
 }
+
+
 
 .books-slider .card .wishlist:hover {
     transition: 0.3s ease-in;
@@ -158,4 +165,16 @@ section .card {
 .book-info span:hover {
     transition: 0.3s ease-in-out;
     border-bottom: white 1px;
+}
+
+.books-slider .card .book-info .isbn {
+    z-index: -1;
+    opacity: 0;
+    pointer-events: none;
+    font-size: 0;
+    width: 0;
+}
+
+.far.fa-heart {
+    margin-left: -2px;
 }

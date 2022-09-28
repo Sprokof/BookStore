@@ -186,6 +186,7 @@ function validateSession() {
 
 
    function getUser(){
-        if(localStorage.getItem('user') === null) return null;
+       console.log(localStorage.getItem('user'));
+       if(localStorage.getItem('user') === null) return null;
            return JSON.parse(localStorage.getItem('user'));
    }
