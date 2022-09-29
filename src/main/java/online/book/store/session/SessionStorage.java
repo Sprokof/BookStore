@@ -49,7 +49,7 @@ public class SessionStorage {
     private static Map<String, User> initStorage(){
         Map<String, User> storage = new HashMap<>();
         List<User> users = new UserServiceImpl().getUsersInSession();
-        if(!users.isEmpty()){
+        if(users != null && !users.isEmpty()){
             users.forEach((user) -> {
                     String id = user.getUserID();
                     storage.putIfAbsent(id, user);
@@ -80,5 +80,11 @@ public class SessionStorage {
             request.getSession().setAttribute("id", uuid.toString());
         }
     return UUID.fromString(uuid);
+    }
+
+    public User getUser(HttpServletRequest request){
+        HttpSession httpSession = request.getSession(false);
+        String uuid = (String) httpSession.getAttribute("id");
+        return sessionStorage.get(uuid);
     }
 }

@@ -8,6 +8,6 @@ import online.book.store.entity.ExistCategory;
 import java.util.List;
 
 public interface CategoryService {
-    boolean existCategory(String category);
+    Category existCategory(String category);
     List<ExistCategory> getAllCategories();
 }

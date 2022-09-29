@@ -77,7 +77,6 @@ public class BookController {
         if(!bookValidation.hasErrors()){
             Book book = bookDto.doBookBuilder();
             bookService.saveBook(book);
-            System.out.println(book.getCategories());
         }
         return ResponseEntity.ok(bookValidation.validationErrors());
     }

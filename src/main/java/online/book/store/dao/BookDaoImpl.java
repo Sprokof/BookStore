@@ -2,11 +2,14 @@ package online.book.store.dao;
 
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
+import online.book.store.service.CategoryService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,6 +19,7 @@ import static online.book.store.entity.BookReview.MIN_POPULAR_RATING;
 
 @Component
 public class BookDaoImpl implements BookDao {
+
 
     private final SessionFactory sessionFactory =
             SessionFactorySingleton.getInitializationFactory();
@@ -86,13 +90,13 @@ public class BookDaoImpl implements BookDao {
     public List<Book> getBooksByCategory(String category) {
         Session session = null;
         List<Book> books = new LinkedList<>();
-        Category currentCategory = new Category(category);
     try{
         session = this.sessionFactory.openSession();
         session.beginTransaction();
         books = (LinkedList<Book>) session.
                 createSQLQuery("SELECT * FROM BOOKS as b " +
-                        "JOIN CATEGORIES as c on c.book_id=b.id").
+                        "JOIN CATEGORIES as c on c.book_id=b.id WHERE c.category=:category").
+                setParameter("category", category).
                 addEntity(Category.class).list();
         session.getTransaction().commit();
     }
@@ -183,13 +187,6 @@ public class BookDaoImpl implements BookDao {
                 session.close();
             }
         }
-    }
-
-    private Book getBookByCategory(Book book, Category bookCategory){
-        if(book.getCategories().contains(bookCategory)){
-            return book;
-        }
-    return null;
     }
 
     @Override

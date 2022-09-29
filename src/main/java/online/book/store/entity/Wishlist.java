@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.book.store.service.BookServiceImpl;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -20,9 +22,11 @@ public class Wishlist {
     @Getter
     private int id;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "wishList")
-    @Getter
-    @Setter
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable (name = "BOOKS_WISHLISTS",
+            joinColumns = @JoinColumn(name = "wishlist_id"),
+            inverseJoinColumns = {@JoinColumn(name = "book_id")})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Book> books;
 
 
@@ -30,12 +34,12 @@ public class Wishlist {
     public void addBook(Book book){
         if(this.books == null) this.books = new LinkedList<>();
         this.books.add(book);
-        book.setWishlist(this);
+        book.getWishlists().add(this);
     }
 
     public void remove(Book book){
         this.books.remove(book);
-        book.setWishlist(null);
+        book.getWishlists().remove(this);
     }
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "wishList", fetch = FetchType.EAGER)
@@ -47,7 +51,5 @@ public class Wishlist {
     public boolean isEmpty(){
         return this.books == null || this.books.isEmpty();
     }
-
-
 
 }

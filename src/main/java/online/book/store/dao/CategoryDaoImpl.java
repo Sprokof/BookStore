@@ -54,7 +54,7 @@ public class CategoryDaoImpl implements CategoryDao{
     }
 
     @Override
-    public boolean existCategory(Category category) {
+    public Category existCategory(Category category) {
         Session session = null;
         Category findCategory = null;
     try {
@@ -80,6 +80,6 @@ public class CategoryDaoImpl implements CategoryDao{
             session.close();
         }
     }
-    return findCategory != null;
+    return findCategory;
     }
 }

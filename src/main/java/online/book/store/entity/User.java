@@ -126,12 +126,10 @@ public class User {
 
 
     public Wishlist getWishList() {
-        if (this.wishList == null) this.wishList = new Wishlist();
         return wishList;
     }
 
     public Cart getCart() {
-        if (this.cart == null) this.cart = new Cart();
         return this.cart;
     }
 

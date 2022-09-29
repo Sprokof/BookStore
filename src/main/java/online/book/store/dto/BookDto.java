@@ -20,6 +20,10 @@ public class BookDto extends AbstractBookBuilder {
 
     @Getter
     @Setter
+    private boolean contains;
+
+    @Getter
+    @Setter
     private String bookImage;
 
     @Getter
@@ -101,67 +105,67 @@ public class BookDto extends AbstractBookBuilder {
 
     @Override
     public AbstractBookBuilder bookImage(String bookImageName) {
-        this.bookImage = bookImageName;
+        this.bookImage = bookImageName.trim();
         return this;
     }
 
     @Override
     public AbstractBookBuilder isbn(String isbn) {
-        this.isbn = isbn;
+        this.isbn = isbn.trim();
         return this;
     }
 
     @Override
     public AbstractBookBuilder title(String title) {
-        this.title = title;
+        this.title = title.trim();
         return this;
     }
 
     @Override
     public AbstractBookBuilder price(String price) {
-        this.price = price;
+        this.price = price.trim();
         return this;
     }
 
     @Override
     public AbstractBookBuilder yearPub(String yearPub) {
-        this.yearPub = yearPub;
+        this.yearPub = yearPub.trim();
         return this;
     }
 
     @Override
     public AbstractBookBuilder publisher(String publisher) {
-        this.publisher = publisher;
+        this.publisher = publisher.trim();
         return this;
     }
 
     @Override
     public AbstractBookBuilder subject(String subject) {
-        this.subject = subject;
+        this.subject = subject.trim();
         return this;
     }
 
     @Override
     public AbstractBookBuilder availableCopies(String availableCopies) {
-        this.availableCopies = availableCopies;
+        this.availableCopies = availableCopies.trim();
         return this;
     }
 
     @Override
     public AbstractBookBuilder format(String format) {
-        this.format = format;
+        this.format = format.trim();
         return this;
     }
 
     @Override
     public AbstractBookBuilder authors(String authors) {
-        this.authors = authors;
+        this.authors = authors.trim();
         return this;
     }
 
     @Override
     public AbstractBookBuilder description(String description) {
-        this.description = description;
+        this.description = description.trim();
         return this;
     }
 

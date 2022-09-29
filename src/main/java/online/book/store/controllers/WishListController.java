@@ -1,6 +1,7 @@
 package online.book.store.controllers;
 
 import online.book.store.dto.BookDto;
+import online.book.store.dto.WishlistDto;
 import online.book.store.entity.Book;
 import online.book.store.entity.User;
 import online.book.store.entity.Wishlist;
@@ -34,38 +35,43 @@ public class WishListController {
     @Autowired
     private SignInService signInService;
 
+    @Autowired
+    private SessionStorage sessionStorage;
+
+
 
     @GetMapping("/home/wishlist")
     public String wishlist(HttpServletRequest request, Model model){
-       User user = signInService.getUserFromRequest(request);
+       User user = sessionStorage.getUser(request);
        Wishlist wishlist = user.getWishList();
        model.addAttribute("wishlist", wishlist);
        return "wishlist";
     }
 
     @PostMapping("/home/wishlist/remove")
-    public ResponseEntity<?> removeFromWishlist(@RequestBody String isbn){
+    public ResponseEntity<Integer> removeFromWishlist(@RequestBody String isbn, HttpServletRequest request){
         Book book = bookService.getBookByIsbn(isbn);
-        Wishlist userWishlist = signInService.getSavedUser().getWishList();
+        Wishlist userWishlist = sessionStorage.getUser(request).getWishList();
         wishlistService.removeFromWishlist(book, userWishlist);
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+
+        return ResponseEntity.ok(200);
     }
 
     @PostMapping("/home/wishlist/add")
-    public ResponseEntity<Integer> addToWishList(@RequestBody String isbn) {
+    public ResponseEntity<Integer> addToWishList(@RequestBody String isbn, HttpServletRequest request) {
         Book book = bookService.getBookByIsbn(isbn);
-        Wishlist userWishlist = signInService.getSavedUser().getWishList();
+        Wishlist userWishlist = sessionStorage.getUser(request).getWishList();
         wishlistService.addBookToWishlist(book, userWishlist);
         return ResponseEntity.ok(200);
     }
 
 
-    @GetMapping("/home/wishlist/contains")
-    public ResponseEntity<String> contains(@RequestBody String isbn){
-        Book book = bookService.getBookByIsbn(isbn);
-        Wishlist userWishlist = signInService.getSavedUser().getWishList();
-        String contains = String.valueOf(wishlistService.contains(book, userWishlist));
-        return ResponseEntity.ok(contains);
+    @PostMapping("/home/wishlist/contains")
+    public ResponseEntity<WishlistDto> contains(@RequestBody BookDto bookDto, HttpServletRequest request){
+        Book book = bookService.getBookByIsbn(bookDto.getIsbn());
+        Wishlist userWishlist = sessionStorage.getUser(request).getWishList();
+        wishlistService.contains(book, userWishlist);
+        return ResponseEntity.ok(wishlistService.contains(book, userWishlist));
     }
 
 }

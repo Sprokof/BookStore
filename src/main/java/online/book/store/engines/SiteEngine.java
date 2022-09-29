@@ -108,7 +108,7 @@ public class SiteEngine {
     }
 
     private boolean category(SearchQuery query){
-        return this.categoryService.existCategory(query.getQueryText());
+        return this.categoryService.existCategory(query.getQueryText()) != null;
     }
 
     private void sortResultedList(SortConfig config) {

@@ -2,9 +2,11 @@ package online.book.store.service;
 
 import online.book.store.dao.UserDaoImpl;
 import online.book.store.dao.UserDao;
+import online.book.store.entity.Cart;
 import online.book.store.entity.User;
 
 
+import online.book.store.entity.Wishlist;
 import online.book.store.hash.SHA256;
 import online.book.store.session.SessionStorage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +52,8 @@ public class UserServiceImpl implements UserService{
             String password = SHA256.hash(user.getPassword());
             user.setPassword(password);
             user.setAdmin(user.getEmail().equals(adminEmail));
+            user.setWishList(new Wishlist());
+            user.setCart(new Cart());
         }
         this.userDao.saveOrUpdate(user);
     }

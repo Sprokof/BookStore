@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.book.store.service.BookService;
 import online.book.store.service.UserService;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
@@ -112,11 +114,11 @@ public class Book {
         bookReview.setBook(null);
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "wishlist_id")
     @Getter
     @Setter
-    private Wishlist wishlist;
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "books")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Wishlist> wishlists;
 
 
 
@@ -140,4 +142,11 @@ public class Book {
         return String.format("%s%s", upperCaseLetter, title.substring(1));
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) return true;
+        if(!(obj instanceof Book)) return false;
+        Book book = (Book) obj;
+        return this.isbn.equals(book.isbn);
+    }
 }

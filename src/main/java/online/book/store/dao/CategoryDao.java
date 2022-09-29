@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface CategoryDao {
     List<ExistCategory> allCategories();
-    boolean existCategory(Category category);
+    Category existCategory(Category category);
+
 
 }

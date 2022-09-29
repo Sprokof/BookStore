@@ -175,6 +175,6 @@ section .card {
     width: 0;
 }
 
-.far.fa-heart {
+.fa-heart {
     margin-left: -2px;
 }

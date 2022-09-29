@@ -26,7 +26,7 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public boolean existCategory(String category) {
+    public Category existCategory(String category) {
         return this.categoryDao.existCategory(new Category(category));
     }
 
