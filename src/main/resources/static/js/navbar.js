@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-function validateSession() {
+export function validateSession() {
         let user;
         if((user = getUser()) == null) return null;
         let sessionData;

@@ -1,7 +1,9 @@
-import {signInClose, signInOpen} from "./registration.js";
+import {signInClose} from "./registration.js";
 import { resetClose } from "./reset.js";
 import { closeResetTwoPopup  } from "./confirmReset.js";
 import { clearInputs } from "./validation.js";
+import { blockBackgroundHtml } from "./notice.js";
+
 
 
 let loginPopup = document.querySelector('#popup-login');
@@ -20,6 +22,7 @@ closeLogin.addEventListener('click', (e) => {
 
 export function loginClose(){
     loginPopup.classList.remove('visible', 'down');
+    blockBackgroundHtml(false)
 
 }
 
@@ -29,25 +32,9 @@ export function loginOpen(){
     resetClose();
     closeResetTwoPopup();
     loginPopup.classList.add('down', 'visible');
+    blockBackgroundHtml(true)
+
 }
 
-export function blockLoginPage(flag){
-    let value;
-    flag ? value = "none" : value = "auto";
-    console.log(value)
-    loginPopup.style.pointerEvents = value;
-}
-let noticeMessage = document.querySelector('.notice-message');
-
-let noticeButton = document.querySelector('.notice-message button');
-noticeButton.addEventListener('click', () => {
-    noticeMessage.classList.remove('show');
-    signInOpen();
-});
-
-let closeNotice = document.querySelector('.close-notice-message-btn');
-closeNotice.addEventListener('click', () => {
-    noticeMessage.classList.remove('show');
-})
 
 

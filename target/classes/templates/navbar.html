@@ -1,5 +1,5 @@
 <body th:fragment="navbar">
-<div class="sidebar">
+<div class="sidebar" id="sidebar">
     <div class="menu">
         <div class="item">
             <a class="sub-btn"> Books Categories <i class="fas fa-angle-right dropdown"> </i></a>
@@ -13,7 +13,7 @@
     </div>
 </div>
 
-<header>
+<header id="navbar">
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light">
 
@@ -54,6 +54,6 @@
     <div th:insert="~{registration :: registration-body}"></div>
     <div th:insert="~{reset :: reset-body}"></div>
     <div th:insert="~{confirm :: confirm-body}"></div>
-    <div th:insert="~{notice :: message}"></div>
+    <div th:insert="~{notices :: notices-messages}"></div>
 
 </body>

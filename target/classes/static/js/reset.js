@@ -1,4 +1,6 @@
-import {blockLoginPage, loginClose} from './login.js'
+import {loginClose} from './login.js'
+import {blockBackgroundHtml} from "./notice.js";
+
 let resetPopup = document.querySelector('#popup-reset');
 let closeReset = document.querySelector('#close-reset');
 let openReset = document.querySelector('#reset');
@@ -9,6 +11,7 @@ openReset.addEventListener("click", () => {
     loginClose();
     if(!findUser()){
         notice.classList.add('show');
+        blockBackgroundHtml(true)
         return;
     }
     notice.classList.remove('show');
@@ -25,6 +28,7 @@ function resetOpen() {
 }
 
 export function resetClose(){
+    blockBackgroundHtml(false);
     resetPopup.classList.remove('visible', 'down');
 }
 

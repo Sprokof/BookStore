@@ -1,3 +1,4 @@
+import {blockBackgroundHtml} from "./notice.js";
 let resetTwoPopup = document.querySelector('#popup-confirm-reset');
 let closeTwoPopup = document.querySelector('#close-confirm-reset');
 
@@ -13,6 +14,7 @@ export function openResetTwoPopup(){
 
 export function closeResetTwoPopup(){
     resetTwoPopup.classList.remove('visible', 'down');
+    blockBackgroundHtml(false);
 }
 
 let resendCode = document.getElementById("resend-code");

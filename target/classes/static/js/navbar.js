@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     })
 
-function validateSession() {
+export function validateSession() {
         let user;
         if((user = getUser()) == null) return null;
         let sessionData;
@@ -185,7 +185,7 @@ function validateSession() {
    }
 
 
-   function getUser(){
+   export function getUser(){
        if(localStorage.getItem('user') === null) return null;
            return JSON.parse(localStorage.getItem('user'));
    }

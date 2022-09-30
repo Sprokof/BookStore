@@ -172,6 +172,7 @@
     top: -100%;
     opacity: 0;
     margin-left: 35%;
+    z-index: 1;
 }
 
 .notice-message header {
@@ -217,7 +218,7 @@
     border: 3px solid #5f5f5b;
     color: white;
     text-align: center;
-    line-height: 12px;
+    line-height: 13px;
     cursor: pointer;
     overflow-y: hidden;
 }
@@ -228,7 +229,7 @@
 }
 
 .notice-message.show{
-    top: 35%;
+    top: 55%;
     opacity: 1;
 }
 

@@ -1,3 +1,6 @@
+import {validateSession} from "./navbar.js";
+import {openLoginNotice} from "./notice.js";
+
 let sliderControlBtn = document.querySelectorAll('.control-slider span');
 let books = document.querySelectorAll('.card');
 let book_page = Math.ceil(books.length/4);
@@ -56,18 +59,23 @@ for(let i = 0; i < infos.length; i ++){
 
 let wishListBtn = document.querySelectorAll('.wishlist.btn');
 for(let btn of wishListBtn) {
-    btn.addEventListener('click', () => {
-        let isbn = btn.parentNode.parentNode.children[1].children[3];
-        let bookDto = {
-            "isbn": isbn.innerText,
-        }
-        if (!containsInWishlist(bookDto)) {
-            navigator.sendBeacon('/home/wishlist/add', bookDto['isbn'])
-            fullHeart(btn, true)
-        } else {
-            navigator.sendBeacon('/home/wishlist/remove', bookDto['isbn'])
-            fullHeart(btn, false)
-        }
+        btn.addEventListener('click', () => {
+            if(!sessionActive()){
+                openLoginNotice();
+            }
+        else {
+                let isbn = btn.parentNode.parentNode.children[1].children[3];
+                let bookDto = {
+                    "isbn": isbn.innerText,
+                }
+                if (!containsInWishlist(bookDto)) {
+                    navigator.sendBeacon('/home/wishlist/add', bookDto['isbn'])
+                    fullHeart(btn, true)
+                } else {
+                    navigator.sendBeacon('/home/wishlist/remove', bookDto['isbn'])
+                    fullHeart(btn, false)
+                }
+            }
     })
 }
 
@@ -113,13 +121,20 @@ document.addEventListener('DOMContentLoaded', () => {
         let bookDto = {
             "isbn" : isbn.innerText
         }
-        if(containsInWishlist(bookDto)){
-            btn.children[0].classList.add('fa-solid', 'fa-heart')
+        if(!sessionActive()){
+            fullHeart(btn, false);
         }
         else {
-            btn.children[0].classList.add('far', 'fa-heart')
+            if (containsInWishlist(bookDto)) {
+                fullHeart(btn, true)
+            } else {
+                fullHeart(btn, false)
+            }
         }
-
 
     }
 })
+
+function sessionActive(){
+    return validateSession()['activeSession'];
+}
