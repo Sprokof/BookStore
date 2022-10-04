@@ -1,5 +1,6 @@
 package online.book.store.service;
 
+import online.book.store.entity.Book;
 import online.book.store.entity.CartItem;
 import online.book.store.entity.Order;
 import online.book.store.entity.User;
@@ -20,15 +21,19 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     private SignInService signInService;
 
+    @Autowired
+    private BookService bookService;
+
     @Override
     public void addOrders() {
         User savedUser = signInService.getSavedUser();
         List<CartItem> userItems = savedUser.getCart().getCartItems();
 
 
+
         userItems.forEach((item) -> {
-            Order order = new Order(item.getBook().getTitle(), item.getQuantity(), item.getTotal(),
-                    item.getBook().getBookImageName());
+            Order order = new Order(item.getTitle(), item.getQuantity(), item.getTotal(),
+                    item.getImageName());
             order.setStatus("Paid");
             savedUser.addOrder(order);
         });
@@ -36,4 +41,5 @@ public class OrderServiceImpl implements OrderService{
         userService.updateUserInSession(savedUser);
 
     }
+
 }

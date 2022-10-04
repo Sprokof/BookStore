@@ -15,6 +15,10 @@ public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "TITLE")
+    private String title;
+    @Column(name ="IMAGE_NAME")
+    private String imageName;
     @Column(name = "ISBN")
     private String isbn;
     @Column(name = "PRICE")
@@ -25,19 +29,18 @@ public class CartItem {
     private double total;
 
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "book_id")
-    private Book book;
 
-
-    public CartItem(String isbn, double price, int quantity){
+    public CartItem(String title, String imageName, String isbn, double price){
+        this.title = title;
+        this.imageName = imageName;
         this.isbn = isbn;
         this.price = price;
-        this.quantity = quantity;
+        this.quantity = 1;
         this.total = (this.quantity * this.price);
 
     }
@@ -49,5 +52,18 @@ public class CartItem {
 
         CartItem item = (CartItem) obj;
         return this.isbn.equals(item.isbn);
+    }
+
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                ", title='" + title + '\'' +
+                ", imageName='" + imageName + '\'' +
+                ", isbn='" + isbn + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", total=" + total +
+                ", cart=" + cart +
+                '}';
     }
 }

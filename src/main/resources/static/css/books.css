@@ -98,3 +98,11 @@
 .to-cart {
     background-color: #333333;
 }
+
+#card-container .book-info .isbn {
+    z-index: -1;
+    opacity: 0;
+    pointer-events: none;
+    font-size: 0;
+    width: 0;
+}

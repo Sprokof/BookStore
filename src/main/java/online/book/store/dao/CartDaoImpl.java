@@ -16,22 +16,23 @@ public class CartDaoImpl implements CartDao{
     private final SessionFactory sessionFactory = SessionFactorySingleton.getInitializationFactory();
 
     @Override
-    public boolean bookAdded(Integer userId, Book book) {
+    public boolean contains(Cart cart, Book book) {
         Session session = null;
-        Cart userCart = null;
+        CartItem cartItem = null;
     try{
         session = this.sessionFactory.openSession();
         session.beginTransaction();
-        userCart = (Cart) session.createSQLQuery("SELECT * FROM CARTS as cart JOIN TABLE " +
-                        "USERS as u on u.id = cart.user_id WHERE u.id=:userId").
-                setParameter("userId", userId).addEntity(Cart.class).getSingleResult();
+        cartItem = (CartItem) session.createSQLQuery("SELECT * FROM CARTS_ITEMS WHERE CART_ID=:c_id AND ISBN=:isbn").
+                setParameter("c_id", cart.getId()).
+                setParameter("isbn", book.getIsbn()).
+                addEntity(CartItem.class).list().get(0);
         session.getTransaction().commit();
     }
     catch (Exception e) {
         if (session != null) {
             if (session.getTransaction() != null) {
                 session.getTransaction().rollback();
-                if (e instanceof NoResultException) return false;
+                if (e instanceof IndexOutOfBoundsException) return false;
             }
         }
     } finally {
@@ -39,19 +40,12 @@ public class CartDaoImpl implements CartDao{
             session.close();
         }
     }
-    if((userCart != null)){
-    String isbn = book.getIsbn();
-    return (userCart.getCartItems().stream().
-                map(CartItem::getIsbn).
-                collect(Collectors.toList()).contains(isbn));
-    }
-    return false;
+    return cartItem != null;
     }
 
     @Override
     public void updateCart(Cart cart) {
         Session session = null;
-        Cart userCart = null;
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
@@ -93,5 +87,60 @@ public class CartDaoImpl implements CartDao{
         }
     }
     return cartItem;
+    }
+
+    @Override
+    public CartItem getCartItemByBook(Cart cart, Book book) {
+        Session session = null;
+        CartItem cartItem = null;
+    try{
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        cartItem = (CartItem) session.createSQLQuery("SELECT * FROM " +
+                "CARTS_ITEMS as item JOIN CARTS as cart on item.cart_id = cart.id WHERE ISBN=:isbn").addEntity(CartItem.class).
+                setParameter("isbn", book.getIsbn()).getSingleResult();
+        session.getTransaction().commit();
+    }
+    catch (Exception e){
+        if(session != null){
+            if(session.getTransaction() != null){
+                session.getTransaction().rollback();
+                if(e instanceof NoResultException){
+                    return null;
+                }
+            }
+        }
+    }
+
+    finally {
+        if(session != null){
+            session.close();
+        }
+    }
+
+    return cartItem;
+    }
+
+    @Override
+    public void deleteCartItem(CartItem cartItem) {
+        Session session = null;
+    try{
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        session.delete(cartItem);
+        session.getTransaction().commit();
+    }
+    catch (Exception e){
+        if(session != null){
+            if(session.getTransaction() != null){
+                session.getTransaction().commit();
+            }
+        }
+    }
+    finally {
+        if(session != null){
+            session.close();
+        }
+    }
     }
 }

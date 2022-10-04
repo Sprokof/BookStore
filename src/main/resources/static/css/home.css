@@ -129,10 +129,12 @@ section .card {
     font-family: "Cascadia Code", sans-serif;
     cursor: pointer;
     border: 3px solid #b4ad9e;
+    overflow-y: hidden;
 }
 
 .books-slider .card .cart {
     width: 160px;
+    line-height: 22px;
 }
 
 .books-slider .card .cart:hover {
@@ -178,3 +180,4 @@ section .card {
 .fa-heart {
     margin-left: -2px;
 }
+

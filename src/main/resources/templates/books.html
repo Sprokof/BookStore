@@ -28,6 +28,7 @@
                 <div class="star-rating"
                      th:text="${book.bookRating + '(' + ${book.getBookReviews().size()} + 'scores)'}">
                 </div>
+                <div class="isbn" th:text="${book.description}"></div>
 
             </div>
 
@@ -57,34 +58,4 @@
 <script th:src="@{/js/generateRating.js}"></script>
 <script th:src="@{/js/cards.js}"></script>
 <script th:src="@{/js/sortbar.js}"></script>
-<script>
-    let cartBtn = document.querySelectorAll('.shop');
-    cartBtn.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            let push;
-            let url = "/home/cart/add";
-            if ((push === btn.classList.contains('to-cart'))){
-                url = "/home/cart/remove";
-            }
-            let title = getBookTitle(btn);
-
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: url,
-                cache: false,
-                dataType: "text",
-                data: title,
-                success: function () {
-                    if (push) {
-                        btn.classList.remove('to-cart')
-                    } else {
-                        btn.classList.add('to-cart');
-                    }
-                }
-            })
-
-        })
-    })
-</script>
 </body>

@@ -2,6 +2,7 @@ package online.book.store.service;
 
 
 import online.book.store.dao.CartDao;
+import online.book.store.dto.CartItemDto;
 import online.book.store.entity.Book;
 import online.book.store.entity.Cart;
 import online.book.store.entity.CartItem;
@@ -18,35 +19,34 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private CartDao cartDao;
 
-    @Autowired
-    private UserService userService;
-
 
     @Override
-    public boolean bookAdded(Integer userId, Book book) {
-        return this.cartDao.bookAdded(userId, book);
+    public CartItemDto contains(Cart cart, Book book) {
+        return new CartItemDto(this.cartDao.contains(cart, book));
+
     }
 
     @Override
     public void addBookToCart(Book book, Cart cart) {
-        int quantity = 1;
-
-        if(bookAdded(cart.getUser().getId(), book)){
-            quantity += 1;
-        }
-        CartItem cartItem = new CartItem(book.getIsbn(), book.getPrice(), quantity);
+        CartItem cartItem = new CartItem(book.getTitle(), book.getBookImageName(),
+                book.getIsbn(), book.getPrice());
         cart.addItem(cartItem).updatePrices();
-
         updateCart(cart);
 
 
     }
 
+    @Override
+    public void removeBookFromCart(Book book, Cart cart){
+        CartItem cartItem = getCartItemByBook(cart, book);
+        cart.removeItem(cartItem).updatePrices();
+        deleteCartItem(cartItem);
+        updateCart(cart);
+    }
 
     @Override
     public void updateCart(Cart cart) {
-        User user = cart.getUser();
-        userService.updateUserInSession(user);
+        this.cartDao.updateCart(cart);
     }
 
 
@@ -67,6 +67,16 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartItem getCartItemById(int id) {
         return this.cartDao.getCartItemById(id);
+    }
+
+    @Override
+    public CartItem getCartItemByBook(Cart cart, Book book) {
+        return this.cartDao.getCartItemByBook(cart, book);
+    }
+
+    @Override
+    public void deleteCartItem(CartItem cartItem) {
+        this.cartDao.deleteCartItem(cartItem);
     }
 }
 

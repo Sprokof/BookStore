@@ -11,5 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserDto {
     private String login;
+    private String remember;
+    private String inSession;
 
 }

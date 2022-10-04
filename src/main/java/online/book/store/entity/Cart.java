@@ -3,6 +3,9 @@ package online.book.store.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -28,10 +31,12 @@ public class Cart {
     private static final double SHIPPING_PRICE = 17d;
 
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cart", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,
+            mappedBy = "cart")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<CartItem> cartItems;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "cart", fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "cart")
     private User user;
 
 
@@ -59,9 +64,10 @@ public class Cart {
 
 
 
-    public void removeItem(CartItem item){
+    public Cart removeItem(CartItem item){
         this.cartItems.remove(item);
         item.setCart(null);
+        return this;
     }
 
     private double calculateTotalPrice(){
@@ -84,6 +90,7 @@ public class Cart {
         this.subtotal = calculateSubTotalPrice();
         this.total = calculateTotalPrice();
         this.count = this.cartItems.size();
+
     }
 
 

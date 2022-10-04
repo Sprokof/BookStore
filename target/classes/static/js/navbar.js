@@ -1,5 +1,7 @@
 import {loginOpen} from "./login.js";
 import { logout } from "./validation.js"
+import { updateUser } from "./validation.js"
+
 
 $(document).ready(function () {
     $('.sub-btn').click(function (){
@@ -16,6 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let sessionDto = validateSession();
     if(sessionDto === null || sessionDto === undefined) return ;
     if (sessionDto['activeSession']) {
+        let user = getUser();
+        user['inSession'] = 'true';
+        updateUser(user);
         let menu = document.querySelector('.menu');
         let lastChild = menu.children[4];
         let newChild = createChild(['item', 'main'], ['div', 'a'],
@@ -167,20 +172,21 @@ export function validateSession() {
    }
 
 
-
    function autologin() {
        let user = getUser();
        if(user === null) return ;
        if (loaded() && user['remember'] === 'true') {
            navigator.sendBeacon('/autologin', user['login']);
 
+
        }
    }
 
    function invalidateSession() {
        let user = getUser();
-       if(user === null) return ;
-       if (!loaded()) return;
+       if(user === null || !loaded()) return ;
+       user['inSession'] = "false";
+       updateUser(user);
        navigator.sendBeacon("/invalidate", user['login']);
    }
 

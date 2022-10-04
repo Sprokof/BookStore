@@ -1,11 +1,13 @@
 package online.book.store.controllers;
 
+import online.book.store.dto.BookDto;
 import online.book.store.dto.CartItemDto;
 import online.book.store.entity.Book;
 import online.book.store.entity.Cart;
 import online.book.store.entity.CartItem;
 import online.book.store.entity.User;
 import online.book.store.service.*;
+import online.book.store.session.SessionStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,20 +29,20 @@ public class CartController {
     private CartService cartService;
 
     @Autowired
-    private SignInService signInService;
+    private SessionStorage sessionStorage;
 
 
     @GetMapping("/home/cart")
     public String cart(Model model, HttpServletRequest request){
-        Cart cart = signInService.getUserFromRequest(request).getCart();
+        Cart cart = sessionStorage.getUser(request).getCart();
         model.addAttribute("cart", cart);
         return "cart";
     }
 
 
     @PostMapping("/home/cart/set")
-    public ResponseEntity.BodyBuilder addCartItem(@RequestBody CartItemDto dto){
-        User user = signInService.getSavedUser();
+    public ResponseEntity.BodyBuilder addCartItem(@RequestBody CartItemDto dto, HttpServletRequest request){
+        User user = sessionStorage.getUser(request);
         int id = (Integer.parseInt(dto.getCartItemId()));
         int quantity = (Integer.parseInt(dto.getQuantity()));
 
@@ -52,24 +54,28 @@ public class CartController {
 
     }
 
-    @PostMapping("/home/cart/remove/")
-    public ResponseEntity.BodyBuilder removeCartItem(@RequestBody String itemId){
-        User user = signInService.getSavedUser();
-        int cartItemId = (Integer.parseInt(itemId));
-
-        CartItem cartItem = cartService.getCartItemById(cartItemId);
-
-        cartService.updateCartItem(cartItem, user.getCart());
-
-        return ResponseEntity.status(200);
+    @PostMapping("/home/cart/remove")
+    public ResponseEntity<Integer> removeCartItem(@RequestBody String isbn, HttpServletRequest request){
+        User user = sessionStorage.getUser(request);
+        Book book = bookService.getBookByIsbn(isbn);
+        cartService.removeBookFromCart(book, user.getCart());
+        return ResponseEntity.ok(200);
 
     }
 
     @PostMapping("/home/cart/add")
-    public ResponseEntity<?> addBookToCart(@RequestParam("title") String title){
-        User user = signInService.getSavedUser();
-        Book book = bookService.getBookByTitle(title);
+    public ResponseEntity<Integer> addBookToCart(@RequestBody String isbn, HttpServletRequest request){
+        User user = sessionStorage.getUser(request);
+        Book book = bookService.getBookByIsbn(isbn);
         cartService.addBookToCart(book, user.getCart());
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+        return ResponseEntity.ok(200);
+    }
+
+    @PostMapping("/home/cart/contains")
+    public ResponseEntity<CartItemDto> contains(@RequestBody BookDto bookDto, HttpServletRequest request){
+        User user = sessionStorage.getUser(request);
+        String isbn = bookDto.getIsbn();
+        Book book = bookService.getBookByIsbn(isbn);
+        return ResponseEntity.ok(cartService.contains(user.getCart(), book));
     }
 }

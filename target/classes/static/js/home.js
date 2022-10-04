@@ -1,4 +1,4 @@
-import {validateSession} from "./navbar.js";
+import {getUser} from "./navbar.js";
 import {openLoginNotice} from "./notice.js";
 
 let sliderControlBtn = document.querySelectorAll('.control-slider span');
@@ -56,19 +56,15 @@ for(let i = 0; i < infos.length; i ++){
 
 
 
-
-let wishListBtn = document.querySelectorAll('.wishlist.btn');
+let wishListBtn = document.querySelectorAll('.wishlist');
 for(let btn of wishListBtn) {
-        btn.addEventListener('click', () => {
+    btn.addEventListener('click', () => {
             if(!sessionActive()){
                 openLoginNotice();
             }
         else {
-                let isbn = btn.parentNode.parentNode.children[1].children[3];
-                let bookDto = {
-                    "isbn": isbn.innerText,
-                }
-                if (!containsInWishlist(bookDto)) {
+                let bookDto = newBookDto(btn);
+                if (!contains(bookDto, "/home/wishlist/contains")) {
                     navigator.sendBeacon('/home/wishlist/add', bookDto['isbn'])
                     fullHeart(btn, true)
                 } else {
@@ -79,24 +75,46 @@ for(let btn of wishListBtn) {
     })
 }
 
+let cartBtn = document.querySelectorAll('.cart.btn');
+for(let btn of cartBtn){
+    btn.addEventListener('click', () =>{
+        if(!sessionActive()) {
+            openLoginNotice();
+        }
 
-    function containsInWishlist(bookDto) {
-        let wishlistDto;
+        else {
+            let bookDto = newBookDto(btn);
+            if (!contains(bookDto, "/home/cart/contains")){
+                navigator.sendBeacon("/home/cart/add", bookDto['isbn']);
+                    changeCartBtnText(btn, "Remove From Cart")
+            }
+            else {
+                navigator.sendBeacon("/home/cart/remove", bookDto['isbn']);
+                    changeCartBtnText(btn, "Add To Cart")
+            }
+        }
+
+    })
+}
+
+    function contains(bookDto, url) {
+        let dto;
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: '/home/wishlist/contains',
+            url: url,
             cache: false,
             dataType: 'json',
             responseType: 'json',
             data: JSON.stringify(bookDto),
             async: false,
-            success: (wishlist) => {
-                wishlistDto = JSON.parse(JSON.stringify(wishlist));
+            success: (data) => {
+                dto = JSON.parse(JSON.stringify(data));
             }
         })
-        return wishlistDto['contains'];
+        return dto['contains'];
     }
+
 
     function fullHeart(btn, flag) {
     let heart = btn.children[0];
@@ -117,24 +135,51 @@ for(let btn of wishListBtn) {
 
 document.addEventListener('DOMContentLoaded', () => {
     for(let btn of wishListBtn){
-        let isbn = btn.parentNode.parentNode.children[1].children[3];
-        let bookDto = {
-            "isbn" : isbn.innerText
-        }
+        let bookDto = newBookDto(btn);
         if(!sessionActive()){
             fullHeart(btn, false);
         }
         else {
-            if (containsInWishlist(bookDto)) {
-                fullHeart(btn, true)
+            if (contains(bookDto, "/home/wishlist/contains")) {
+                fullHeart(btn, true);
             } else {
-                fullHeart(btn, false)
+                fullHeart(btn, false);
             }
+
         }
 
+    }
+
+    for(let btn of cartBtn){
+        let bookDto = newBookDto(btn);
+        if(!sessionActive()){
+            changeCartBtnText(btn, "Add To Cart")
+        }
+        else {
+            if(contains(bookDto, "/home/cart/contains")){
+                changeCartBtnText(btn, "Remove From Cart");
+            }
+            else {
+                changeCartBtnText(btn, "Add To Cart");
+            }
+        }
     }
 })
 
 function sessionActive(){
-    return validateSession()['activeSession'];
+    return (getUser()['inSession'] === 'true');
+}
+
+function newBookDto(btn){
+    let isbn = btn.parentNode.parentNode.children[1].children[3];
+    return { "isbn" : isbn.innerText }
+}
+
+function changeCartBtnText(btn, text){
+    if(text.length > 11) {
+        btn.innerHTML = '<font size = 3>' + text + '</font>';
+    }
+    else {
+        btn.innerHTML = text;
+    }
 }

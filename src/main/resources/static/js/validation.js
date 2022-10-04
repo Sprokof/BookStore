@@ -1,5 +1,6 @@
 import {resetClose} from "./reset.js";
 import {openResetTwoPopup} from "./confirmReset.js";
+import {getUser} from "./navbar.js";
 
 let login = document.getElementById('login-btn');
 login.addEventListener('click', async () => {
@@ -130,6 +131,9 @@ function reload(){
 }
 
 function toHome() {
+    let user = getUser();
+    user['inSession'] = 'false';
+    updateUser(user);
     window.location.href = "/";
 }
 
@@ -168,11 +172,12 @@ function saveUser(obj){
     let user = {
         "login" : login,
         "remember" : "false",
+        "inSession" : "true",
     }
     localStorage.setItem("user", JSON.stringify(user));
 }
 
-function updateUser(user){
+export function updateUser(user){
     localStorage.setItem("user", JSON.stringify(user));
 }
 
