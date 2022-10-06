@@ -1,4 +1,5 @@
 import {blockBackgroundHtml} from "./notice.js";
+
 let resetTwoPopup = document.querySelector('#popup-confirm-reset');
 let closeTwoPopup = document.querySelector('#close-confirm-reset');
 

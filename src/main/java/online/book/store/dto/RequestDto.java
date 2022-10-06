@@ -1,5 +1,6 @@
 package online.book.store.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,10 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartItemDto {
-    private String cartItemId;
-    private String quantity;
-
-
-
+public class RequestDto {
+    private String isbn;
+    private String userLogin;
 }

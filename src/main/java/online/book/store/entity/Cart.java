@@ -28,7 +28,7 @@ public class Cart {
     @Column(name = "QUANTITY")
     private int count;
 
-    private static final double SHIPPING_PRICE = 17d;
+    private static final double SHIPPING_PRICE = 170d;
 
 
     @OneToMany(cascade = CascadeType.ALL,
@@ -70,15 +70,8 @@ public class Cart {
         return this;
     }
 
-    private double calculateTotalPrice(){
-        double totalSum = 0;
-        for(CartItem item : this.getCartItems()){
-            totalSum += item.getTotal();
-        }
-        return totalSum + SHIPPING_PRICE;
-    }
 
-    private double calculateSubTotalPrice(){
+    private double calculateSubtotalPrice(){
         double subTotalSum = 0;
         for(CartItem item : this.getCartItems()){
             subTotalSum += item.getTotal();
@@ -87,13 +80,16 @@ public class Cart {
     }
 
     public void updatePrices(){
-        this.subtotal = calculateSubTotalPrice();
-        this.total = calculateTotalPrice();
-        this.count = this.cartItems.size();
+        this.subtotal = calculateSubtotalPrice();
+        this.total = (subtotal + SHIPPING_PRICE);
+        this.count = itemsCounts();
 
     }
 
-
+    private int itemsCounts(){
+        if(this.cartItems == null) return 0;
+        return this.cartItems.size();
+    }
 
 
 }

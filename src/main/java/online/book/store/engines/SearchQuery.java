@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
 @Setter
 public class SearchQuery {
@@ -12,5 +11,9 @@ public class SearchQuery {
 
     public int length(){
         return this.queryText.length();
+    }
+
+    public SearchQuery(String queryText) {
+        this.queryText = queryText.replaceAll("\\s", "");
     }
 }

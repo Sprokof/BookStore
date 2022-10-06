@@ -2,12 +2,10 @@ package online.book.store.service;
 
 
 import online.book.store.dao.CartDao;
-import online.book.store.dto.CartItemDto;
+import online.book.store.dto.ResponseDto;
 import online.book.store.entity.Book;
 import online.book.store.entity.Cart;
 import online.book.store.entity.CartItem;
-import online.book.store.entity.User;
-import online.book.store.session.SessionStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -21,8 +19,11 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public CartItemDto contains(Cart cart, Book book) {
-        return new CartItemDto(this.cartDao.contains(cart, book));
+    public ResponseDto contains(Cart cart, Book book) {
+        ResponseDto responseDto = new ResponseDto();
+        boolean contains = this.cartDao.contains(cart, book);
+        responseDto.setItemContains(contains);
+        return responseDto;
 
     }
 
@@ -77,6 +78,15 @@ public class CartServiceImpl implements CartService {
     @Override
     public void deleteCartItem(CartItem cartItem) {
         this.cartDao.deleteCartItem(cartItem);
+    }
+
+    @Override
+    public ResponseDto getItemsQuantity(Cart cart) {
+        ResponseDto responseDto = new ResponseDto();
+        int cartId = cart.getId();
+        int quantity = this.cartDao.getItemsQuantity(cartId);
+        responseDto.setQuantity(quantity);
+        return responseDto;
     }
 }
 

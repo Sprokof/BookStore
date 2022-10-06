@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
+import java.math.BigInteger;
 import java.util.stream.Collectors;
 
 @Component
@@ -142,5 +143,32 @@ public class CartDaoImpl implements CartDao{
             session.close();
         }
     }
+    }
+
+    @Override
+    public Integer getItemsQuantity(int cartId) {
+        Session session = null;
+        Integer quantity = null;
+    try{
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        quantity = (Integer) session.createSQLQuery("SELECT QUANTITY FROM CARTS " +
+                "WHERE ID=:cartId").
+                setParameter("cartId", cartId).getSingleResult();
+        session.getTransaction().commit();
+    }
+    catch(Exception e){
+        if(session != null){
+            if(session.getTransaction() != null){
+                session.getTransaction().rollback();
+            }
+        }
+    }
+    finally {
+        if(session != null){
+            session.close();
+        }
+    }
+    return quantity;
     }
 }

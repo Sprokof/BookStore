@@ -18,6 +18,7 @@ public class BookDto extends AbstractBookBuilder {
 
     public static final String[] AVAILABLE_STATUS = {"is available", "not available"};
 
+
     @Getter
     @Setter
     private boolean contains;

@@ -4,12 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import online.book.store.dto.CategoryDto;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
 import online.book.store.service.BookService;
 import online.book.store.service.CategoryService;
-import org.hibernate.validator.internal.util.stereotypes.Lazy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +15,6 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Component
@@ -35,6 +32,7 @@ public class SiteEngine {
         List<Book> bookInRow;
     }
 
+
     @Autowired
     private BookService bookService;
 
@@ -43,12 +41,11 @@ public class SiteEngine {
 
     private List<Book> bookList;
 
-    private SearchQuery query;
+    @Getter
+    private SearchParam searchParam;
 
-    public SiteEngine executeSearchQuery(SearchQuery query, SortConfig config) {
-        if (!bookList.isEmpty()) {
-            return this;
-        }
+
+    public SiteEngine executeSearchQuery(SearchQuery query, SortTypes type) {
         if (category(query)) {
             this.bookList = bookService.getBooksByCategory(new Category(query.getQueryText()));
         } else {
@@ -58,12 +55,9 @@ public class SiteEngine {
                     this.bookList.add(book);
                 }
             }
-            extractSubList();
         }
-        if (!this.bookList.isEmpty()) {
-        saveQuery(query);
-        sortResultedList(config);
-        }
+
+        saveParams(query, type).sortSearchResult();
         return this;
     }
 
@@ -90,10 +84,11 @@ public class SiteEngine {
         if (queryLength == 0) {
             return false;
         }
+        String text = searchQuery.getQueryText();
         int[] p = prefixFunction(searchQuery);
         for (int i = 0, k = 0; i < booksContent.length(); i++) {
             for (; ; k = p[k - 1]) {
-                if (booksContent.charAt(k) == booksContent.charAt(i)) {
+                if (text.charAt(k) == booksContent.charAt(i)) {
                     if (++ k == queryLength) {
                         return true;
                     }
@@ -111,8 +106,9 @@ public class SiteEngine {
         return this.categoryService.existCategory(query.getQueryText()) != null;
     }
 
-    private void sortResultedList(SortConfig config) {
-        switch (config.currentType()) {
+    private void sortSearchResult() {
+        if(this.bookList.isEmpty()) return ;
+        switch (this.searchParam.currentType()) {
             case POPULARITY:
                 this.bookList.sort(Comparator.comparingDouble(Book::getBookRating));
                 break;
@@ -142,13 +138,6 @@ public class SiteEngine {
         return result;
     }
 
-    public String getLastQueryValue(){
-        return this.query.getQueryText();
-    }
-
-    public void extractSubList(){
-
-    }
 
     public List<Row> mapResultToRow() {
         int rowSize = 4;
@@ -165,10 +154,10 @@ public class SiteEngine {
         return !this.bookList.isEmpty();
     }
 
-    private void saveQuery(SearchQuery searchQuery) {
-        this.query = searchQuery;
+    private SiteEngine saveParams(SearchQuery searchQuery, SortTypes sortType){
+        this.searchParam = new SearchParam(searchQuery, sortType);
+        return this;
     }
-
 
 
 }

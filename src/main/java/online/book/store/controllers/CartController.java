@@ -1,7 +1,6 @@
 package online.book.store.controllers;
 
-import online.book.store.dto.BookDto;
-import online.book.store.dto.CartItemDto;
+import online.book.store.dto.*;
 import online.book.store.entity.Book;
 import online.book.store.entity.Cart;
 import online.book.store.entity.CartItem;
@@ -72,10 +71,17 @@ public class CartController {
     }
 
     @PostMapping("/home/cart/contains")
-    public ResponseEntity<CartItemDto> contains(@RequestBody BookDto bookDto, HttpServletRequest request){
-        User user = sessionStorage.getUser(request);
-        String isbn = bookDto.getIsbn();
+    public ResponseEntity<ResponseDto> contains(@RequestBody RequestDto requestDto){
+        User user = sessionStorage.getUser(requestDto.getUserLogin());
+        String isbn = requestDto.getIsbn();
         Book book = bookService.getBookByIsbn(isbn);
         return ResponseEntity.ok(cartService.contains(user.getCart(), book));
     }
+
+    @GetMapping("/home/cart/quantity")
+    public ResponseEntity<ResponseDto> cartQuantity(HttpServletRequest request){
+        Cart cart = sessionStorage.getUser(request).getCart();
+        return ResponseEntity.ok(cartService.getItemsQuantity(cart));
+    }
+
 }

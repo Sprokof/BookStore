@@ -47,19 +47,21 @@
 }
 
 .books-slider section {
-    margin-top: 25px;
+    margin: 25px 0 0 5px;
     display: flex;
 }
 
-section .card {
+.books-slider section .card {
     position: relative;
     left: 0;
     transition: 0.5s;
     min-width: 24%;
     margin: 0 15px 0 0;
     overflow-y: hidden;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border: none!important;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+
 
 }
 
@@ -177,7 +179,16 @@ section .card {
     width: 0;
 }
 
-.fa-heart {
+.books-slider .fa-heart {
     margin-left: -2px;
+}
+
+.books-slider section .card .book-info span {
+    cursor: pointer;
+}
+
+.books-slider section .card .book-info span:hover {
+    border-bottom: 1px solid #fff;
+    transition: 0.2s ease-in-out;
 }
 

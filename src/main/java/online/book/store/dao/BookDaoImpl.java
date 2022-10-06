@@ -32,7 +32,7 @@ public class BookDaoImpl implements BookDao {
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-            books = session.createSQLQuery("SELECT * FROM BOOKS").
+            books = session.createSQLQuery("SELECT * FROM BOOKS ORDER BY ADDED_DATE LIMIT 6").
                     addEntity(Book.class).list();
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class BookDaoImpl implements BookDao {
                     createSQLQuery("SELECT * FROM " +
                             "BOOKS as book JOIN BOOKS_REVIEWS as reviews" +
                             " on book.id = reviews.id WHERE BOOK_RATING " +
-                            "BETWEEN :min_rating and :max_rating ").
+                            "BETWEEN :min_rating and :max_rating ORDER BY BOOK_RATING").
                     addEntity(Book.class).
                     setParameter("min_rating", MIN_POPULAR_RATING).
                     setParameter("max_rating", MAX_POPULAR_RATING).list();
@@ -95,7 +95,7 @@ public class BookDaoImpl implements BookDao {
         session.beginTransaction();
         books = (LinkedList<Book>) session.
                 createSQLQuery("SELECT * FROM BOOKS as b " +
-                        "JOIN CATEGORIES as c on c.book_id=b.id WHERE c.category=:category").
+                        "JOIN CATEGORIES as c on c.book_id = b.id WHERE c.category=:category").
                 setParameter("category", category).
                 addEntity(Category.class).list();
         session.getTransaction().commit();

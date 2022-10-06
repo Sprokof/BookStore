@@ -11,16 +11,13 @@ $(document).ready(function () {
 
 });
 
-
+let active = false;
 document.addEventListener('DOMContentLoaded', () => {
     invalidateSession();
     autologin();
-    let sessionDto = validateSession();
-    if(sessionDto === null || sessionDto === undefined) return ;
-    if (sessionDto['activeSession']) {
-        let user = getUser();
-        user['inSession'] = 'true';
-        updateUser(user);
+    let responseDto = validateSession();
+    if(responseDto === null || responseDto === undefined) return ;
+    if (responseDto['activeSession']) {
         let menu = document.querySelector('.menu');
         let lastChild = menu.children[4];
         let newChild = createChild(['item', 'main'], ['div', 'a'],
@@ -28,14 +25,16 @@ document.addEventListener('DOMContentLoaded', () => {
         newChild.children[0].onclick = () => logout();
         menu.replaceChild(newChild, lastChild);
 
-        if(sessionDto['userAdmin']){
+        if(responseDto['userAdmin']){
             newChild = createChild(['item', 'main'], ['div', 'a'],
                 'Add book');
             newChild.children[0].onclick = () => addBook();
             menu.appendChild(newChild);
         }
-        setCookie(sessionDto['userLogin']);
+        active = true;
+        setCookie(responseDto['userLogin']);
     }
+    createCartItemLink();
 })
 
     document.querySelector("#side-menu").addEventListener("click", (e) => {
@@ -87,15 +86,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('search').addEventListener('click', (e) => {
         let text = document.getElementById('search-input').value;
+        console.log(text)
         executeQuery(text)
     });
 
 
     function executeQuery(value) {
-        if (value !== null) {
-            value = value.replaceAll('\s', '').toLowerCase();
+        if(value === null || value === '') return
+            value = value.replaceAll(' ', '').toLowerCase();
             document.location.href = '/home/books/search?query=' + value + "&type=popularity";
-        }
     }
 
     let sideMenu = document.getElementById('side-menu');
@@ -177,6 +176,8 @@ export function validateSession() {
        if(user === null) return ;
        if (loaded() && user['remember'] === 'true') {
            navigator.sendBeacon('/autologin', user['login']);
+           user['inSession'] = 'true';
+           updateUser(user);
 
 
        }
@@ -194,4 +195,29 @@ export function validateSession() {
    export function getUser(){
        if(localStorage.getItem('user') === null) return null;
            return JSON.parse(localStorage.getItem('user'));
+   }
+
+
+   export function createCartItemLink(){
+       let cart = document.querySelector('#cart-link');
+       if(!active) {
+           cart.innerText = "Cart (0)";
+           return ;
+       }
+       $.ajax({
+           type: "GET",
+           contentType: "application/json",
+           url: "/home/cart/quantity",
+           cache: false,
+           dataType: 'json',
+           responseType: 'json',
+           success: function (dto) {
+               let cartDto = JSON.parse(JSON.stringify(dto));
+               cart.innerText = "Cart (" + cartDto['quantity'] + ")";
+           }
+       });
+   }
+
+   export function sessionValid(){
+        return active && (getUser() != null);
    }

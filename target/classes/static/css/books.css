@@ -2,22 +2,24 @@
     margin-left: 130px;
     margin-top: 90px;
     z-index: 0;
+    position: absolute;
+
 }
 
-.card {
+#card-container .card {
     margin-right: 50px;
     border: none;
     color: white;
 }
 
-.book-img {
+#card-container .book-img {
     width: 205px;
     height: 275px;
     border: slategray solid 5px;
     padding: 5px;
 }
 
-.book-info {
+#card-container .book-info {
     width: 205px;
     height: 135px;
     background-color: #634430;
@@ -29,20 +31,20 @@
 }
 
 
-.card .star-rating {
+#card-container .card .star-rating {
     margin-top: 5px;
     font-size: 0.7rem;
     color: #fdcc0d;
     user-select: none;
 }
 
-.card .numeric-rating {
+#card-container .card .numeric-rating {
     margin-left: 5px;
-    font-size: 12px;
-    margin-top: -10px;
+    font-size: 15px;
+    margin-top: -7px;
 }
 
-.card .buttons {
+#card-container .card .buttons {
     height: 65px;
     display: flex;
     align-items: center;
@@ -51,37 +53,39 @@
     padding: 0.8rem;
 }
 
-.card .btn {
+#card-container .card .btn {
     position: relative;
-    border: none;
+    border: 2px silver solid;
     outline: none;
     background-color: dimgrey;
     color: #fff;
-    height: 40px;
     border-radius: 50px;
     font-size: 0.9rem;
     font-family: "Cascadia Code", sans-serif;
     cursor: pointer;
+    overflow-y: hidden;
+    height: 40px;
+
+
 }
 
-.cart {
+#card-container .cart {
     width: 80px;
 
 }
 
-.cart:hover {
+#card-container .cart:hover {
     transition: 0.3s ease-in;
     background-color: #333333;
     color: white;
 }
 
-.wishlist {
+#card-container .wishlist {
     border-radius: 50%;
-    width: 35px;
-    height: 35px;
+    width: 40px;
 }
 
-.wishlist:hover {
+#card-container .wishlist:hover {
     transition: 0.3s ease-in;
     background-color: #333333;
     color: white;
@@ -92,7 +96,7 @@
 }
 
 .squeeze {
-    margin-right: 35px;
+    margin-right: 5%;
 }
 
 .to-cart {
@@ -105,4 +109,14 @@
     pointer-events: none;
     font-size: 0;
     width: 0;
+}
+
+#card-container.fixed {
+    transition: 0.3s ease-out;
+    margin-top: -110px;
+}
+
+#card-container .wishlist.btn .fa-heart {
+    margin-left: -1px!important;
+    line-height: 15px;
 }

@@ -1,6 +1,7 @@
 package online.book.store.controllers;
 
 import online.book.store.dto.CategoryDto;
+import online.book.store.dto.ResponseDto;
 import online.book.store.dto.SessionDto;
 import online.book.store.dto.UserDto;
 import online.book.store.entity.ExistCategory;
@@ -45,7 +46,7 @@ public class StoreController{
 
 
     @PostMapping("/session/validate")
-    public ResponseEntity<SessionDto> validateSession(@RequestBody UserDto userDto, HttpServletRequest request) {
+    public ResponseEntity<ResponseDto> validateSession(@RequestBody UserDto userDto, HttpServletRequest request) {
         User user = userService.getUserByLogin(userDto.getLogin());
         return ResponseEntity.ok(sessionStorage.validateSession(user, request));
     }

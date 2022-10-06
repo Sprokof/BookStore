@@ -1,12 +1,14 @@
 package online.book.store.session;
 
 import lombok.NoArgsConstructor;
+import online.book.store.dto.ResponseDto;
 import online.book.store.dto.SessionDto;
 import online.book.store.dto.UserDto;
 import online.book.store.entity.User;
 import online.book.store.service.SignInService;
 import online.book.store.service.UserService;
 import online.book.store.service.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +26,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Component
 public class SessionStorage {
+
+    private final UserService userService = new UserServiceImpl();
 
     private static final Map<String, User> sessionStorage = initStorage();
 
@@ -63,11 +67,15 @@ public class SessionStorage {
     }
 
 
-    public SessionDto validateSession(User user, HttpServletRequest request){
+    public ResponseDto validateSession(User user, HttpServletRequest request){
         UUID uuid = null;
         if((uuid = getUUID(user, request)) == null) return null;
         boolean active = containsInSession(uuid) && user.isInSession();
-        return new SessionDto(user.getEmail(), user.isAdmin(), active);
+        ResponseDto responseDto = new ResponseDto();
+        responseDto.setUserLogin(user.getEmail());
+        responseDto.setUserAdmin(user.isAdmin());
+        responseDto.setActiveSession(active);
+        return responseDto;
 
     }
 
@@ -83,8 +91,14 @@ public class SessionStorage {
     }
 
     public User getUser(HttpServletRequest request){
+        String uuid;
         HttpSession httpSession = request.getSession(false);
-        String uuid = (String) httpSession.getAttribute("id");
+        uuid = (String) httpSession.getAttribute("id");
         return sessionStorage.get(uuid);
     }
+
+    public User getUser(String login){
+        return userService.getUserByLogin(login);
+    }
+
 }

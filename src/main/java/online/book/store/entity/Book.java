@@ -121,7 +121,6 @@ public class Book {
     private List<Wishlist> wishlists;
 
 
-
     @Override
     public String toString(){
         return String.format("%s%s%s%d%s%s%s",

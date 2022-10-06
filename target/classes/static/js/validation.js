@@ -172,7 +172,6 @@ function saveUser(obj){
     let user = {
         "login" : login,
         "remember" : "false",
-        "inSession" : "true",
     }
     localStorage.setItem("user", JSON.stringify(user));
 }

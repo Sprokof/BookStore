@@ -1,38 +1,41 @@
 function controlSublist(){
-    document.querySelector('.sort-types').classList.toggle("active")
-    document.querySelector('.arrow-down').classList.toggle('rotate')
+    document.querySelector('#card-container').classList.toggle('fixed');
+    document.querySelector('.sort-types').classList.toggle("active");
+    document.querySelector('.arrow-down').classList.toggle('rotate');
 }
 
-document.querySelector('.select-btn').addEventListener('click', () => {
-    let defaultType = "Choice Sort Type";
-    let type;
-    type = document.querySelector('.btn-text').innerText;
-    document.querySelectorAll('.type').forEach((t) => {
-        t.addEventListener('click', () => {
-            document.querySelector('.btn-text').innerText = t.children[0].innerText;
-            document.querySelector('.sort-types').classList.remove("active")
-            document.querySelector('.arrow-down').classList.remove('rotate')
+let sortTypes = document.querySelectorAll('.type');
+let btnText = document.querySelector('.btn-text');
+sortTypes.forEach((type) => {
+    type.addEventListener("click", () => {
+        let currentType = type.children[0].innerText;
+        sortBooksLists(currentType);
+    })
 })
-    });
-    type = document.querySelector('.btn-text').innerText;
-        if(type !== defaultType){
-        sortBooksLists(type)
-    }
-});
+
 
 function sortBooksLists(type){
+    let searchParams = getSearchParams();
+    document.location.href = '/home/books/search?query=' +
+        searchParams['query'] + '&type=' + type.toLowerCase();
+
+}
+
+function getSearchParams(){
+    let searchParams;
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "/last/query/value",
+        url: "/search/params",
         cache: false,
-        dataType: 'text',
-        responseType : 'text',
-        success: function (query) {
-            document.location.href = '/home/books/search?query=' + query + '&type?=' + type;
-            }
+        dataType: 'json',
+        responseType : 'json',
+        async: false,
+        success: (params) => {
+            searchParams = JSON.parse(JSON.stringify(params));
         }
-    )
+    })
+    return searchParams;
 }
 
 
