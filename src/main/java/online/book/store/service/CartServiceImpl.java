@@ -2,7 +2,7 @@ package online.book.store.service;
 
 
 import online.book.store.dao.CartDao;
-import online.book.store.dto.ResponseDto;
+import online.book.store.dto.CartDto;
 import online.book.store.entity.Book;
 import online.book.store.entity.Cart;
 import online.book.store.entity.CartItem;
@@ -19,11 +19,9 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public ResponseDto contains(Cart cart, Book book) {
-        ResponseDto responseDto = new ResponseDto();
+    public CartDto contains(Cart cart, Book book) {
         boolean contains = this.cartDao.contains(cart, book);
-        responseDto.setItemContains(contains);
-        return responseDto;
+        return new CartDto(contains);
 
     }
 
@@ -81,12 +79,10 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public ResponseDto getItemsQuantity(Cart cart) {
-        ResponseDto responseDto = new ResponseDto();
+    public CartDto getItemsQuantity(Cart cart) {
         int cartId = cart.getId();
         int quantity = this.cartDao.getItemsQuantity(cartId);
-        responseDto.setQuantity(quantity);
-        return responseDto;
+        return new CartDto(quantity);
     }
 }
 

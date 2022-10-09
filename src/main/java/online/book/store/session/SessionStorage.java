@@ -1,23 +1,15 @@
 package online.book.store.session;
 
 import lombok.NoArgsConstructor;
-import online.book.store.dto.ResponseDto;
-import online.book.store.dto.SessionDto;
 import online.book.store.dto.UserDto;
 import online.book.store.entity.User;
-import online.book.store.service.SignInService;
 import online.book.store.service.UserService;
 import online.book.store.service.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.security.Signature;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,15 +59,11 @@ public class SessionStorage {
     }
 
 
-    public ResponseDto validateSession(User user, HttpServletRequest request){
+    public UserDto validateSession(User user, HttpServletRequest request){
         UUID uuid = null;
         if((uuid = getUUID(user, request)) == null) return null;
         boolean active = containsInSession(uuid) && user.isInSession();
-        ResponseDto responseDto = new ResponseDto();
-        responseDto.setUserLogin(user.getEmail());
-        responseDto.setUserAdmin(user.isAdmin());
-        responseDto.setActiveSession(active);
-        return responseDto;
+        return new UserDto(user.getEmail(), user.isInSession(), user.isAdmin());
 
     }
 

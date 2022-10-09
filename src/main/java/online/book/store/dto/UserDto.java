@@ -8,10 +8,15 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserDto {
     private String login;
-    private String remember;
-    private String inSession;
+    private boolean inSession;
+    private boolean isAdmin;
+    private boolean remember;
 
+    public UserDto(String login, boolean inSession, boolean isAdmin) {
+        this.login = login;
+        this.inSession = inSession;
+        this.isAdmin = isAdmin;
+    }
 }

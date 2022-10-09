@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 
 @Controller
@@ -71,16 +72,17 @@ public class CartController {
     }
 
     @PostMapping("/home/cart/contains")
-    public ResponseEntity<ResponseDto> contains(@RequestBody RequestDto requestDto){
-        User user = sessionStorage.getUser(requestDto.getUserLogin());
+    public ResponseEntity<CartDto> contains(@RequestBody RequestDto requestDto){
+        String login = requestDto.getLogin();
         String isbn = requestDto.getIsbn();
+        User user = sessionStorage.getUser(login);
         Book book = bookService.getBookByIsbn(isbn);
         return ResponseEntity.ok(cartService.contains(user.getCart(), book));
     }
 
-    @GetMapping("/home/cart/quantity")
-    public ResponseEntity<ResponseDto> cartQuantity(HttpServletRequest request){
-        Cart cart = sessionStorage.getUser(request).getCart();
+    @PostMapping("/home/cart/quantity")
+    public ResponseEntity<CartDto> cartQuantity(@RequestBody UserDto userDto){
+        Cart cart = sessionStorage.getUser(userDto.getLogin()).getCart();
         return ResponseEntity.ok(cartService.getItemsQuantity(cart));
     }
 

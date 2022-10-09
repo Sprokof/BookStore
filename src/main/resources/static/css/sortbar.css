@@ -55,7 +55,7 @@
     width: 210px;
     cursor: pointer;
     border-radius: 8px;
-    height: 185px;
+    height: 190px;
     overflow-y: hidden;
 }
 
@@ -87,4 +87,9 @@
     z-index: 1;
 }
 
+.sort-types .type.select {
+    background-color: #aaaaaa;
+    border-radius: 8px;
+    pointer-events: none;
 
+}

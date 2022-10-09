@@ -1,5 +1,5 @@
 #card-container {
-    margin-left: 130px;
+    margin-left: 200px;
     margin-top: 90px;
     z-index: 0;
     position: absolute;
@@ -92,11 +92,11 @@
 }
 
 #card-container.right{
-    margin-left: 320px!important;
+    margin-left: 300px!important;
 }
 
-.squeeze {
-    margin-right: 5%;
+.card.squeeze {
+    margin-right: 40px!important;
 }
 
 .to-cart {
@@ -117,6 +117,10 @@
 }
 
 #card-container .wishlist.btn .fa-heart {
-    margin-left: -1px!important;
-    line-height: 15px;
+    line-height: 25px;
 }
+
+.row {
+    margin-bottom: 5%!important;
+}
+

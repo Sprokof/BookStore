@@ -2,7 +2,9 @@ package online.book.store.engines;
 
 
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 @NoArgsConstructor
@@ -15,6 +17,7 @@ public class SearchParam  {
         this.query = query.getQueryText();
         this.sortType = sortType.getType();
     }
+
 
     public String getQuery() {
         return query;
@@ -32,7 +35,9 @@ public class SearchParam  {
         this.sortType = sortType.getType();
     }
 
+
     public SortTypes currentType(){
         return SortTypes.getTypeByName(this.sortType);
     }
+
 }

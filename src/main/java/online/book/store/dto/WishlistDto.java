@@ -9,11 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseDto {
-    private String userLogin;
-    private boolean isUserAdmin;
-    private boolean activeSession;
+public class WishlistDto {
     private boolean itemContains;
-    private int quantity;
 
 }

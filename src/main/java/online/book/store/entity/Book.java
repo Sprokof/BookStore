@@ -123,12 +123,11 @@ public class Book {
 
     @Override
     public String toString(){
-        return String.format("%s%s%s%d%s%s%s",
+        return String.format("%s%s%s%d%s%d",
                         this.isbn.toLowerCase(Locale.ROOT),
                         this.title.toLowerCase(Locale.ROOT).replaceAll("\\s", ""),
                         this.publisher.toLowerCase(Locale.ROOT),
-                        this.yearPub, this.subject,
-                        this.description.toLowerCase(Locale.ROOT), this.price);
+                        this.yearPub, this.subject, this.price);
     }
 
     private LocalDate currentDate(){

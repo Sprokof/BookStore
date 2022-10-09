@@ -1,8 +1,5 @@
 package online.book.store.controllers;
 
-import online.book.store.dto.CategoryDto;
-import online.book.store.dto.ResponseDto;
-import online.book.store.dto.SessionDto;
 import online.book.store.dto.UserDto;
 import online.book.store.entity.ExistCategory;
 import online.book.store.entity.User;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -46,7 +42,7 @@ public class StoreController{
 
 
     @PostMapping("/session/validate")
-    public ResponseEntity<ResponseDto> validateSession(@RequestBody UserDto userDto, HttpServletRequest request) {
+    public ResponseEntity<UserDto> validateSession(@RequestBody UserDto userDto, HttpServletRequest request) {
         User user = userService.getUserByLogin(userDto.getLogin());
         return ResponseEntity.ok(sessionStorage.validateSession(user, request));
     }

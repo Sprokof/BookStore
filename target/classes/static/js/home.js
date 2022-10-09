@@ -1,6 +1,5 @@
-import {sessionValid} from "./navbar.js";
+import {getUser, sessionValid} from "./navbar.js";
 import {openLoginNotice} from "./notice.js";
-import {getUser} from "./navbar.js";
 
 
 let sliderControlBtn = document.querySelectorAll('.control-slider span');
@@ -60,49 +59,15 @@ for(let i = 0; i < infos.length; i ++){
 
 let wishListBtn = document.querySelectorAll('.wishlist.btn');
 for(let btn of wishListBtn) {
-    btn.addEventListener('click', () => {
-            if(!sessionValid()){
-                openLoginNotice();
-            }
-        else {
-                let requestDto = newRequestDto(btn);
-                if (!contains(requestDto, "/home/wishlist/contains")) {
-                    navigator.sendBeacon('/home/wishlist/add', requestDto['isbn'])
-                    fullHeart(btn, true)
-                } else {
-                    navigator.sendBeacon('/home/wishlist/remove', requestDto['isbn'])
-                    fullHeart(btn, false)
-                }
-            }
-    })
+    controlWishlistContent(btn)
 }
 
 let cartBtn = document.querySelectorAll('.cart.btn');
 for(let btn of cartBtn){
-    let symbol;
-    btn.addEventListener('click', () =>{
-        if(!sessionValid()) {
-            openLoginNotice();
-        }
-
-        else {
-            let requestDto = newRequestDto(btn);
-            if (!contains(requestDto, "/home/cart/contains")){
-                navigator.sendBeacon("/home/cart/add", requestDto['isbn']);
-                    changeCartBtnText(btn, "Remove From Cart");
-                    symbol = "+";
-            }
-            else {
-                navigator.sendBeacon("/home/cart/remove", requestDto['isbn']);
-                    changeCartBtnText(btn, "Add To Cart");
-                    symbol = "-";
-            }
-            setItemsCount(symbol);
-        }
-    })
+    controlCartContent(btn);
 }
 
-    function contains(bookDto, url) {
+    function contains(map, url) {
         let dto;
         $.ajax({
             type: "POST",
@@ -111,7 +76,7 @@ for(let btn of cartBtn){
             cache: false,
             dataType: 'json',
             responseType: 'json',
-            data: JSON.stringify(bookDto),
+            data: JSON.stringify(map),
             async: false,
             success: (data) => {
                 dto = JSON.parse(JSON.stringify(data));
@@ -144,8 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
             fullHeart(btn, false);
         }
         else {
-            let requestDto = newRequestDto(btn);
-            if (contains(requestDto, "/home/wishlist/contains")) {
+            let data = newRequestData(btn);
+            if (contains(data, "/home/wishlist/contains")) {
                 fullHeart(btn, true);
             } else {
                 fullHeart(btn, false);
@@ -160,8 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
             changeCartBtnText(btn, "Add To Cart")
         }
         else {
-            let requestDto = newRequestDto(btn);
-            if(contains(requestDto, "/home/cart/contains")){
+            let data = newRequestData(btn);
+            if(contains(data, "/home/cart/contains")){
                 changeCartBtnText(btn, "Remove From Cart");
             }
             else {
@@ -171,10 +136,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })
 
-function newRequestDto(btn){
+function newRequestData(btn){
     let isbn = btn.parentNode.parentNode.children[1].children[3];
-    let userLogin = getUser()['login'];
-    return { "isbn" : isbn.innerText, "userLogin" : userLogin}
+    let login = getUser()['login'];
+    return {
+        "login": login,
+        "isbn": isbn.innerText,
+    };
 }
 
 function changeCartBtnText(btn, text){
@@ -203,5 +171,45 @@ function setItemsCount(symbol){
     }
     cart.innerText = "Cart (" + newValue + ")"
 
+}
+
+function controlWishlistContent(btn) {
+    btn.onclick = () => {
+        if (!sessionValid()) {
+            openLoginNotice();
+        } else {
+            let data = newRequestData(btn);
+            let isbn = data['isbn'];
+            if (!contains(data, "/home/wishlist/contains")) {
+                navigator.sendBeacon('/home/wishlist/add', isbn);
+                fullHeart(btn, true);
+            } else {
+                navigator.sendBeacon('/home/wishlist/remove', isbn);
+                fullHeart(btn, false)
+            }
+        }
+    }
+}
+
+function controlCartContent(btn) {
+    btn.onclick = () => {
+        let symbol;
+        if (!sessionValid()) {
+            openLoginNotice();
+        } else {
+            let data = newRequestData(btn);
+            let isbn = data['isbn'];
+            if (!contains(data, "/home/cart/contains")) {
+                navigator.sendBeacon("/home/cart/add", isbn);
+                changeCartBtnText(btn, "Remove From Cart");
+                symbol = "+";
+            } else {
+                navigator.sendBeacon("/home/cart/remove", isbn);
+                changeCartBtnText(btn, "Add To Cart");
+                symbol = "-";
+            }
+            setItemsCount(symbol);
+        }
+    }
 }
 

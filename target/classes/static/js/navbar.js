@@ -1,6 +1,5 @@
 import {loginOpen} from "./login.js";
 import { logout } from "./validation.js"
-import { updateUser } from "./validation.js"
 
 
 $(document).ready(function () {
@@ -15,9 +14,9 @@ let active = false;
 document.addEventListener('DOMContentLoaded', () => {
     invalidateSession();
     autologin();
-    let responseDto = validateSession();
-    if(responseDto === null || responseDto === undefined) return ;
-    if (responseDto['activeSession']) {
+    let userDto = validateSession();
+    if(userDto === null || userDto === undefined) return ;
+    if (userDto['inSession']) {
         let menu = document.querySelector('.menu');
         let lastChild = menu.children[4];
         let newChild = createChild(['item', 'main'], ['div', 'a'],
@@ -25,16 +24,17 @@ document.addEventListener('DOMContentLoaded', () => {
         newChild.children[0].onclick = () => logout();
         menu.replaceChild(newChild, lastChild);
 
-        if(responseDto['userAdmin']){
+        if(userDto['admin']){
             newChild = createChild(['item', 'main'], ['div', 'a'],
                 'Add book');
             newChild.children[0].onclick = () => addBook();
             menu.appendChild(newChild);
         }
         active = true;
-        setCookie(responseDto['userLogin']);
+        setCookie(userDto['login']);
+        createCartItemLink(userDto);
     }
-    createCartItemLink();
+    clearSearchValue();
 })
 
     document.querySelector("#side-menu").addEventListener("click", (e) => {
@@ -100,12 +100,18 @@ document.addEventListener('DOMContentLoaded', () => {
     let sideMenu = document.getElementById('side-menu');
     sideMenu.addEventListener('click', () => {
         document.querySelector('.sidebar').classList.toggle('active');
-        if (window.location.pathname.split('/').length === 2) {
+        let location = window.location.pathname.split('/');
+        if (location.length === 2) {
             document.querySelector('.books-slider').classList.toggle('right');
             document.querySelector('.control-slider').classList.toggle('left');
         }
-        if (window.location.pathname.split('/')[3] === 'add') {
+        if (location[3] === 'add') {
             document.querySelector('.sub-menu').classList.add('none');
+        }
+        if(location[3] === 'search'){
+            document.querySelector('#card-container').classList.toggle('right');
+            let cards = document.querySelectorAll('.card');
+            cards.forEach(card => card.classList.toggle('squeeze'));
         }
         document.querySelector(".container-fluid").classList.toggle('compression');
         document.querySelector("#menu").classList.toggle('compression');
@@ -176,18 +182,12 @@ export function validateSession() {
        if(user === null) return ;
        if (loaded() && user['remember'] === 'true') {
            navigator.sendBeacon('/autologin', user['login']);
-           user['inSession'] = 'true';
-           updateUser(user);
-
-
        }
    }
 
    function invalidateSession() {
        let user = getUser();
        if(user === null || !loaded()) return ;
-       user['inSession'] = "false";
-       updateUser(user);
        navigator.sendBeacon("/invalidate", user['login']);
    }
 
@@ -198,26 +198,27 @@ export function validateSession() {
    }
 
 
-   export function createCartItemLink(){
+   export function createCartItemLink(userDto){
        let cart = document.querySelector('#cart-link');
-       if(!active) {
-           cart.innerText = "Cart (0)";
-           return ;
-       }
        $.ajax({
-           type: "GET",
+           type: "POST",
            contentType: "application/json",
            url: "/home/cart/quantity",
+           data: JSON.stringify(userDto),
            cache: false,
            dataType: 'json',
            responseType: 'json',
            success: function (dto) {
                let cartDto = JSON.parse(JSON.stringify(dto));
-               cart.innerText = "Cart (" + cartDto['quantity'] + ")";
+               cart.innerText = "Cart (" + cartDto['itemsQuantity'] + ")";
            }
        });
    }
 
    export function sessionValid(){
         return active && (getUser() != null);
+   }
+
+   function clearSearchValue(){
+        document.querySelector('#search-input').value = '';
    }

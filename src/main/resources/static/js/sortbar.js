@@ -5,12 +5,24 @@ function controlSublist(){
 }
 
 let sortTypes = document.querySelectorAll('.type');
-let btnText = document.querySelector('.btn-text');
 sortTypes.forEach((type) => {
     type.addEventListener("click", () => {
         let currentType = type.children[0].innerText;
         sortBooksLists(currentType);
+
     })
+})
+
+let btnText = document.querySelector('.btn-text');
+document.addEventListener("DOMContentLoaded", () => {
+    let sortType = getSearchParams()['sortType'];
+    if(sortType !== "Popularity"){
+        btnText.innerText += (" " + (sortType.substr(0, 9) + " ..."));
+    }
+    else {
+        btnText.innerText += (" " + sortType);
+    }
+    highlightSelectedType(sortType);
 })
 
 
@@ -18,6 +30,7 @@ function sortBooksLists(type){
     let searchParams = getSearchParams();
     document.location.href = '/home/books/search?query=' +
         searchParams['query'] + '&type=' + type.toLowerCase();
+
 
 }
 
@@ -37,6 +50,20 @@ function getSearchParams(){
     })
     return searchParams;
 }
+
+function highlightSelectedType(currentType){
+    let sorTypes = document.querySelectorAll('.type');
+       for(let type of sorTypes) {
+           let typeName = type.children[0].innerText;
+           if (typeName.trim() === currentType) {
+               type.classList.add('select');
+           } else {
+               type.classList.remove('select');
+           }
+       }
+}
+
+
 
 
 

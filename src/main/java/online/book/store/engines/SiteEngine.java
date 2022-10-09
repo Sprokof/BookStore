@@ -159,5 +159,8 @@ public class SiteEngine {
         return this;
     }
 
-
+    public int setSearchParam(SearchParam searchParam) {
+        this.searchParam = searchParam;
+        return 200;
+    }
 }

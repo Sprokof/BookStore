@@ -1,7 +1,7 @@
 package online.book.store.service;
 
 import online.book.store.dao.WishlistDao;
-import online.book.store.dto.ResponseDto;
+import online.book.store.dto.WishlistDto;
 import online.book.store.entity.Book;
 import online.book.store.entity.Wishlist;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +30,9 @@ public class WishlistServiceImpl implements WishlistService{
     }
 
     @Override
-    public ResponseDto contains(Book book, Wishlist wishlist) {
-        ResponseDto responseDto = new ResponseDto();
+    public WishlistDto contains(Book book, Wishlist wishlist) {
         boolean contains = this.wishlistDao.contains(book, wishlist);
-        responseDto.setItemContains(contains);
-        return responseDto;
+        return new WishlistDto(contains);
     }
 
     @Override

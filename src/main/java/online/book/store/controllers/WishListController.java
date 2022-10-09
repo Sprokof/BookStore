@@ -1,12 +1,11 @@
 package online.book.store.controllers;
 
 import online.book.store.dto.RequestDto;
-import online.book.store.dto.ResponseDto;
+import online.book.store.dto.WishlistDto;
 import online.book.store.entity.Book;
 import online.book.store.entity.User;
 import online.book.store.entity.Wishlist;
 import online.book.store.service.BookService;
-import online.book.store.service.SignInService;
 import online.book.store.service.UserService;
 import online.book.store.service.WishlistService;
 import online.book.store.session.SessionStorage;
@@ -17,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Controller
 public class WishListController {
@@ -30,8 +30,6 @@ public class WishListController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    private SignInService signInService;
 
     @Autowired
     private SessionStorage sessionStorage;
@@ -65,9 +63,11 @@ public class WishListController {
 
 
     @PostMapping("/home/wishlist/contains")
-    public ResponseEntity<ResponseDto> contains(@RequestBody RequestDto requestDto, HttpServletRequest request){
-        Book book = bookService.getBookByIsbn(requestDto.getIsbn());
-        Wishlist userWishlist = sessionStorage.getUser(requestDto.getUserLogin()).getWishList();
+    public ResponseEntity<WishlistDto> contains(@RequestBody RequestDto requestDto){
+        String login = requestDto.getLogin();
+        String isbn = requestDto.getIsbn();
+        Book book = bookService.getBookByIsbn(isbn);
+        Wishlist userWishlist = sessionStorage.getUser(login).getWishList();
         wishlistService.contains(book, userWishlist);
         return ResponseEntity.ok(wishlistService.contains(book, userWishlist));
     }
