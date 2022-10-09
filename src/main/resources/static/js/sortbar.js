@@ -1,5 +1,4 @@
 function controlSublist(){
-    document.querySelector('#card-container').classList.toggle('fixed');
     document.querySelector('.sort-types').classList.toggle("active");
     document.querySelector('.arrow-down').classList.toggle('rotate');
 }

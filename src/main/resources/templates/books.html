@@ -24,13 +24,13 @@
 
             <div class="book-info">
                 <span th:text="${book.title}" style="margin-top: -15px"></span>
-                <span class="isbn" th:text="${book.isbn}"></span>
-
 
                 <div class="star-rating"
                      th:text="${book.bookRating}">
                 </div>
                 <div class="isbn" th:text="${book.description}"></div>
+
+                <span class="isbn" th:text="${book.isbn}"></span>
 
             </div>
 
@@ -57,6 +57,7 @@
 <script type="module" th:src="@{/js/confirmReset.js}"></script>
 <script type="module" th:src="@{/js/validation.js}"></script>
 <script type="module" th:src="@{/js/books.js}"></script>
+<script type="module" th:src="@{/js/main.js}"></script>
 <script th:src="@{/js/generateRating.js}"></script>
 <script th:src="@{/js/sortbar.js}"></script>
 </body>

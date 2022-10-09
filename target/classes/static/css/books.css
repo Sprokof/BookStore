@@ -1,6 +1,6 @@
 #card-container {
     margin-left: 200px;
-    margin-top: 90px;
+    margin-top: 200px;
     z-index: 0;
     position: absolute;
 
@@ -111,10 +111,6 @@
     width: 0;
 }
 
-#card-container.fixed {
-    transition: 0.3s ease-out;
-    margin-top: -110px;
-}
 
 #card-container .wishlist.btn .fa-heart {
     line-height: 25px;
@@ -122,5 +118,9 @@
 
 .row {
     margin-bottom: 5%!important;
+}
+
+#card-container .shop.cart.btn.select {
+    background-color: #1b1b1b;
 }
 
