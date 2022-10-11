@@ -19,7 +19,7 @@ openReset.addEventListener("click", () => {
 })
 
 closeReset.addEventListener('click', (e) => {
-    resetClose();
+    resetClose(false);
 })
 
 function resetOpen() {
@@ -27,7 +27,8 @@ function resetOpen() {
 
 }
 
-export function resetClose(){
+export function resetClose(flag){
+    if(flag) blockResetForm();
     blockBackgroundHtml(false);
     resetPopup.classList.remove('visible', 'down');
 }
@@ -36,3 +37,6 @@ function findUser(){
     return localStorage.getItem("user") != null;
 }
 
+function blockResetForm(){
+    resetPopup.style.pointerEvents = "none";
+}

@@ -22,6 +22,8 @@ import java.util.UUID;
 @NoArgsConstructor
 public class SignInServiceImpl implements SignInService {
 
+    private static final int INACTIVE_TIME = 540000;
+
     @Autowired
     private SessionStorage sessionStorage;
 
@@ -37,7 +39,6 @@ public class SignInServiceImpl implements SignInService {
                          AbstractUserBuilder userBuilder) {
         User user;
         String uuid;
-        HttpSession session = request.getSession();
         if (userBuilder instanceof UserLoginDto) {
             user = this.userService.getUserByLogin(userBuilder.getLogin());
             uuid = user.getUserID();
@@ -48,7 +49,7 @@ public class SignInServiceImpl implements SignInService {
             uuid = this.userService.generateUUID();
             user.setUserID(uuid);
         }
-        session.setAttribute("id", uuid);
+        addToSession(request, uuid);
         sessionStorage.addUser(user);
         userService.saveOrUpdate(user);
         return sessionStorage.containsInSession(UUID.fromString(uuid)) ? 200 : 501;
@@ -151,5 +152,13 @@ public class SignInServiceImpl implements SignInService {
         HttpSession session = request.getSession();
         if(session.isNew()) return ;
         session.invalidate();
+    }
+
+
+    private void addToSession(HttpServletRequest request, String uuid){
+        HttpSession session = request.getSession();
+        if(session.isNew()) return ;
+        session.setMaxInactiveInterval(INACTIVE_TIME);
+        session.setAttribute("id", uuid);
     }
 }

@@ -1,5 +1,6 @@
 package online.book.store.dao;
 
+import online.book.store.engines.SiteEngine;
 import online.book.store.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -72,6 +73,9 @@ public class UserDaoImpl implements UserDao {
 
         if (email.matcher(login).find()) {
             column = "EMAIL";
+        }
+        else {
+            login = SiteEngine.firstLetterToUpperCase(login);
         }
 
         User user = null;

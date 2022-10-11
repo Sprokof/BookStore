@@ -1,7 +1,7 @@
 import {getUser, sessionValid} from "./navbar.js";
 import {openLoginNotice} from "./notice.js";
 
-export function controlWishlistContent(btn) {
+export function controlWishlistContent(btn, pageName) {
     btn.onclick = () => {
         if (!sessionValid()) {
             openLoginNotice();
@@ -10,17 +10,18 @@ export function controlWishlistContent(btn) {
             let isbn = data['isbn'];
             if (!contains(data, "/home/wishlist/contains")) {
                 navigator.sendBeacon('/home/wishlist/add', isbn);
-                fullHeart(btn, true);
+                pageName === 'wishlist' ? removeCard(isbn) : fullHeart(btn, true);
             } else {
                 navigator.sendBeacon('/home/wishlist/remove', isbn);
-                fullHeart(btn, false)
+                pageName === 'wishlist' ? removeCard(isbn) : fullHeart(btn, false)
             }
         }
     }
 }
 
 export function newRequestData(btn){
-    let isbn = btn.parentNode.parentNode.children[1].children[3];
+    let lasIndex = (btn.parentNode.parentNode.children[1].children.length - 1);
+    let isbn = btn.parentNode.parentNode.children[1].children[lasIndex];
     let login = getUser()['login'];
     return {
         "login": login,
@@ -159,4 +160,9 @@ function inCart(btn, flag){
             cart.classList.remove("select");
         }
     }
+}
+
+function removeCard(isbn){
+    let card = document.getElementById(isbn);
+    card.remove();
 }

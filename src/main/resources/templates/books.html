@@ -17,7 +17,7 @@
 <body>
 <div th:insert="~{navbar :: navbar}"></div>
 <div th:insert="~{sortbar :: sort}"></div>
-<div id="card-container" class="container">
+<div id="card-container" class="container" style="margin-top: 200px">
     <div class="row" th:each="row : ${rows}">
         <div class="card" th:each="book : ${row.getBookInRow()}">
             <img class="book-img" th:src="@{'/images/' + ${book.bookImageName}}">
@@ -28,7 +28,6 @@
                 <div class="star-rating"
                      th:text="${book.bookRating}">
                 </div>
-                <div class="isbn" th:text="${book.description}"></div>
 
                 <span class="isbn" th:text="${book.isbn}"></span>
 
@@ -56,8 +55,8 @@
 <script type="module" th:src="@{/js/reset.js}"></script>
 <script type="module" th:src="@{/js/confirmReset.js}"></script>
 <script type="module" th:src="@{/js/validation.js}"></script>
-<script type="module" th:src="@{/js/books.js}"></script>
 <script type="module" th:src="@{/js/main.js}"></script>
+<script type="module" th:src="@{/js/books.js}"></script>
 <script th:src="@{/js/generateRating.js}"></script>
 <script th:src="@{/js/sortbar.js}"></script>
 </body>

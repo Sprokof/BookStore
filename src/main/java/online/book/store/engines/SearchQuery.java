@@ -14,6 +14,6 @@ public class SearchQuery {
     }
 
     public SearchQuery(String queryText) {
-        this.queryText = queryText.replaceAll("\\s", "");
+        this.queryText = queryText;
     }
 }

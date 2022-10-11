@@ -34,8 +34,8 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public List<Book> getBooksByCategory(Category category) {
-        return this.bookDao.getBooksByCategory(category.getCategory());
+    public List<Book> getBooksByCategory(String category) {
+        return this.bookDao.getBooksByCategory(category);
     }
 
     @Override

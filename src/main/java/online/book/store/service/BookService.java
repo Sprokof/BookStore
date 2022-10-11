@@ -10,7 +10,7 @@ import java.util.List;
 public interface BookService {
     List<Book> getPopularBooks();
     List<Book> getAllBooks();
-    List<Book> getBooksByCategory(Category category);
+    List<Book> getBooksByCategory(String category);
     Book getBookByIsbn(String isbn);
     Book getBookByTitle(String title);
     Book getBookById(int id);

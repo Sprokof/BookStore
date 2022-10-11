@@ -8,7 +8,7 @@ import {
 
 let wishlistBtn = document.querySelectorAll('.wishlist.btn');
 let cartBtn = document.querySelectorAll('.shop.cart.btn');
-    wishlistBtn.forEach(btn => controlWishlistContent(btn));
+    wishlistBtn.forEach(btn => controlWishlistContent(btn, "books"));
     cartBtn.forEach(btn => controlCartContent(btn, "books"))
 
 document.addEventListener("DOMContentLoaded", () => {

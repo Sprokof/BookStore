@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CategoryDao {
     List<ExistCategory> allCategories();
-    Category existCategory(Category category);
+    Category existCategory(String category);
 
 
 }

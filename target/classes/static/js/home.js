@@ -1,5 +1,3 @@
-import {sessionValid} from "./navbar.js";
-import {openLoginNotice} from "./notice.js";
 import { controlWishlistContent, controlWishlistContentOnLoad,
     controlCartContentOnLoad, controlCartContent,
 } from "./main.js";
@@ -63,7 +61,7 @@ for(let i = 0; i < infos.length; i ++){
 
 let wishListBtn = document.querySelectorAll('.wishlist.btn');
 for(let btn of wishListBtn) {
-    controlWishlistContent(btn)
+    controlWishlistContent(btn, "home");
 }
 
 let cartBtn = document.querySelectorAll('.cart.btn');

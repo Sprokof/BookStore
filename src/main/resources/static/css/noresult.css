@@ -1,20 +1,24 @@
 .result-message{
-    margin-left: 40%;
-    margin-top: 10%;
+    left: 40%;
+    top: 40%;
     justify-content: space-between;
     font-family: Calibri, sans-serif;
     font-weight: lighter;
     font-size: 25px;
     display: inline-block;
+    position: absolute;
+    width: 300px;
+    height: 100px;
 
 }
 
 .result-message .home-btn {
-    width: 170px;
+    margin-top: 3%;
+    margin-left: 5%;
+    width: 150px;
     border-radius: 8px;
     background-color: black;
     color: white;
-    margin-top: 5px;
 }
 
 .result-message .home-btn:hover {

@@ -31,8 +31,8 @@ reset.addEventListener("click", () => {
         "login" : JSON.parse(localStorage.getItem("user"))['login'],
         "newPassword" : document.getElementById('new-password').value,
         "confirmResetPassword" : document.getElementById('confirm-reset-password').value,
-        "generatedCode" : "0",
-        "inputCode" : "0",
+        "generatedCode" : "",
+        "inputCode" : "",
     }
     validation(resetDto, "/home/reset");
 })
@@ -63,7 +63,7 @@ export function validation(obj, url){
             } else {
                 let value = url.substr(url.lastIndexOf("/") + 1);
                 if (value === 'reset') {
-                    resetClose();
+                    resetClose(true);
                     openResetTwoPopup();
 
                 } else {

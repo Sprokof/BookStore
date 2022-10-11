@@ -27,6 +27,7 @@ public class Wishlist {
             joinColumns = @JoinColumn(name = "wishlist_id"),
             inverseJoinColumns = {@JoinColumn(name = "book_id")})
     @LazyCollection(LazyCollectionOption.FALSE)
+    @Getter
     private List<Book> books;
 
 

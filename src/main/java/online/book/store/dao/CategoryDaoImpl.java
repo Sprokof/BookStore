@@ -54,7 +54,7 @@ public class CategoryDaoImpl implements CategoryDao{
     }
 
     @Override
-    public Category existCategory(Category category) {
+    public Category existCategory(String category) {
         Session session = null;
         Category findCategory = null;
     try {
@@ -63,14 +63,16 @@ public class CategoryDaoImpl implements CategoryDao{
         findCategory = (Category) session.
                 createSQLQuery("SELECT * FROM CATEGORIES WHERE CATEGORY=:category")
                 .addEntity(Category.class).
-                setParameter("category", category.getCategory()).
-                getSingleResult();
+                setParameter("category", category).list().get(0);
         session.getTransaction().commit();
     }
     catch (Exception e){
             if(session != null) {
                 if (session.getTransaction() != null) {
                     session.getTransaction().rollback();
+                    if(e instanceof IndexOutOfBoundsException){
+                        return null;
+                    }
                 }
             }
     }

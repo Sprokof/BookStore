@@ -103,6 +103,7 @@ public class SignInController {
     public ResponseEntity<Map<String, String>> confirm(@RequestBody String code, HttpServletRequest httpServletRequest){
         ResetDto resetDto = signInService.getResetDto();
         resetDto.setInputCode(code);
+        confirmValidation.validation(resetDto);
         if(!confirmValidation.hasErrors()){
             User user = signInService.getUserFromRequest(httpServletRequest);
             user.setPassword(resetDto.getNewPassword());

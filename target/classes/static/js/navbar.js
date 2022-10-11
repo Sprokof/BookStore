@@ -1,5 +1,5 @@
-import {loginOpen} from "./login.js";
 import { logout } from "./validation.js"
+import {openLoginNotice} from "./notice.js";
 
 
 $(document).ready(function () {
@@ -37,21 +37,25 @@ document.addEventListener('DOMContentLoaded', () => {
     clearSearchValue();
 })
 
-    document.querySelector("#side-menu").addEventListener("click", (e) => {
-        $.ajax({
-            type: "GET",
-            contentType: "application/json",
-            url: "/categories",
-            cache: false,
-            dataType: 'json',
-            responseType: 'json',
-            success: function (data) {
-                let categories = JSON.parse(JSON.stringify(data))
-                addOrUpdate(categories)
-            }
 
-        });
-    })
+function initBooksCategories(){
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/categories",
+        cache: false,
+        dataType: 'json',
+        responseType: 'json',
+        success: function (data) {
+            let categories = JSON.parse(JSON.stringify(data))
+            addOrUpdate(categories);
+            executeCategorySearch();
+        }
+
+    });
+
+}
+
 
     function addOrUpdate(categories) {
         let newNode;
@@ -76,14 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    let categories = document.querySelectorAll('.sub-item');
-    for (let i = 0; i < categories.length; i++) {
-        categories[i].addEventListener('click', (e) => {
-            let category = categories[i].innerText.toLowerCase();
-            executeQuery(category)
-        });
-    }
-
     document.getElementById('search').addEventListener('click', (e) => {
         let text = document.getElementById('search-input').value;
         console.log(text)
@@ -99,16 +95,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let sideMenu = document.getElementById('side-menu');
     sideMenu.addEventListener('click', () => {
+        initBooksCategories();
         document.querySelector('.sidebar').classList.toggle('active');
         let location = window.location.pathname.split('/');
-        if (location.length === 2) {
+        if (location.length === 2 && location[1] === '') {
             document.querySelector('.books-slider').classList.toggle('right');
             document.querySelector('.control-slider').classList.toggle('left');
         }
         if (location[3] === 'add') {
             document.querySelector('.sub-menu').classList.add('none');
         }
-        if(location[3] === 'search'){
+        if(location[3] === 'search' || location[2] === 'wishlist'){
             document.querySelector('#card-container').classList.toggle('right');
             let cards = document.querySelectorAll('.card');
             cards.forEach(card => card.classList.toggle('squeeze'));
@@ -118,21 +115,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     })
 
-    document.addEventListener('DOMContentLoaded', () => {
-        let menu = document.querySelector('.menu');
-        let lastChild = menu.lastChild;
-        if (lastChild.innerText === 'Log in') {
-            for (let i = 1; i < menu.children.length - 1; i++) {
-                menu.children.onclick = () => {
-                    let ok = confirm('Login?');
-                    if (ok) {
-                        loginOpen();
-                    }
-                }
-            }
+function executeCategorySearch() {
+    let items = document.querySelectorAll('.sub-item');
+    for (let item of items) {
+        item.onclick = () => {
+            let category = item.innerText;
+            executeQuery(category);
         }
-    })
-
+    }
+}
 export function validateSession() {
         let user;
         if((user = getUser()) == null) return null;
@@ -222,3 +213,13 @@ export function validateSession() {
    function clearSearchValue(){
         document.querySelector('#search-input').value = '';
    }
+
+   let wishlist = document.getElementById('wishlist');
+   wishlist.addEventListener("click", () => {
+       if(!sessionValid()){
+           openLoginNotice();
+       }
+       else {
+           document.location.href = "/home/wishlist?login=" + (getUser()['login'].toLowerCase());
+       }
+   })

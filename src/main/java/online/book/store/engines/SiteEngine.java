@@ -46,8 +46,9 @@ public class SiteEngine {
 
 
     public SiteEngine executeSearchQuery(SearchQuery query, SortTypes type) {
-        if (category(query)) {
-            this.bookList = bookService.getBooksByCategory(new Category(query.getQueryText()));
+        if (isCategory(query)) {
+            String category = firstLetterToUpperCase(query.getQueryText());
+            this.bookList = bookService.getBooksByCategory(category);
         } else {
             this.bookList = new LinkedList<>();
             for (Book book : bookService.getAllBooks()) {
@@ -89,7 +90,7 @@ public class SiteEngine {
         for (int i = 0, k = 0; i < booksContent.length(); i++) {
             for (; ; k = p[k - 1]) {
                 if (text.charAt(k) == booksContent.charAt(i)) {
-                    if (++ k == queryLength) {
+                    if (++k == queryLength) {
                         return true;
                     }
                     break;
@@ -102,12 +103,13 @@ public class SiteEngine {
         return false;
     }
 
-    private boolean category(SearchQuery query){
-        return this.categoryService.existCategory(query.getQueryText()) != null;
+    private boolean isCategory(SearchQuery query) {
+        String category = firstLetterToUpperCase(query.getQueryText());
+        return this.categoryService.existCategory(category) != null;
     }
 
     private void sortSearchResult() {
-        if(this.bookList.isEmpty()) return ;
+        if (this.bookList.isEmpty()) return;
         switch (this.searchParam.currentType()) {
             case POPULARITY:
                 this.bookList.sort(Comparator.comparingDouble(Book::getBookRating));
@@ -150,17 +152,29 @@ public class SiteEngine {
         return this.rows;
     }
 
-    public boolean hasResult(){
+    public List<Row> mapBooksToRow(List<Book> booksToMap) {
+        int rowSize = 4;
+        this.rows = new LinkedList<>();
+        for (int i = 0; i < booksToMap.size(); i += rowSize) {
+            Row row = new Row(booksToMap.subList(i,
+                    Math.min(i + rowSize, booksToMap.size())));
+            rows.add(row);
+        }
+        return this.rows;
+    }
+
+    public boolean hasResult() {
         return !this.bookList.isEmpty();
     }
 
-    private SiteEngine saveParams(SearchQuery searchQuery, SortTypes sortType){
+    private SiteEngine saveParams(SearchQuery searchQuery, SortTypes sortType) {
         this.searchParam = new SearchParam(searchQuery, sortType);
         return this;
     }
 
-    public int setSearchParam(SearchParam searchParam) {
-        this.searchParam = searchParam;
-        return 200;
+
+    public static String firstLetterToUpperCase(String word) {
+        String letterToUpperCase = String.valueOf(word.charAt(0)).toUpperCase();
+        return String.format("%s%s", letterToUpperCase, (word.substring(1)));
     }
 }

@@ -27,10 +27,6 @@ public class UserServiceImpl implements UserService{
 
     private final UserDao userDao = new UserDaoImpl();
 
-    @Autowired
-    private SessionStorage sessionStorage;
-
-
 
     @Override
     public User getUserByLogin(String login) {
@@ -41,7 +37,6 @@ public class UserServiceImpl implements UserService{
     @Override
     public void updateUserInSession(User user){
         user.setAdmin(user.getEmail().equals(adminEmail));
-        sessionStorage.addUser(user);
         saveOrUpdate(user);
     }
 

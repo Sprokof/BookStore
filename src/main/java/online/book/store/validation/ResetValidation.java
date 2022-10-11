@@ -13,10 +13,7 @@ public class ResetValidation extends AbstractValidation {
     @Component
     public static class ConfirmValidation extends ResetValidation{
 
-        @Autowired
-        @Getter
-        private ValidateResponse response;
-
+        private ValidateResponse response = new ValidateResponse();
 
         @Override
         public boolean supports(Class<?> aClass) {
@@ -43,11 +40,14 @@ public class ResetValidation extends AbstractValidation {
             if(!supports(target.getClass())) return ;
             deleteErrorsMessages();
 
+
             ResetDto resetDto = ((ResetDto) target);
 
             String generatedCode = resetDto.getGeneratedCode();
 
             String inputCode = resetDto.getInputCode();
+
+
 
             if(inputCode.isEmpty()){
                 this.response.addError("code", "Confirmation code can't be empty");

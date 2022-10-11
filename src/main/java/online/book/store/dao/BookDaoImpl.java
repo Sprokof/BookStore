@@ -89,18 +89,19 @@ public class BookDaoImpl implements BookDao {
     @SuppressWarnings("unchecked")
     public List<Book> getBooksByCategory(String category) {
         Session session = null;
-        List<Book> books = new LinkedList<>();
+        List<Book> books = new ArrayList<>();
     try{
         session = this.sessionFactory.openSession();
         session.beginTransaction();
-        books = (LinkedList<Book>) session.
+        books = (ArrayList<Book>) session.
                 createSQLQuery("SELECT * FROM BOOKS as b " +
-                        "JOIN CATEGORIES as c on c.book_id = b.id WHERE c.category=:category").
+                        "RIGHT JOIN CATEGORIES as c on c.book_id = b.id WHERE c.category=:category").
                 setParameter("category", category).
-                addEntity(Category.class).list();
+                addEntity(Book.class).list();
         session.getTransaction().commit();
     }
     catch (Exception e) {
+        e.printStackTrace();
         if (session != null) {
             if (session.getTransaction() != null) {
                 session.getTransaction().rollback();
@@ -112,7 +113,6 @@ public class BookDaoImpl implements BookDao {
         }
     }
     return books;
-
     }
 
     // That method is needed for getting info

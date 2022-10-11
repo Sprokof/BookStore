@@ -18,8 +18,6 @@ public class CategoryServiceImpl implements CategoryService{
     @Autowired
     private CategoryDao categoryDao;
 
-
-
     @Override
     public List<ExistCategory> getAllCategories() {
         return sort();
@@ -27,7 +25,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public Category existCategory(String category) {
-        return this.categoryDao.existCategory(new Category(category));
+        return this.categoryDao.existCategory(category);
     }
 
     private List<ExistCategory> sort() {
@@ -35,4 +33,6 @@ public class CategoryServiceImpl implements CategoryService{
         categories.sort((c1, c2) -> c1.getCategory().length() - c2.getCategory().length());
         return categories;
     }
+
+
 }

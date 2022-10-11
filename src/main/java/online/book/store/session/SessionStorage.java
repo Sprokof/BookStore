@@ -62,8 +62,9 @@ public class SessionStorage {
     public UserDto validateSession(User user, HttpServletRequest request){
         UUID uuid = null;
         if((uuid = getUUID(user, request)) == null) return null;
-        boolean active = containsInSession(uuid) && user.isInSession();
-        return new UserDto(user.getEmail(), user.isInSession(), user.isAdmin());
+        boolean active = containsInSession(uuid) &&
+                user.isInSession();
+        return new UserDto(user.getEmail(), active, user.isAdmin());
 
     }
 
