@@ -25,20 +25,17 @@ public class OrderServiceImpl implements OrderService{
     private BookService bookService;
 
     @Override
-    public void addOrders() {
-        User savedUser = signInService.getSavedUser();
-        List<CartItem> userItems = savedUser.getCart().getCartItems();
-
-
+    public void addOrders(User user) {
+        List<CartItem> userItems = user.getCart().getCartItems();
 
         userItems.forEach((item) -> {
             Order order = new Order(item.getTitle(), item.getQuantity(), item.getTotal(),
                     item.getImageName());
             order.setStatus("Paid");
-            savedUser.addOrder(order);
+            user.addOrder(order);
         });
 
-        userService.updateUserInSession(savedUser);
+        userService.saveOrUpdate(user);
 
     }
 

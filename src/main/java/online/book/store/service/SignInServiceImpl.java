@@ -3,11 +3,12 @@ package online.book.store.service;
 import lombok.NoArgsConstructor;
 import online.book.store.builder.AbstractUserBuilder;
 import online.book.store.dto.ResetDto;
+import online.book.store.dto.UserDto;
 import online.book.store.dto.UserSignInDto;
 import online.book.store.dto.UserLoginDto;
 import online.book.store.entity.User;
+import online.book.store.entity.UserSession;
 import online.book.store.hash.SHA256;
-import online.book.store.session.SessionStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -15,55 +16,37 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.UUID;
 
 @Service
 @Component
 @NoArgsConstructor
 public class SignInServiceImpl implements SignInService {
 
-    private static final int INACTIVE_TIME = 540000;
-
-    @Autowired
-    private SessionStorage sessionStorage;
-
     @Autowired
     private UserService userService;
 
     private ResetDto passwordDto;
 
-    private User user;
+    @Autowired
+    private SessionService sessionService;
 
     @Override
-    public int loginUser(HttpServletRequest request,
-                         AbstractUserBuilder userBuilder) {
-        User user;
-        String uuid;
-        if (userBuilder instanceof UserLoginDto) {
-            user = this.userService.getUserByLogin(userBuilder.getLogin());
-            uuid = user.getUserID();
-        }
-
-        else {
-            user = ((UserSignInDto) userBuilder).doUserBuilder();
-            uuid = this.userService.generateUUID();
-            user.setUserID(uuid);
-        }
-        addToSession(request, uuid);
-        sessionStorage.addUser(user);
-        userService.saveOrUpdate(user);
-        return sessionStorage.containsInSession(UUID.fromString(uuid)) ? 200 : 501;
+    public int loginUser(UserDto userDto) {
+        initUserSession(userDto);
+        String sessionid = userDto.getSessionid();
+        boolean active = sessionService.sessionActive(sessionid).isActive();
+        return active ? 200 : 501;
 
     }
 
 
     @Override
-    public int logout(HttpServletRequest request) {
-        User user = getUserFromRequest(request);
-        sessionStorage.removeUser(user);
-        invalidate(request);
-        userService.saveOrUpdate(user);
-        return !sessionStorage.containsInSession(UUID.fromString(user.getUserID())) ? 200 : 501;
+    public int logout(UserDto userDto) {
+        String sessionid = userDto.getSessionid();
+        UserSession userSession = this.sessionService.getSessionById(sessionid);
+        this.sessionService.updateSession(userSession, false);
+        boolean active = sessionService.sessionActive(sessionid).isActive();
+        return !active ? 200 : 501;
     }
 
 
@@ -89,31 +72,11 @@ public class SignInServiceImpl implements SignInService {
         return this.passwordDto;
     }
 
-    public User getCurrentUser(HttpServletRequest request) {
-        this.user = getUserFromRequest(request);
-        return this.user;
-    }
-
 
     @Override
-    public User getSavedUser() {
-        return this.user;
-    }
-
-    @Override
-    public User getUserFromRequest(HttpServletRequest request){
-        HttpSession session = request.getSession(true);
-        String uuid = (String) session.getAttribute("id");
-        if(uuid == null) return null;
-        this.user = userService.getUserByUUID(uuid);
-        return this.user;
-    }
-
-    @Override
-    public boolean adminsRequest(HttpServletRequest request) {
-        User user = getUserFromRequest(request);
-        if(user == null || !user.isInSession()) return false;
-        return user.isAdmin();
+    public boolean adminsRequest(String sessionid) {
+        if(!this.sessionService.sessionActive(sessionid).isActive()) return false;
+        return this.sessionService.getCurrentUser(sessionid).isAdmin();
     }
 
     @Override
@@ -127,38 +90,40 @@ public class SignInServiceImpl implements SignInService {
     }
 
 
-    private void loginUser(User user) {
-        sessionStorage.addUser(user);
-        userService.saveOrUpdate(user);
-    }
 
     @Override
-    public void autologin(String login, HttpServletRequest request) {
-        User user = userService.getUserByLogin(login);
-        loginUser(user);
-        request.getSession().setAttribute("id", user.getUserID());
-    }
-
-    @Override
-    public SignInService logout(String login) {
-        User user = userService.getUserByLogin(login);
-        user.setInSession(false);
-        userService.saveOrUpdate(user);
-        return this;
-    }
-
-    @Override
-    public void invalidate(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        if(session.isNew()) return ;
-        session.invalidate();
+    public void autologin(UserDto userDto) {
+        String sessionid = userDto.getSessionid();
+        User user = getUser(userDto);
+        user.addSession(new UserSession(sessionid));
+        this.userService.saveOrUpdate(user);
     }
 
 
-    private void addToSession(HttpServletRequest request, String uuid){
-        HttpSession session = request.getSession();
-        if(session.isNew()) return ;
-        session.setMaxInactiveInterval(INACTIVE_TIME);
-        session.setAttribute("id", uuid);
+    private void initUserSession(UserDto userDto){
+        String sessionId = userDto.getSessionid();
+        User user = getUser(userDto);
+        UserSession session = null;
+        if(!this.sessionService.sessionExist(sessionId)){
+            session = new UserSession(sessionId);
+            user.addSession(session);
+            this.userService.saveOrUpdate(user);
+        }
+        else {
+            session = this.sessionService.getSessionById(sessionId);
+            this.sessionService.updateSession(session, true);
+
+        }
+
     }
+    private User getUser(UserDto userDto){
+        String login = userDto.getLogin();
+        if(login != null){
+            return this.userService.getUserByLogin(login);
+        }
+        return userDto.doUserBuilder();
+    }
+
 }
+
+

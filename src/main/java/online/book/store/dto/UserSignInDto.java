@@ -16,9 +16,7 @@ public class UserSignInDto extends AbstractUserBuilder {
     private String email;
     private String password;
     private String confirmPassword;
-    private String ipAddress;
-    private boolean remembered;
-    private boolean inSession;
+
 
 
     @Override
@@ -59,7 +57,7 @@ public class UserSignInDto extends AbstractUserBuilder {
         User user = null;
         if(!containsNull()){
             user = new User(this.username, this.email,
-                    this.password, this.inSession);
+                    this.password);
         }
     return user;
     }
@@ -73,11 +71,6 @@ public class UserSignInDto extends AbstractUserBuilder {
                 buildUser();
     }
 
-    @Override
-    public String getLogin() {
-        return this.email;
-    }
-
 
     @Override
     public String toString() {
@@ -86,8 +79,6 @@ public class UserSignInDto extends AbstractUserBuilder {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", confirmPassword='" + confirmPassword + '\'' +
-                ", ipAddress='" + ipAddress + '\'' +
-                ", remembered=" + remembered +
                 '}';
     }
 

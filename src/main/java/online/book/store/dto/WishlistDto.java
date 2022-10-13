@@ -11,5 +11,15 @@ import lombok.Setter;
 @AllArgsConstructor
 public class WishlistDto {
     private boolean itemContains;
+    private String isbn;
+    private String sessionid;
 
+    public WishlistDto(boolean itemContains) {
+        this.itemContains = itemContains;
+    }
+
+    public WishlistDto(String isbn, String sessionid) {
+        this.isbn = isbn;
+        this.sessionid = sessionid;
+    }
 }

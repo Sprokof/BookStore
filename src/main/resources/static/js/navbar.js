@@ -1,5 +1,6 @@
-import { logout } from "./validation.js"
+import {getSessionId, logout, updateUser} from "./validation.js"
 import {openLoginNotice} from "./notice.js";
+import {sessionActive} from "./main.js";
 
 
 $(document).ready(function () {
@@ -10,30 +11,27 @@ $(document).ready(function () {
 
 });
 
-let active = false;
 document.addEventListener('DOMContentLoaded', () => {
-    invalidateSession();
-    autologin();
-    let userDto = validateSession();
-    if(userDto === null || userDto === undefined) return ;
-    if (userDto['inSession']) {
-        let menu = document.querySelector('.menu');
-        let lastChild = menu.children[4];
-        let newChild = createChild(['item', 'main'], ['div', 'a'],
-            'Log out');
-        newChild.children[0].onclick = () => logout();
-        menu.replaceChild(newChild, lastChild);
+    manageSession();
+    let session = validateSession();
+    if(session === null || session === undefined) return ;
+        if(session['active']) {
+            let menu = document.querySelector('.menu');
+            let lastChild = menu.children[4];
+            let newChild = createChild(['item', 'main'], ['div', 'a'],
+                'Log out');
+            newChild.children[0].onclick = () => logout();
+            menu.replaceChild(newChild, lastChild);
 
-        if(userDto['admin']){
-            newChild = createChild(['item', 'main'], ['div', 'a'],
-                'Add book');
-            newChild.children[0].onclick = () => addBook();
-            menu.appendChild(newChild);
+            if (session['adminSession']) {
+                newChild = createChild(['item', 'main'], ['div', 'a'],
+                    'Add book');
+                newChild.children[0].onclick = () => addBook();
+                menu.appendChild(newChild);
+            }
+            createCartItemLink();
         }
-        active = true;
-        setCookie(userDto['login']);
-        createCartItemLink(userDto);
-    }
+    setCookie();
     clearSearchValue();
 })
 
@@ -55,7 +53,6 @@ function initBooksCategories(){
     });
 
 }
-
 
     function addOrUpdate(categories) {
         let newNode;
@@ -125,27 +122,31 @@ function executeCategorySearch() {
     }
 }
 export function validateSession() {
-        let user;
-        if((user = getUser()) == null) return null;
-        let sessionData;
+        let user = getUser();
+        if(user == null) return null;
+        let sessionDto
         $.ajax({
             type: "POST",
             contentType: "application/json",
             url: "/session/validate",
             cache: false,
             dataType: 'json',
-            responseType: 'json',
             data: JSON.stringify(user),
+            responseType: 'json',
             async: false,
             success: (data) => {
-                sessionData = JSON.parse(JSON.stringify(data));
+                sessionDto = JSON.parse(JSON.stringify(data));
             }
         })
-        return sessionData;
+        return sessionDto;
     }
 
-    function setCookie(login) {
-        document.cookie = "user=" + login;
+    function setCookie() {
+        let value = "";
+        for(let i = 0; i < 10; i ++){
+            value += Math.random();
+        }
+        document.cookie = value;
 
     }
 
@@ -164,23 +165,49 @@ export function validateSession() {
     }
 
    export function addBook() {
-       document.location = '/home/book/add';
+       document.location = '/home/book/add?sessionid=' + getUser()['sessionid'];
    }
 
 
-   function autologin() {
-       let user = getUser();
-       if(user === null) return ;
-       if (loaded() && user['remember'] === 'true') {
-           navigator.sendBeacon('/autologin', user['login']);
+
+   function manageSession() {
+       if(!loaded() || getUser() === null) return;
+       let sessionDto = {
+           "sessionid" : getUser()['sessionid']
        }
+       $.ajax({
+           type: "POST",
+           contentType: "application/json",
+           url: "/invalidate",
+           data: JSON.stringify(sessionDto),
+           cache: false,
+           dataType: 'json',
+           responseType: "json",
+           async: false,
+           success : () => {
+               autologin(getUser());
+           }
+       })
    }
 
-   function invalidateSession() {
-       let user = getUser();
-       if(user === null || !loaded()) return ;
-       navigator.sendBeacon("/invalidate", user['login']);
-   }
+function autologin(user) {
+    user['sessionid'] = ""
+    updateUser(user);
+    if (user['remember'] === 'true') {
+        user['sessionid'] = getSessionId();
+        updateUser(user);
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/autologin",
+            data: JSON.stringify(getUser()),
+            cache: false,
+            dataType: 'json',
+            responseType: "json",
+            async: false,
+        })
+    }
+}
 
 
    export function getUser(){
@@ -189,13 +216,14 @@ export function validateSession() {
    }
 
 
-   export function createCartItemLink(userDto){
+   export function createCartItemLink(){
        let cart = document.querySelector('#cart-link');
+       let user = getUser();
        $.ajax({
            type: "POST",
            contentType: "application/json",
            url: "/home/cart/quantity",
-           data: JSON.stringify(userDto),
+           data: JSON.stringify(user),
            cache: false,
            dataType: 'json',
            responseType: 'json',
@@ -206,9 +234,6 @@ export function validateSession() {
        });
    }
 
-   export function sessionValid(){
-        return active && (getUser() != null);
-   }
 
    function clearSearchValue(){
         document.querySelector('#search-input').value = '';
@@ -216,10 +241,11 @@ export function validateSession() {
 
    let wishlist = document.getElementById('wishlist');
    wishlist.addEventListener("click", () => {
-       if(!sessionValid()){
+       if(!sessionActive()){
            openLoginNotice();
        }
        else {
            document.location.href = "/home/wishlist?login=" + (getUser()['login'].toLowerCase());
        }
    })
+

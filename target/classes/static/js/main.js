@@ -1,36 +1,35 @@
-import {getUser, sessionValid} from "./navbar.js";
 import {openLoginNotice} from "./notice.js";
+import {getUser} from "./navbar.js";
 
 export function controlWishlistContent(btn, pageName) {
     btn.onclick = () => {
-        if (!sessionValid()) {
+        if (!sessionActive()) {
             openLoginNotice();
         } else {
-            let data = newRequestData(btn);
-            let isbn = data['isbn'];
-            if (!contains(data, "/home/wishlist/contains")) {
-                navigator.sendBeacon('/home/wishlist/add', isbn);
+            let wishlistDto = requestDto(btn);
+            let isbn = wishlistDto['isbn'];
+            if (!contains(wishlistDto, "/home/wishlist/contains")) {
+                addOrRemoveItem(wishlistDto, "/home/wishlist/add");
                 pageName === 'wishlist' ? removeCard(isbn) : fullHeart(btn, true);
             } else {
-                navigator.sendBeacon('/home/wishlist/remove', isbn);
-                pageName === 'wishlist' ? removeCard(isbn) : fullHeart(btn, false)
+                addOrRemoveItem(wishlistDto, "/home/wishlist/remove");
+                pageName === 'wishlist' ? removeCard(isbn) : fullHeart(btn, false);
             }
         }
     }
 }
 
-export function newRequestData(btn){
+export function requestDto(btn){
     let lasIndex = (btn.parentNode.parentNode.children[1].children.length - 1);
     let isbn = btn.parentNode.parentNode.children[1].children[lasIndex];
-    let login = getUser()['login'];
     return {
-        "login": login,
+        "sessionid" : getUser()['sessionid'],
         "isbn": isbn.innerText,
     };
 }
 
 
-export function contains(requestDto, url) {
+export function contains(bookDto, url) {
     let dto;
     $.ajax({
         type: "POST",
@@ -39,7 +38,7 @@ export function contains(requestDto, url) {
         cache: false,
         dataType: 'json',
         responseType: 'json',
-        data: JSON.stringify(requestDto),
+        data: JSON.stringify(bookDto),
         async: false,
         success: (data) => {
             dto = JSON.parse(JSON.stringify(data));
@@ -86,12 +85,12 @@ export function setItemsCount(symbol){
 
 
 export function controlWishlistContentOnLoad(btn){
-    if(!sessionValid()){
+    if(!sessionActive()){
         fullHeart(btn, false);
     }
     else {
-        let data = newRequestData(btn);
-        if (contains(data, "/home/wishlist/contains")) {
+        let wishlistDto = requestDto(btn);
+        if (contains(wishlistDto, "/home/wishlist/contains")) {
             fullHeart(btn, true);
         } else {
             fullHeart(btn, false);
@@ -101,13 +100,13 @@ export function controlWishlistContentOnLoad(btn){
 }
 
 export function controlCartContentOnLoad(btn, pageName){
-        if (!sessionValid()) {
-            if(pageName === "home") {
-                changeCartBtnText(btn, "Add To Cart");
-            }
+        if (!sessionActive()) {
+            pageName === "home" ?
+                changeCartBtnText(btn, "Add To Cart") : inCart(btn, false);
+
         } else {
-            let data = newRequestData(btn);
-            if (contains(data, "/home/cart/contains")) {
+            let cartDto = requestDto(btn);
+            if (contains(cartDto, "/home/cart/contains")) {
                 pageName === "home" ?
                     changeCartBtnText(btn, "Remove From Cart") : inCart(btn, true);
             } else {
@@ -129,18 +128,17 @@ function changeCartBtnText(btn, text){
 export function controlCartContent(btn, pageName) {
     btn.onclick = () => {
         let symbol;
-        if (!sessionValid()) {
+        if (!sessionActive()) {
             openLoginNotice();
         } else {
-            let data = newRequestData(btn);
-            let isbn = data['isbn'];
-            if (!contains(data, "/home/cart/contains")) {
-                navigator.sendBeacon("/home/cart/add", isbn);
+            let cartDto = requestDto(btn);
+            if (!contains(cartDto, "/home/cart/contains")) {
+                addOrRemoveItem(cartDto, "/home/cart/add")
                 pageName === "home" ?
                     changeCartBtnText(btn, "Remove From Cart") : inCart(btn, true);
                 symbol = "+";
             } else {
-                navigator.sendBeacon("/home/cart/remove", isbn);
+                addOrRemoveItem(cartDto, "/home/cart/remove")
                 pageName === "home" ?
                     changeCartBtnText(btn, "Add To Cart") : inCart(btn, false);
                 symbol = "-";
@@ -166,3 +164,38 @@ function removeCard(isbn){
     let card = document.getElementById(isbn);
     card.remove();
 }
+
+export function sessionActive () {
+    let sessionDto;
+    let user = getUser();
+    if(user == null) return false;
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/session/active",
+        cache: false,
+        data: JSON.stringify(user),
+        dataType: 'json',
+        responseType: 'json',
+        async: false,
+        success: (data) => {
+            sessionDto = JSON.parse(JSON.stringify(data));
+        }
+    })
+    return sessionDto['active'];
+}
+
+function addOrRemoveItem(dto, url){
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(dto),
+        url: url,
+        cache: false,
+        dataType: 'json',
+        responseType: "json",
+    })
+}
+
+
+

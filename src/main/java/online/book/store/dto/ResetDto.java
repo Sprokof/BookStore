@@ -6,7 +6,6 @@ import lombok.Setter;
 
 @NoArgsConstructor
 public class ResetDto {
-    public final static int DAILY_RESET_LIMIT = 3;
 
     @Getter
     @Setter

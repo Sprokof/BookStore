@@ -35,14 +35,25 @@ export function blockBackgroundHtml(flag){
     let navbar = document.querySelector('#navbar');
     let sidebar = document.querySelector('#sidebar');
     let slider = document.querySelector('.books-slider');
+    let cards = document.querySelector('#card-container');
     if(flag) {
         navbar.style.pointerEvents = "none";
-        slider.style.pointerEvents = "none";
-        sidebar.style.pointerEvents = "none";
+        if(slider != null) {
+            slider.style.pointerEvents = "none";
+        }
+        if(cards != null) {
+            cards.style.pointerEvents = "none";
+        }
+            sidebar.style.pointerEvents = "none";
     }
     else {
         navbar.style.pointerEvents = "auto";
+        if(slider != null) {
+            slider.style.pointerEvents = "auto";
+        }
+        if(cards != null) {
+            cards.style.pointerEvents = "auto";
+        }
         sidebar.style.pointerEvents = "auto";
-        slider.style.pointerEvents = "auto";
     }
 }

@@ -12,6 +12,7 @@ import lombok.Setter;
 public class CartItemDto {
     private String cartItemId;
     private String quantity;
+    private String sessionid;
 
 
 

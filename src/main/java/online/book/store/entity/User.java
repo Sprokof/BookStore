@@ -4,9 +4,13 @@ package online.book.store.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import online.book.store.dto.UserDto;
+import online.book.store.service.SessionService;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,6 +18,10 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class User {
+
+    @Autowired
+    private transient SessionService sessionService;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
@@ -34,21 +42,6 @@ public class User {
     @Getter
     @Setter
     private String password;
-
-    @Column(name = "IN_SESSION")
-    @Getter
-    @Setter
-    private boolean inSession;
-
-    @Column(name = "COUNT_RESET_PASSWORD")
-    @Getter
-    @Setter
-    private int countResetPassword;
-
-    @Column(name = "USER_ID")
-    @Getter
-    @Setter
-    private String userID;
 
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -77,6 +70,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @Getter
     @Setter
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Order> orders;
 
     public void addOrder(Order order) {
@@ -93,6 +87,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @Getter
     @Setter
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<BookReview> bookReviews;
 
 
@@ -107,11 +102,30 @@ public class User {
         bookReview.setUser(null);
     }
 
-    public User(String username, String email, String password, boolean inSession) {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @Getter
+    private List<UserSession> userSessions;
+
+
+    public void addSession(UserSession userSession){
+        if(this.userSessions == null) this.userSessions = new ArrayList<>();
+        userSession.setActive(true);
+        this.userSessions.add(userSession);
+        userSession.setUser(this);
+    }
+
+
+    public void removeSession(UserSession userSession){
+        this.userSessions.remove(userSession);
+        userSession.setUser(null);
+        sessionService.deleteSession(userSession);
+    }
+
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.inSession = inSession;
 
     }
 

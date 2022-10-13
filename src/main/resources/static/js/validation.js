@@ -7,18 +7,21 @@ login.addEventListener('click', async () => {
     let user = {
         'login': document.getElementById('login').value,
         'password': await hash(document.getElementById('log-password').value),
+        'sessionid' : await getSessionId()
     };
-
+    console.log(user)
     validation(user, "/home/login");
 });
 
 let registration = document.getElementById("sign-in-btn");
-registration.addEventListener("click", () => {
+registration.addEventListener("click", async () => {
     let user = {
         'username': document.getElementById('username').value,
         'email': document.getElementById("reg-email").value,
         'password': document.getElementById("reg-password").value,
         'confirmPassword': document.getElementById("confirm-reg-password").value,
+        'sessionid': await getSessionId()
+
     };
     validation(user, "/home/registration");
 });
@@ -28,22 +31,24 @@ registration.addEventListener("click", () => {
 let reset = document.getElementById("continue-btn");
 reset.addEventListener("click", () => {
     let resetDto = {
-        "login" : JSON.parse(localStorage.getItem("user"))['login'],
+        "login" : getUser()['login'],
         "newPassword" : document.getElementById('new-password').value,
         "confirmResetPassword" : document.getElementById('confirm-reset-password').value,
-        "generatedCode" : "",
-        "inputCode" : "",
     }
     validation(resetDto, "/home/reset");
 })
 
 let confirm = document.getElementById("done-btn");
 confirm.addEventListener("click", () => {
-    let code = document.getElementById("code").value;
-    validation(code, "/home/reset/confirm");
+    let resetDto = {
+        "login" : getUser()['login'],
+        "inputCode" :document.getElementById("code").value,
+    }
+    validation(resetDto, "/home/reset/confirm");
 })
 
 export function validation(obj, url){
+    console.log(obj);
     $.ajax({
         type: "POST",
         contentType: "application/json",
@@ -108,14 +113,17 @@ export function clearInputs() {
 
 
 export function logout() {
+    let user = getUser();
     $.ajax({
         type: "POST",
         contentType: "application/json",
         url: '/home/logout',
+        data : JSON.stringify(user),
         cache: false,
         dataType: 'text',
         responseType: "text",
-        success: function (code) {
+        success: function (status) {
+            let code = JSON.parse(JSON.stringify(status));
             if (Number(code) === 200) {
                 setTimeout(toHome, 100);
 
@@ -131,9 +139,6 @@ function reload(){
 }
 
 function toHome() {
-    let user = getUser();
-    user['inSession'] = 'false';
-    updateUser(user);
     window.location.href = "/";
 }
 
@@ -155,32 +160,43 @@ function rememberUser(flag){
 
 }
 
-function extractLogin(obj) {
-    if(Object.keys(obj).length > 4) return null;
+function extractFields(obj, index) {
+    if(Object.keys(obj).length > 5) return null;
     let values = [];
     for (let key of Object.keys(obj)) {
         if (obj.hasOwnProperty(key)) {
             values.push(key);
         }
     }
-    return obj[values[0]];
+    return obj[values[index]];
 }
 
 function saveUser(obj){
-    let login = extractLogin(obj);
+    let login = extractFields(obj, 0);
+    let lastIndex = (Object.keys(obj).length - 1)
+    let sessionid = extractFields(obj, lastIndex);
     if(login == null) return ;
     let user = {
         "login" : login,
-        "remember" : "false",
+        "remember": "false",
+        "sessionid": sessionid
     }
-    localStorage.setItem("user", JSON.stringify(user));
+    updateUser(user)
 }
 
 export function updateUser(user){
     localStorage.setItem("user", JSON.stringify(user));
 }
 
-
+export async function getSessionId(){
+    let user = getUser();
+    if(user != null && user['sessionid'] !== '') {
+        return user['sessionid'];
+    }
+    return (String (([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+            (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4)
+                .toString(16))));
+}
 
 
 

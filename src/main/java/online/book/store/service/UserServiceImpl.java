@@ -8,8 +8,6 @@ import online.book.store.entity.User;
 
 import online.book.store.entity.Wishlist;
 import online.book.store.hash.SHA256;
-import online.book.store.session.SessionStorage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -67,22 +65,6 @@ public class UserServiceImpl implements UserService{
         return user.getId() != null;
     }
 
-
-    private boolean existUUID(UUID uuid) {
-        return userDao.existUUID(uuid);
-    }
-
-
-    @Override
-    public String generateUUID(){
-        UUID uuid = UUID.randomUUID();
-        if(existUUID(uuid)) {
-            do {
-                uuid = UUID.randomUUID();
-            } while (existUUID(uuid));
-        }
-    return uuid.toString();
-    }
 
     @Override
     public String extractValidLogin(String login) {

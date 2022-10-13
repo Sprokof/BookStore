@@ -21,34 +21,34 @@ public class RegistrationValidation extends AbstractValidation {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return UserSignInDto.class.equals(aClass);
+        return UserDto.class.equals(aClass);
     }
 
     @Override
     public void validation(Object target) {
         if (!supports(target.getClass())) return;
-        UserSignInDto userSignInDto = (UserSignInDto) target;
+        UserDto userDto = (UserDto) target;
         deleteErrorsMessages();
 
-        if (userSignInDto.getUsername().isEmpty()) {
+        if (userDto.getUsername().isEmpty()) {
             this.response.addError("username", "Username can't be empty");
         }
 
-        if (userService.getUserByLogin(userSignInDto.getUsername()) != null) {
+        if (userService.getUserByLogin(userDto.getUsername()) != null) {
             this.response.addError("username", "Username already taken");
         }
 
-        if(userSignInDto.getEmail().isEmpty()){
+        if(userDto.getEmail().isEmpty()){
             this.response.addError("reg-email", "Email can't be empty");
         }
 
-        if (userService.getUserByLogin(userSignInDto.getEmail()) != null) {
+        if (userService.getUserByLogin(userDto.getEmail()) != null) {
             this.response.addError("reg-email", "Email already taken");
         }
 
-        String password = userSignInDto.getPassword();
+        String password = userDto.getPassword();
 
-        String confirmPassword  = userSignInDto.getConfirmPassword();
+        String confirmPassword  = userDto.getConfirmPassword();
 
         validatePassword(this.response, password, confirmPassword,
                 "reg-password", "confirm-reg-password");

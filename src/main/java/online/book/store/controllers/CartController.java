@@ -1,22 +1,15 @@
 package online.book.store.controllers;
 
 import online.book.store.dto.*;
-import online.book.store.entity.Book;
-import online.book.store.entity.Cart;
-import online.book.store.entity.CartItem;
-import online.book.store.entity.User;
+import online.book.store.entity.*;
 import online.book.store.service.*;
-import online.book.store.session.SessionStorage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Map;
 
 
 @Controller
@@ -29,20 +22,23 @@ public class CartController {
     private CartService cartService;
 
     @Autowired
-    private SessionStorage sessionStorage;
+    private SessionService sessionService;
+
+    @Autowired
+    private UserService userService;
 
 
     @GetMapping("/home/cart")
-    public String cart(Model model, HttpServletRequest request){
-        Cart cart = sessionStorage.getUser(request).getCart();
+    public String cart(@RequestParam("login") String login, Model model){
+        Cart cart = userService.getUserByLogin(login).getCart();
         model.addAttribute("cart", cart);
         return "cart";
     }
 
 
     @PostMapping("/home/cart/set")
-    public ResponseEntity.BodyBuilder addCartItem(@RequestBody CartItemDto dto, HttpServletRequest request){
-        User user = sessionStorage.getUser(request);
+    public ResponseEntity.BodyBuilder addCartItem(@RequestBody CartItemDto dto){
+        User user = sessionService.getCurrentUser(dto.getSessionid());
         int id = (Integer.parseInt(dto.getCartItemId()));
         int quantity = (Integer.parseInt(dto.getQuantity()));
 
@@ -55,8 +51,10 @@ public class CartController {
     }
 
     @PostMapping("/home/cart/remove")
-    public ResponseEntity<Integer> removeCartItem(@RequestBody String isbn, HttpServletRequest request){
-        User user = sessionStorage.getUser(request);
+    public ResponseEntity<Integer> removeBook(@RequestBody CartDto cartDto){
+        String isbn = cartDto.getIsbn();
+        String sessionid = cartDto.getSessionid();
+        User user = sessionService.getCurrentUser(sessionid);
         Book book = bookService.getBookByIsbn(isbn);
         cartService.removeBookFromCart(book, user.getCart());
         return ResponseEntity.ok(200);
@@ -64,25 +62,29 @@ public class CartController {
     }
 
     @PostMapping("/home/cart/add")
-    public ResponseEntity<Integer> addBookToCart(@RequestBody String isbn, HttpServletRequest request){
-        User user = sessionStorage.getUser(request);
+    public ResponseEntity<Integer> addBook(@RequestBody CartDto cartDto){
+        String isbn = cartDto.getIsbn();
+        String sessionid = cartDto.getSessionid();
+        User user = sessionService.getCurrentUser(sessionid);
         Book book = bookService.getBookByIsbn(isbn);
         cartService.addBookToCart(book, user.getCart());
         return ResponseEntity.ok(200);
     }
 
     @PostMapping("/home/cart/contains")
-    public ResponseEntity<CartDto> contains(@RequestBody RequestDto requestDto){
-        String login = requestDto.getLogin();
-        String isbn = requestDto.getIsbn();
-        User user = sessionStorage.getUser(login);
+    public ResponseEntity<CartDto> contains(@RequestBody CartDto cartDto){
+        String isbn = cartDto.getIsbn();
+        String sessionid = cartDto.getSessionid();
+        User user = sessionService.getCurrentUser(sessionid);
         Book book = bookService.getBookByIsbn(isbn);
         return ResponseEntity.ok(cartService.contains(user.getCart(), book));
     }
 
     @PostMapping("/home/cart/quantity")
     public ResponseEntity<CartDto> cartQuantity(@RequestBody UserDto userDto){
-        Cart cart = sessionStorage.getUser(userDto.getLogin()).getCart();
+        String sessionid = userDto.getSessionid();
+        User user = sessionService.getCurrentUser(sessionid);
+        Cart cart = user.getCart();
         return ResponseEntity.ok(cartService.getItemsQuantity(cart));
     }
 

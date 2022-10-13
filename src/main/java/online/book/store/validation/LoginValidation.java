@@ -1,6 +1,7 @@
 package online.book.store.validation;
 
 import lombok.Getter;
+import online.book.store.dto.UserDto;
 import online.book.store.dto.UserLoginDto;
 import online.book.store.entity.User;
 import online.book.store.service.UserService;
@@ -22,7 +23,7 @@ public class LoginValidation extends AbstractValidation {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return UserLoginDto.class.equals(aClass);
+        return UserDto.class.equals(aClass);
     }
 
 
@@ -30,10 +31,9 @@ public class LoginValidation extends AbstractValidation {
         if (!supports(target.getClass())) return;
         User loadedUser;
 
-        UserLoginDto userDto = (UserLoginDto) target;
+        UserDto userDto = (UserDto) target;
 
         deleteErrorsMessages();
-
 
         if(userDto.getLogin().isEmpty()){
             response.addError("login", "Login can't be empty");

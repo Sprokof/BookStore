@@ -2,6 +2,7 @@ package online.book.store.controllers;
 
 
 import online.book.store.dto.ResetDto;
+import online.book.store.dto.UserDto;
 import online.book.store.dto.UserLoginDto;
 import online.book.store.dto.UserSignInDto;
 import online.book.store.entity.User;
@@ -9,10 +10,8 @@ import online.book.store.mail.MailSender;
 import online.book.store.mail.Subject;
 import online.book.store.service.SignInService;
 import online.book.store.service.UserService;
-import online.book.store.session.SessionStorage;
 import online.book.store.validation.AbstractValidation;
 import online.book.store.validation.ResetValidation;
-import online.book.store.validation.ValidateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -57,10 +54,10 @@ public class SignInController {
 
 
     @PostMapping("/home/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginDto user, HttpServletRequest request){
+    public ResponseEntity<?> login(@RequestBody UserDto user){
         loginValidation.validation(user);
         if(!loginValidation.hasErrors()){
-            signInService.loginUser(request, user);
+            signInService.loginUser(user);
         }
         Map<String, String> errors = loginValidation.validationErrors();
         return ResponseEntity.ok(errors);
@@ -68,11 +65,10 @@ public class SignInController {
 
 
     @PostMapping("/home/registration")
-    public ResponseEntity<?> registration(@RequestBody UserSignInDto userSignInDto,
-                                          HttpServletRequest request){
-        registrationValidation.validation(userSignInDto);
+    public ResponseEntity<?> registration(@RequestBody UserDto userDto){
+        registrationValidation.validation(userDto);
         if(!registrationValidation.hasErrors()){
-            signInService.loginUser(request, userSignInDto);
+            signInService.loginUser(userDto);
         }
         Map<String, String> errors = registrationValidation.validationErrors();
         return ResponseEntity.ok(errors);
@@ -80,9 +76,8 @@ public class SignInController {
 
 
     @PostMapping("/home/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request){
-        String code = (String.valueOf(signInService.logout(request)));
-        request.getSession().invalidate();
+    public ResponseEntity<Integer> logout(@RequestBody UserDto userDto){
+        int code = this.signInService.logout(userDto);
         return ResponseEntity.ok(code);
     }
 
@@ -100,12 +95,14 @@ public class SignInController {
     }
 
     @PostMapping("/home/reset/confirm")
-    public ResponseEntity<Map<String, String>> confirm(@RequestBody String code, HttpServletRequest httpServletRequest){
+    public ResponseEntity<Map<String, String>> confirm(@RequestBody ResetDto reset){
         ResetDto resetDto = signInService.getResetDto();
+        String code = reset.getInputCode();
         resetDto.setInputCode(code);
         confirmValidation.validation(resetDto);
         if(!confirmValidation.hasErrors()){
-            User user = signInService.getUserFromRequest(httpServletRequest);
+            String login = reset.getLogin();
+            User user = userService.getUserByLogin(login);
             user.setPassword(resetDto.getNewPassword());
             userService.saveOrUpdate(user);
         }
@@ -114,8 +111,9 @@ public class SignInController {
 
 
     @PostMapping("/home/resend/code")
-    public ResponseEntity<Integer> resendCode(HttpServletRequest request){
-        User user = signInService.getCurrentUser(request);
+    public ResponseEntity<Integer> resendCode(@RequestBody ResetDto resetDto){
+        String login = resetDto.getLogin();
+        User user = userService.getUserByLogin(login);
         signInService.generateNewCode();
         sender.send(user.getEmail(), Subject.RESET_PASSWORD, this.signInService);
         return ResponseEntity.ok(200);

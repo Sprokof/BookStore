@@ -1,12 +1,13 @@
 package online.book.store.controllers;
 
+import online.book.store.dto.SessionDto;
 import online.book.store.dto.UserDto;
 import online.book.store.entity.ExistCategory;
-import online.book.store.entity.User;
+import online.book.store.entity.UserSession;
 import online.book.store.service.CategoryService;
+import online.book.store.service.SessionService;
 import online.book.store.service.SignInService;
 import online.book.store.service.UserService;
-import online.book.store.session.SessionStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,14 +25,10 @@ public class StoreController{
     private CategoryService categoryService;
 
     @Autowired
-    private SessionStorage sessionStorage;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
     private SignInService signInService;
 
+    @Autowired
+    private SessionService sessionService;
 
 
     @GetMapping("/categories")
@@ -42,27 +39,33 @@ public class StoreController{
 
 
     @PostMapping("/session/validate")
-    public ResponseEntity<UserDto> validateSession(@RequestBody UserDto userDto, HttpServletRequest request) {
-        User user = userService.getUserByLogin(userDto.getLogin());
-        return ResponseEntity.ok(sessionStorage.validateSession(user, request));
+    public ResponseEntity<SessionDto> validateSession(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok(sessionService.getSessionData(userDto));
     }
 
 
     @PostMapping(value = "/invalidate")
-    public ResponseEntity<Integer> out(@RequestBody String user, HttpServletRequest request){
-        signInService.logout(user).invalidate(request);
+    public ResponseEntity<Integer> invalidate(@RequestBody SessionDto sessionDto){
+        this.sessionService.sessionInvalidate(sessionDto);
         return ResponseEntity.ok(200);
     }
 
     @PostMapping(value = "/autologin")
-    public ResponseEntity<Integer> autologin(@RequestBody String user, HttpServletRequest request){
-        signInService.autologin(user, request);
+    public ResponseEntity<Integer> autologin(@RequestBody UserDto userDto){
+        this.signInService.autologin(userDto);
         return ResponseEntity.ok(200);
     }
 
     @GetMapping("/result=empty")
     public String emptyResult(){
         return "noresult";
+    }
+
+
+    @PostMapping("/session/active")
+    public ResponseEntity<SessionDto> sessionActive(@RequestBody UserDto userDto){
+        String sessionid = userDto.getSessionid();
+        return ResponseEntity.ok(this.sessionService.sessionActive(sessionid));
     }
 
 }

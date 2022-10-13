@@ -12,6 +12,8 @@ import lombok.Setter;
 public class CartDto {
     private boolean itemContains;
     private int itemsQuantity;
+    private String isbn;
+    private String sessionid;
 
     public CartDto(boolean itemContains) {
         this.itemContains = itemContains;
@@ -19,5 +21,10 @@ public class CartDto {
 
     public CartDto(int itemsQuantity) {
         this.itemsQuantity = itemsQuantity;
+    }
+
+    public CartDto(String isbn, String sessionid) {
+        this.isbn = isbn;
+        this.sessionid = sessionid;
     }
 }

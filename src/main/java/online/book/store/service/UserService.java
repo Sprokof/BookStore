@@ -11,6 +11,5 @@ public interface UserService{
     void saveOrUpdate(User user);
     User getUserByUUID(String uuid);
     List<User> getUsersInSession();
-    String generateUUID();
     String extractValidLogin(String login);
 }

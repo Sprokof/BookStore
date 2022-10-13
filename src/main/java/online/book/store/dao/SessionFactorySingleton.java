@@ -14,7 +14,7 @@ public class SessionFactorySingleton {
             instance = getSessionFactory(new Class[]{Book.class,
                                         Category.class, User.class, CartItem.class, Cart.class,
                                         BookReview.class, Wishlist.class,
-                    Checkout.class, Order.class, Address.class, ExistCategory.class});
+                    Checkout.class, Order.class, Address.class, ExistCategory.class, UserSession.class});
         }
     return instance;
     }

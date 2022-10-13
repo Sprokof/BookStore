@@ -5,17 +5,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class SessionDto {
-    private String userLogin;
-    private boolean isUserAdmin;
-    private boolean activeSession;
+    private boolean active;
+    private String sessionid;
+    private boolean adminSession;
 
-    public SessionDto(String userLogin, boolean isUserAdmin, boolean activeSession) {
-        this.userLogin = userLogin;
-        this.isUserAdmin = isUserAdmin;
-        this.activeSession = activeSession;
+    public SessionDto(String sessionid) {
+        this.sessionid = sessionid;
+    }
+
+    public SessionDto(boolean active) {
+        this.active = active;
     }
 }

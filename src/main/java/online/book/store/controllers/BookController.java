@@ -1,6 +1,8 @@
 package online.book.store.controllers;
 
 import online.book.store.dto.BookDto;
+import online.book.store.dto.SessionDto;
+import online.book.store.dto.UserDto;
 import online.book.store.engines.*;
 import online.book.store.entity.Book;
 import online.book.store.entity.ExistCategory;
@@ -57,8 +59,8 @@ public class BookController {
 
 
     @GetMapping("/home/book/add")
-    public String addBook(HttpServletRequest request){
-        if(!signInService.adminsRequest(request)){
+    public String addBook(@RequestParam("sessionid") String sessionid){
+        if(!signInService.adminsRequest(sessionid)){
             throw new ResourceNotFoundException();
         }
         return "addBook";

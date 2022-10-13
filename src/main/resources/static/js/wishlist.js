@@ -1,7 +1,6 @@
 import {
     controlCartContent,
     controlCartContentOnLoad, controlWishlistContent,
-    newRequestData
 } from "./main.js";
 
 
