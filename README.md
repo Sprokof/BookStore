@@ -8,7 +8,7 @@ Online Book Store using JavaScript on front side and Java, Spring Boot, Hibernat
 ## Login page  
 ![login](https://user-images.githubusercontent.com/90979711/191736491-92417eb6-dba0-48dd-a8f5-e240e2eb3b80.png)
 ## Wishlist page  
-![wishlist](https://user-images.githubusercontent.com/90979711/195892279-5e0640b4-c432-4d11-b59b-a683cca4572a.png)
+![wishlist](https://user-images.githubusercontent.com/90979711/195894392-1af9dccf-ec9d-40c8-9ef3-2ff992dca334.png)
 
 
 ## Admin page (adding book)  
