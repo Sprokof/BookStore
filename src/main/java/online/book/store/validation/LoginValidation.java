@@ -29,11 +29,11 @@ public class LoginValidation extends AbstractValidation {
 
     public void validation(Object target) {
         if (!supports(target.getClass())) return;
+        deleteErrorsMessages();
         User loadedUser;
 
         UserDto userDto = (UserDto) target;
 
-        deleteErrorsMessages();
 
         if(userDto.getLogin().isEmpty()){
             response.addError("login", "Login can't be empty");

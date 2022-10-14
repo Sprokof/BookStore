@@ -74,9 +74,6 @@ public class UserDaoImpl implements UserDao {
         if (email.matcher(login).find()) {
             column = "EMAIL";
         }
-        else {
-            login = SiteEngine.firstLetterToUpperCase(login);
-        }
 
         User user = null;
         Session session = null;

@@ -59,27 +59,27 @@
     margin: 0 15px 0 0;
     overflow-y: hidden;
     border: none!important;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
 
 
 }
 
 .books-slider section .card .book-img {
     width: 300px;
-    height: 410px;
+    height: 420px;
     border: #5f5f5b solid 5px;
     padding: 5px;
 }
 
 .books-slider section .card .book-info {
     width: 300px;
-    height: 260px;
+    height: 255px;
     background-color: #21222d;
     font-family: "Cascadia Code", sans-serif;
     color: #fff;
     padding: 0.8rem;
     overflow-y: hidden;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 .books-slider section .card .star-rating {
@@ -103,8 +103,9 @@
 }
 
 .books-slider  .card .buttons {
+    position: relative;
+    bottom: 7%;
     height: 50px;
-    margin-top: -20%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -120,8 +121,7 @@
     color: white;
 }
 
-.books-slider .card .btn {
-    position: relative;
+.books-slider .card .buttons .btn {
     outline: none;
     background-color: #1b1b1b;
     color: #fff;
@@ -132,20 +132,20 @@
     cursor: pointer;
     border: 3px solid #b4ad9e;
     overflow-y: hidden;
+
 }
 
-.books-slider .card .cart {
+.books-slider .card .buttons .cart {
     width: 160px;
     line-height: 22px;
 }
 
-.books-slider .card .cart:hover {
+.books-slider .card .buttons .cart:hover {
     transition: 0.3s ease-in;
     background-color: #333333;
 }
 
-.books-slider .card .wishlist {
-    margin-right: 5px;
+.books-slider .card .buttons .wishlist {
     width: 40px;
     border-radius: 50%;
     border: 3px solid #b4ad9e;
@@ -154,7 +154,7 @@
 
 
 
-.books-slider .card .wishlist:hover {
+.books-slider .card .buttons .wishlist:hover {
     transition: 0.3s ease-in;
     background-color: #333333;
 }
@@ -179,15 +179,12 @@
     width: 0;
 }
 
-.books-slider .fa-heart {
+.books-slider .wishlist.btn .fa-heart {
     margin-left: -2px;
 }
 
-.books-slider section .card .book-info span {
-    cursor: pointer;
-}
-
 .books-slider section .card .book-info span:hover {
+    cursor: pointer;
     border-bottom: 1px solid #fff;
     transition: 0.2s ease-in-out;
 }

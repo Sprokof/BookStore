@@ -47,7 +47,7 @@ public class SiteEngine {
 
     public SiteEngine executeSearchQuery(SearchQuery query, SortTypes type) {
         if (isCategory(query)) {
-            String category = firstLetterToUpperCase(query.getQueryText());
+            String category = query.getQueryText();
             this.bookList = bookService.getBooksByCategory(category);
         } else {
             this.bookList = new LinkedList<>();
@@ -89,7 +89,7 @@ public class SiteEngine {
         int[] p = prefixFunction(searchQuery);
         for (int i = 0, k = 0; i < booksContent.length(); i++) {
             for (; ; k = p[k - 1]) {
-                if (text.charAt(k) == booksContent.charAt(i)) {
+                if (String.valueOf(text.charAt(k)).equalsIgnoreCase(String.valueOf(booksContent.charAt(i)))) {
                     if (++k == queryLength) {
                         return true;
                     }
@@ -104,7 +104,8 @@ public class SiteEngine {
     }
 
     private boolean isCategory(SearchQuery query) {
-        String category = firstLetterToUpperCase(query.getQueryText());
+
+        String category = query.getQueryText();
         return this.categoryService.existCategory(category) != null;
     }
 
@@ -172,9 +173,4 @@ public class SiteEngine {
         return this;
     }
 
-
-    public static String firstLetterToUpperCase(String word) {
-        String letterToUpperCase = String.valueOf(word.charAt(0)).toUpperCase();
-        return String.format("%s%s", letterToUpperCase, (word.substring(1)));
-    }
 }

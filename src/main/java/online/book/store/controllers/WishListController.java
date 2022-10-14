@@ -39,7 +39,7 @@ public class WishListController {
 
 
     @GetMapping("/home/wishlist")
-    public String wishlist(@RequestParam("login") String login, Model model){
+    public String wishlist(@RequestParam("user") String login, Model model){
        User user = userService.getUserByLogin(login);
        List<Book> wishlistsBooks = user.getWishList().getBooks();
        model.addAttribute("rows", siteEngine.mapBooksToRow(wishlistsBooks));

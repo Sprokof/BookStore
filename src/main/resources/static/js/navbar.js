@@ -79,14 +79,13 @@ function initBooksCategories(){
 
     document.getElementById('search').addEventListener('click', (e) => {
         let text = document.getElementById('search-input').value;
-        console.log(text)
         executeQuery(text)
     });
 
 
     function executeQuery(value) {
         if(value === null || value === '') return
-            value = value.replaceAll(' ', '').toLowerCase();
+            value = value.replaceAll(' ', '');
             document.location.href = '/home/books/search?query=' + value + "&type=popularity";
     }
 
@@ -245,7 +244,7 @@ function autologin(user) {
            openLoginNotice();
        }
        else {
-           document.location.href = "/home/wishlist?login=" + (getUser()['login'].toLowerCase());
+           document.location.href = "/home/wishlist?user=" + (getUser()['login']);
        }
    })
 

@@ -27,7 +27,8 @@ public class BookServiceImpl implements BookService{
     public List<Book> getAllBooks() {
         List<Book> books = this.bookDao.getAllBooks();
         for(Book book : books){
-            String trimDesc = (book.getDescription().substring(0, 205) + "...");
+            String description = book.getDescription();
+            String trimDesc = (description.substring(0, lastSubstrIndex(description)) + "...");
             book.setDescription(trimDesc);
         }
         return books;
@@ -69,5 +70,11 @@ public class BookServiceImpl implements BookService{
         value = value * factor;
         long tmp = Math.round(value);
         return (double) tmp / factor;
+    }
+
+    private int lastSubstrIndex(String description){
+        int length = description.length();
+        return Math.min(length, 210);
+
     }
 }

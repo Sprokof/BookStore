@@ -44,12 +44,13 @@
 }
 
 #card-container .card .buttons {
+    position: relative;
     height: 65px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: -60px;
-    padding: 0.8rem;
+    bottom: 12%;
+    padding: 0.6rem;
 }
 
 #card-container .card .btn {
@@ -116,10 +117,16 @@
 }
 
 .row {
-    margin-bottom: 5%!important;
+    margin-bottom: 3%!important;
 }
 
 #card-container .shop.cart.btn.select {
     background-color: #1b1b1b;
+}
+
+#card-container .card .book-info span:hover {
+    border-bottom: 1px solid #fff;
+    transition: 0.2s ease-in-out;
+    cursor: pointer;
 }
 
