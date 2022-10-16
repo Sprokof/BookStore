@@ -74,3 +74,4 @@ document.addEventListener('DOMContentLoaded', () => {
     cartBtn.forEach(btn => controlCartContentOnLoad(btn, "home"));
 })
 
+

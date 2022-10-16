@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.LinkedList;
@@ -21,10 +23,9 @@ public class Category {
     @Column(name = "CATEGORY")
     private String category;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "book_id")
-    private Book book;
-
+    @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Book> books;
 
     public Category(String category){
         this.category = category;
@@ -44,8 +45,6 @@ public class Category {
     public String toString() {
         return "Category{" +
                 "id=" + id +
-                ", category='" + category + '\'' +
-                ", book=" + book.getYearPub() +
-                '}';
+                ", category=" + category;
     }
 }

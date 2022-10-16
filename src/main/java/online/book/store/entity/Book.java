@@ -1,22 +1,15 @@
 package online.book.store.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import online.book.store.service.BookService;
-import online.book.store.service.UserService;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "BOOKS")
@@ -82,21 +75,29 @@ public class Book {
 
     }
 
+    @OneToOne(mappedBy = "book")
+    @Getter
+    @Setter
+    private CartItem cartItem;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable (name = "BOOKS_CATEGORIES",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = {@JoinColumn(name = "category_id")})
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Category> categories;
 
 
     public void addCategory(Category category){
         if(this.categories == null) this.categories = new LinkedList<>();
         this.categories.add(category);
-        category.setBook(this);
+        category.getBooks().add(this);
 
     }
 
     public void removeCategory(Category category){
         this.categories.remove(category);
-        category.setBook(null);
+        category.getBooks().remove(this);
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")

@@ -7,6 +7,7 @@
 
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" th:href="@{/static/css/cart.css}"/>
+    <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="container cart-container">
@@ -19,7 +20,7 @@
                  <th>Quantity</th>
                  <th class="text-center">Price</th>
                  <th class="text-center">Total</th>
-                 <th>&nbsp</th>
+                 <th>&nbsp;</th>
              </tr>
              </thead>
              <tbody>
@@ -27,26 +28,21 @@
                  <td class="col-lg-8 product">
                      <div class="media">
                      <div class="media-left">
-                         <a href=""><img class="item-img img-responsive" th:src="@{'/images' + ${item.book.bookImageName}}"></a>
+                         <a href=""><img class="item-img img-responsive" th:src="@{'/images/' + ${item.imageName}}"></a>
                      </div>
                      <div class="media-body">
-                         <div class="media-heading" th:text="${item.book.title}"></div>
-                         <div class="" th:text="${'Subject: ' + ${item.book.subject}}"></div>
-                         <div class="" th:text="${'Authors: ' + ${item.book.authors}}"></div>
-                         <div class="" th:text="${'Publisher: ' + ${item.book.publisher}}"></div>
-                         <div class="media-heading" th:text="${'Stock: ' + ${item.book.availableCopies}}"></div>
                      </div>
                      </div>
                  </td>
                  <td class="col-lg-1 quantity">
-                     <input th:id="${'add_' + ${item.id}}" type="text" class="form-control text-center"
+                     <input  type="text" class="form-control text-center"
                             th:value="${item.quantity}"/>
                  </td>
 
-                 <td class="col-lg-1 price" th:text="${item.book.price}"> &#8381; </td>
+                 <td class="col-lg-1 price" th:text="${item.price}"> &#8381; </td>
                  <td class="col-lg-1 total" th:text="${item.total}"></td>
                  <td class="col-lg-1 remove-item">
-                     <button th:id="${'remove_' + ${item.id}}" class="btn btn-danger btn-sm btn-remv">
+                     <button class="btn btn-danger btn-sm btn-remv">
                          <span class="fas fa-remove"></span>
                      </button>
                  </td>
@@ -97,7 +93,5 @@
         </div>
 </div>
 </div>
-<script src="/static/js/cart.js">
-</script>
 </body>
 </html>

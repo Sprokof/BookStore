@@ -29,7 +29,7 @@ public class CartController {
 
 
     @GetMapping("/home/cart")
-    public String cart(@RequestParam("login") String login, Model model){
+    public String cart(@RequestParam("user") String login, Model model){
         Cart cart = userService.getUserByLogin(login).getCart();
         model.addAttribute("cart", cart);
         return "cart";

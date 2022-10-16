@@ -1,20 +1,17 @@
 package online.book.store.controllers;
 
+import online.book.store.dto.CategoryDto;
 import online.book.store.dto.SessionDto;
 import online.book.store.dto.UserDto;
-import online.book.store.entity.ExistCategory;
-import online.book.store.entity.UserSession;
 import online.book.store.service.CategoryService;
 import online.book.store.service.SessionService;
 import online.book.store.service.SignInService;
-import online.book.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -32,8 +29,8 @@ public class StoreController{
 
 
     @GetMapping("/categories")
-    public ResponseEntity<List<ExistCategory>> popularCategories() {
-        List<ExistCategory> categories = categoryService.getAllCategories();
+    public ResponseEntity<List<CategoryDto>> popularCategories() {
+        List<CategoryDto> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(categories);
     }
 

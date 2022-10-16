@@ -1,4 +1,5 @@
-function controlSublist(){
+let btn = document.querySelector('.select-btn');
+btn.onclick = () => {
     document.querySelector('.sort-types').classList.toggle("active");
     document.querySelector('.arrow-down').classList.toggle('rotate');
 }

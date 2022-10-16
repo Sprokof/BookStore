@@ -23,9 +23,9 @@ public class CartDaoImpl implements CartDao{
     try{
         session = this.sessionFactory.openSession();
         session.beginTransaction();
-        cartItem = (CartItem) session.createSQLQuery("SELECT * FROM CARTS_ITEMS WHERE CART_ID=:c_id AND ISBN=:isbn").
+        cartItem = (CartItem) session.createSQLQuery("SELECT * FROM CARTS_ITEMS WHERE CART_ID=:c_id AND BOOK_ID=:b_id").
                 setParameter("c_id", cart.getId()).
-                setParameter("isbn", book.getIsbn()).
+                setParameter("b_id", book.getId()).
                 addEntity(CartItem.class).list().get(0);
         session.getTransaction().commit();
     }
@@ -72,7 +72,7 @@ public class CartDaoImpl implements CartDao{
     try{
         session = this.sessionFactory.openSession();
         session.beginTransaction();
-        cartItem = (CartItem) session.createSQLQuery("SELECT * FROM CART_ITEMS WHERE id=:id")
+        cartItem = (CartItem) session.createSQLQuery("SELECT * FROM CARTS_ITEMS WHERE id=:id")
                 .setParameter("id", id).addEntity(CartItem.class).getSingleResult();
         session.getTransaction().commit();
     } catch (Exception e) {
@@ -98,8 +98,13 @@ public class CartDaoImpl implements CartDao{
         session = this.sessionFactory.openSession();
         session.beginTransaction();
         cartItem = (CartItem) session.createSQLQuery("SELECT * FROM " +
-                "CARTS_ITEMS as item JOIN CARTS as cart on item.cart_id = cart.id WHERE ISBN=:isbn").addEntity(CartItem.class).
-                setParameter("isbn", book.getIsbn()).getSingleResult();
+                "CARTS_ITEMS as item JOIN " +
+                        "CARTS as cart on " +
+                        "item.cart_id = cart.id WHERE item.book_id=:bookId AND cart.id=:cartId").
+                addEntity(CartItem.class).
+                setParameter("bookId", book.getId()).
+                setParameter("cartId", cart.getId()).
+                getSingleResult();
         session.getTransaction().commit();
     }
     catch (Exception e){
@@ -153,7 +158,7 @@ public class CartDaoImpl implements CartDao{
         session = this.sessionFactory.openSession();
         session.beginTransaction();
         quantity = (Integer) session.createSQLQuery("SELECT QUANTITY FROM CARTS " +
-                "WHERE ID=:cartId").
+                "WHERE id=:cartId").
                 setParameter("cartId", cartId).getSingleResult();
         session.getTransaction().commit();
     }
@@ -171,4 +176,5 @@ public class CartDaoImpl implements CartDao{
     }
     return quantity;
     }
+
 }

@@ -34,10 +34,6 @@ public class BookServiceImpl implements BookService{
         return books;
     }
 
-    @Override
-    public List<Book> getBooksByCategory(String category) {
-        return this.bookDao.getBooksByCategory(category);
-    }
 
     @Override
     public Book getBookByIsbn(String isbn) {
@@ -52,6 +48,7 @@ public class BookServiceImpl implements BookService{
     @Override
     public void saveBook(Book book) {
         this.bookDao.saveBook(book);
+        updateBooksCategories(book);
     }
 
 
@@ -77,4 +74,15 @@ public class BookServiceImpl implements BookService{
         return Math.min(length, 210);
 
     }
+
+    @Override
+    public void updateBooksCategories(Book book) {
+        int bookId = getBookByIsbn(book.getIsbn()).getId();
+        int categoryId;
+        for (Category category : book.getCategories()) {
+            categoryId = category.getId();
+            this.bookDao.insertBookAndCategories(bookId, categoryId);
+        }
+    }
+
 }

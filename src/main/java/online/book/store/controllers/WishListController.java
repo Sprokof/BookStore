@@ -15,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -47,7 +46,7 @@ public class WishListController {
     }
 
     @PostMapping("/home/wishlist/remove")
-    public ResponseEntity<Integer> removeFromWishlist(@RequestBody WishlistDto wishlistDto, HttpServletRequest request){
+    public ResponseEntity<Integer> removeFromWishlist(@RequestBody WishlistDto wishlistDto){
         String isbn = wishlistDto.getIsbn();
         Book book = bookService.getBookByIsbn(isbn);
         String sessionid = wishlistDto.getSessionid();

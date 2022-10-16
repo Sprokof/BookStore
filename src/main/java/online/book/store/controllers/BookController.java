@@ -1,11 +1,9 @@
 package online.book.store.controllers;
 
 import online.book.store.dto.BookDto;
-import online.book.store.dto.SessionDto;
-import online.book.store.dto.UserDto;
+import online.book.store.dto.CategoryDto;
 import online.book.store.engines.*;
 import online.book.store.entity.Book;
-import online.book.store.entity.ExistCategory;
 import online.book.store.expections.ResourceNotFoundException;
 import online.book.store.service.BookService;
 import online.book.store.service.CategoryService;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +40,7 @@ public class BookController {
 
 
     @ModelAttribute("categories")
-    public List<ExistCategory> categories(){
+    public List<CategoryDto> categories(){
         return categoryService.getAllCategories();
     }
 

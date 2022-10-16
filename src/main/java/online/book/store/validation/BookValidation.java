@@ -101,7 +101,7 @@ public class BookValidation extends AbstractValidation {
 
             int length = description.length();
             if(length < 200 || length > 1000){
-                this.response.addError("desc", "Description min length 200, max 100");
+                this.response.addError("desc", "Description min length 200, max 1000");
             }
 
             String author = bookDto.getAuthors();

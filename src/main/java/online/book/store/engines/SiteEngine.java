@@ -48,7 +48,7 @@ public class SiteEngine {
     public SiteEngine executeSearchQuery(SearchQuery query, SortTypes type) {
         if (isCategory(query)) {
             String category = query.getQueryText();
-            this.bookList = bookService.getBooksByCategory(category);
+            this.bookList = this.categoryService.getBooksByCategories(category);
         } else {
             this.bookList = new LinkedList<>();
             for (Book book : bookService.getAllBooks()) {
@@ -104,9 +104,7 @@ public class SiteEngine {
     }
 
     private boolean isCategory(SearchQuery query) {
-
-        String category = query.getQueryText();
-        return this.categoryService.existCategory(category) != null;
+        return this.categoryService.existCategory(query.getQueryText());
     }
 
     private void sortSearchResult() {

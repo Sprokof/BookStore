@@ -7,6 +7,11 @@ import online.book.store.builder.AbstractBookBuilder;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
 
+import online.book.store.service.BookService;
+import online.book.store.service.BookServiceImpl;
+import online.book.store.service.CategoryService;
+import online.book.store.service.CategoryServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
@@ -15,6 +20,8 @@ import java.lang.reflect.Field;
 @NoArgsConstructor
 @Component
 public class BookDto extends AbstractBookBuilder {
+
+    private final CategoryService categoryService = new CategoryServiceImpl();
 
     public static final String[] AVAILABLE_STATUS = {"is available", "not available"};
 
@@ -217,8 +224,10 @@ public class BookDto extends AbstractBookBuilder {
 
     private void addCategoryToBook(Book book){
         String[] categories = this.booksCategories.split("\\,");
-        for(String category : categories){
-            book.addCategory(new Category(category));
+        for(String categoryName : categories){
+            Category category = this.categoryService.getCategoryByName(categoryName);
+            book.addCategory(category);
+
         }
     }
 

@@ -248,3 +248,13 @@ function autologin(user) {
        }
    })
 
+    let cart = document.getElementById("cart-link");
+    cart.addEventListener('click', () => {
+        if(!sessionActive()){
+            openLoginNotice();
+        }
+        else {
+            document.location.href = "/home/cart?user=" + (getUser()['login']);
+        }
+   })
+

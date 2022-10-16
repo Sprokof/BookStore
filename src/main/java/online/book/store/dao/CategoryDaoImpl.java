@@ -1,14 +1,10 @@
 package online.book.store.dao;
 
 import online.book.store.entity.Category;
-import online.book.store.entity.ExistCategory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.NoResultException;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 @Component
@@ -19,15 +15,14 @@ public class CategoryDaoImpl implements CategoryDao{
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<ExistCategory> allCategories() {
+    public List<String> allCategories() {
         Session session = null;
-        List<ExistCategory> booksCategories = null;
+        List<String> booksCategories = null;
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
             booksCategories = session.
-                    createSQLQuery("SELECT * FROM EXIST_CATEGORIES").
-                    addEntity(ExistCategory.class).list();
+                    createSQLQuery("SELECT CATEGORY FROM CATEGORIES LIMIT(10)").list();
             session.getTransaction().commit();
         } catch (Exception e) {
             if (session != null) {
@@ -41,17 +36,10 @@ public class CategoryDaoImpl implements CategoryDao{
             }
 
         }
-        return extractSubList(booksCategories);
+        return booksCategories;
     }
 
 
-    private List<ExistCategory> extractSubList(List<ExistCategory> categories){
-        if(categories.size() >= 10) {
-            return categories.subList(0, 10);
-        }
-        return categories;
-
-    }
 
     @Override
     public Category existCategory(String category) {
@@ -83,5 +71,31 @@ public class CategoryDaoImpl implements CategoryDao{
         }
     }
     return findCategory;
+    }
+
+    @Override
+    public Category getCategoryByName(String categoryName) {
+        Session session = null;
+        Category category = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        category =  (Category) session.createSQLQuery("SELECT * FROM " +
+                "CATEGORIES WHERE CATEGORY=:category").
+                setParameter("category", categoryName).
+                addEntity(Category.class).getSingleResult();
+        session.getTransaction().commit();
+    }
+    catch (Exception e){
+        if(session != null && session.getTransaction() != null){
+            session.getTransaction().rollback();
+        }
+    }
+    finally {
+        if(session != null){
+            session.close();
+        }
+    }
+    return category;
     }
 }

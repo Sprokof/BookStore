@@ -27,11 +27,10 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void addBookToCart(Book book, Cart cart) {
-        CartItem cartItem = new CartItem(book.getTitle(), book.getBookImageName(),
-                book.getIsbn(), book.getPrice());
+        CartItem cartItem = new CartItem();
+        cartItem.setBook(book);
         cart.addItem(cartItem).updatePrices();
         updateCart(cart);
-
 
     }
 
@@ -48,12 +47,6 @@ public class CartServiceImpl implements CartService {
         this.cartDao.updateCart(cart);
     }
 
-
-    @Override
-    public void updateCartItem(CartItem cartItem, Cart cart) {
-        cart.removeItem(cartItem);
-        updateCart(cart);
-    }
 
     @Override
     public void updateCartItem(CartItem cartItem, int quantity, Cart cart) {
