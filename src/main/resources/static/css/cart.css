@@ -1,0 +1,120 @@
+.cart-container {
+    position: absolute;
+    top: 20%;
+    left: 10%;
+    overflow-x: hidden;
+}
+
+.cart-panel {
+    color: white;
+    background-color: #b4ad9e;
+}
+
+.product-image img{
+    width: 210px;
+    height: 280px;
+    border: 5px solid #b4ad9e;
+    padding: 5px;
+}
+
+
+.product-desc {
+   margin-left: 10px;
+}
+.product-desc .isbn {
+    margin-top: -3px;
+    margin-bottom: 7px;
+}
+.product-desc div {
+    font-weight: 600;
+    font-family: "Calibri", sans-serif;
+}
+
+.cart-container .prices {
+    font-family: "Calibri", sans-serif;
+    font-weight: 600;
+    text-align: center;
+}
+
+.cart-container tbody tr .remove-btn {
+    text-align: center;
+    cursor: pointer;
+}
+
+.cart-container tbody tr .remove-btn i {
+    margin-top: -2px;
+    font-size: 25px;
+    color: grey;
+}
+
+.cart-container tbody tr .remove-btn i:hover {
+    color: #1b1b1b;
+
+}
+
+
+.cart-container .cart-item:hover {
+    background: none;
+}
+
+.cart-container .shipping-cost:hover {
+    background: none;
+}
+
+.cart-container .total:hover {
+    background: none;
+}
+
+.cart-container .subtotal:hover {
+    background: none;
+}
+
+.cart-container .table-footer:hover {
+    background: none;
+}
+
+
+.cart-container .buttons {
+    line-height: 40px;
+}
+
+.cart-container .buttons span {
+    background-color: black;
+    border-radius: 10px;
+    color: white;
+    padding: 10px;
+    height: 20px;
+    cursor: pointer;
+
+}
+
+.cart-container .buttons span:hover {
+    background-color: #222222;
+}
+
+.cart-container .text-right div {
+    font-weight: 700;
+    width: 75px;
+    vertical-align: center;
+}
+
+.table-footer {
+    border-top: 2px solid #3b3c36 !important;
+    position: relative;
+    width: 100%;
+    left: 77%;
+}
+
+thead tr {
+    border-bottom: 3px #5f5f5b solid;
+}
+
+
+.cart-container tr {
+    border-top: #cfcfc4 solid 2px;
+}
+
+
+.cart-container.compression {
+    left: 23%;
+}

@@ -106,6 +106,9 @@ function initBooksCategories(){
             let cards = document.querySelectorAll('.card');
             cards.forEach(card => card.classList.toggle('squeeze'));
         }
+        if(location[2] === 'cart'){
+            document.querySelector('.cart-container').classList.toggle('compression');
+        }
         document.querySelector(".container-fluid").classList.toggle('compression');
         document.querySelector("#menu").classList.toggle('compression');
 

@@ -20,7 +20,7 @@ public class Wishlist {
     @Getter
     private int id;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable (name = "BOOKS_WISHLISTS",
             joinColumns = @JoinColumn(name = "wishlist_id"),
             inverseJoinColumns = {@JoinColumn(name = "book_id")})

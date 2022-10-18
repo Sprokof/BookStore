@@ -43,8 +43,10 @@ public class SessionServiceImpl implements SessionService{
 
     @Override
     public SessionDto sessionActive(String sessionId) {
-        if(this.sessionDao.getSessionById(sessionId) == null) return new SessionDto(false);
-        boolean active = this.sessionDao.getSessionById(sessionId).isActive();
+        UserSession session;
+        boolean active;
+        if((session = this.sessionDao.getSessionById(sessionId)) == null) active = false;
+        else active = session.isActive();
         return new SessionDto(active);
     }
 
@@ -57,10 +59,9 @@ public class SessionServiceImpl implements SessionService{
     public SessionDto getSessionData(UserDto userDto) {
         UserSession session = getSessionById(userDto.getSessionid());
         if(session == null) return null;
-        boolean active = session.isActive();
         String sessionid = session.getSessionId();
         boolean adminSession = session.getUser().isAdmin();
-        return new SessionDto(active, sessionid, adminSession);
+        return new SessionDto(session.isActive(), sessionid, adminSession);
     }
 
     @Override

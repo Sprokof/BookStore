@@ -80,7 +80,7 @@ public class Book {
     @Setter
     private CartItem cartItem;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany()
     @JoinTable (name = "BOOKS_CATEGORIES",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = {@JoinColumn(name = "category_id")})
@@ -117,7 +117,7 @@ public class Book {
 
     @Getter
     @Setter
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "books")
+    @ManyToMany(mappedBy = "books")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Wishlist> wishlists;
 

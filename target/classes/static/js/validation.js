@@ -125,7 +125,7 @@ export function logout() {
         success: function (status) {
             let code = JSON.parse(JSON.stringify(status));
             if (Number(code) === 200) {
-                setTimeout(toHome, 100);
+                setTimeout(backHome, 100);
 
             }
         }
@@ -138,7 +138,7 @@ function reload(){
     window.location.reload();
 }
 
-function toHome() {
+function backHome() {
     window.location.href = "/";
 }
 
