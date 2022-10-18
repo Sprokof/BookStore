@@ -40,7 +40,7 @@
                                 <img th:src="@{'/images/' + ${item.book.bookImageName}}">
                             </div>
                             <div class="product-desc">
-                                <div class="isbn" th:text="${item.book.isbn}"></div>
+                                <div class="isbn" th:text="${'ISBN : ' + item.book.isbn}"></div>
                                 <div style="display: block" th:text="${'Subject : ' + item.book.subject}"></div>
                                 <div style="display: block" th:text="${'Authors : ' + item.book.authors}"></div>
                                 <div style="display: block" th:text="${'Publisher : ' + item.book.publisher}"></div>
@@ -49,9 +49,8 @@
                         </div>
                     </td>
                     <td class="col-lg-1 quantity">
-                        <input  type="text"
-                                class="form-control text-center"
-                                th:value="${item.quantity}"/>
+                        <input type="text" class="form-control text-center"
+                               th:value="${item.quantity}"/>
                     </td>
 
 
@@ -88,8 +87,8 @@
 
                 <tr class="table-footer">
                     <td class="buttons">
-                        <span class="button" style="margin-right: 10px"> Back Home </span>
-                        <span class="button"> Checkout </span>
+                        <span id="home-btn" class="button" style="margin-right: 10px"> Back Home </span>
+                        <span id="checkout-btn" class="button"> Checkout </span>
                     </td>
                 </tr>
 
@@ -98,6 +97,7 @@
     </div>
 </div>
 <script type="module" th:src="@{/js/navbar.js}"></script>
+<script type="module" th:src="@{/js/cart.js}"></script>
 <script type="module" th:src="@{/js/main.js}"></script>
 </body>
 </html>

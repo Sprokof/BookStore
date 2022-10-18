@@ -118,3 +118,8 @@ thead tr {
 .cart-container.compression {
     left: 23%;
 }
+
+.cart-container .quantity input {
+    box-shadow: none;
+    border-color: #b4ad9e;
+}
