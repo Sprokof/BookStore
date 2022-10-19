@@ -8,10 +8,10 @@ homeBtn.onclick = () => {
     document.location.href = "/";
 }
 
-let removeBtn = document.querySelectorAll('.remove-btn');
+let removeBtn = document.querySelectorAll('.remove-btn i');
 removeBtn.forEach((btn) => {
     btn.onclick = () => {
-    let isbnNode = btn.parentNode.children[0].
+    let isbnNode = btn.parentNode.parentNode.children[0].
         children[0].children[1].children[0];
     removeItem(isbnNode);
     }
@@ -123,3 +123,4 @@ function validInput(input){
         }
     }
 }
+

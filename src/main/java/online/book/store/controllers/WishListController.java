@@ -40,6 +40,10 @@ public class WishListController {
     @GetMapping("/home/wishlist")
     public String wishlist(@RequestParam("user") String login, Model model){
        User user = userService.getUserByLogin(login);
+       Wishlist wishlist = user.getWishList();
+       if(wishlist.isEmpty()){
+           return "wishlistempty";
+       }
        List<Book> wishlistsBooks = user.getWishList().getBooks();
        model.addAttribute("rows", siteEngine.mapBooksToRow(wishlistsBooks));
        return "wishlist";
@@ -75,6 +79,8 @@ public class WishListController {
         wishlistService.contains(book, userWishlist);
         return ResponseEntity.ok(wishlistService.contains(book, userWishlist));
     }
+
+
 
 
 }

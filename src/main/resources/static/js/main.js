@@ -7,13 +7,12 @@ export function controlWishlistContent(btn, pageName) {
             openLoginNotice();
         } else {
             let wishlistDto = requestDto(btn);
-            let isbn = wishlistDto['isbn'];
             if (!contains(wishlistDto, "/home/wishlist/contains")) {
                 addOrRemoveItem(wishlistDto, "/home/wishlist/add");
-                pageName === 'wishlist' ? removeCard(isbn) : fullHeart(btn, true);
+                pageName === 'wishlist' ? setTimeout(reload, 120) : fullHeart(btn, true);
             } else {
                 addOrRemoveItem(wishlistDto, "/home/wishlist/remove");
-                pageName === 'wishlist' ? removeCard(isbn) : fullHeart(btn, false);
+                pageName === 'wishlist' ? setTimeout(reload, 120) : fullHeart(btn, false);
             }
         }
     }
@@ -161,9 +160,8 @@ function inCart(btn, flag){
     }
 }
 
-function removeCard(isbn){
-    let card = document.getElementById(isbn);
-    card.remove();
+function reload(){
+    window.location.reload();
 }
 
 export function sessionActive () {

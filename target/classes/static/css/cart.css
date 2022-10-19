@@ -10,7 +10,7 @@
     background-color: #b4ad9e;
 }
 
-.product-image img{
+.product-image {
     width: 210px;
     height: 280px;
     border: 5px solid #b4ad9e;
@@ -108,9 +108,9 @@
     left: 77%;
 }
 
-thead tr {
+.cart-container .cart-panel tr {
     border-top: none;
-    border-bottom: 3px #5f5f5b solid;
+    border-bottom: 3px grey solid;
 }
 
 
@@ -131,3 +131,5 @@ thead tr {
 .cart-container .quantity input.wrong-input {
     border-color: red;
 }
+
+

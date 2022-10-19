@@ -36,9 +36,7 @@
                 <tr class="cart-item" th:each="item : ${cart.cartItems}">
                     <td class="col-lg-8 product">
                         <div class="media">
-                            <div class="product-image">
-                                <img th:src="@{'/images/' + ${item.book.bookImageName}}">
-                            </div>
+                            <img class="product-image" th:src="@{'/images/' + ${item.book.bookImageName}}">
                             <div class="product-desc">
                                 <div class="isbn" th:text="${'ISBN : ' + item.book.isbn}"></div>
                                 <div th:text="${'Subject : ' + item.book.subject}"></div>

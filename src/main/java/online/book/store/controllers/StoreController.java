@@ -53,11 +53,6 @@ public class StoreController{
         return ResponseEntity.ok(200);
     }
 
-    @GetMapping("/result=empty")
-    public String emptyResult(){
-        return "noresult";
-    }
-
 
     @PostMapping("/session/active")
     public ResponseEntity<SessionDto> sessionActive(@RequestBody UserDto userDto){

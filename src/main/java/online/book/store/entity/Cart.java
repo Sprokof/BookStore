@@ -90,5 +90,8 @@ public class Cart {
         return this.cartItems.size();
     }
 
+    public boolean isEmpty(){
+        return this.cartItems == null || this.cartItems.isEmpty();
+    }
 
 }

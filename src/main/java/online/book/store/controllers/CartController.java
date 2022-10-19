@@ -9,8 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-
 
 @Controller
 public class CartController {
@@ -31,6 +29,9 @@ public class CartController {
     @GetMapping("/home/cart")
     public String cart(@RequestParam("user") String login, Model model){
         Cart cart = userService.getUserByLogin(login).getCart();
+        if(cart.isEmpty()){
+            return "cartempty";
+        }
         model.addAttribute("cart", cart);
         return "cart";
     }
@@ -86,6 +87,7 @@ public class CartController {
         cartService.updateCartItem(cartItem, quantity);
         return ResponseEntity.ok(200);
     }
+
 
 
 }
