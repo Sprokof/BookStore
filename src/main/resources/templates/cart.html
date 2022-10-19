@@ -24,7 +24,7 @@
         <div class="col-sm-12 col-md-10 col-lg-10 col-xs-12 col-md-offset-1">
             <table class="table table-hover">
                 <thead class="cart-panel">
-                <tr style="border-top: none">
+                <tr>
                     <th>Product</th>
                     <th>Quantity</th>
                     <th class="text-center">Price</th>
@@ -41,22 +41,23 @@
                             </div>
                             <div class="product-desc">
                                 <div class="isbn" th:text="${'ISBN : ' + item.book.isbn}"></div>
-                                <div style="display: block" th:text="${'Subject : ' + item.book.subject}"></div>
-                                <div style="display: block" th:text="${'Authors : ' + item.book.authors}"></div>
-                                <div style="display: block" th:text="${'Publisher : ' + item.book.publisher}"></div>
-                                <div style="display: block" th:text="${'Stock : ' + item.book.availableCopies}"></div>
+                                <div th:text="${'Subject : ' + item.book.subject}"></div>
+                                <div th:text="${'Authors : ' + item.book.authors}"></div>
+                                <div th:text="${'Publisher : ' + item.book.publisher}"></div>
+                                <div th:text="${'Stock : ' + item.book.availableCopies}"></div>
                             </div>
                         </div>
                     </td>
+
                     <td class="col-lg-1 quantity">
                         <input type="text" class="form-control text-center"
                                th:value="${item.quantity}"/>
                     </td>
 
 
-                    <td class="col-lg-1 prices"
+                    <td class="col-lg-1 price"
                         th:text="${item.book.price + ' ₽'}"></td>
-                    <td class="col-lg-1 prices"
+                    <td class="col-lg-1 price"
                         th:text="${item.total + '0 ₽'}"></td>
 
                     <td class="col-lg-1 remove-btn"><i class="fa-sharp fa-solid fa-xmark"></i></td>

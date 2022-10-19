@@ -1,5 +1,8 @@
 import {getUser} from "./navbar.js";
 
+const sumSuffix = ".00 ₽";
+const shipping_cost = 170;
+
 let homeBtn = document.getElementById('home-btn');
 homeBtn.onclick = () => {
     document.location.href = "/";
@@ -8,15 +11,15 @@ homeBtn.onclick = () => {
 let removeBtn = document.querySelectorAll('.remove-btn');
 removeBtn.forEach((btn) => {
     btn.onclick = () => {
-    let isbn = btn.parentNode.children[0].children[0].children[1].children[0];
-    removeItem(isbn);
+    let isbnNode = btn.parentNode.children[0].
+        children[0].children[1].children[0];
+    removeItem(isbnNode);
     }
 })
 
-function removeItem(isbn) {
-    console.log(extractISBN(isbn));
+function removeItem(isbnNode) {
     let cartDto = {
-        "isbn": extractISBN(isbn),
+        "isbn": extractISBN(isbnNode),
         "sessionid": getUser()['sessionid'],
     }
 
@@ -29,18 +32,94 @@ function removeItem(isbn) {
         dataType: 'json',
         responseType: 'json',
         success : () => {
-           setTimeout(reloadPage, 300);
+           setTimeout(reloadPage, 200);
         }
     })
 }
 
 
-function extractISBN(isbn){
+function extractISBN(node){
+    let isbn = node.innerText;
     let startIndex = 7;
-    let length = (isbn.innerText.length - startIndex);
-    return isbn.innerText.substr(startIndex, length);
+    let length = (isbn.length - startIndex);
+    return isbn.substr(startIndex, length);
 }
 
 function reloadPage(){
     window.location.reload();
+}
+
+let inputs = document.querySelectorAll('.quantity input');
+inputs.forEach((input) => {
+    input.onkeyup = () => {
+        if(validInput(input)){
+            let isbnNode = input.parentNode.parentNode.children[0].
+                children[0].children[1].children[0]
+            let cartItemDto = {
+                "isbn" : extractISBN(isbnNode),
+                "quantity" : input.value,
+                "sessionid" : getUser()['sessionid']
+            }
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/home/cart/item/set",
+                data: JSON.stringify(cartItemDto),
+                cache: false,
+                dataType: 'json',
+                responseType: 'json',
+                success: () => {
+                    setItemTotal(input);
+                    setCartTotal();
+                }
+
+            })
+        }
+
+    }
+})
+
+
+function setItemTotal(input){
+    let priceField = input.parentNode.parentNode.children[2];
+    let totalField = input.parentNode.parentNode.children[3];
+    let price = (Number(priceField.innerText.substr(0, priceField.innerText.length - 2)));
+    let inputValue = (Number(input.value))
+    totalField.innerText = ((price * inputValue) + sumSuffix);
+}
+
+function setCartTotal(){
+    let cartsItems = document.querySelectorAll('.cart-item');
+    let itemTotal = 0;
+    for(let item of cartsItems){
+        let total = item.children[3].innerText;
+        let substrLength = total.length - 5;
+        itemTotal += (Number(total.substr(0, substrLength)));
+    }
+    let subtotal = document.querySelector('.subtotal .text-right div');
+    subtotal.innerText = (itemTotal + sumSuffix);
+    let cartTotal = document.querySelector('.total .text-right div');
+    cartTotal.innerText = ((Number (itemTotal) + shipping_cost) + sumSuffix);
+
+}
+
+function validInput(input){
+    let value = input.value
+    let stock = input.parentNode.parentNode.children[0].
+        children[0].children[1].children[4];
+    let stockLength = stock.innerText.length;
+    let stockValue = stock.innerText.substr(8, stockLength);
+    console.log(stockValue)
+    let valid = ((value.match(/^\d+$/) != null) && (Number(value) <= (Number(stockValue))));
+    if(!valid){
+        input.classList.add('wrong-input');
+        return false;
+    }
+    else {
+        if (input.classList.contains('wrong-input')) {
+            input.classList.remove('wrong-input');
+            return true;
+        }
+    }
 }

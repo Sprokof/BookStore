@@ -8,7 +8,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "CARTS_ITEMS")
-@Getter
 public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +15,7 @@ public class CartItem {
     private int id;
 
     @Column(name = "QUANTITY")
-    @Setter
+    @Getter
     private int quantity;
 
     @Column(name = "TOTAL")
@@ -62,6 +61,9 @@ public class CartItem {
         this.total = (book.getPrice() * this.quantity);
     }
 
-
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+        this.total = (this.book.getPrice() * quantity);
+    }
 }
 

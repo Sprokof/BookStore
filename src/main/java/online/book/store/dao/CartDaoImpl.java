@@ -66,6 +66,27 @@ public class CartDaoImpl implements CartDao{
     }
 
     @Override
+    public void updateCartItem(CartItem cartItem) {
+        Session session = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(cartItem);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null) {
+                if (session.getTransaction() != null) {
+                    session.getTransaction().rollback();
+                }
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    @Override
     public CartItem getCartItemById(int id) {
         Session session = null;
         CartItem cartItem = null;

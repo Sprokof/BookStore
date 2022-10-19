@@ -36,20 +36,6 @@ public class CartController {
     }
 
 
-    @PostMapping("/home/cart/set")
-    public ResponseEntity.BodyBuilder addCartItem(@RequestBody CartItemDto dto){
-        User user = sessionService.getCurrentUser(dto.getSessionid());
-        int id = (Integer.parseInt(dto.getCartItemId()));
-        int quantity = (Integer.parseInt(dto.getQuantity()));
-
-        CartItem itemToSet = cartService.getCartItemById(id);
-
-        cartService.updateCartItem(itemToSet, quantity, user.getCart());
-
-        return ResponseEntity.status(200);
-
-    }
-
     @PostMapping("/home/cart/remove")
     public ResponseEntity<Integer> removeBook(@RequestBody CartDto cartDto){
         String isbn = cartDto.getIsbn();
@@ -81,11 +67,24 @@ public class CartController {
     }
 
     @PostMapping("/home/cart/quantity")
-    public ResponseEntity<CartDto> cartQuantity(@RequestBody UserDto userDto){
+    public ResponseEntity<CartDto> itemsQuantity(@RequestBody UserDto userDto){
         String sessionid = userDto.getSessionid();
         User user = sessionService.getCurrentUser(sessionid);
         Cart cart = user.getCart();
         return ResponseEntity.ok(cartService.getItemsQuantity(cart));
+    }
+
+    @PostMapping("/home/cart/item/set")
+    public ResponseEntity<Integer> setItem(@RequestBody CartItemDto cartItemDto){
+        String sessionid = cartItemDto.getSessionid();
+        String isbn = cartItemDto.getIsbn();
+        int quantity = Integer.parseInt(cartItemDto.getQuantity());
+        User user = sessionService.getCurrentUser(sessionid);
+        Cart cart = user.getCart();
+        Book book = bookService.getBookByIsbn(isbn);
+        CartItem cartItem = cartService.getCartItemByBook(cart, book);
+        cartService.updateCartItem(cartItem, quantity);
+        return ResponseEntity.ok(200);
     }
 
 

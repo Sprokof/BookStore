@@ -10,7 +10,7 @@ public interface CartService {
     void removeBookFromCart(Book book, Cart cart);
     CartDto contains(Cart cart, Book book);
     void updateCart(Cart cart);
-    void updateCartItem(CartItem cartItem, int quantity, Cart cart);
+    void updateCartItem(CartItem cartItem, int quantity);
     CartItem getCartItemById(int id);
     CartItem getCartItemByBook(Cart cart, Book book);
     void deleteCartItem(CartItem cartItem);

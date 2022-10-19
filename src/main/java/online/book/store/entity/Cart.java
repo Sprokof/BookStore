@@ -31,8 +31,7 @@ public class Cart {
     private static final double SHIPPING_PRICE = 170d;
 
 
-    @OneToMany(cascade = CascadeType.ALL,
-            mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<CartItem> cartItems;
 

@@ -21,16 +21,19 @@
 .product-desc {
    margin-left: 10px;
 }
+
 .product-desc .isbn {
     margin-top: -3px;
     margin-bottom: 7px;
 }
+
 .product-desc div {
     font-weight: 600;
     font-family: "Calibri", sans-serif;
+    display: block;
 }
 
-.cart-container .prices {
+.cart-container .price {
     font-family: "Calibri", sans-serif;
     font-weight: 600;
     text-align: center;
@@ -94,7 +97,7 @@
 
 .cart-container .text-right div {
     font-weight: 700;
-    width: 75px;
+    width: 90px;
     vertical-align: center;
 }
 
@@ -106,6 +109,7 @@
 }
 
 thead tr {
+    border-top: none;
     border-bottom: 3px #5f5f5b solid;
 }
 
@@ -122,4 +126,8 @@ thead tr {
 .cart-container .quantity input {
     box-shadow: none;
     border-color: #b4ad9e;
+}
+
+.cart-container .quantity input.wrong-input {
+    border-color: red;
 }

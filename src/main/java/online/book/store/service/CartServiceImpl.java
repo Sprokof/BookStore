@@ -49,10 +49,10 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public void updateCartItem(CartItem cartItem, int quantity, Cart cart) {
+    public void updateCartItem(CartItem cartItem, int quantity) {
         cartItem.setQuantity(quantity);
-        cart.setCartItem(cartItem);
-        updateCart(cart);
+        cartItem.getCart().updatePrices();
+        this.cartDao.updateCartItem(cartItem);
 
     }
 

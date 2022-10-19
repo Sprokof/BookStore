@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CartItemDto {
-    private String cartItemId;
+    private String isbn;
     private String quantity;
     private String sessionid;
 

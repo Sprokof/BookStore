@@ -15,4 +15,5 @@ public interface CartDao {
     CartItem getCartItemByBook(Cart cart, Book book);
     void deleteCartItem(CartItem cartItem);
     Integer getItemsQuantity(int cartId);
+    void updateCartItem(CartItem cartItem);
 }
