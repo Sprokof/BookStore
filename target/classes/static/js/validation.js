@@ -48,7 +48,6 @@ confirm.addEventListener("click", () => {
 })
 
 export function validation(obj, url){
-    console.log(obj);
     $.ajax({
         type: "POST",
         contentType: "application/json",

@@ -32,7 +32,7 @@ public class BookDaoImpl implements BookDao {
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-            books = session.createSQLQuery("SELECT * FROM BOOKS ORDER BY ADDED_DATE LIMIT 6").
+            books = session.createSQLQuery("SELECT * FROM BOOKS ORDER BY ADDED_DATE LIMIT 100").
                     addEntity(Book.class).list();
             session.getTransaction().commit();
         } catch (Exception e) {

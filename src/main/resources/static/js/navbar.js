@@ -14,7 +14,7 @@ $(document).ready(function () {
 document.addEventListener('DOMContentLoaded', () => {
     manageSession();
     let session = validateSession();
-    if(session === null || session === undefined) return ;
+    if(session === undefined) return ;
         if(session['active']) {
             let menu = document.querySelector('.menu');
             let lastChild = menu.children[4];
@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             createCartItemLink();
         }
-    setCookie();
     clearSearchValue();
 })
 
@@ -124,8 +123,9 @@ function executeCategorySearch() {
     }
 }
 export function validateSession() {
-        let user = getUser();
-        if(user == null) return null;
+    createCookie();
+    let user = getUser();
+        if(user == null) return undefined;
         let sessionDto
         $.ajax({
             type: "POST",
@@ -140,16 +140,12 @@ export function validateSession() {
                 sessionDto = JSON.parse(JSON.stringify(data));
             }
         })
+
         return sessionDto;
     }
 
-    function setCookie() {
-        let value = "";
-        for(let i = 0; i < 10; i ++){
-            value += Math.random();
-        }
-        document.cookie = value;
-
+    function createCookie(){
+        document.cookie = "cookie=" + String ((Math.random() * 10));
     }
 
     function loaded(){

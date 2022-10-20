@@ -74,6 +74,7 @@ public class CartDaoImpl implements CartDao{
             session.update(cartItem);
             session.getTransaction().commit();
         } catch (Exception e) {
+            e.printStackTrace();
             if (session != null) {
                 if (session.getTransaction() != null) {
                     session.getTransaction().rollback();

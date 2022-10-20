@@ -41,7 +41,6 @@ export function contains(bookDto, url) {
         async: false,
         success: (data) => {
             dto = JSON.parse(JSON.stringify(data));
-            console.log(dto)
         }
     })
     return dto['itemContains'];

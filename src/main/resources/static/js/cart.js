@@ -105,13 +105,13 @@ function setCartTotal(){
 }
 
 function validInput(input){
-    let value = input.value
+    let value = input.value;
     let stock = input.parentNode.parentNode.children[0].
         children[0].children[1].children[4];
     let stockLength = stock.innerText.length;
-    let stockValue = stock.innerText.substr(8, stockLength);
-    console.log(stockValue)
-    let valid = ((value.match(/^\d+$/) != null) && (Number(value) <= (Number(stockValue))));
+    let stockValue = Number(stock.innerText.substr(8, stockLength));
+    let valid = (value.match(/^\d+$/) != null)
+        && (((Number(value) >= 1 && Number(value) <= 9 && (Number(value)) <= stockValue)));
     if(!valid){
         input.classList.add('wrong-input');
         return false;
