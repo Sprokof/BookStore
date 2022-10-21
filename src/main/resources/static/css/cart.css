@@ -3,6 +3,7 @@
     top: 20%;
     left: 10%;
     overflow-x: hidden;
+    z-index: 0;
 }
 
 .cart-panel {

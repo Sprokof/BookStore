@@ -60,6 +60,10 @@ public class StoreController{
         return ResponseEntity.ok(this.sessionService.sessionActive(sessionid));
     }
 
+    @GetMapping("/checkout")
+    public String checkout(){
+        return "checkout";
+    }
 }
 
 

@@ -1,0 +1,145 @@
+.wrapper {
+    position: absolute;
+    width: 35%;
+    height: 500px;
+    display: flex;
+    background: #F6F6f6;
+    justify-content: center;
+    font-family: "Cascadia Code", sans-serif;
+    -webkit-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    -moz-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    border: 3px solid slategray;
+    border-radius: 8px;
+    z-index: 1;
+    left: 30%;
+    top: -100%;
+}
+
+
+.checkout-container {
+    overflow-y: hidden;
+    width: 30%;
+    padding: 5% 10%;
+}
+
+.wrapper .checkout-container input {
+    width: 100%;
+    min-height: 25px;
+    font-size: 1rem;
+    letter-spacing: .15rem;
+    font-family: "Calibri", sans-serif;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid grey;
+    padding-left: 10px;
+
+}
+
+.checkout-container label {
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-left: 5px;
+    margin-bottom: -10px;
+}
+
+.checkout-container h5 {
+    text-align: center;
+    font-size: 24px;
+    line-height: 10px;
+    letter-spacing: 1px;
+    height: 30px;
+    overflow-y: hidden;
+}
+
+.checkout-container h5:nth-of-type(2){
+    margin-top: 7%;
+}
+
+.name-info, .address-info{
+    justify-content: space-between;
+    display: flex;
+    width: 100%;
+}
+
+.name-info div {
+    width: 45%;
+}
+
+.address-info div {
+    width: 30%;
+}
+
+
+.cc-info {
+    display: flex;
+    justify-content: space-between;
+}
+
+.cc-info div {
+    width: 45%;
+}
+
+
+.wrapper .container .buttons {
+    margin-top: 40px;
+    margin-left: 210px;
+    height: 50px;
+    width: 210px;
+}
+
+.wrapper .container .buttons button {
+    width: 100px;
+    color: white;
+    background-color: #4a3b76;
+    text-transform: uppercase;
+    border: 0;
+    border-radius: 4px;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+.wrapper .buttons button:hover{
+    background-color: rebeccapurple;
+}
+
+.checkout-container input:focus, button:focus {
+    outline: none;
+}
+
+
+.checkout-container .name-info, .address-info, .cc-info, .street, .cc-num {
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+
+.checkout-container .street input, .cc-num input{
+    margin: 5px 0;
+    min-height: 30px;
+}
+
+.checkout-container .street {
+    margin-top: 5px;
+}
+
+
+@media (max-width: 736px) {
+    .wrapper {
+        width: 35%;
+    }
+
+    .container {
+        width: 30%;
+    }
+
+    .buttons {
+        align-items: center;
+    }
+}
+
+.wrapper.active {
+    top: 35%;
+}

@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/checkout.css}">
     <script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
     <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
@@ -42,7 +43,7 @@
                                 <div th:text="${'Subject : ' + item.book.subject}"></div>
                                 <div th:text="${'Authors : ' + item.book.authors}"></div>
                                 <div th:text="${'Publisher : ' + item.book.publisher}"></div>
-                                <div th:text="${'Stock : ' + item.book.availableCopies}"></div>
+                                <div th:text="${'In Stock : ' + item.book.availableCopies}"></div>
                             </div>
                         </div>
                     </td>
@@ -95,6 +96,7 @@
         </div>
     </div>
 </div>
+<div th:insert="~{checkout :: checkout}"></div>
 <script type="module" th:src="@{/js/navbar.js}"></script>
 <script type="module" th:src="@{/js/cart.js}"></script>
 <script type="module" th:src="@{/js/main.js}"></script>

@@ -1,0 +1,66 @@
+<div id="checkout" class="wrapper" th:fragment="checkout">
+    <div class="container checkout-container">
+            <h5>
+                <i class="fas fa-shipping-fast"></i>
+                Shipping Details
+            </h5>
+
+            <div class="name-info">
+                <div>
+                    <label for="f-name">First Name</label>
+                    <input type="text" id="f-name">
+                </div>
+                <div>
+                    <label for="l-name">Last Name</label>
+                    <input type="text" id="l-name">
+                </div>
+            </div>
+
+
+            <div class="street">
+                <label for="street">Street</label>
+                <input type="text"  id="street">
+            </div>
+
+            <div class="address-info">
+                <div>
+                    <label for="city">City</label>
+                    <input id="city" type="text">
+                </div>
+                <div>
+                    <label for="state"> State </label>
+                    <input id="state" type="text">
+                </div>
+                <div>
+                    <label for="zip">Zip</label>
+                    <input id="zip" type="text" placeholder="000000">
+                </div>
+            </div>
+
+            <h5>
+                <i class="far fa-credit-card"></i> Payment Information
+            </h5>
+
+            <div class="cc-num">
+                <label for="card-num">Credit Card No.</label>
+                <input class="text-center" id="card-num" type="text" placeholder="1111-2222-3333-4444">
+            </div>
+
+            <div class="cc-info">
+                <div>
+                    <label for="exp">Exp</label>
+                    <input class="text-center" id="exp" type="text" placeholder="00/00">
+                </div>
+                <div>
+                    <label for="ccv">CCV</label>
+                    <input class="text-center" id="ccv" type="text" placeholder="000">
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button>To Cart</button>
+                <button>Purchase</button>
+            </div>
+    </div>
+</div>
+</html>

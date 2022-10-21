@@ -109,7 +109,7 @@ function validInput(input){
     let stock = input.parentNode.parentNode.children[0].
         children[0].children[1].children[4];
     let stockLength = stock.innerText.length;
-    let stockValue = Number(stock.innerText.substr(8, stockLength));
+    let stockValue = Number(stock.innerText.substr(11, stockLength));
     let valid = (value.match(/^\d+$/) != null)
         && (((Number(value) >= 1 && Number(value) <= 9 && (Number(value)) <= stockValue)));
     if(!valid){
@@ -124,3 +124,22 @@ function validInput(input){
     }
 }
 
+let checkoutBtn = document.querySelector('#checkout-btn');
+checkoutBtn.onclick = () => {
+    window.scrollTo({ top: 135, behavior: 'smooth' })
+    setTimeout(checkoutOpen, 150);
+}
+let toCart = document.querySelectorAll('#checkout .buttons button ')[0];
+toCart.onclick = () => {
+    setTimeout(checkoutClose, 150);
+}
+
+function checkoutOpen(){
+    let checkout = document.querySelector('#checkout');
+    checkout.classList.add('active');
+}
+
+function checkoutClose(){
+    let checkout = document.querySelector('#checkout');
+    checkout.classList.remove('active');
+}
