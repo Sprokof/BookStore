@@ -1,4 +1,5 @@
 import {getUser} from "./navbar.js";
+import {blockBackgroundHtml} from "./notice.js";
 
 const sumSuffix = ".00 ₽";
 const shipping_cost = 170;
@@ -108,8 +109,7 @@ function validInput(input){
     let value = input.value;
     let stock = input.parentNode.parentNode.children[0].
         children[0].children[1].children[4];
-    let stockLength = stock.innerText.length;
-    let stockValue = Number(stock.innerText.substr(11, stockLength));
+    let stockValue = Number(stock.innerText.substr(11,  stock.innerText.length));
     let valid = (value.match(/^\d+$/) != null)
         && (((Number(value) >= 1 && Number(value) <= 9 && (Number(value)) <= stockValue)));
     if(!valid){
@@ -137,9 +137,18 @@ toCart.onclick = () => {
 function checkoutOpen(){
     let checkout = document.querySelector('#checkout');
     checkout.classList.add('active');
+    blockBackgroundHtml(true);
 }
 
 function checkoutClose(){
     let checkout = document.querySelector('#checkout');
+    clearCheckoutInputs();
     checkout.classList.remove('active');
+    blockBackgroundHtml(false);
+
+}
+
+function clearCheckoutInputs(){
+    let inputs = document.querySelectorAll('.checkout-container div input');
+    inputs.forEach((input) => input.value = '');
 }

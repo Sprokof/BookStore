@@ -1,4 +1,5 @@
 import {getUser} from "./navbar.js";
+import {blockBackgroundHtml} from "./notice.js";
 
 const sumSuffix = ".00 ₽";
 const shipping_cost = 170;
@@ -136,9 +137,18 @@ toCart.onclick = () => {
 function checkoutOpen(){
     let checkout = document.querySelector('#checkout');
     checkout.classList.add('active');
+    blockBackgroundHtml(true);
 }
 
 function checkoutClose(){
     let checkout = document.querySelector('#checkout');
+    clearCheckoutInputs();
     checkout.classList.remove('active');
+    blockBackgroundHtml(false);
+
+}
+
+function clearCheckoutInputs(){
+    let inputs = document.querySelectorAll('.checkout-container div input');
+    inputs.forEach((input) => input.value = '');
 }

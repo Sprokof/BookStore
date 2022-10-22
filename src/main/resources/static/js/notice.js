@@ -36,6 +36,8 @@ export function blockBackgroundHtml(flag){
     let sidebar = document.querySelector('#sidebar');
     let slider = document.querySelector('.books-slider');
     let cards = document.querySelector('#card-container');
+    let cart = document.querySelector('.cart-container');
+    console.log(cart == null);
     if(flag) {
         navbar.style.pointerEvents = "none";
         if(slider != null) {
@@ -44,16 +46,25 @@ export function blockBackgroundHtml(flag){
         if(cards != null) {
             cards.style.pointerEvents = "none";
         }
-            sidebar.style.pointerEvents = "none";
+
+        if(cart != null) {
+            cart.style.pointerEvents = "none";
+        }
+        sidebar.style.pointerEvents = "none";
+
     }
     else {
         navbar.style.pointerEvents = "auto";
-        if(slider != null) {
+        if (slider != null) {
             slider.style.pointerEvents = "auto";
         }
-        if(cards != null) {
+        if (cards != null) {
             cards.style.pointerEvents = "auto";
+        }
+        if (cart != null) {
+            cart.style.pointerEvents = "auto";
         }
         sidebar.style.pointerEvents = "auto";
     }
+
 }

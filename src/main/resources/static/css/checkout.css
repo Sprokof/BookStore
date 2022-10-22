@@ -82,14 +82,14 @@
 }
 
 
-.wrapper .container .buttons {
+.wrapper .checkout-container .buttons {
     margin-top: 40px;
-    margin-left: 210px;
+    margin-left: 50%;
     height: 50px;
     width: 210px;
 }
 
-.wrapper .container .buttons button {
+.wrapper .checkout-container .buttons button {
     width: 100px;
     color: white;
     background-color: #4a3b76;
@@ -128,18 +128,24 @@
 
 @media (max-width: 736px) {
     .wrapper {
-        width: 35%;
+        width: 50%;
     }
 
-    .container {
-        width: 30%;
+    .checkout-container {
+        width: 50%;
     }
 
-    .buttons {
+    .checkout-container .buttons {
+        margin-left: 50%;
         align-items: center;
     }
+
 }
 
 .wrapper.active {
     top: 35%;
+}
+
+.checkout-container h5 i {
+    margin-bottom: -5px;
 }

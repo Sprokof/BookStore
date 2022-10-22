@@ -43,24 +43,24 @@
 
             <div class="cc-num">
                 <label for="card-num">Credit Card No.</label>
-                <input class="text-center" id="card-num" type="text" placeholder="1111-2222-3333-4444">
+                <input class="text-center" id="card-num" type="text"
+                       placeholder="1111-2222-3333-4444" minlength="16" maxlength="16">
             </div>
 
             <div class="cc-info">
                 <div>
                     <label for="exp">Exp</label>
-                    <input class="text-center" id="exp" type="text" placeholder="00/00">
+                    <input class="text-center" id="exp" type="text" placeholder="00/00" minlength="5" maxlength="5">
                 </div>
                 <div>
                     <label for="ccv">CCV</label>
-                    <input class="text-center" id="ccv" type="text" placeholder="000">
+                    <input class="text-center" id="ccv" type="text" placeholder="000" minlength="3" maxlength="3">
                 </div>
             </div>
 
             <div class="buttons">
-                <button>To Cart</button>
+                <button>Close</button>
                 <button>Purchase</button>
             </div>
     </div>
 </div>
-</html>
