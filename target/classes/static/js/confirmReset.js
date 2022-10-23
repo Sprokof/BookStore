@@ -1,4 +1,5 @@
 import {blockBackgroundHtml} from "./notice.js";
+import {closeSuccessWindow, openSuccessWindow} from "./success.js";
 
 let resetTwoPopup = document.querySelector('#popup-confirm-reset');
 let closeTwoPopup = document.querySelector('#close-confirm-reset');
@@ -27,4 +28,11 @@ resendCode.addEventListener("click", () => {
 
 function setActive(){
     resendCode.classList.remove('disable');
+}
+
+
+export function resetSuccess(){
+    openSuccessWindow();
+    setTimeout(closeSuccessWindow, 2200);
+    setTimeout(closeResetTwoPopup, 2700);
 }

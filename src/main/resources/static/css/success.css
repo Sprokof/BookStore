@@ -1,0 +1,57 @@
+.success-window {
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    top: -100%;
+    left: 16%;
+    background: #F6F6f6;
+    border-radius: 10px;
+    border: 4px slategray solid;
+    -webkit-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    -moz-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    opacity: 0;
+}
+
+.success-window div {
+    position: relative;
+    background: #F6F6f6;
+    border: 5px green solid;
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    padding: 10px;
+    top: 20%;
+    left: 25%;
+    align-items: center;
+}
+
+.success-window div i {
+    overflow-y: hidden;
+    color: green;
+    font-size: 55px;
+    line-height: 60px;
+    margin-left: 10px;
+
+}
+
+.success-window .success-message {
+    position: absolute;
+    top: 75%;
+    left: 35%;
+    text-transform: uppercase;
+}
+
+.success-window.open{
+    top: 10%;
+    transition: 0.3s;
+    z-index: 2;
+    opacity: 1;
+}
+
+.success-window.close {
+    transition: 0.2s;
+    opacity: 0;
+    top: -100%;
+}
+

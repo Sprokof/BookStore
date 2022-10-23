@@ -1,5 +1,5 @@
 import {resetClose} from "./reset.js";
-import {openResetTwoPopup} from "./confirmReset.js";
+import {openResetTwoPopup, resetSuccess} from "./confirmReset.js";
 import {getUser} from "./navbar.js";
 
 let login = document.getElementById('login-btn');
@@ -67,10 +67,14 @@ export function validation(obj, url){
             } else {
                 let value = url.substr(url.lastIndexOf("/") + 1);
                 if (value === 'reset') {
-                    resetClose(true);
+                    resetClose();
                     openResetTwoPopup();
+                }
+                else if(value === 'confirm'){
+                    resetSuccess();
+                }
 
-                } else {
+                else {
                     saveUser(obj);
                     if (value === 'login') {
                         rememberUser(rememberMe.checked);

@@ -94,12 +94,3 @@
     color: red!important;
 }
 
-.reset .wait-message {
-    background: silver;
-    width: 50%;
-    position: absolute;
-    left: 45%;
-    bottom: 50%;
-
-}
-

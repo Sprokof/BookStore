@@ -1,5 +1,6 @@
 import {getUser} from "./navbar.js";
 import {blockBackgroundHtml} from "./notice.js";
+import {closeSuccessWindow, openSuccessWindow} from "./success.js";
 
 const sumSuffix = ".00 ₽";
 const shipping_cost = 170;
@@ -129,9 +130,20 @@ checkoutBtn.onclick = () => {
     window.scrollTo({ top: 135, behavior: 'smooth' })
     setTimeout(checkoutOpen, 150);
 }
-let toCart = document.querySelectorAll('#checkout .buttons button ')[0];
+
+let toCart = document.querySelectorAll('#checkout .buttons button')[0];
 toCart.onclick = () => {
     setTimeout(checkoutClose, 150);
+}
+
+let purchase = document.querySelectorAll('#checkout .buttons button')[1];
+purchase.onclick = () => {
+    let success = document.querySelectorAll('.success-window')[1];
+    success.style.top = "25%";
+    success.style.left = "30%";
+    setTimeout(openSuccessWindow, 150);
+    setTimeout(closeSuccessWindow, 2100);
+    setTimeout(reloadPage, 2700);
 }
 
 function checkoutOpen(){

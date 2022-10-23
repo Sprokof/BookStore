@@ -37,7 +37,9 @@ export function blockBackgroundHtml(flag){
     let slider = document.querySelector('.books-slider');
     let cards = document.querySelector('#card-container');
     let cart = document.querySelector('.cart-container');
-    console.log(cart == null);
+    let checkout = document.querySelector('.checkout-container');
+    let confirm = document.querySelector('#popup-confirm-reset');
+    let success = document.querySelectorAll('.success-window');
     if(flag) {
         navbar.style.pointerEvents = "none";
         if(slider != null) {
@@ -50,11 +52,21 @@ export function blockBackgroundHtml(flag){
         if(cart != null) {
             cart.style.pointerEvents = "none";
         }
+
+        if(checkout != null && success[1].classList.contains('open')) {
+            checkout.style.pointerEvents = "none";
+        }
+
+        if(confirm != null && success[0].classList.contains('open')) {
+            confirm.style.pointerEvents = "none";
+        }
+
         sidebar.style.pointerEvents = "none";
 
     }
     else {
         navbar.style.pointerEvents = "auto";
+
         if (slider != null) {
             slider.style.pointerEvents = "auto";
         }
@@ -64,7 +76,18 @@ export function blockBackgroundHtml(flag){
         if (cart != null) {
             cart.style.pointerEvents = "auto";
         }
+
+        if(checkout != null) {
+            checkout.style.pointerEvents = "auto";
+        }
+
+        if(confirm != null) {
+            confirm.style.pointerEvents = "auto";
+        }
+
         sidebar.style.pointerEvents = "auto";
     }
+
+
 
 }
