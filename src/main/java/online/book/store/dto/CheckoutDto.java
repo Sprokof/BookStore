@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import online.book.store.builder.AbstractCheckoutBuilder;
-import online.book.store.entity.Address;
 import online.book.store.entity.Checkout;
 
 import java.lang.reflect.Field;
@@ -127,22 +126,22 @@ public class CheckoutDto extends AbstractCheckoutBuilder {
 
     }
 
-    @Override
-    public Checkout build() {
-        if(!containsNull()){
-           Checkout shipment =
-                   new Checkout(this.firstName, this.lastName,
-                           this.email, this.phoneNumber);
+   // @Override
+    //public Checkout build() {
+       // if(!containsNull()){
+          // Checkout shipment =
+                 //  new Checkout(this.firstName, this.lastName,
+                     //      this.email, this.phoneNumber);
 
            //shipment.setAddress(new Address(this.country,
             //        this.state, this.city,
               //      this.streetName, this.buildingNumber,
                 //    Integer.parseInt(this.roomNumber), this.zipCode));
 
-        return shipment;
-        }
-    return null;
-    }
+       // return shipment;
+       // }
+    //return null;
+   // }
 
     public Checkout doShipmentBuilder(){
         return builder().

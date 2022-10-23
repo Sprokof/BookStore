@@ -7,11 +7,11 @@
 
             <div class="name-info">
                 <div>
-                    <label for="f-name">First Name</label>
+                    <label for="f-name"><span class="symbol">*</span>First Name</label>
                     <input type="text" id="f-name">
                 </div>
                 <div>
-                    <label for="l-name">Last Name</label>
+                    <label for="l-name"><span class="symbol">*</span>Last Name</label>
                     <input type="text" id="l-name">
                 </div>
             </div>
@@ -24,7 +24,7 @@
 
             <div class="address-info">
                 <div>
-                    <label for="city">City</label>
+                    <label for="city"><span class="symbol">*</span>City</label>
                     <input id="city" type="text">
                 </div>
                 <div>
@@ -32,7 +32,7 @@
                     <input id="state" type="text">
                 </div>
                 <div>
-                    <label for="zip">Zip</label>
+                    <label for="zip"><span class="symbol">*</span>Zip</label>
                     <input id="zip" type="text" placeholder="000000">
                 </div>
             </div>
@@ -42,21 +42,23 @@
             </h5>
 
             <div class="cc-num">
-                <label for="card-num">Credit Card No.</label>
+                <label for="card-num"><span class="symbol">*</span>Credit Card No.</label>
                 <input class="text-center" id="card-num" type="text"
                        placeholder="1111-2222-3333-4444" minlength="16" maxlength="16">
             </div>
 
             <div class="cc-info">
                 <div>
-                    <label for="exp">Exp</label>
+                    <label for="exp"><span class="symbol">*</span>Exp</label>
                     <input class="text-center" id="exp" type="text" placeholder="00/00" minlength="5" maxlength="5">
                 </div>
                 <div>
-                    <label for="ccv">CCV</label>
+                    <label for="ccv"><span class="symbol">*</span>CCV</label>
                     <input class="text-center" id="ccv" type="text" placeholder="000" minlength="3" maxlength="3">
                 </div>
             </div>
+
+            <p class="notice"><span class="symbol">*</span> - Mandatory fields</p>
 
             <div class="buttons">
                 <button>Close</button>

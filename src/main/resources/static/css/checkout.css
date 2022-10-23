@@ -83,7 +83,7 @@
 
 
 .wrapper .checkout-container .buttons {
-    margin-top: 40px;
+    margin-top: -3%;
     margin-left: 50%;
     height: 50px;
     width: 210px;
@@ -150,12 +150,11 @@
     margin-bottom: -5px;
 }
 
-.checkout-container .save-info {
-    margin-top: -85px;
-    width: 110px;
-    height: 50px;
-    display: block;
-    overflow-y: hidden;
-
+.checkout-container .symbol {
+    color: red;
 }
 
+.checkout-container .notice {
+    margin-top: 10px;
+    width: 150px;
+}
