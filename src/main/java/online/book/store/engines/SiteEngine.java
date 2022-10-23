@@ -80,7 +80,7 @@ public class SiteEngine {
 
 
     public boolean kmpMatcher(Book book, SearchQuery searchQuery) {
-        String booksContent = book.toString();
+        String booksContent = solidBookText(book);
         int queryLength = searchQuery.length();
         if (queryLength == 0) {
             return false;
@@ -169,6 +169,13 @@ public class SiteEngine {
     private SiteEngine saveParams(SearchQuery searchQuery, SortTypes sortType) {
         this.searchParam = new SearchParam(searchQuery, sortType);
         return this;
+    }
+
+    private String solidBookText(Book book){
+    return String.format("%s%s%s%d%s%d%s",
+                book.getIsbn(), book.getTitle(), book.getPublisher(),
+                book.getYearPub(), book.getSubject(),
+                book.getPrice(), book.getAuthors()).replaceAll("\\s", "");
     }
 
 }

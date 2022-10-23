@@ -149,3 +149,13 @@
 .checkout-container h5 i {
     margin-bottom: -5px;
 }
+
+.checkout-container .save-info {
+    margin-top: -85px;
+    width: 110px;
+    height: 50px;
+    display: block;
+    overflow-y: hidden;
+
+}
+

@@ -124,9 +124,7 @@ public class Book {
 
     @Override
     public String toString(){
-        return String.format("%s%s%s%d%s%d%s",
-                        this.isbn, this.title.replaceAll("\\s", ""), this.publisher,
-                        this.yearPub, this.subject, this.price, this.authors);
+        return "book { isbn" + this.isbn + "}";
     }
 
     private LocalDate currentDate(){

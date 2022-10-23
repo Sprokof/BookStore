@@ -101,12 +101,15 @@ function initBooksCategories(){
             document.querySelector('.sub-menu').classList.add('none');
         }
         if(location[3] === 'search' || location[2] === 'wishlist'){
-            document.querySelector('#card-container').classList.toggle('right');
+            let card = document.querySelector('#card-container');
+            if(card !== null)
+            card.classList.toggle('right');
             let cards = document.querySelectorAll('.card');
             cards.forEach(card => card.classList.toggle('squeeze'));
         }
-        if(location[2] === 'cart' && location[3] !== 'empty'){
-            document.querySelector('.cart-container').classList.toggle('compression');
+        if(location[2] === 'cart'){
+            let cart = document.querySelector('.cart-container');
+            if(cart !== null) cart.classList.toggle('compression');
         }
         document.querySelector(".container-fluid").classList.toggle('compression');
         document.querySelector("#menu").classList.toggle('compression');
@@ -163,7 +166,8 @@ export function validateSession() {
     }
 
    export function addBook() {
-       document.location = '/home/book/add?sessionid=' + getUser()['sessionid'];
+       let user = getUser();
+       document.location = '/home/book/add?user=' + user['login'] + '&sessionid=' + getUser()['sessionid'];
    }
 
 
@@ -173,6 +177,7 @@ export function validateSession() {
        let sessionDto = {
            "sessionid" : getUser()['sessionid']
        }
+       let user = getUser()
        $.ajax({
            type: "POST",
            contentType: "application/json",
@@ -181,19 +186,14 @@ export function validateSession() {
            cache: false,
            dataType: 'json',
            responseType: "json",
-           async: false,
            success : () => {
-               autologin(getUser());
+               autologin(user);
            }
        })
    }
 
-function autologin(user) {
-    user['sessionid'] = ""
-    updateUser(user);
+   function autologin(user) {
     if (user['remember'] === 'true') {
-        user['sessionid'] = getSessionId();
-        updateUser(user);
         $.ajax({
             type: "POST",
             contentType: "application/json",
@@ -202,7 +202,6 @@ function autologin(user) {
             cache: false,
             dataType: 'json',
             responseType: "json",
-            async: false,
         })
     }
 }
