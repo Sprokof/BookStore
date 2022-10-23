@@ -17,8 +17,8 @@
 <body>
 <div th:insert="~{navbar :: navbar}"></div>
 <div class="result-message">
-    <span> No Related Results </span>
-    <button class="home-btn" onclick="goHome()"> Back home </button>
+    <span class="text-center"></span>
+    <button class="home-btn"> Back Home </button>
 </div>
 
 <script type="module" th:src="@{/js/login.js}"></script>
@@ -29,10 +29,7 @@
 <script type="module" th:src="@{/js/navbar.js}"></script>
 <script type="module" th:src="@{/js/notice.js}"></script>
 
-<script>
-    function goHome(){
-        document.location.href = "/";
-    }
-</script>
+<script type="module" th:src="@{/js/main.js}"></script>
+<script type="module" th:src="@{/js/noresult.js}"></script>
 </body>
 </html>

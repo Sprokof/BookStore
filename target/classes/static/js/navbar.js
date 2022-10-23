@@ -1,6 +1,6 @@
 import {getSessionId, logout, updateUser} from "./validation.js"
 import {openLoginNotice} from "./notice.js";
-import {sessionActive} from "./main.js";
+import {currentLocation, sessionActive} from "./main.js";
 
 
 $(document).ready(function () {
@@ -92,7 +92,7 @@ function initBooksCategories(){
     sideMenu.addEventListener('click', () => {
         initBooksCategories();
         document.querySelector('.sidebar').classList.toggle('active');
-        let location = window.location.pathname.split('/');
+        let location = currentLocation();
         if (location.length === 2 && location[1] === '') {
             document.querySelector('.books-slider').classList.toggle('right');
             document.querySelector('.control-slider').classList.toggle('left');

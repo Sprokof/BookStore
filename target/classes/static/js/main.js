@@ -195,5 +195,8 @@ function addOrRemoveItem(dto, url){
     })
 }
 
+export function currentLocation(){
+    return window.location.pathname.split('/');
 
+}
 

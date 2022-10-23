@@ -80,12 +80,13 @@ body {
 
 .sidebar .menu .item .main::after {
     content: '';
-    display: block ;
+    display: block;
     width: 100%;
-    background-color: #1b1b1b;
+    background-color: black;
     height: 1px;
     transform: scale(0);
     transition: all 0.3s;
+    align-items: center;
 }
 
 

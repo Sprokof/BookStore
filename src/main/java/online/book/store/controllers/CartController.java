@@ -30,7 +30,7 @@ public class CartController {
     public String cart(@RequestParam("user") String login, Model model){
         Cart cart = userService.getUserByLogin(login).getCart();
         if(cart.isEmpty()){
-            return "cartempty";
+            return "noresult";
         }
         model.addAttribute("cart", cart);
         return "cart";
