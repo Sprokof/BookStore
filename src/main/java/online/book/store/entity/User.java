@@ -4,6 +4,7 @@ package online.book.store.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import online.book.store.hash.SHA256;
 import online.book.store.service.SessionService;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -54,6 +55,16 @@ public class User {
     @Getter
     @Setter
     private boolean admin = false;
+
+    @Column(name = "ACCEPTED")
+    @Getter
+    @Setter
+    private boolean accepted = false;
+
+    @Column(name = "TOKEN")
+    @Getter
+    @Setter
+    private String token;
 
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -126,6 +137,7 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.token = SHA256.hash(email);
 
     }
 
@@ -153,7 +165,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "User {" +
                 ", email='" + email + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' + "";

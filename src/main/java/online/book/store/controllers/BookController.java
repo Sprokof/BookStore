@@ -83,7 +83,7 @@ public class BookController {
         SortTypes sortType = SortTypes.getTypeByName(params.get("type"));
         boolean hasResult = this.engine.executeSearchQuery(searchQuery, sortType).hasResult();
         if(!hasResult){
-            return "noresult";
+            return "result";
         }
         else {
             List<SiteEngine.Row> resultRows = this.engine.mapResultToRow();

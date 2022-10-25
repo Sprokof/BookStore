@@ -1,6 +1,6 @@
 import {getUser} from "./navbar.js";
 import {blockBackgroundHtml} from "./notice.js";
-import {closeSuccessWindow, openSuccessWindow} from "./success.js";
+import {closeSuccessWindow, openSuccessWindow} from "./window.js";
 
 const sumSuffix = ".00 ₽";
 const shipping_cost = 170;
@@ -138,7 +138,7 @@ toCart.onclick = () => {
 
 let purchase = document.querySelectorAll('#checkout .buttons button')[1];
 purchase.onclick = () => {
-    let success = document.querySelectorAll('.success-window')[1];
+    let success = document.querySelectorAll('#success-window')[1];
     success.style.top = "25%";
     success.style.left = "30%";
     setTimeout(openSuccessWindow, 150);

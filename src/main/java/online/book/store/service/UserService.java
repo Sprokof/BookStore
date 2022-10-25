@@ -7,9 +7,8 @@ import java.util.UUID;
 
 public interface UserService{
     User getUserByLogin(String login);
-    void updateUserInSession(User user);
     void saveOrUpdate(User user);
-    User getUserByUUID(String uuid);
-    List<User> getUsersInSession();
-    String extractValidLogin(String login);
+    void updateUser(User user);
+    void saveUser(User user);
+    User getUserByToken(String token);
 }

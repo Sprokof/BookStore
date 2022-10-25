@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-public class ResetDto {
+public class ConfirmDto {
 
     @Getter
     @Setter

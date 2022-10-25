@@ -21,7 +21,7 @@ public class UserDaoImpl implements UserDao {
     public void saveUser(User user) {
         Session session = null;
         try {
-            session = sessionFactory.openSession();
+            session = this.sessionFactory.openSession();
             session.beginTransaction();
             session.save(user);
             session.getTransaction().commit();
@@ -101,7 +101,24 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void updateUser(User user) {
+        Session session = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(user);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null) {
+                if (session.getTransaction() != null) {
+                    session.getTransaction().rollback();
+                }
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
 
+        }
     }
 
     @Override
@@ -161,6 +178,35 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
+    @Override
+    public User getUserByToken(String token) {
+        Session session = null;
+        User user = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        user = (User) session.createSQLQuery("SELECT * FROM USERS " +
+                "WHERE TOKEN=:token").setParameter("token", token).
+                addEntity(User.class).list().get(0);
+        session.getTransaction().commit();
+    }
+    catch (Exception e){
+        e.printStackTrace();
+        if(session != null){
+            if(session.getTransaction() != null){
+                session.getTransaction().rollback();
+                if(e instanceof ArrayIndexOutOfBoundsException)
+                    return null;
+            }
+        }
+    }
+    finally {
+        if(session != null){
+            session.close();
+        }
+    }
+    return user;
+    }
 }
 
 

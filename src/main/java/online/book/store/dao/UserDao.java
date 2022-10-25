@@ -13,4 +13,5 @@ public interface UserDao {
     void saveOrUpdate(User user);
     User getUserByUUID(UUID uuid);
     List<User> getUsersInSession();
+    User getUserByToken(String token);
 }

@@ -21,6 +21,7 @@ public class UserDto extends AbstractUserBuilder {
     private String email;
     private String username;
     private String remember;
+    private boolean accepted;
 
 
 

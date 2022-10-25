@@ -1,21 +1,17 @@
 package online.book.store.service;
 
 import lombok.NoArgsConstructor;
-import online.book.store.builder.AbstractUserBuilder;
-import online.book.store.dto.ResetDto;
+import online.book.store.dto.ConfirmDto;
 import online.book.store.dto.UserDto;
-import online.book.store.dto.UserSignInDto;
-import online.book.store.dto.UserLoginDto;
 import online.book.store.entity.User;
 import online.book.store.entity.UserSession;
+import online.book.store.expections.ResourceNotFoundException;
 import online.book.store.hash.SHA256;
+import online.book.store.mail.MailSender;
+import online.book.store.mail.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Service
 @Component
@@ -25,10 +21,13 @@ public class SignInServiceImpl implements SignInService {
     @Autowired
     private UserService userService;
 
-    private ResetDto passwordDto;
+    private ConfirmDto passwordDto;
 
     @Autowired
     private SessionService sessionService;
+
+    @Autowired
+    private MailSender sender;
 
     @Override
     public int loginUser(UserDto userDto) {
@@ -51,10 +50,10 @@ public class SignInServiceImpl implements SignInService {
 
 
     @Override
-    public void addResetDto(ResetDto resetDto) {
-        String password = resetDto.getNewPassword();
-        resetDto.setNewPassword(SHA256.hash(password));
-        this.passwordDto = resetDto;
+    public void addResetDto(ConfirmDto confirmDto) {
+        String password = confirmDto.getNewPassword();
+        confirmDto.setNewPassword(SHA256.hash(password));
+        this.passwordDto = confirmDto;
         this.passwordDto.setGeneratedCode(generateCode());
     }
 
@@ -68,14 +67,14 @@ public class SignInServiceImpl implements SignInService {
     }
 
     @Override
-    public ResetDto getResetDto() {
+    public ConfirmDto getResetDto() {
         return this.passwordDto;
     }
 
 
     @Override
     public boolean adminsRequest(String sessionid) {
-        if(!this.sessionService.sessionActive(sessionid).isActive()) return false;
+        if (!this.sessionService.sessionActive(sessionid).isActive()) return false;
         return this.sessionService.getCurrentUser(sessionid).isAdmin();
     }
 
@@ -90,7 +89,6 @@ public class SignInServiceImpl implements SignInService {
     }
 
 
-
     @Override
     public void autologin(UserDto userDto) {
         String sessionid = userDto.getSessionid();
@@ -100,30 +98,55 @@ public class SignInServiceImpl implements SignInService {
     }
 
 
-    private void initUserSession(UserDto userDto){
+    private void initUserSession(UserDto userDto) {
         String sessionId = userDto.getSessionid();
         User user = getUser(userDto);
         UserSession session = null;
-        if(!this.sessionService.sessionExist(sessionId)){
+        if (!this.sessionService.sessionExist(sessionId)) {
             session = new UserSession(sessionId);
             user.addSession(session);
-            this.userService.saveOrUpdate(user);
-        }
-        else {
+            this.userService.updateUser(user);
+        } else {
             session = this.sessionService.getSessionById(sessionId);
             this.sessionService.updateSession(session, true);
 
         }
 
     }
-    private User getUser(UserDto userDto){
+
+    private User getUser(UserDto userDto) {
         String login = userDto.getLogin();
-        if(login != null){
-            return this.userService.getUserByLogin(login);
-        }
-        return userDto.doUserBuilder();
+        return this.userService.getUserByLogin(login);
     }
 
+    @Override
+    public void registration(UserDto userDto) {
+        User user = userDto.doUserBuilder();
+        userService.saveUser(user);
+        sender.send(user.getEmail(), Subject.CONFIRM_REGISTRATION, this);
+    }
+
+    @Override
+    public String generateToken(String email) {
+        return SHA256.hash(email);
+    }
+
+    @Override
+    public void confirmRegistration(String token) throws ResourceNotFoundException{
+        User user = this.userService.getUserByToken(token);
+        if(user != null){
+            if(user.isAccepted()) throw new ResourceNotFoundException ();
+            user.setAccepted(true);
+            this.userService.updateUser(user);
+        }
+    }
+
+    @Override
+    public void resendConfirmationLink(String login) {
+        User user = this.userService.getUserByLogin(login);
+        String email = user.getEmail();
+        sender.send(email, Subject.CONFIRM_REGISTRATION, this);
+    }
 }
 
 

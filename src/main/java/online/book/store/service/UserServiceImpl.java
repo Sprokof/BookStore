@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Service
 @Component
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Value("${admin.email}")
     private transient String adminEmail;
@@ -32,48 +32,32 @@ public class UserServiceImpl implements UserService{
     }
 
 
-    @Override
-    public void updateUserInSession(User user){
-        user.setAdmin(user.getEmail().equals(adminEmail));
-        saveOrUpdate(user);
-    }
-
 
     @Override
     public void saveOrUpdate(User user) {
-        if (!existUser(user)) {
-            String password = SHA256.hash(user.getPassword());
-            user.setPassword(password);
-            user.setAdmin(user.getEmail().equals(adminEmail));
-            user.setWishList(new Wishlist());
-            user.setCart(new Cart());
-        }
         this.userDao.saveOrUpdate(user);
     }
 
+
     @Override
-    public User getUserByUUID(String uuid) {
-        return this.userDao.getUserByUUID(UUID.fromString(uuid));
+    public void updateUser(User user) {
+        this.userDao.updateUser(user);
     }
 
     @Override
-    public List<User> getUsersInSession() {
-        return this.userDao.getUsersInSession();
+    public void saveUser(User user) {
+        String password = SHA256.hash(user.getPassword());
+        user.setPassword(password);
+        user.setAdmin(user.getEmail().equals(adminEmail));
+        user.setWishList(new Wishlist());
+        user.setCart(new Cart());
+        this.userDao.saveUser(user);
     }
-
-    private boolean existUser(User user){
-        return user.getId() != null;
-    }
-
 
     @Override
-    public String extractValidLogin(String login) {
-        if(login.replaceAll("%22%22=", "").isEmpty()){
-            return "";
-        }
-        else {
-            login = login.replaceAll("%22", "");
-            return login.substring(login.indexOf("=") + 1);
-        }
+    public User getUserByToken(String token) {
+        return this.userDao.getUserByToken(token);
     }
 }
+
+

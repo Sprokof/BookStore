@@ -1,5 +1,5 @@
 import {blockBackgroundHtml} from "./notice.js";
-import {closeSuccessWindow, openSuccessWindow} from "./success.js";
+import {closeSuccessWindow, openSuccessWindow} from "./window.js";
 
 let resetTwoPopup = document.querySelector('#popup-confirm-reset');
 let closeTwoPopup = document.querySelector('#close-confirm-reset');

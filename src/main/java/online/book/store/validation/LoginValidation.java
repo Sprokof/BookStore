@@ -38,9 +38,16 @@ public class LoginValidation extends AbstractValidation {
         if(userDto.getLogin().isEmpty()){
             response.addError("login", "Login can't be empty");
         }
-        if ((loadedUser = userService.getUserByLogin(userDto.getLogin())) == null) {
+        loadedUser = userService.getUserByLogin(userDto.getLogin());
+
+        if (loadedUser == null) {
             response.addError("login", "Login not exist");
         }
+
+        else if(!loadedUser.isAccepted()){
+            response.addError("login", "Account not confirm");
+        }
+
         else {
             if (!userDto.getPassword().equalsIgnoreCase(loadedUser.getPassword())) {
                 response.addError("log-password", "Wrong password");

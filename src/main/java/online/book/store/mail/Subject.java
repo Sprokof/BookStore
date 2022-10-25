@@ -2,7 +2,8 @@ package online.book.store.mail;
 
 
 public enum Subject {
-    RESET_PASSWORD("Code To Reset Password");
+    RESET_PASSWORD("Code To Reset Password"),
+    CONFIRM_REGISTRATION("Confirm Registration");
 
     String subjectText;
 

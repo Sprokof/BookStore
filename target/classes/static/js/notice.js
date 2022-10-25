@@ -39,7 +39,9 @@ export function blockBackgroundHtml(flag){
     let cart = document.querySelector('.cart-container');
     let checkout = document.querySelector('.checkout-container');
     let confirm = document.querySelector('#popup-confirm-reset');
-    let success = document.querySelectorAll('.success-window');
+    let success = document.querySelectorAll('#success-window');
+    let accept = document.querySelector('#accept-window');
+    let registration = document.querySelector('#popup-sign-in')
     if(flag) {
         navbar.style.pointerEvents = "none";
         if(slider != null) {
@@ -59,6 +61,11 @@ export function blockBackgroundHtml(flag){
 
         if(confirm != null && success[0].classList.contains('open')) {
             confirm.style.pointerEvents = "none";
+        }
+
+        if(registration != null && accept.classList.contains('open')) {
+            registration.style.pointerEvents = "none";
+            document.querySelector('.close-window-btn').style.pointerEvents = "auto";
         }
 
         sidebar.style.pointerEvents = "none";
@@ -83,6 +90,10 @@ export function blockBackgroundHtml(flag){
 
         if(confirm != null) {
             confirm.style.pointerEvents = "auto";
+        }
+
+        if(registration != null && !accept.classList.contains('open')) {
+            registration.style.pointerEvents = "auto";
         }
 
         sidebar.style.pointerEvents = "auto";

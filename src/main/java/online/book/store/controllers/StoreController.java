@@ -3,9 +3,12 @@ package online.book.store.controllers;
 import online.book.store.dto.CategoryDto;
 import online.book.store.dto.SessionDto;
 import online.book.store.dto.UserDto;
+import online.book.store.entity.User;
+import online.book.store.expections.ResourceNotFoundException;
 import online.book.store.service.CategoryService;
 import online.book.store.service.SessionService;
 import online.book.store.service.SignInService;
+import online.book.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,6 +29,9 @@ public class StoreController{
 
     @Autowired
     private SessionService sessionService;
+
+    @Autowired
+    private UserService userService;
 
 
     @GetMapping("/categories")
@@ -60,9 +66,26 @@ public class StoreController{
         return ResponseEntity.ok(this.sessionService.sessionActive(sessionid));
     }
 
-    @GetMapping("/success")
-    public String checkout(){
-        return "success";
+
+    @GetMapping("/bookstore/registration/confirm")
+    public String confirmRegistration(@RequestParam ("token") String token) throws ResourceNotFoundException {
+        signInService.confirmRegistration(token);
+        return "result";
+    }
+
+    @PostMapping("/bookstore/registration/resend")
+    public ResponseEntity<Integer> resendConfirmLink(@RequestBody UserDto userDto) {
+        String login = userDto.getLogin();
+        signInService.resendConfirmationLink(login);
+        return ResponseEntity.ok(200);
+    }
+
+    @PostMapping("/bookstore/dto/user")
+    public ResponseEntity<UserDto> userDto(@RequestBody UserDto requestDto){
+        User user = this.userService.getUserByLogin(requestDto.getLogin());
+        UserDto responseDto = new UserDto();
+        responseDto.setAccepted(user.isAccepted());
+        return ResponseEntity.ok(responseDto);
     }
 }
 

@@ -200,3 +200,21 @@ export function currentLocation(){
 
 }
 
+export function userAccept(){
+    let userDto;
+    let user = getUser();
+    if(user == null) return ;
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/bookstore/dto/user",
+        cache: false,
+        dataType: 'json',
+        data : JSON.stringify(getUser()),
+        async: false,
+        success : (dto) => {
+            userDto = JSON.parse(JSON.stringify(dto));
+        }
+    })
+    return userDto['accepted'];
+}

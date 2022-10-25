@@ -38,6 +38,10 @@ body {
     color: #1b1b1b;
 }
 
+.container-fluid {
+    width: 100%;
+}
+
 .container-fluid.compression {
     margin-left: 230px;
 }
@@ -175,4 +179,29 @@ header .nav-item a:hover::after {
 
 .sidebar .item .sub-menu.none {
     border-top: none;
+}
+
+.accept-message {
+    position: relative;
+    left: 4%;
+    width: 95%;
+    background-color: red;
+    height: 20px;
+    overflow-y: hidden;
+    border-radius: 2px;
+}
+
+.accept-message p {
+    color: white;
+    text-align: center;
+    margin-top: -2px;
+}
+
+.accept-message p a {
+    cursor: pointer;
+}
+
+.accept-message p a:hover {
+    color: silver!important;
+
 }

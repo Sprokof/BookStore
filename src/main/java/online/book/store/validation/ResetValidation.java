@@ -1,7 +1,7 @@
 package online.book.store.validation;
 
 import lombok.Getter;
-import online.book.store.dto.ResetDto;
+import online.book.store.dto.ConfirmDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +17,7 @@ public class ResetValidation extends AbstractValidation {
 
         @Override
         public boolean supports(Class<?> aClass) {
-            return aClass.equals(ResetDto.class);
+            return aClass.equals(ConfirmDto.class);
         }
 
         @Override
@@ -41,11 +41,11 @@ public class ResetValidation extends AbstractValidation {
             deleteErrorsMessages();
 
 
-            ResetDto resetDto = ((ResetDto) target);
+            ConfirmDto confirmDto = ((ConfirmDto) target);
 
-            String generatedCode = resetDto.getGeneratedCode();
+            String generatedCode = confirmDto.getGeneratedCode();
 
-            String inputCode = resetDto.getInputCode();
+            String inputCode = confirmDto.getInputCode();
 
 
 
@@ -66,7 +66,7 @@ public class ResetValidation extends AbstractValidation {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return aClass.equals(ResetDto.class);
+        return aClass.equals(ConfirmDto.class);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class ResetValidation extends AbstractValidation {
         if (!supports(target.getClass())) return;
         deleteErrorsMessages();
 
-        ResetDto dto = (ResetDto) target;
+        ConfirmDto dto = (ConfirmDto) target;
 
         String password = dto.getNewPassword();
         String confirmPassword = dto.getConfirmResetPassword();

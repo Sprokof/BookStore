@@ -35,7 +35,7 @@ public class HomeController {
     public String home(Model model) {
         List<Book> books = (List<Book>) model.getAttribute("books");
         if(books == null || books.isEmpty()){
-            return "noresult";
+            return "result";
         }
         return "home";
     }

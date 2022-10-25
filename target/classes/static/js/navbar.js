@@ -1,6 +1,6 @@
-import {getSessionId, logout, updateUser} from "./validation.js"
+import {logout} from "./validation.js"
 import {openLoginNotice} from "./notice.js";
-import {currentLocation, sessionActive} from "./main.js";
+import {currentLocation, sessionActive, userAccept} from "./main.js";
 
 
 $(document).ready(function () {
@@ -12,6 +12,7 @@ $(document).ready(function () {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+    createAcceptNotice();
     manageSession();
     let session = validateSession();
     if(session === undefined) return ;
@@ -256,3 +257,35 @@ export function validateSession() {
         }
    })
 
+
+export function createAcceptNotice(){
+        let windowOpen = document.querySelector('#accept-window').classList.contains('open');
+        let location = currentLocation()[2];
+        let accept = userAccept();
+        if(getUser() === null || windowOpen || location === 'registration') return;
+        if(!accept){
+            let div = document.createElement('div');
+            div.classList.add('accept-message');
+            let p = document.createElement('p');
+            let a = document.createElement('a');
+            a.onclick = () => { resendLink(); }
+            a.innerText = "(click to send again)";
+            p.innerText = "Go to link in " + getUser()['login'] + " to finish registration ";
+            p.appendChild(a);
+            div.appendChild(p);
+            let containerFluid = document.querySelector('.container-fluid');
+            let navbar = containerFluid.children[0];
+            containerFluid.insertBefore(div, navbar);
+        }
+}
+
+    function resendLink() {
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "bookstore/registration/resend",
+            data: JSON.stringify(getUser()),
+            cache: false,
+            dataType: 'json',
+        });
+    }

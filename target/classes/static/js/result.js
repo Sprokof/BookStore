@@ -1,7 +1,10 @@
 import {currentLocation} from "./main.js";
+import {getUser} from "./navbar.js";
+import {updateUser} from "./validation.js";
 
 let location = currentLocation();
 document.addEventListener('DOMContentLoaded', () => {
+    console.log(location);
     let message = document.querySelector('.result-message span');
     switch (location[2]){
         case ('cart') :
@@ -12,11 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
             message.innerText = 'Wishlist Is Empty';
             message.style.marginLeft = "10px"
             break;
+        case ('registration') :
+            message.innerText = 'Confirmed!';
+            message.style.marginLeft = "35px";
+            break;
         default :
             message.innerText = 'No Related Results';
     }
 })
 
-document.querySelector('.result-message button').onclick = () => {
-    document.location.href = "/";
-}
+
+let homeBtn = document.querySelector('.result-message button');
+homeBtn.onclick = () => { document.location.href = "/"; }

@@ -42,7 +42,7 @@ public class WishListController {
        User user = userService.getUserByLogin(login);
        Wishlist wishlist = user.getWishList();
        if(wishlist.isEmpty()){
-           return "noresult";
+           return "result";
        }
        List<Book> wishlistsBooks = user.getWishList().getBooks();
        model.addAttribute("rows", siteEngine.mapBooksToRow(wishlistsBooks));

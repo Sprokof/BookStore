@@ -1,6 +1,7 @@
 import {resetClose} from "./reset.js";
 import {openResetTwoPopup, resetSuccess} from "./confirmReset.js";
 import {getUser} from "./navbar.js";
+import {registrationSuccess} from "./registration.js";
 
 let login = document.getElementById('login-btn');
 login.addEventListener('click', async () => {
@@ -9,7 +10,6 @@ login.addEventListener('click', async () => {
         'password': await hash(document.getElementById('log-password').value),
         'sessionid' : await getSessionId()
     };
-    console.log(user)
     validation(user, "/home/login");
 });
 
@@ -30,21 +30,21 @@ registration.addEventListener("click", async () => {
 
 let reset = document.getElementById("continue-btn");
 reset.addEventListener("click", () => {
-    let resetDto = {
+    let confirmDto = {
         "login" : getUser()['login'],
         "newPassword" : document.getElementById('new-password').value,
         "confirmResetPassword" : document.getElementById('confirm-reset-password').value,
     }
-    validation(resetDto, "/home/reset");
+    validation(confirmDto, "/home/reset");
 })
 
 let confirm = document.getElementById("done-btn");
 confirm.addEventListener("click", () => {
-    let resetDto = {
+    let confirmDto = {
         "login" : getUser()['login'],
         "inputCode" :document.getElementById("code").value,
     }
-    validation(resetDto, "/home/reset/confirm");
+    validation(confirmDto, "/home/reset/confirm");
 })
 
 export function validation(obj, url){
@@ -75,11 +75,15 @@ export function validation(obj, url){
                 }
 
                 else {
-                    saveUser(obj);
-                    if (value === 'login') {
-                        rememberUser(rememberMe.checked);
+                    if(value === 'registration'){
+                        saveUser(obj);
+                        registrationSuccess();
                     }
-                    setTimeout(reload, 130);
+                    else if (value === 'login') {
+                        rememberUser(obj, rememberMe.checked);
+                        setTimeout(reload, 130);
+                    }
+
                 }
             }
         }
@@ -156,8 +160,9 @@ function addErrors(errors){
     }
 }
 
-function rememberUser(flag){
+function rememberUser(obj, flag){
     let user = JSON.parse(localStorage.getItem("user"));
+    if(user === null) user = obj;
     user['remember'] = flag.toString();
     updateUser(user);
 
@@ -175,14 +180,14 @@ function extractFields(obj, index) {
 }
 
 function saveUser(obj){
-    let login = extractFields(obj, 0);
-    let lastIndex = (Object.keys(obj).length - 1)
+    let login = extractFields(obj, 1);
+    let lastIndex = (Object.keys(obj).length - 1);
     let sessionid = extractFields(obj, lastIndex);
     if(login == null) return ;
     let user = {
         "login" : login,
         "remember": "false",
-        "sessionid": sessionid
+        "sessionid": sessionid,
     }
     updateUser(user)
 }
@@ -200,7 +205,6 @@ export async function getSessionId(){
             (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4)
                 .toString(16))));
 }
-
 
 
 
