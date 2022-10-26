@@ -80,12 +80,10 @@ public class StoreController{
         return ResponseEntity.ok(200);
     }
 
-    @PostMapping("/bookstore/dto/user")
-    public ResponseEntity<UserDto> userDto(@RequestBody UserDto requestDto){
-        User user = this.userService.getUserByLogin(requestDto.getLogin());
-        UserDto responseDto = new UserDto();
-        responseDto.setAccepted(user.isAccepted());
-        return ResponseEntity.ok(responseDto);
+    @PostMapping("/bookstore/user/accept")
+    public ResponseEntity<String> userAccept(@RequestBody UserDto userDto){
+        boolean accepted = this.signInService.userAccept(userDto);
+        return ResponseEntity.ok(String.valueOf(accepted));
     }
 }
 

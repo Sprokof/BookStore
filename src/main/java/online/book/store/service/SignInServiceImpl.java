@@ -147,6 +147,12 @@ public class SignInServiceImpl implements SignInService {
         String email = user.getEmail();
         sender.send(email, Subject.CONFIRM_REGISTRATION, this);
     }
+
+    @Override
+    public boolean userAccept(UserDto userDto) {
+        String login = userDto.getLogin();
+        return this.userService.getUserByLogin(login).isAccepted();
+    }
 }
 
 

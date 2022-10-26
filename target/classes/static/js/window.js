@@ -21,8 +21,8 @@ let closeAcceptWindow = document.querySelector('#accept-window .close-window-btn
 closeAcceptWindow.onclick = () => {
     acceptWindow.classList.add('close');
     acceptWindow.classList.remove('open');
-    setTimeout(signInClose, 300);
-    setTimeout(createAcceptNotice, 500);
+    setTimeout(signInClose, 700);
+    setTimeout(createAcceptNotice, 1000);
     blockBackgroundHtml(false);
 }
 
