@@ -2,6 +2,7 @@ package online.book.store.service;
 
 import online.book.store.dao.UserDaoImpl;
 import online.book.store.dao.UserDao;
+import online.book.store.dto.UserDto;
 import online.book.store.entity.Cart;
 import online.book.store.entity.User;
 
@@ -57,6 +58,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByToken(String token) {
         return this.userDao.getUserByToken(token);
+    }
+
+    @Override
+    public UserDto getUserDto(String login) {
+        User user = getUserByLogin(login);
+        return new UserDto(user.getUsername(), user.getUsername());
     }
 }
 

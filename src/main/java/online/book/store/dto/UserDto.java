@@ -23,7 +23,10 @@ public class UserDto extends AbstractUserBuilder {
     private String remember;
     private boolean accepted;
 
-
+    public UserDto(String username, String email) {
+        this.username = username;
+        this.email = email;
+    }
 
     @Override
     public AbstractUserBuilder builder() {
@@ -76,6 +79,8 @@ public class UserDto extends AbstractUserBuilder {
                 password(this.password).
                 buildUser();
     }
+
+
 
 
 }

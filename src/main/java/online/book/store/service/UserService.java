@@ -1,5 +1,6 @@
 package online.book.store.service;
 
+import online.book.store.dto.UserDto;
 import online.book.store.entity.User;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface UserService{
     void updateUser(User user);
     void saveUser(User user);
     User getUserByToken(String token);
+    UserDto getUserDto(String login);
 }

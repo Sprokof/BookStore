@@ -2,7 +2,6 @@ package online.book.store.validation;
 
 import lombok.Getter;
 import online.book.store.dto.UserDto;
-import online.book.store.dto.UserLoginDto;
 import online.book.store.entity.User;
 import online.book.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

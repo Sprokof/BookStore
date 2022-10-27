@@ -1,13 +1,11 @@
 package online.book.store.validation;
 
 import online.book.store.dto.UserDto;
-import online.book.store.dto.UserSignInDto;
 import online.book.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-import java.util.regex.Pattern;
 
 @Component
 public class RegistrationValidation extends AbstractValidation {

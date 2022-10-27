@@ -5,22 +5,26 @@ import {registrationSuccess} from "./registration.js";
 
 let login = document.getElementById('login-btn');
 login.addEventListener('click', async () => {
+    let password = document.getElementById('log-password').value;
+    let login = document.getElementById('login').value;
     let user = {
-        'login': document.getElementById('login').value,
-        'password': await hash(document.getElementById('log-password').value),
-        'sessionid' : await getSessionId()
+        'login': login,
+        'password': await hash(password),
+        'sessionid' : await generateSessionId(login),
     };
     validation(user, "/home/login");
 });
 
 let registration = document.getElementById("sign-in-btn");
 registration.addEventListener("click", async () => {
+    let password = document.getElementById("reg-password").value;
+    let email = document.getElementById('reg-email').value;
     let user = {
         'username': document.getElementById('username').value,
-        'email': document.getElementById("reg-email").value,
-        'password': document.getElementById("reg-password").value,
+        'email': email,
+        'password': password,
         'confirmPassword': document.getElementById("confirm-reg-password").value,
-        'sessionid': await getSessionId()
+        'sessionid': await generateSessionId(email),
 
     };
     validation(user, "/home/registration");
@@ -161,7 +165,7 @@ function addErrors(errors){
 }
 
 function rememberUser(obj, flag){
-    let user = JSON.parse(localStorage.getItem("user"));
+    let user = getUser();
     if(user === null) user = obj;
     user['remember'] = flag.toString();
     updateUser(user);
@@ -196,9 +200,9 @@ export function updateUser(user){
     localStorage.setItem("user", JSON.stringify(user));
 }
 
-export async function getSessionId(){
+async function generateSessionId(login){
     let user = getUser();
-    if(user != null && user['sessionid'] !== '') {
+    if(!isNew(login)) {
         return user['sessionid'];
     }
     return (String (([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
@@ -206,8 +210,8 @@ export async function getSessionId(){
                 .toString(16))));
 }
 
-
-
-
-
+function isNew(login){
+    let user = getUser();
+    return user == null || user['login'] !== login;
+}
 

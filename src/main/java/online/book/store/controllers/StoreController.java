@@ -85,6 +85,8 @@ public class StoreController{
         boolean accepted = this.signInService.userAccept(userDto);
         return ResponseEntity.ok(String.valueOf(accepted));
     }
+
+
 }
 
 

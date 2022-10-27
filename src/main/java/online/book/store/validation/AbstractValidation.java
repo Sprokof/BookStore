@@ -1,8 +1,5 @@
 package online.book.store.validation;
 
-import online.book.store.dto.UserSignInDto;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.Map;
 import java.util.regex.Pattern;
 
