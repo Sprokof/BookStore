@@ -42,8 +42,7 @@ public class SignInServiceImpl implements SignInService {
     @Override
     public int logout(UserDto userDto) {
         String sessionid = userDto.getSessionid();
-        UserSession userSession = this.sessionService.getSessionById(sessionid);
-        this.sessionService.updateSession(userSession, false);
+        this.sessionService.sessionInvalidate(sessionid);
         boolean active = sessionService.sessionActive(sessionid).isActive();
         return !active ? 200 : 501;
     }
@@ -101,17 +100,9 @@ public class SignInServiceImpl implements SignInService {
     private void initUserSession(UserDto userDto) {
         String sessionId = userDto.getSessionid();
         User user = getUser(userDto);
-        UserSession session = null;
-        if (!this.sessionService.sessionExist(sessionId)) {
-            session = new UserSession(sessionId);
-            user.addSession(session);
-            this.userService.updateUser(user);
-        } else {
-            session = this.sessionService.getSessionById(sessionId);
-            this.sessionService.updateSession(session, true);
-
-        }
-
+        UserSession session = new UserSession(sessionId);
+        user.addSession(session);
+        this.userService.updateUser(user);
     }
 
     private User getUser(UserDto userDto) {

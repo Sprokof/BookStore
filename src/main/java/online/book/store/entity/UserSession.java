@@ -21,11 +21,6 @@ public class UserSession {
     @Setter
     private String sessionId;
 
-    @Column(name = "ACTIVE")
-    @Getter
-    @Setter
-    private boolean active;
-
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @Getter
@@ -48,7 +43,6 @@ public class UserSession {
     public String toString() {
         return "UserSession{" +
                 ", sessionId='" + sessionId + '\'' +
-                ", active=" + active +
                 ", user=" + user +
                 '}';
     }

@@ -62,6 +62,7 @@ inputs.forEach((input) => {
                 "quantity" : input.value,
                 "sessionid" : getUser()['sessionid']
             }
+            console.log(cartItemDto);
 
             $.ajax({
                 type: "POST",

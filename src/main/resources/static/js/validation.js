@@ -2,6 +2,7 @@ import {resetClose} from "./reset.js";
 import {openResetTwoPopup, resetSuccess} from "./confirmReset.js";
 import {getUser} from "./navbar.js";
 import {registrationSuccess} from "./registration.js";
+import {deleteUser} from "./main.js";
 
 let login = document.getElementById('login-btn');
 login.addEventListener('click', async () => {
@@ -10,7 +11,7 @@ login.addEventListener('click', async () => {
     let user = {
         'login': login,
         'password': await hash(password),
-        'sessionid' : await generateSessionId(login),
+        'sessionid' : await generateSessionId(),
     };
     validation(user, "/home/login");
 });
@@ -24,7 +25,6 @@ registration.addEventListener("click", async () => {
         'email': email,
         'password': password,
         'confirmPassword': document.getElementById("confirm-reg-password").value,
-        'sessionid': await generateSessionId(email),
 
     };
     validation(user, "/home/registration");
@@ -64,10 +64,9 @@ export function validation(obj, url){
             deleteErrorMessages();
             let validationErrors = JSON.parse(JSON.stringify(data));
             let errorMap = new Map(Object.entries(validationErrors));
-            let rememberMe = document.querySelector('.remember-me input');
+            let remember = document.querySelector('.remember-me input').checked;
             if (errorMap.size > 0) {
                 addErrors(errorMap);
-                rememberMe.checked = false;
             } else {
                 let value = url.substr(url.lastIndexOf("/") + 1);
                 if (value === 'reset') {
@@ -80,11 +79,12 @@ export function validation(obj, url){
 
                 else {
                     if(value === 'registration'){
-                        saveUser(obj);
+                        saveEmail(obj['email']);
                         registrationSuccess();
                     }
                     else if (value === 'login') {
-                        rememberUser(obj, rememberMe.checked);
+                        saveUser(obj);
+                        rememberUser(remember);
                         setTimeout(reload, 130);
                     }
 
@@ -136,6 +136,7 @@ export function logout() {
         success: function (status) {
             let code = JSON.parse(JSON.stringify(status));
             if (Number(code) === 200) {
+                deleteUser();
                 setTimeout(backHome, 100);
 
             }
@@ -164,54 +165,40 @@ function addErrors(errors){
     }
 }
 
-function rememberUser(obj, flag){
-    let user = getUser();
-    if(user === null) user = obj;
-    user['remember'] = flag.toString();
-    updateUser(user);
-
-}
-
-function extractFields(obj, index) {
-    if(Object.keys(obj).length > 5) return null;
-    let values = [];
-    for (let key of Object.keys(obj)) {
-        if (obj.hasOwnProperty(key)) {
-            values.push(key);
-        }
-    }
-    return obj[values[index]];
-}
 
 function saveUser(obj){
-    let login = extractFields(obj, 1);
-    let lastIndex = (Object.keys(obj).length - 1);
-    let sessionid = extractFields(obj, lastIndex);
-    if(login == null) return ;
     let user = {
-        "login" : login,
-        "remember": "false",
-        "sessionid": sessionid,
+        "login" : obj['login'],
+        "sessionid": obj['sessionid'],
     }
     updateUser(user)
+    localStorage.removeItem('email');
+}
+
+function rememberUser(flag){
+    if(flag) {
+        localStorage.setItem('rememberedUser', JSON.stringify(getUser()));
+    }
+    else {
+        localStorage.removeItem('rememberedUser');
+    }
+
 }
 
 export function updateUser(user){
     localStorage.setItem("user", JSON.stringify(user));
 }
 
-async function generateSessionId(login){
-    let user = getUser();
-    if(!isNew(login)) {
-        return user['sessionid'];
-    }
+async function generateSessionId(){
     return (String (([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
             (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4)
                 .toString(16))));
 }
 
-function isNew(login){
-    let user = getUser();
-    return user == null || user['login'] !== login;
+function saveEmail(email){
+    localStorage.setItem('email', email);
 }
 
+export function userEmail(){
+    return localStorage.getItem('email');
+}

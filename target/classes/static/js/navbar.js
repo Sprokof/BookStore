@@ -1,4 +1,4 @@
-import {logout} from "./validation.js"
+import {logout, userEmail} from "./validation.js"
 import {openLoginNotice} from "./notice.js";
 import {currentLocation, sessionActive, userAccept} from "./main.js";
 
@@ -178,7 +178,6 @@ export function validateSession() {
        let sessionDto = {
            "sessionid" : getUser()['sessionid']
        }
-       let user = getUser()
        $.ajax({
            type: "POST",
            contentType: "application/json",
@@ -188,29 +187,28 @@ export function validateSession() {
            dataType: 'json',
            responseType: "json",
            success : () => {
-               autologin(user);
+               autologin();
            }
        })
    }
 
-   function autologin(user) {
-    if (user['remember'] === 'true') {
-        $.ajax({
-            type: "POST",
-            contentType: "application/json",
-            url: "/autologin",
-            data: JSON.stringify(getUser()),
-            cache: false,
-            dataType: 'json',
-            responseType: "json",
-        })
-    }
-}
+   function autologin() {
+       let user = getRememberedUser();
+       if (user === null) return;
+       $.ajax({
+           type: "POST",
+           contentType: "application/json",
+           url: "/autologin",
+           data: JSON.stringify(user),
+           cache: false,
+           dataType: 'json',
+           responseType: "json",
+       })
+   }
 
 
    export function getUser(){
-       if(localStorage.getItem('user') === null) return null;
-           return JSON.parse(localStorage.getItem('user'));
+        return JSON.parse(localStorage.getItem('user'));
    }
 
 
@@ -262,7 +260,7 @@ export function createAcceptNotice(){
         let windowOpen = document.querySelector('#accept-window').classList.contains('open');
         let location = currentLocation()[2];
         let accept = userAccept();
-        if(getUser() === null || windowOpen || location === 'registration') return;
+        if(accept === undefined || windowOpen || location === 'registration') return;
         if(!accept){
             let div = document.createElement('div');
             div.classList.add('accept-message');
@@ -270,7 +268,7 @@ export function createAcceptNotice(){
             let a = document.createElement('a');
             a.onclick = () => { resendLink(); }
             a.innerText = "(click to send again)";
-            p.innerText = "Go to link in " + getUser()['login'] + " to finish registration ";
+            p.innerText = "Go to link in " + userEmail() + " to finish registration ";
             p.appendChild(a);
             div.appendChild(p);
             let containerFluid = document.querySelector('.container-fluid');
@@ -288,4 +286,8 @@ export function createAcceptNotice(){
             cache: false,
             dataType: 'json',
         });
+    }
+
+    function getRememberedUser(){
+        return JSON.parse(localStorage.getItem('rememberedUser'));
     }

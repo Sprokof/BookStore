@@ -121,7 +121,6 @@ public class User {
 
     public void addSession(UserSession userSession){
         if(this.userSessions == null) this.userSessions = new ArrayList<>();
-        userSession.setActive(true);
         this.userSessions.add(userSession);
         userSession.setUser(this);
     }

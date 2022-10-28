@@ -60,11 +60,6 @@ public class UserServiceImpl implements UserService {
         return this.userDao.getUserByToken(token);
     }
 
-    @Override
-    public UserDto getUserDto(String login) {
-        User user = getUserByLogin(login);
-        return new UserDto(user.getUsername(), user.getUsername());
-    }
 }
 
 

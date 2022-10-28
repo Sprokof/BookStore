@@ -30,9 +30,6 @@ public class StoreController{
     @Autowired
     private SessionService sessionService;
 
-    @Autowired
-    private UserService userService;
-
 
     @GetMapping("/categories")
     public ResponseEntity<List<CategoryDto>> popularCategories() {
@@ -49,7 +46,8 @@ public class StoreController{
 
     @PostMapping(value = "/invalidate")
     public ResponseEntity<Integer> invalidate(@RequestBody SessionDto sessionDto){
-        this.sessionService.sessionInvalidate(sessionDto);
+        String sessionid = sessionDto.getSessionid();
+        this.sessionService.sessionInvalidate(sessionid);
         return ResponseEntity.ok(200);
     }
 

@@ -75,10 +75,13 @@ public class Book {
 
     }
 
-    @OneToOne(mappedBy = "book")
+    @OneToMany(mappedBy = "book")
     @Getter
     @Setter
-    private CartItem cartItem;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<CartItem> cartItems;
+
+
 
     @ManyToMany()
     @JoinTable (name = "BOOKS_CATEGORIES",

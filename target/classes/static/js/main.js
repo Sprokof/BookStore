@@ -1,5 +1,6 @@
 import {openLoginNotice} from "./notice.js";
 import {getUser} from "./navbar.js";
+import {userEmail} from "./validation.js";
 
 export function controlWishlistContent(btn, pageName) {
     btn.onclick = () => {
@@ -201,20 +202,27 @@ export function currentLocation(){
 }
 
 export function userAccept(){
+    let login = userEmail();
+    if(login === null) return undefined;
+    let user = {
+        'login' : login,
+    }
     let accept;
-    let user = getUser();
-    if(user == null) return ;
     $.ajax({
         type: "POST",
         contentType: "application/json",
         url: "/bookstore/user/accept",
         cache: false,
         dataType: 'json',
-        data : JSON.stringify(getUser()),
+        data : JSON.stringify(user),
         async: false,
         success : (result) => {
             accept = result;
         }
     })
     return accept;
+}
+
+export function deleteUser() {
+    localStorage.removeItem('user');
 }

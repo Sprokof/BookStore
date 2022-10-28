@@ -31,7 +31,7 @@ public class CartItem {
     private Cart cart;
 
 
-    @OneToOne()
+    @ManyToOne()
     @JoinColumn(name = "book_id")
     @Getter
     private Book book;
@@ -59,6 +59,7 @@ public class CartItem {
     public void setBook(Book book){
         this.book = book;
         this.total = (book.getPrice() * this.quantity);
+        book.getCartItems().add(this);
     }
 
     public void setQuantity(int quantity) {

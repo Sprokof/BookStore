@@ -11,9 +11,9 @@ public interface SessionService {
     void deleteSessionById(String id);
     boolean sessionExist(String id);
     UserSession getSessionById(String sessionId);
-    void updateSession(UserSession userSession, boolean active);
+    void updateSession(UserSession userSession);
     SessionDto sessionActive(String sessionId);
     User getCurrentUser(String sessionid);
     SessionDto getSessionData(UserDto userDto);
-    void sessionInvalidate(SessionDto sessionDto);
+    void sessionInvalidate(String sessionid);
 }
