@@ -79,7 +79,6 @@ public class User {
 
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    @Getter
     @Setter
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Order> orders;
@@ -117,6 +116,11 @@ public class User {
     @LazyCollection(LazyCollectionOption.FALSE)
     @Getter
     private List<UserSession> userSessions;
+
+    public List<Order> getOrders() {
+        if(this.orders == null) return new LinkedList<>();
+        return orders;
+    }
 
 
     public void addSession(UserSession userSession){

@@ -15,6 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Order {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "ORDER_DATE")
     private String orderDate;
@@ -30,7 +31,7 @@ public class Order {
     private String bookImageName;
 
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "user_id")
     private User user;
 

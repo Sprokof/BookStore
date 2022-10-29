@@ -4,7 +4,6 @@ import {updateUser} from "./validation.js";
 
 let location = currentLocation();
 document.addEventListener('DOMContentLoaded', () => {
-    console.log(location);
     let message = document.querySelector('.result-message span');
     switch (location[2]){
         case ('cart') :
@@ -18,6 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
         case ('registration') :
             message.innerText = 'Confirmed!';
             message.style.marginLeft = "35px";
+            break;
+        case ("orders") :
+            message.innerText = "Orders List Is Empty";
+            message.style.marginLeft = "10px";
             break;
         default :
             message.innerText = 'No Related Results';

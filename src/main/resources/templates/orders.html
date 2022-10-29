@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.0.2/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/static/css/order.css}"/>
-    <title>Orders</title>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/orders.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+    <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container-fluid order-dashboard">
@@ -36,7 +40,7 @@
                 <div class='row col-sm-12 order order-summary'>
                     <div class='col-sm-8 media order order-components'>
                         <div class="media-left">
-                            <a href=""><img class="item-img img-responsive" th:src="${order.path}"></a>
+                            <a href=""><img class="item-img img-responsive" th:src="${order.bookImageName}"></a>
                         </div>
 
                         <div class="media-body">
@@ -48,7 +52,7 @@
                     </div>
 
                         <div class="col-lg-4 text-right order-detail-btn">
-                            <button class="btn btn-black" >
+                            <button class="btn btn-black">
                                 <a> Order Details </a>
                             </button>
                         </div>

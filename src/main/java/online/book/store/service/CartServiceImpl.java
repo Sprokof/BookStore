@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Component
 public class CartServiceImpl implements CartService {
@@ -76,6 +79,18 @@ public class CartServiceImpl implements CartService {
         int cartId = cart.getId();
         int quantity = this.cartDao.getItemsQuantity(cartId);
         return new CartDto(quantity);
+    }
+
+    @Override
+    public void clearCart(Cart cart) {
+        List<Integer> itemsId =
+                cart.getCartItems().stream().
+                        map(CartItem::getId).
+                        collect(Collectors.toList());
+        for(Integer id : itemsId){
+            this.cartDao.deleteCartItemById(id);
+        }
+    updateCart(cart);
     }
 }
 

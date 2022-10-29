@@ -15,5 +15,7 @@ public interface CartService {
     CartItem getCartItemByBook(Cart cart, Book book);
     void deleteCartItem(CartItem cartItem);
     CartDto getItemsQuantity(Cart cart);
+    void clearCart(Cart cart);
+
 
 }

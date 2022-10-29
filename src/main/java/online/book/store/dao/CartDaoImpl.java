@@ -199,4 +199,30 @@ public class CartDaoImpl implements CartDao{
     return quantity;
     }
 
+    @Override
+    public void deleteCartItemById(int id) {
+        Session session = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        session.beginTransaction();
+        session.createSQLQuery("DELETE FROM " +
+                "CART_ITEMS WHERE ID=:id").setParameter("id", id).
+                executeUpdate();
+        session.getTransaction().commit();
+    }
+
+    catch (Exception e){
+        if (session != null) {
+            if(session.getTransaction() != null){
+                session.getTransaction().rollback();
+            }
+        }
+    }
+    finally {
+        if(session != null){
+            session.close();
+        }
+    }
+    }
 }

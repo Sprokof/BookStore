@@ -35,7 +35,7 @@ public class OrderServiceImpl implements OrderService{
             user.addOrder(order);
         });
 
-        userService.saveOrUpdate(user);
+        userService.updateUser(user);
 
     }
 
