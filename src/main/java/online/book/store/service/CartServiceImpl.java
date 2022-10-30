@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,13 +84,16 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void clearCart(Cart cart) {
-        List<Integer> itemsId =
-                cart.getCartItems().stream().
-                        map(CartItem::getId).
-                        collect(Collectors.toList());
-        for(Integer id : itemsId){
-            this.cartDao.deleteCartItemById(id);
+        List<CartItem> cartItems = cart.getCartItems();
+        List<CartItem> tempList = new LinkedList<>();
+        for(CartItem item : cartItems){
+            tempList.add(item);
+            this.cartDao.deleteCartItem(item);
         }
+        for(CartItem item : tempList){
+            cartItems.remove(item);
+        }
+        cart.updatePrices();
     updateCart(cart);
     }
 }

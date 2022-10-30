@@ -24,7 +24,7 @@ public class CartItem {
     private double total;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "cart_id")
     @Getter
     @Setter

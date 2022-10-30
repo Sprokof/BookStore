@@ -62,7 +62,6 @@ inputs.forEach((input) => {
                 "quantity" : input.value,
                 "sessionid" : getUser()['sessionid']
             }
-            console.log(cartItemDto);
 
             $.ajax({
                 type: "POST",
@@ -139,12 +138,7 @@ toCart.onclick = () => {
 
 let purchase = document.querySelectorAll('#checkout .buttons button')[1];
 purchase.onclick = () => {
-    let success = document.querySelectorAll('#success-window')[1];
-    success.style.top = "25%";
-    success.style.left = "30%";
-    setTimeout(openSuccessWindow, 150);
-    setTimeout(closeSuccessWindow, 2100);
-    setTimeout(reloadPage, 2700);
+    executePurchase();
 }
 
 function checkoutOpen(){
@@ -164,4 +158,50 @@ function checkoutClose(){
 function clearCheckoutInputs(){
     let inputs = document.querySelectorAll('.checkout-container div input');
     inputs.forEach((input) => input.value = '');
+}
+
+function executePurchase(){
+    let orderDto = {
+        "sessionid": getUser()['sessionid'],
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/home/orders/add",
+        data: JSON.stringify(orderDto),
+        cache: false,
+        dataType: 'json',
+        responseType: 'json',
+        success : () => {
+            clearCart();
+        }
+    })
+}
+
+function successWindowControl(){
+    let success = document.querySelectorAll('#success-window')[1];
+    success.style.top = "25%";
+    success.style.left = "30%";
+    setTimeout(openSuccessWindow, 150);
+    setTimeout(closeSuccessWindow, 2100);
+    setTimeout(reloadPage, 2700);
+}
+
+function clearCart(){
+    let cartDto = {
+        "sessionid" : getUser()['sessionid']
+    }
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/home/cart/clear",
+        data: JSON.stringify(cartDto),
+        cache: false,
+        dataType: 'json',
+        responseType: 'json',
+        success: () => {
+            successWindowControl();
+        }
+    })
 }

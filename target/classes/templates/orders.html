@@ -1,61 +1,64 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.0.2/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/static/css/order.css}"/>
-    <title>Orders</title>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/orders.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+    <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container-fluid order-dashboard">
-    <article class="row order-main-header">
-        <div class="col-lg-10 order-title">Orders</div>
-    </article>
+<div th:insert="~{navbar :: navbar}"></div>
+<div class="order-container container">
 
-        <div class="order-container container">
-            <div class="row order-main order" th:each="order : ${orders}">
-                <div class="row col-lg-12 order-header">
-                    <div class='row row-upper'>
-                        <div class='col-xs-2'>Order placed</div>
-                        <div class='col-xs-2'>Total</div>
-                        <div class='col-xs-3'></div>
-                        <div class='col-xs-3 order-id'>Order Id</div>
-                    </div>
-
-                    <div class='row'>
-                        <div class='col-xs-2 order order-date' th:text="${order.orderDate}"></div>
-                        <div class='col-xs-2 order order-total' th:text="${order.total}"></div>
-                        <div class='col-xs-3'></div>
-                        <div class='col-xs-3 order order-id' th:text="${order.id}">&#8381;</div>
-                    </div>
-                </div>
-                <hr/>
-                <div class='row col-sm-12 order order-summary'>
-                    <div class='col-sm-8 media order order-components'>
-                        <div class="media-left">
-                            <a href=""><img class="item-img img-responsive" th:src="${order.path}"></a>
-                        </div>
-
-                        <div class="media-body">
-                            <div class="media-heading" th:text="${order.title}"></div>
-                            <div class="" th:text="${'Price: ' + ${order.total}}"></div>
-                            <div class="" th:text="${'Quantity: ' + ${order.quantity}}"></div>
-                            <div class="media-heading" th:text="${'Status: ' + ${order.status}}"></div>
-                        </div>
-                    </div>
-
-                        <div class="col-lg-4 text-right order-detail-btn">
-                            <button class="btn btn-black" >
-                                <a> Order Details </a>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <section class="row order-product_info clearfix"></section>
+    <div class="order-main" th:each="order : ${orders}">
+        <div class="order-header">
+            <div class="row" style="background-color: silver">
+                <div class="col-sm-6">Order Placed In</div>
+                <div class="col-sm-2">Total</div>
+                <div class="col-sm-4">Order Id</div>
             </div>
+
+            <div class="row">
+                <div class="col-sm-6" th:text="${order.orderDate}"></div>
+                <div class="col-sm-2" th:text="${order.total + '0 ₽'}"></div>
+                <div class="col-sm-4" th:text="${order.id}"></div>
+            </div>
+
         </div>
+        <div class="row order-summary">
+            <div class="col-sm-8 media order-components">
+                <div class="media-left">
+                    <img class="book-image" th:src="@{'/images/' + ${order.bookImageName}}">
+                </div>
+
+                <div class="media-body">
+                    <div class="media-heading" th:text="${order.title}"></div>
+                    <div th:text="${'Price: ' + order.price + '.00 ₽'}"></div>
+                    <div th:text="${'Quantity: ' + order.quantity}"></div>
+                    <div class="media-heading" th:text="${'Status: ' + order.status}"></div>
+                </div>
+            </div>
+
+            <button class="details-btn">Order Details</button>
+        </div>
+
+    </div>
+</div>
 </body>
+<script type="module" th:src="@{/js/navbar.js}"></script>
+<script type="module" th:src="@{/js/login.js}"></script>
+<script type="module" th:src="@{/js/reset.js}"></script>
+<script type="module" th:src="@{/js/confirmReset.js}"></script>
+<script type="module" th:src="@{/js/validation.js}"></script>
+<script type="module" th:src="@{/js/generateRating.js}"></script>
+<script type="module" th:src="@{/js/notice.js}"></script>
+<script type="module" th:src="@{/js/main.js}"></script>
+<script type="module" th:src="@{/js/window.js}"></script>
 </html>

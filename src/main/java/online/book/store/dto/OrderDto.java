@@ -70,7 +70,8 @@ public class OrderDto extends AbstractOrderBuilder {
     public Order buildOrder() {
         Order order = null;
         if(!containsNull()){
-            order = new Order(this.title, this.quantity, this.total, this.bookImageName);
+            order = new Order(this.title, this.quantity,
+                    this.total, this.bookImageName);
         }
         return order;
     }

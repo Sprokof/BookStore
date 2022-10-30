@@ -1,0 +1,80 @@
+.order-container{
+    position: absolute;
+    top: 15%;
+    left: 5%;
+}
+.order-container .row {
+    width: 100%;
+}
+
+.order-container .order-header .row {
+    height: 30px;
+}
+
+.order-container .order-header .row .col-sm-6 {
+    padding-left: 30px;
+}
+
+.order-container .order-header .row .col-sm-2, .col-sm-4 {
+    text-align: center;
+}
+
+.order-container .order-header .row{
+    background: #808080;
+}
+
+.order-container .book-image {
+    margin-top: 5px;
+    width: 210px;
+    height: 310px;
+    border: 5px solid #708090;
+    padding: 2px;
+}
+
+.order-container .media-body {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.order-container .order-summary {
+    background: whitesmoke;
+    height: 350px;
+    border-bottom: 3px solid darkgray;
+}
+
+.order-container .order-main {
+    margin-bottom: 35px;
+    border-radius: 6px;
+    background: silver;
+    height: 420px;
+    border-bottom: 3px darkgray solid;
+    border-right: 3px darkgray solid;
+    border-left: 5px darkgray solid;
+}
+
+.order-container .order-components {
+    margin-left: 10px;
+}
+
+
+.order-container .details-btn {
+    margin-top: 40px;
+    width: 135px;
+    background: black;
+    color: white;
+    padding: 8px;
+    border-radius: 8px;
+    height: 35px;
+    line-height: 10px;
+    margin-left: 15%;
+}
+
+.order-container .media-body div{
+    font-weight: 500;
+    color: #1b1b1b;
+}
+
+.order-container .details-btn:hover {
+    background: #222222;
+}
+

@@ -29,6 +29,8 @@ public class Order {
     private double total;
     @Column(name = "BOOK_IMAGE_NAME")
     private String bookImageName;
+    @Column(name = "PRICE")
+    private Integer price;
 
 
     @ManyToOne()

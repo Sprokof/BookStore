@@ -255,6 +255,16 @@ export function validateSession() {
         }
    })
 
+    let orders = document.getElementById("orders");
+    orders.addEventListener('click', () => {
+        if(!sessionActive()){
+            openLoginNotice();
+        }
+        else {
+            document.location.href = "/home/orders?user=" + (getUser()['login']);
+        }
+    })
+
 
 export function createAcceptNotice(){
         let windowOpen = document.querySelector('#accept-window').classList.contains('open');

@@ -31,6 +31,7 @@ public class OrderServiceImpl implements OrderService{
         userItems.forEach((item) -> {
             Order order = new Order(item.getBook().getTitle(), item.getQuantity(), item.getTotal(),
                     item.getBook().getBookImageName());
+            order.setPrice(item.getBook().getPrice());
             order.setStatus("Paid");
             user.addOrder(order);
         });
@@ -38,5 +39,7 @@ public class OrderServiceImpl implements OrderService{
         userService.updateUser(user);
 
     }
+
+
 
 }

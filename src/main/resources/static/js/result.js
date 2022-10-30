@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
             break;
         case ("orders") :
             message.innerText = "Orders List Is Empty";
-            message.style.marginLeft = "10px";
             break;
         default :
             message.innerText = 'No Related Results';
