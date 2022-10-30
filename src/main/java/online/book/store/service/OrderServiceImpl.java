@@ -4,6 +4,7 @@ import online.book.store.entity.Book;
 import online.book.store.entity.CartItem;
 import online.book.store.entity.Order;
 import online.book.store.entity.User;
+import online.book.store.status.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -31,8 +32,7 @@ public class OrderServiceImpl implements OrderService{
         userItems.forEach((item) -> {
             Order order = new Order(item.getBook().getTitle(), item.getQuantity(), item.getTotal(),
                     item.getBook().getBookImageName());
-            order.setPrice(item.getBook().getPrice());
-            order.setStatus("Paid");
+            order.setStatus(OrderStatus.PAID);
             user.addOrder(order);
         });
 
