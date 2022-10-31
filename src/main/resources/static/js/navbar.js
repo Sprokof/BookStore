@@ -112,6 +112,10 @@ function initBooksCategories(){
             let cart = document.querySelector('.cart-container');
             if(cart !== null) cart.classList.toggle('compression');
         }
+        if(location[2] === 'orders'){
+            let orders = document.querySelector('.order-container');
+            orders.style.left = "25%";
+        }
         document.querySelector(".container-fluid").classList.toggle('compression');
         document.querySelector("#menu").classList.toggle('compression');
 

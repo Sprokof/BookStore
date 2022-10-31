@@ -14,7 +14,7 @@ import java.time.LocalDate;
 
 @NoArgsConstructor
 public class Order {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter

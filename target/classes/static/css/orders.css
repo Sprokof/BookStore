@@ -1,8 +1,13 @@
 .order-container{
     position: absolute;
-    top: 15%;
-    left: 5%;
+    top: 20%;
+    left: 15%;
 }
+
+.order-container.container {
+    width: 65%;
+}
+
 .order-container .row {
     width: 100%;
 }
@@ -13,10 +18,14 @@
 
 .order-container .order-header .row .col-sm-6 {
     padding-left: 30px;
+    font-family: "Cascadia Code", sans-serif;
+    color: black;
 }
 
 .order-container .order-header .row .col-sm-2, .col-sm-4 {
     text-align: center;
+    font-family: "Cascadia Code", sans-serif;
+    color: black;
 }
 
 .order-container .order-header .row{
@@ -25,28 +34,29 @@
 
 .order-container .book-image {
     margin-top: 5px;
-    width: 210px;
-    height: 310px;
+    width: 170px;
+    height: 235px;
     border: 5px solid #708090;
     padding: 2px;
 }
 
 .order-container .media-body {
-    margin-top: 10px;
+    margin-top: 5px;
     margin-left: 10px;
 }
 
 .order-container .order-summary {
     background: whitesmoke;
-    height: 350px;
+    height: 270px;
     border-bottom: 3px solid darkgray;
 }
 
 .order-container .order-main {
+    width: 100%;
     margin-bottom: 35px;
     border-radius: 6px;
     background: silver;
-    height: 420px;
+    height: 340px;
     border-bottom: 3px darkgray solid;
     border-right: 3px darkgray solid;
     border-left: 5px darkgray solid;
@@ -58,7 +68,6 @@
 
 
 .order-container .details-btn {
-    margin-top: 40px;
     width: 135px;
     background: black;
     color: white;
@@ -66,15 +75,20 @@
     border-radius: 8px;
     height: 35px;
     line-height: 10px;
-    margin-left: 15%;
+    margin-top: 10%;
+    margin-left: 10%;
 }
 
-.order-container .media-body div{
-    font-weight: 500;
+.order-container .media-body div {
+    font-weight: 700;
     color: #1b1b1b;
 }
 
 .order-container .details-btn:hover {
     background: #222222;
+}
+
+.order-container .media-heading {
+    margin-bottom: 5px;
 }
 

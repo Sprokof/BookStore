@@ -21,7 +21,7 @@ Online Book Store using JavaScript, Bootstrap on front side and Java, Spring Boo
 ![searchPage](https://user-images.githubusercontent.com/90979711/195913903-6b3fdbab-11a1-4614-b329-2779e2aa11a7.png)
 
 ## Orders page
-![orders](https://user-images.githubusercontent.com/90979711/198897189-c7edea84-214c-4200-a119-0e24e4d33790.png)
+![ordersPage](https://user-images.githubusercontent.com/90979711/198996547-071b4119-a683-427a-adf9-6ba5f7d6606f.png)
 
 
 ## Cart page
