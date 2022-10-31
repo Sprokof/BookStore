@@ -28,12 +28,9 @@
     color: black;
 }
 
-.order-container .order-header .row{
-    background: #808080;
-}
 
 .order-container .book-image {
-    margin-top: 5px;
+    margin-top: 10px;
     width: 170px;
     height: 235px;
     border: 5px solid #708090;
@@ -41,7 +38,7 @@
 }
 
 .order-container .media-body {
-    margin-top: 5px;
+    margin-top: 10px;
     margin-left: 10px;
 }
 

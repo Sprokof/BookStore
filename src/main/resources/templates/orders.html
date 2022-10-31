@@ -20,12 +20,12 @@
     <div class="order-main" th:each="order : ${orders}">
         <div class="order-header">
             <div class="row" style="background-color: silver">
-                <div class="col-sm-6">Order Placed In</div>
+                <div class="col-sm-6">Order Placed</div>
                 <div class="col-sm-2">Total</div>
                 <div class="col-sm-4">Order Id</div>
             </div>
 
-            <div class="row">
+            <div class="row" style="background-color: darkgray">
                 <div class="col-sm-6" th:text="${order.orderDate}"></div>
                 <div class="col-sm-2" th:text="${order.total + '0 ₽'}"></div>
                 <div class="col-sm-4" th:text="${order.id}"></div>
