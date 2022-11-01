@@ -46,7 +46,6 @@ public class CheckoutValidation extends AbstractValidation {
             this.response.addError("address", "Address can't be empty");
         }
 
-
         if(!addressExist(address)){
             this.response.addError("address", "Address not exist " +
                     "(check also 'Country' and 'City' fields");
@@ -54,7 +53,7 @@ public class CheckoutValidation extends AbstractValidation {
 
         String zipCode = checkoutDto.getZip();
         if(zipCode.isEmpty()){
-            this.response.addError("zip", "Zip can't ber empty");
+            this.response.addError("zip", "Zip can't be empty");
         }
 
         Pattern zipPattern = Pattern.compile("^[0-9]{5}(?:-[0-9]{4})?$");
@@ -63,7 +62,7 @@ public class CheckoutValidation extends AbstractValidation {
             this.response.addError("zip", "Wrong zip code");
         }
 
-        String cardNumber = checkoutDto.getNumber().replaceAll("\\p{P}", "");
+        String cardNumber = checkoutDto.getCardNumber().replaceAll("\\p{P}", "");
 
         if(cardNumber.isEmpty()){
             this.response.addError("card-num", "Card number can't be empty");
@@ -89,10 +88,23 @@ public class CheckoutValidation extends AbstractValidation {
             this.response.addError("exp", "Wrong exp. format");
         }
 
+        String ccv = checkoutDto.getCcv();
+
+        if(ccv.isEmpty()) {
+            this.response.addError("cvv", "cvv can't be empty");
+        }
+
+        String cvvPattern = "^[0-9]{3}$";
+
+        if(ccv.matches(cvvPattern)){
+            this.response.addError("cvv", "wrong cvv format");
+        }
+
     }
 
     @Override
     public boolean addressExist(String address) {
+        if(address.isEmpty()) return false;
         JOpenCageGeocoder cageGeocoder = new JOpenCageGeocoder(key);
         JOpenCageForwardRequest request = new JOpenCageForwardRequest(address);
         request.setRestrictToCountryCode("ru");

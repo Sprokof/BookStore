@@ -160,7 +160,7 @@ function inCart(btn, flag){
     }
 }
 
-function reload(){
+export function reload(){
     window.location.reload();
 }
 

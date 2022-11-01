@@ -1,7 +1,6 @@
 import {getUser} from "./navbar.js";
 import {blockBackgroundHtml} from "./notice.js";
-import {closeSuccessWindow, openSuccessWindow} from "./window.js";
-import {test} from "./checkout.js";
+import {reload} from "./main.js";
 
 const sumSuffix = ".00 ₽";
 const shipping_cost = 170;
@@ -35,7 +34,7 @@ function removeItem(isbnNode) {
         dataType: 'json',
         responseType: 'json',
         success : () => {
-           setTimeout(reloadPage, 200);
+           setTimeout(reload, 200);
         }
     })
 }
@@ -48,9 +47,6 @@ function extractISBN(node){
     return isbn.substr(startIndex, length);
 }
 
-function reloadPage(){
-    window.location.reload();
-}
 
 let inputs = document.querySelectorAll('.quantity input');
 inputs.forEach((input) => {
@@ -137,10 +133,6 @@ toCart.onclick = () => {
     setTimeout(checkoutClose, 150);
 }
 
-let purchase = document.querySelectorAll('#checkout .buttons button')[1];
-purchase.onclick = () => {
-    test();
-}
 
 function checkoutOpen(){
     let checkout = document.querySelector('#checkout');
@@ -159,50 +151,4 @@ function checkoutClose(){
 function clearCheckoutInputs(){
     let inputs = document.querySelectorAll('.checkout-container div input');
     inputs.forEach((input) => input.value = '');
-}
-
-function executePurchase(){
-    let orderDto = {
-        "sessionid": getUser()['sessionid'],
-    }
-
-    $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: "/home/orders/add",
-        data: JSON.stringify(orderDto),
-        cache: false,
-        dataType: 'json',
-        responseType: 'json',
-        success : () => {
-            clearCart();
-        }
-    })
-}
-
-function successWindowControl(){
-    let success = document.querySelectorAll('#success-window')[1];
-    success.style.top = "25%";
-    success.style.left = "30%";
-    setTimeout(openSuccessWindow, 150);
-    setTimeout(closeSuccessWindow, 2100);
-    setTimeout(reloadPage, 2700);
-}
-
-function clearCart(){
-    let cartDto = {
-        "sessionid" : getUser()['sessionid']
-    }
-    $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: "/home/cart/clear",
-        data: JSON.stringify(cartDto),
-        cache: false,
-        dataType: 'json',
-        responseType: 'json',
-        success: () => {
-            successWindowControl();
-        }
-    })
 }

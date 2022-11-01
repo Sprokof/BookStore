@@ -12,11 +12,9 @@ public class CheckoutServiceImpl implements CheckoutService{
     @Autowired
     private UserService userService;
 
-
     @Override
     public void saveCheckoutInfo(CheckoutDto checkoutDto, User user) {
         Checkout checkout = checkoutDto.doCheckoutBuilder();
-        String sessionid = checkoutDto.getSessionid();
         user.setCheckout(checkout);
         this.userService.updateUser(user);
     }

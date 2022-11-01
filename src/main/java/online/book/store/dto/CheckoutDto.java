@@ -2,9 +2,11 @@ package online.book.store.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.book.store.builder.AbstractCheckoutBuilder;
 import online.book.store.entity.Checkout;
+import online.book.store.hash.SHA256;
 import org.springframework.beans.factory.annotation.Value;
 import org.thymeleaf.spring5.expression.Fields;
 
@@ -15,6 +17,7 @@ import java.lang.reflect.Field;
 @AllArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
 public class CheckoutDto extends AbstractCheckoutBuilder {
 
 
@@ -23,11 +26,12 @@ public class CheckoutDto extends AbstractCheckoutBuilder {
     private String address;
 
     private String zip;
-    private String number;
+    private String cardNumber;
     private String exp;
+    private String ccv;
 
     private String sessionid;
-    
+
 
     //implementation of builder
 
@@ -63,13 +67,13 @@ public class CheckoutDto extends AbstractCheckoutBuilder {
 
     @Override
     public AbstractCheckoutBuilder number(String number) {
-        this.number = number;
+        this.cardNumber = SHA256.hash(number);
         return this;
     }
 
     @Override
     public AbstractCheckoutBuilder exp(String exp) {
-        this.exp = exp;
+        this.exp = SHA256.hash(exp);
         return this;
     }
 
@@ -88,7 +92,7 @@ public class CheckoutDto extends AbstractCheckoutBuilder {
     public Checkout build() {
         if(!containsNull()){
             return new Checkout(this.firstName, this.lastName, this.address,
-                    this.zip, this.number, this.exp);
+                    this.zip, this.cardNumber, this.exp);
         }
         return null;
     }
@@ -98,7 +102,7 @@ public class CheckoutDto extends AbstractCheckoutBuilder {
                 firstName(this.firstName).
                 lastName(this.lastName).
                 address(this.address).
-                zip(this.zip).number(this.number).
+                zip(this.zip).number(this.cardNumber).
                 exp(this.exp).build();
     }
 }

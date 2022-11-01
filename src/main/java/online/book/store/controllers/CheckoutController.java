@@ -42,8 +42,9 @@ public class CheckoutController {
         return ResponseEntity.ok(200);
     }
 
-    @PostMapping("/validate/checkout")
+    @PostMapping("/home/validate/checkout")
     public ResponseEntity<Map<String, String>> validateCheckout(@RequestBody CheckoutDto checkoutDto){
+        System.out.println(checkoutDto);
         checkoutValidation.validation(checkoutDto);
         if(!checkoutValidation.hasErrors()){
             User user = this.sessionService.getCurrentUser(checkoutDto.getSessionid());
