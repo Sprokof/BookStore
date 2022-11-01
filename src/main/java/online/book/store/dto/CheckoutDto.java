@@ -5,7 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import online.book.store.builder.AbstractCheckoutBuilder;
 import online.book.store.entity.Checkout;
+import org.springframework.beans.factory.annotation.Value;
+import org.thymeleaf.spring5.expression.Fields;
 
+import javax.persistence.Column;
 import java.lang.reflect.Field;
 
 
@@ -14,26 +17,17 @@ import java.lang.reflect.Field;
 @Setter
 public class CheckoutDto extends AbstractCheckoutBuilder {
 
+
     private String firstName;
     private String lastName;
-    private String email;
-    private String phoneNumber;
-    private String country;
-    private String state;
-    private String city;
-    private String streetName;
-    private String buildingNumber;
-    private String roomNumber;
-    private String zipCode;
-    private String cardNumber;
-    private String expiryMonth;
-    private String expiryYear;
-    private String cvv;
+    private String address;
 
-    @Getter
-    @Setter
-    private String saveCheckout = "false";
+    private String zip;
+    private String number;
+    private String exp;
 
+    private String sessionid;
+    
 
     //implementation of builder
 
@@ -56,105 +50,55 @@ public class CheckoutDto extends AbstractCheckoutBuilder {
     }
 
     @Override
-    public AbstractCheckoutBuilder email(String email) {
-        this.email = email;
+    public AbstractCheckoutBuilder address(String address) {
+        this.address = address;
         return this;
     }
 
     @Override
-    public AbstractCheckoutBuilder phoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public AbstractCheckoutBuilder zip(String zip) {
+        this.zip = zip;
         return this;
     }
 
     @Override
-    public AbstractCheckoutBuilder country(String country) {
-        this.country = country;
+    public AbstractCheckoutBuilder number(String number) {
+        this.number = number;
         return this;
     }
 
     @Override
-    public AbstractCheckoutBuilder state(String state) {
-        this.state = state;
+    public AbstractCheckoutBuilder exp(String exp) {
+        this.exp = exp;
         return this;
     }
-
-    @Override
-    public AbstractCheckoutBuilder city(String city) {
-        this.city = city;
-        return this;
-    }
-
-    @Override
-    public AbstractCheckoutBuilder streetName(String streetName) {
-        this.streetName = streetName;
-        return this;
-    }
-
-    @Override
-    public AbstractCheckoutBuilder buildingNumber(String buildingNumber) {
-        this.buildingNumber = buildingNumber;
-        return this;
-    }
-
-    @Override
-    public AbstractCheckoutBuilder roomNumber(String roomNumber) {
-        this.roomNumber = roomNumber;
-        return this;
-    }
-
-    @Override
-    public AbstractCheckoutBuilder zipCode(String zipCode) {
-        this.zipCode = zipCode;
-        return this;
-    }
-
 
     @Override
     public boolean containsNull() {
-        Field[] fields = this.getClass().getDeclaredFields();
-
+        Field[] fields = this.getClass().getFields();
         int index = 0;
-        while (index != fields.length) {
-
+        while(index != fields.length) {
             if (fields[index] == null) return true;
-
-            index++;
+            index ++ ;
         }
-
-        return false;
-
+    return false;
     }
 
-   // @Override
-    //public Checkout build() {
-       // if(!containsNull()){
-          // Checkout shipment =
-                 //  new Checkout(this.firstName, this.lastName,
-                     //      this.email, this.phoneNumber);
+    @Override
+    public Checkout build() {
+        if(!containsNull()){
+            return new Checkout(this.firstName, this.lastName, this.address,
+                    this.zip, this.number, this.exp);
+        }
+        return null;
+    }
 
-           //shipment.setAddress(new Address(this.country,
-            //        this.state, this.city,
-              //      this.streetName, this.buildingNumber,
-                //    Integer.parseInt(this.roomNumber), this.zipCode));
-
-       // return shipment;
-       // }
-    //return null;
-   // }
-
-    public Checkout doShipmentBuilder(){
+    public Checkout doCheckoutBuilder(){
         return builder().
-                    firstName(this.firstName).
-                    lastName(this.lastName).email(this.email).
-                    phoneNumber(this.phoneNumber).
-                    country(this.country).
-                    city(this.city).
-                    streetName(this.streetName).
-                    buildingNumber(this.buildingNumber).
-                    roomNumber(this.roomNumber).
-                    zipCode(this.zipCode).
-                build();
+                firstName(this.firstName).
+                lastName(this.lastName).
+                address(this.address).
+                zip(this.zip).number(this.number).
+                exp(this.exp).build();
     }
-
 }

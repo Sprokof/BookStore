@@ -7,33 +7,39 @@
 
             <div class="name-info">
                 <div>
-                    <label for="f-name"><span class="symbol">*</span>First Name</label>
+                    <label for="f-name">First Name</label>
                     <input type="text" id="f-name">
+                    <p class="error-message" id="f-name-error"></p>
                 </div>
                 <div>
-                    <label for="l-name"><span class="symbol">*</span>Last Name</label>
+                    <label for="l-name">Last Name</label>
                     <input type="text" id="l-name">
+                    <p class="error-message" id="l-name-error"></p>
                 </div>
             </div>
 
 
-            <div class="street">
-                <label for="street">Street</label>
-                <input type="text"  id="street">
+            <div class="address">
+                <label for="address">Street, house and apartment number</label>
+                <input type="text"  id="address" placeholder="Tverskaya N., apartment N.">
+                <p class="error-message" id="address-error"></p>
             </div>
 
             <div class="address-info">
                 <div>
-                    <label for="city"><span class="symbol">*</span>City</label>
-                    <input id="city" type="text">
+                    <label for="country">Country</label>
+                    <input id="country" type="text" placeholder="Russia">
+                    <p class="error-message" id="country-error"></p>
                 </div>
                 <div>
-                    <label for="state"> State </label>
-                    <input id="state" type="text">
+                    <label for="city"> City </label>
+                    <input id="city" type="text" placeholder="Moscow">
+                    <p class="error-message" id="city-error"></p>
                 </div>
                 <div>
-                    <label for="zip"><span class="symbol">*</span>Zip</label>
+                    <label for="zip">Zip</label>
                     <input id="zip" type="text" placeholder="000000">
+                    <p class="error-message" id="zip-error"></p>
                 </div>
             </div>
 
@@ -42,23 +48,25 @@
             </h5>
 
             <div class="cc-num">
-                <label for="card-num"><span class="symbol">*</span>Credit Card No.</label>
+                <label for="card-num">Credit Card No.</label>
                 <input class="text-center" id="card-num" type="text"
-                       placeholder="1111-2222-3333-4444" minlength="16" maxlength="16">
+                       placeholder="1111 2222 3333 4444" minlength="16" maxlength="16">
+                <p class="error-message" id="card-num-error"></p>
             </div>
 
             <div class="cc-info">
                 <div>
-                    <label for="exp"><span class="symbol">*</span>Exp</label>
+                    <label for="exp">Exp</label>
                     <input class="text-center" id="exp" type="text" placeholder="00/00" minlength="5" maxlength="5">
+                    <p class="error-message" id="exp-error"></p>
                 </div>
                 <div>
-                    <label for="ccv"><span class="symbol">*</span>CCV</label>
+                    <label for="ccv">CCV</label>
                     <input class="text-center" id="ccv" type="text" placeholder="000" minlength="3" maxlength="3">
+                    <p class="error-message" id="cvv-error"></p>
+
                 </div>
             </div>
-
-            <p class="notice"><span class="symbol">*</span> - Mandatory fields</p>
 
             <div class="buttons">
                 <button>Close</button>

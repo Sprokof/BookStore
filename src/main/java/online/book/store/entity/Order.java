@@ -61,6 +61,12 @@ public class Order {
     @Setter
     private User user;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @Getter
+    @Setter
+    @JoinColumn(name = "details_id")
+    private OrderDetails orderDetails;
+
     private String getCurrentDate(){
         return LocalDate.now().toString();
     }
@@ -77,4 +83,6 @@ public class Order {
     public void setStatus(OrderStatus status) {
         this.status = status.getText();
     }
+
+
 }

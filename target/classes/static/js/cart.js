@@ -1,6 +1,7 @@
 import {getUser} from "./navbar.js";
 import {blockBackgroundHtml} from "./notice.js";
 import {closeSuccessWindow, openSuccessWindow} from "./window.js";
+import {test} from "./checkout.js";
 
 const sumSuffix = ".00 ₽";
 const shipping_cost = 170;
@@ -138,7 +139,7 @@ toCart.onclick = () => {
 
 let purchase = document.querySelectorAll('#checkout .buttons button')[1];
 purchase.onclick = () => {
-    executePurchase();
+    test();
 }
 
 function checkoutOpen(){

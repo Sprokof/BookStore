@@ -17,6 +17,10 @@ public abstract class AbstractValidation {
     public void deleteErrorsMessages() {
     }
 
+    public boolean addressExist(String address) {
+        return false;
+    }
+
     public void validatePassword(ValidateResponse response, String password, String confirmPassword,
                                  String passwordFieldId, String confirmPasswordFieldId){
 

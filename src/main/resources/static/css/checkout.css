@@ -83,7 +83,7 @@
 
 
 .wrapper .checkout-container .buttons {
-    margin-top: -3%;
+    margin-top: 10%;
     margin-left: 50%;
     height: 50px;
     width: 210px;
@@ -109,19 +109,19 @@
 }
 
 
-.checkout-container .name-info, .address-info, .cc-info, .street, .cc-num {
+.checkout-container .name-info, .address-info, .cc-info, .address, .cc-num {
     flex-direction: row;
     width: 100%;
     justify-content: space-between;
 }
 
 
-.checkout-container .street input, .cc-num input{
+.checkout-container .address input, .cc-num input{
     margin: 5px 0;
     min-height: 30px;
 }
 
-.checkout-container .street {
+.checkout-container .address {
     margin-top: 5px;
 }
 
@@ -156,5 +156,4 @@
 
 .checkout-container .notice {
     margin-top: 10px;
-    width: 150px;
 }
