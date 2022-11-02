@@ -49,7 +49,7 @@ public class User {
     @Setter
     @Getter
     @JoinColumn(name = "checkout_id")
-    public Checkout checkout;
+    private Checkout checkout;
 
     @Column(name = "IS_ADMIN")
     @Getter

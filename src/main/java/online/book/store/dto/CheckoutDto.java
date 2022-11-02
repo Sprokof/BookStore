@@ -14,7 +14,6 @@ import javax.persistence.Column;
 import java.lang.reflect.Field;
 
 
-@AllArgsConstructor
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,9 +22,9 @@ public class CheckoutDto extends AbstractCheckoutBuilder {
 
     private String firstName;
     private String lastName;
+    private String street;
     private String country;
     private String city;
-    private String street;
     private String address;
 
     private String zip;
@@ -70,13 +69,13 @@ public class CheckoutDto extends AbstractCheckoutBuilder {
 
     @Override
     public AbstractCheckoutBuilder number(String number) {
-        this.cardNumber = SHA256.hash(number);
+        this.cardNumber = number;
         return this;
     }
 
     @Override
     public AbstractCheckoutBuilder exp(String exp) {
-        this.exp = SHA256.hash(exp);
+        this.exp = exp;
         return this;
     }
 

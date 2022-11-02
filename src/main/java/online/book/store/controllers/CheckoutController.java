@@ -59,4 +59,10 @@ public class CheckoutController {
         return ResponseEntity.ok(String.valueOf(this.checkoutService.checkoutSaved(user)));
     }
 
+    @PostMapping("/home/get/checkout")
+    public ResponseEntity<CheckoutDto> getCheckoutsData(@RequestBody CheckoutDto checkoutDto){
+        String sessionid = checkoutDto.getSessionid();
+        User user = this.sessionService.getCurrentUser(sessionid);
+        return ResponseEntity.ok(this.checkoutService.getCheckoutsData(user));
+    }
 }

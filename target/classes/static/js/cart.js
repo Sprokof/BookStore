@@ -139,7 +139,7 @@ toCart.onclick = () => {
 }
 
 
-function checkoutOpen(){
+export function checkoutOpen(){
     let checkout = document.querySelector('#checkout');
     checkout.classList.add('active');
     blockBackgroundHtml(true);
@@ -186,6 +186,10 @@ function openCheckoutNotice() {
 
 let closeBtn = document.querySelector('.checkout-notice .notice-close-btn');
     closeBtn.onclick = () => {
-        let notice = document.querySelector('.checkout-notice');
-        notice.classList.remove("active");
+        closeCheckoutNotice();
+}
+
+export function closeCheckoutNotice () {
+    let notice = document.querySelector('.checkout-notice');
+    notice.classList.remove("active");
 }

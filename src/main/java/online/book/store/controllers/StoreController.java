@@ -84,11 +84,6 @@ public class StoreController{
         return ResponseEntity.ok(String.valueOf(accepted));
     }
 
-    @GetMapping("/checkout/notice")
-    public String checkouts(){
-        return "checkoutnotice";
-    }
-
 }
 
 

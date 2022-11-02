@@ -1,6 +1,7 @@
 import {getUser} from "./navbar.js";
 import {closeSuccessWindow, openSuccessWindow} from "./window.js";
 import {reload} from "./main.js";
+import {checkoutOpen, closeCheckoutNotice} from "./cart.js";
 
 
 
@@ -10,9 +11,9 @@ if(purchase != null) {
         let checkoutDto = {
             "firstName": document.querySelector('#f-name').value,
             "lastName": document.querySelector('#l-name').value,
+            "street" : document.querySelector('#address').value,
             "country": document.querySelector('#country').value,
             "city" : document.querySelector('#city').value,
-            "street" : document.querySelector('#address').value,
             "address": addressFormatting(),
             "zip": document.querySelector('#zip').value,
             "cardNumber": document.querySelector('#card-num').value,
@@ -58,9 +59,9 @@ export function successWindowControl(){
     let success = document.querySelectorAll('#success-window')[1];
     success.style.top = "25%";
     success.style.left = "30%";
-    setTimeout(openSuccessWindow, 150);
-    setTimeout(closeSuccessWindow, 2100);
-    setTimeout(reload, 2700);
+    setTimeout(openSuccessWindow, 100);
+    setTimeout(closeSuccessWindow, 2150);
+    setTimeout(reload, 2500);
 }
 
 export function clearCart(){
@@ -130,3 +131,50 @@ function controlErrorMessage(field, value){
         field.style.color = "black";
     }
 }
+
+    let createNewBtn = document.querySelectorAll('.checkout-notice .buttons button')[1];
+    createNewBtn.onclick = () => {
+        closeCheckoutNotice();
+        checkoutOpen();
+    }
+
+    let savedInfoBtn = document.querySelectorAll('.checkout-notice .buttons button')[0];
+    savedInfoBtn.onclick = () => {
+        fillCheckoutInputs();
+        closeCheckoutNotice();
+        checkoutOpen();
+    }
+
+    function fillCheckoutInputs() {
+        let checkoutValues = getCheckoutData();
+        let inputs = document.querySelectorAll('#checkout input');
+        for(let i = 0; i < checkoutValues.length; i ++){
+            inputs[i].value = checkoutValues[i];
+        }
+    }
+
+    function getCheckoutData() {
+        let checkoutDto = {
+            "sessionid" : getUser()['sessionid'],
+        }
+        let response;
+        $.ajax({
+            type: "POST",
+            contentType: "application/json",
+            url: "/home/get/checkout",
+            data: JSON.stringify(checkoutDto),
+            cache: false,
+            dataType: 'json',
+            responseType: 'json',
+            async : false,
+            success: (dto) => {
+                response = JSON.parse(JSON.stringify(dto));
+            }
+        })
+        let fieldArray = [];
+        for(let value of Object.values(response)){
+            if(value == null) continue;
+            fieldArray.push(value);
+        }
+        return fieldArray;
+    }
