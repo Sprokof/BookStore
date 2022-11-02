@@ -125,7 +125,12 @@ function validInput(input){
 let checkoutBtn = document.querySelector('#checkout-btn');
 checkoutBtn.onclick = () => {
     window.scrollTo({ top: 135, behavior: 'smooth' })
-    setTimeout(checkoutOpen, 150);
+    if(!checkoutSaved()) {
+        setTimeout(checkoutOpen, 150);
+    }
+    else {
+        setTimeout(openCheckoutNotice, 150)
+    }
 }
 
 let toCart = document.querySelectorAll('#checkout .buttons button')[0];
@@ -140,6 +145,27 @@ function checkoutOpen(){
     blockBackgroundHtml(true);
 }
 
+function checkoutSaved(){
+    let saved;
+    let checkoutDto = {
+        "sessionid" : getUser()['sessionid']
+    }
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/home/checkout/saved",
+        data: JSON.stringify(checkoutDto),
+        cache: false,
+        dataType: 'json',
+        responseType: 'json',
+        async: false,
+        success: (result) => {
+            saved = result;
+        }
+    })
+    return saved;
+}
+
 function checkoutClose(){
     let checkout = document.querySelector('#checkout');
     clearCheckoutInputs();
@@ -151,4 +177,19 @@ function checkoutClose(){
 function clearCheckoutInputs(){
     let inputs = document.querySelectorAll('.checkout-container div input');
     inputs.forEach((input) => input.value = '');
+}
+
+function openCheckoutNotice() {
+    let notice = document.querySelector('.checkout-notice');
+    notice.classList.add("active");
+}
+
+let closeBtn = document.querySelector('.checkout-notice .notice-close-btn');
+    closeBtn.onclick = () => {
+        closeCheckoutNotice();
+}
+
+function closeCheckoutNotice () {
+    let notice = document.querySelector('.checkout-notice');
+    notice.classList.remove("active");
 }

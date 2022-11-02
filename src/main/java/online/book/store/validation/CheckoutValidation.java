@@ -30,22 +30,34 @@ public class CheckoutValidation extends AbstractValidation {
     public void validation(Object target) {
         if(!supports(target.getClass())) return ;
         CheckoutDto checkoutDto = (CheckoutDto) target;
+        deleteErrorsMessages();
 
         String firstName = checkoutDto.getFirstName();
         if(firstName.isEmpty()){
-            this.response.addError("f-name", "First name can't be empty");
+            this.response.addError("f-name", "Can't be empty");
         }
 
         String lastName = checkoutDto.getLastName();
         if(lastName.isEmpty()){
-            this.response.addError("l-name", "Last name can't be empty");
+            this.response.addError("l-name", "Can't be empty");
+        }
+
+        String country = checkoutDto.getCountry();
+        if(country.isEmpty()){
+            this.response.addError("country", "Can't be empty");
+        }
+
+        String city = checkoutDto.getCity();
+        if(city.isEmpty()){
+            this.response.addError("city", "Can't be empty");
+        }
+
+        String street = checkoutDto.getStreet();
+        if(street.isEmpty()){
+            this.response.addError("address", "Can't be empty");
         }
 
         String address = checkoutDto.getAddress();
-        if(address.isEmpty()){
-            this.response.addError("address", "Address can't be empty");
-        }
-
         if(!addressExist(address)){
             this.response.addError("address", "Address not exist " +
                     "(check also 'Country' and 'City' fields");
@@ -53,7 +65,7 @@ public class CheckoutValidation extends AbstractValidation {
 
         String zipCode = checkoutDto.getZip();
         if(zipCode.isEmpty()){
-            this.response.addError("zip", "Zip can't be empty");
+            this.response.addError("zip", "Can't be empty");
         }
 
         Pattern zipPattern = Pattern.compile("^[0-9]{5}(?:-[0-9]{4})?$");
@@ -65,12 +77,10 @@ public class CheckoutValidation extends AbstractValidation {
         String cardNumber = checkoutDto.getCardNumber().replaceAll("\\p{P}", "");
 
         if(cardNumber.isEmpty()){
-            this.response.addError("card-num", "Card number can't be empty");
+            this.response.addError("card-num", "Can't be empty");
         }
 
-        String cardNumberRegExp = "^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6" +
-                "(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|" +
-                "[68][0-9])[0-9]{11}|(?:2131|1800|35\\d{3})\\d{11})$";
+        String cardNumberRegExp = "\\d{4}\\s\\d{4}\\s\\d{4}\\s\\d{4}";
 
         if(!cardNumber.matches(cardNumberRegExp)){
             this.response.addError("card-num", "Wrong number, validate it");
@@ -79,7 +89,7 @@ public class CheckoutValidation extends AbstractValidation {
         String expDate = checkoutDto.getExp();
 
         if(expDate.isEmpty()){
-            this.response.addError("exp", "Exp. can't be empty");
+            this.response.addError("exp", "Can't be empty");
         }
 
         String expDateRegExp = "^(0[1-9]|1[0-2])\\/?([0-9]{4}|[0-9]{2})$";
@@ -91,13 +101,13 @@ public class CheckoutValidation extends AbstractValidation {
         String ccv = checkoutDto.getCcv();
 
         if(ccv.isEmpty()) {
-            this.response.addError("cvv", "cvv can't be empty");
+            this.response.addError("ccv", "Can't be empty");
         }
 
-        String cvvPattern = "^[0-9]{3}$";
+        String cvvPattern = "\\d{3}";
 
-        if(ccv.matches(cvvPattern)){
-            this.response.addError("cvv", "wrong cvv format");
+        if(!ccv.matches(cvvPattern)){
+            this.response.addError("ccv", "wrong ccv format");
         }
 
     }
@@ -110,7 +120,7 @@ public class CheckoutValidation extends AbstractValidation {
         request.setRestrictToCountryCode("ru");
 
         JOpenCageResponse response = cageGeocoder.forward(request);
-        return response.getResults().isEmpty();
+        return !response.getResults().isEmpty();
     }
 
     @Override
@@ -121,5 +131,10 @@ public class CheckoutValidation extends AbstractValidation {
     @Override
     public boolean hasErrors() {
         return !this.response.getFieldErrors().isEmpty();
+    }
+
+    @Override
+    public void deleteErrorsMessages() {
+        this.response = new ValidateResponse();
     }
 }

@@ -5,4 +5,5 @@ import online.book.store.entity.User;
 
 public interface CheckoutService {
     void saveCheckoutInfo(CheckoutDto checkoutDto, User user);
+    boolean checkoutSaved(User user);
 }

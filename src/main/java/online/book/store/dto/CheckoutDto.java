@@ -23,6 +23,9 @@ public class CheckoutDto extends AbstractCheckoutBuilder {
 
     private String firstName;
     private String lastName;
+    private String country;
+    private String city;
+    private String street;
     private String address;
 
     private String zip;

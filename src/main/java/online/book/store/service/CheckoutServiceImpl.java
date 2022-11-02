@@ -18,4 +18,9 @@ public class CheckoutServiceImpl implements CheckoutService{
         user.setCheckout(checkout);
         this.userService.updateUser(user);
     }
+
+    @Override
+    public boolean checkoutSaved(User user) {
+       return user.getCheckout() != null;
+    }
 }

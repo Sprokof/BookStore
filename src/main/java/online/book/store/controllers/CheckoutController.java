@@ -44,13 +44,19 @@ public class CheckoutController {
 
     @PostMapping("/home/validate/checkout")
     public ResponseEntity<Map<String, String>> validateCheckout(@RequestBody CheckoutDto checkoutDto){
-        System.out.println(checkoutDto);
         checkoutValidation.validation(checkoutDto);
         if(!checkoutValidation.hasErrors()){
             User user = this.sessionService.getCurrentUser(checkoutDto.getSessionid());
             checkoutService.saveCheckoutInfo(checkoutDto, user);
         }
         return ResponseEntity.ok(checkoutValidation.validationErrors());
+    }
+
+    @PostMapping("/home/checkout/saved")
+    public ResponseEntity<String> checkoutSaved(@RequestBody CheckoutDto checkoutDto){
+        String sessionid = checkoutDto.getSessionid();
+        User user = this.sessionService.getCurrentUser(sessionid);
+        return ResponseEntity.ok(String.valueOf(this.checkoutService.checkoutSaved(user)));
     }
 
 }

@@ -1,4 +1,3 @@
-import {validation} from "./validation.js";
 import {getUser} from "./navbar.js";
 import {closeSuccessWindow, openSuccessWindow} from "./window.js";
 import {reload} from "./main.js";
@@ -11,13 +10,17 @@ if(purchase != null) {
         let checkoutDto = {
             "firstName": document.querySelector('#f-name').value,
             "lastName": document.querySelector('#l-name').value,
+            "country": document.querySelector('#country').value,
+            "city" : document.querySelector('#city').value,
+            "street" : document.querySelector('#address').value,
             "address": addressFormatting(),
             "zip": document.querySelector('#zip').value,
             "cardNumber": document.querySelector('#card-num').value,
             "exp": document.querySelector('#exp').value,
-            "ccv" : document.querySelector("#ccv").value
+            "ccv": document.querySelector("#ccv").value,
+            "sessionid" : getUser()['sessionid']
         }
-        validation(checkoutDto, "/home/validate/checkout")
+        checkoutValidation(checkoutDto);
     }
 }
 
@@ -76,4 +79,54 @@ export function clearCart(){
             successWindowControl();
         }
     })
+}
+
+function checkoutValidation(checkoutDto) {
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/home/validate/checkout",
+        data: JSON.stringify(checkoutDto),
+        cache: false,
+        dataType: 'json',
+        responseType: 'json',
+        success: (data) => {
+            let validationErrors = JSON.parse(JSON.stringify(data));
+            let errorsMap = new Map(Object.entries(validationErrors));
+            if(errorsMap.size > 0) {
+                highlightFields(errorsMap);
+            }
+            else {
+                executePurchase();
+            }
+        }
+    })
+}
+
+function highlightFields(map){
+    for(let [fieldId, value] of map){
+        let field = document.getElementById(fieldId);
+        field.classList.add('highlight');
+        controlErrorMessage(field, value);
+    }
+}
+
+function controlErrorMessage(field, value){
+    let saveValue = field.value;
+    field.onmouseover = () => {
+        if(!field.classList.contains('highlight')) return ;
+        field.value = value;
+        field.style.color = "red";
+    }
+    field.onmouseout = () => {
+        if(!field.classList.contains('highlight')) return ;
+        field.value = saveValue;
+
+    }
+    field.oninput = () => {
+        if(!field.classList.contains('highlight')) return ;
+        field.value = "";
+        field.classList.remove('highlight');
+        field.style.color = "black";
+    }
 }
