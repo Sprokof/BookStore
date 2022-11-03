@@ -2,6 +2,7 @@
     position: absolute;
     top: 20%;
     left: 15%;
+    z-index: 0;
 }
 
 .order-container.container {
@@ -59,6 +60,10 @@
     border-left: 5px darkgray solid;
 }
 
+.order-container .order-main .order-summary {
+    overflow-y: hidden;
+}
+
 .order-container .order-components {
     margin-left: 10px;
 }
@@ -89,3 +94,55 @@
     margin-bottom: 5px;
 }
 
+
+.order-container .order-details-container {
+    position: relative;
+    top: -70%;
+    left: 30%;
+    border: 3px solid #5f5f5b;
+    border-radius: 10px;
+    -webkit-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    -moz-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    overflow-y: hidden;
+    background: whitesmoke;
+    opacity: 0;
+    z-index: -1;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+
+}
+
+.order-container .order-details-container .details-items {
+    padding: 20px 10px 5px;
+    display: block;
+}
+
+.order-container .order-details-container .details-items .item {
+    font-family: 'Cambria', sans-serif;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.order-container .order-details-container.active {
+    transition: 0.3s;
+    opacity: 1;
+    z-index: 1;
+    pointer-events: auto;
+    width: auto;
+    height: auto;
+}
+
+.order-container .order-details-container .close-details-btn{
+    position: absolute;
+    top: -5%;
+    left: 95%;
+    font-size: 22px;
+    color: black;
+    cursor: pointer;
+}
+
+.order-container .order-details-container .close-details-btn:hover {
+    color: #222222;
+}

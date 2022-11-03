@@ -53,7 +53,7 @@ public class OrderServiceImpl implements OrderService{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale(Locale.ENGLISH);
         LocalDate date = LocalDate.parse(orderDate, formatter);
-        return date.plusDays(7) + " - " + date.plusDays(3);
+        return date.plusDays(3) + " - " + date.plusDays(7);
     }
 
 

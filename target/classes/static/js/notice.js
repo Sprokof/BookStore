@@ -68,6 +68,7 @@ export function blockBackgroundHtml(flag){
             document.querySelector('.close-window-btn').style.pointerEvents = "auto";
         }
 
+
         sidebar.style.pointerEvents = "none";
 
     }

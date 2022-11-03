@@ -1,4 +1,4 @@
-import {signInClose} from "./registration.js";
+import { signInClose } from "./registration.js";
 import { resetClose } from "./reset.js";
 import { closeResetTwoPopup  } from "./confirmReset.js";
 import { clearInputs } from "./validation.js";
