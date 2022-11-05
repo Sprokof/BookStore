@@ -2,13 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="utf-8"/>
+    <link rel="shortcut icon" href="#">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-
+    <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/info.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/static/css/}"/>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
 
-    <title>Title</title>
+
 </head>
 <body>
 <div class="container-fluid">
@@ -16,61 +19,56 @@
         <div class="item-container"></div>
 
         <div class="col-md-6">
-            <div th:align="center" id="item-1" class="service1-item-container">
-                <img class="cover-image" th:src="@{'/images' + ${book.bookImageName}}" alt="image">
-            </div>
+            <img class="book-image" th:src="@{'/images/' + ${book.bookImageName}}" alt="image">
          </div>
-s
+
         <div class="col-md-6">
-            <div class="product-title" th:text="${'Title: ' + ${book.title}}"></div>
-            <div class="product-desc" th:text="${'Subject: ' + ${book.subject}}"></div>
-            <div class="product-rating"><span th:text="${'Ratings:' + ${book.bookRating} + '/100'}"></span><div>
+            <div class="product-title" th:text="${'Title: ' + book.title}"></div>
+            <div class="product-desc" th:text="${'Subject: ' + book.subject}"></div>
+            <div class="product-rating"><div class="star-rating" th:text="${book.bookRating}">
+
+            </div>
 
            <hr>
-                <div class="product-price" th:text="${'Price: ' + ${book.price}}"></div>
+                <div class="product-price" th:text="${'Price: ' + book.price}"></div>
                 <div class="product-stock">In Stock</div>
            <hr>
-               <form method="post" th:action="@{'/home/book/addtowishlist?isbn=' + ${book.isbn}}">
+               <form method="post" th:action="@{'/home/book/addtowishlist?isbn=' + book.isbn}">
                    <button id="toWishList">Add to wishlist</button>
                </form>
-               <form method="post" th:action="@{'/home/book/addtowishlist?isbn=' + ${book.isbn}}">
+               <form method="post" th:action="@{'/home/book/addtowishlist?isbn=' + book.isbn}">
                    <button id="toCart">Add to cart</button>
                </form>
             </div>
             </div>
         </div>
         <div class="details-container container-fluid">
-            <div class="col-md-12 product-info">
 
-                <ul id="tab" class="nav nav-tabs nav-tabs">
-                <li class="active"><a href="javascript:location.href::prodDesc" data-toggle="tab">DESCRIPTION</a></li>
-                <li><a href="javascript:location.href::prodInfo" data-toggle="tab">PRODUCT INFO</a></li>
-                <li><a href="javascript:location.href::prodReviews" data-toggle="tab">REVIEWS</a></li>
+            <ul class="nav nav-tabs" data-tabs="tabs">
+                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#description">DESCRIPTION</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#information">BOOK INFO</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#reviews">REVIEWS</a></li>
+            </ul>
 
-                </ul>
-            </div>
-        <div name="prodDesc" class="tab-pane fade" id="desc">
-
-        <section
-                th:text="${book.getDescription()}" class="product-desc">
-        </section>
-
+        <div class="tab-content">
+        <div  class="tab-pane fade show active" id="description">
+            <section th:text="${book.getDescription()}"
+                     class="product-desc">
+            </section>
         </div>
 
-            <div class="tab-pane fade" id="info" name="prodInfo">
-
-                <section class="">
-
-                <div class="authors" th:text="${'Authors: ' + ${book.authors}}"></div>
-                <div class="format" th:text="${'Format: ' + ${book.format}}"></div>
-                <div class="isbn" th:text="${'ISBN Number: ' + ${book.isbn}}"></div>
-                <div class="publisher" th:text="${'Publisher: ' + ${book.publisher}}"></div>
-                <div class="subject" th:text="${'Subject: ' + ${book.subject}}"></div>
-                <div class="yop" th:text="${'year of production: ' + ${book.yearPub}}"></div>
-
+            <div class="tab-pane fade" id="information">
+                <section>
+                    <div class="authors" th:text="${'Authors: ' + book.authors}"></div>
+                    <div class="format" th:text="${'Format: ' + book.format}"></div>
+                    <div class="isbn" th:text="${'ISBN Number: ' + book.isbn}"></div>
+                    <div class="publisher" th:text="${'Publisher: ' + book.publisher}"></div>
+                    <div class="subject" th:text="${'Subject: ' + book.subject}"></div>
+                    <div class="yop" th:text="${'Year of production: ' + book.yearPub}"></div>
                 </section>
+            </div>
 
-            <div class="tab-pane fade" id="reviews" name="prodReviews">
+            <div class="tab-pane fade" id="reviews">
                 <div class="ratings-container">
                     <div class="row-ratings">
                         <div class="col-sm-8">
@@ -91,7 +89,6 @@ s
             </div>
         </div>
     </div>
-</div>
-
 </body>
+<script type="module" th:src="@{/js/generateRating.js}"></script>
 </html>

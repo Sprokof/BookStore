@@ -22,7 +22,7 @@ public class BookReview {
     @Column(name = "BOOK_RATING")
     private double bookRating;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
     @JoinColumn(name = "book_id")
     private Book book;
 

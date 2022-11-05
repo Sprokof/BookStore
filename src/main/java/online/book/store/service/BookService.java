@@ -14,7 +14,7 @@ public interface BookService {
     Book getBookByTitle(String title);
     Book getBookById(int id);
     void saveBook(Book book);
-    double averageRating(Integer bookId);
+    void addBookRating(Book book);
     void updateBooksCategories(Book book);
 
 }

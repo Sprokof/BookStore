@@ -48,8 +48,6 @@ public class BookController {
     @GetMapping("/home/book")
     public String info(@RequestParam("isbn") String isbn, Model model){
         Book book = bookService.getBookByIsbn(isbn);
-        double rating = bookService.averageRating(book.getId());
-        book.setBookRating(rating);
         model.addAttribute("book", book);
         return "bookInfo";
     }

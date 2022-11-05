@@ -52,6 +52,8 @@ public class Book {
 
 
 
+    @Getter
+    @Setter
     transient double bookRating;
 
 
@@ -104,6 +106,7 @@ public class Book {
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "book")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<BookReview> bookReviews;
 
 

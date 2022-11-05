@@ -25,10 +25,14 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public List<Book> getAllBooks() {
-        List<Book> books = this.bookDao.getAllBooks();
+        List<Book> books;
+        if((books = this.bookDao.getPopularBooks()).isEmpty())
+            books = this.bookDao.getAllBooks();
+
         for(Book book : books){
             String description = book.getDescription();
             String trimDesc = (description.substring(0, lastSubstrIndex(description)) + "...");
+            addBookRating(book);
             book.setDescription(trimDesc);
         }
         return books;
@@ -37,7 +41,9 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public Book getBookByIsbn(String isbn) {
-        return this.bookDao.getBookByIsbn(isbn);
+        Book book = this.bookDao.getBookByIsbn(isbn);
+        addBookRating(book);
+        return book;
     }
 
     @Override
@@ -58,8 +64,8 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public double averageRating(Integer bookId) {
-        return round(this.bookDao.averageRating(bookId));
+    public void addBookRating(Book book) {
+        book.setBookRating(round(this.bookDao.averageRating(book.getId())));
     }
 
     private double round(double value) {

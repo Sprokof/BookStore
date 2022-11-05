@@ -83,25 +83,22 @@ public class BookDaoImpl implements BookDao {
     }
 
 
-
-
     // That method is needed for getting info
     @Override
     public Book getBookByIsbn(String isbn) {
         Session session = null;
         Book book = null;
-    try {
-        session = this.sessionFactory.openSession();
-        session.beginTransaction();
-        book = (Book) session.createSQLQuery("SELECT * FROM BOOKS WHERE ISBN=:isbn").
-                setParameter("isbn", isbn).addEntity(Book.class).getSingleResult();
-        session.getTransaction().commit();
-    }
-    catch (Exception e) {
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            book = (Book) session.createSQLQuery("SELECT * FROM BOOKS WHERE ISBN=:isbn").
+                    setParameter("isbn", isbn).addEntity(Book.class).getSingleResult();
+            session.getTransaction().commit();
+        } catch (Exception e) {
             if (session != null) {
                 if (session.getTransaction() != null) {
                     session.getTransaction().rollback();
-                    if(e instanceof NoResultException) return null;
+                    if (e instanceof NoResultException) return null;
                 }
             }
         } finally {
@@ -110,7 +107,7 @@ public class BookDaoImpl implements BookDao {
             }
         }
 
-    return book;
+        return book;
 
     }
 
@@ -169,12 +166,11 @@ public class BookDaoImpl implements BookDao {
             book = (Book) session.createSQLQuery("SELECT * FROM BOOKS WHERE TITLE=:title").
                     setParameter("isbn", title).addEntity(Book.class).getSingleResult();
             session.getTransaction().commit();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             if (session != null) {
                 if (session.getTransaction() != null) {
                     session.getTransaction().rollback();
-                    if(e instanceof NoResultException) return null;
+                    if (e instanceof NoResultException) return null;
                 }
             }
         } finally {
@@ -198,12 +194,11 @@ public class BookDaoImpl implements BookDao {
                             "BOOKS_REVIEWS WHERE id=:book_id").
                     setParameter("book_id", bookId).getSingleResult();
             session.getTransaction().commit();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             if (session != null) {
                 if (session.getTransaction() != null) {
                     session.getTransaction().rollback();
-                    if(e instanceof NoResultException) return 0d;
+                    if (e instanceof NoResultException) return 0d;
                 }
             }
         } finally {
@@ -218,25 +213,25 @@ public class BookDaoImpl implements BookDao {
     @Override
     public void insertBookAndCategories(int bookId, int categoryId) {
         Session session = null;
-    try {
-        session = this.sessionFactory.openSession();
-        session.beginTransaction();
-        session.createSQLQuery("INSERT INTO BOOKS_CATEGORIES " +
-                "(book_id, category_id) " +
-                "VALUES (:bookId, :categoryId)").
-                setParameter("bookId", bookId).
-                setParameter("categoryId", categoryId).executeUpdate();
-        session.getTransaction().commit();
-    }
-    catch (Exception e){
-        if(session != null && session.getTransaction() != null){
-            session.getTransaction().rollback();
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.createSQLQuery("INSERT INTO BOOKS_CATEGORIES " +
+                            "(book_id, category_id) " +
+                            "VALUES (:bookId, :categoryId)").
+                    setParameter("bookId", bookId).
+                    setParameter("categoryId", categoryId).executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
-    }
-    finally {
-        if(session != null){
-            session.close();
-        }
-    }
     }
 }
+
+

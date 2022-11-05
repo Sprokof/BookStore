@@ -22,11 +22,7 @@ public class HomeController {
 
     @ModelAttribute("books")
     public List<Book> books() {
-        List<Book> books;
-        if((books = bookService.getPopularBooks()).isEmpty()){
-            books = bookService.getAllBooks();
-        }
-    return books;
+        return bookService.getAllBooks();
     }
 
 
