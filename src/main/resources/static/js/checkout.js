@@ -150,6 +150,8 @@ function controlErrorMessage(field, value){
         let inputs = document.querySelectorAll('#checkout input');
         for(let i = 0; i < checkoutValues.length; i ++){
             inputs[i].value = checkoutValues[i];
+            if(i < (checkoutValues.length - 1))
+            blockInputPointerEvents(inputs[i], true);
         }
     }
 
@@ -177,4 +179,10 @@ function controlErrorMessage(field, value){
             fieldArray.push(value);
         }
         return fieldArray;
+    }
+
+export function blockInputPointerEvents(input, flag){
+        let value = "none";
+        if(!flag) value = "auto";
+        input.style.pointerEvents = value;
     }

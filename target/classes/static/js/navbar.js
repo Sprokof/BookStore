@@ -116,6 +116,13 @@ function initBooksCategories(){
             let orders = document.querySelector('.order-container');
             orders.style.left = "25%";
         }
+
+        if(location[2] === 'book'){
+            let book = document.querySelector('#book-info');
+            let detailsContainer = document.querySelector('.details-container');
+            book.classList.toggle('compression');
+            detailsContainer.classList.toggle('compression');
+        }
         document.querySelector(".container-fluid").classList.toggle('compression');
         document.querySelector("#menu").classList.toggle('compression');
 

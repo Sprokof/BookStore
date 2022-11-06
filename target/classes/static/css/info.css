@@ -71,3 +71,12 @@
     border-top: 1px solid dimgrey;
     width: 70%;
 }
+
+#book-info .details-container.compression {
+    width: 80%;
+    margin-left: -3px;
+}
+
+#book-info.compression {
+    left: 25%;
+}

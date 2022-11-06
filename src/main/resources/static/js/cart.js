@@ -1,6 +1,7 @@
 import {getUser} from "./navbar.js";
 import {blockBackgroundHtml} from "./notice.js";
 import {reload} from "./main.js";
+import {blockInputPointerEvents} from "./checkout.js";
 
 const sumSuffix = ".00 ₽";
 const shipping_cost = 170;
@@ -142,6 +143,10 @@ toCart.onclick = () => {
 export function checkoutOpen(){
     let checkout = document.querySelector('#checkout');
     checkout.classList.add('active');
+    let checkoutsInputs = document.querySelectorAll('#checkout input');
+    checkoutsInputs.forEach((input) => {
+        blockInputPointerEvents(input, false)
+    })
     blockBackgroundHtml(true);
 }
 
