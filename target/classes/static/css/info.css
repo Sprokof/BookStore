@@ -18,12 +18,12 @@
 
 .container .item-container .book-details {
     height: 30%;
+    width: 35%;
 }
 
 .container .item-container .buttons {
-    position: absolute;
-    top: 31%;
-    left: 26%;
+    margin-top: 20%;
+    margin-left: -35%;
 }
 
 .container .item-container .buttons button {
@@ -64,4 +64,10 @@
 
 .star-rating {
     color: black;
+}
+
+
+.container hr {
+    border-top: 1px solid dimgrey;
+    width: 70%;
 }
