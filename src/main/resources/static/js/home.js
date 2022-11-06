@@ -48,15 +48,6 @@ sliderControlBtn[0].onclick = () => {
 }
 
 
-let infos = document.querySelectorAll('.book-info');
-for(let i = 0; i < infos.length; i ++){
-    let title = infos[i].children[0];
-    title.onclick = () => {
-        let isbn = infos[i].children[3];
-        document.location.href = '/home/book?isbn=' + isbn.innerText;
-    }
-}
-
 
 
 let wishListBtn = document.querySelectorAll('.wishlist.btn');

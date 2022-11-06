@@ -91,4 +91,8 @@ public class BookServiceImpl implements BookService{
         }
     }
 
+    @Override
+    public void updateBook(Book book) {
+        this.bookDao.updateBook(book);
+    }
 }

@@ -82,14 +82,14 @@
     border-bottom-right-radius: 10px;
 }
 
-.books-slider section .card .star-rating {
+.star-rating {
     margin-top: 5px;
     font-size: 0.7rem;
     color: #fdcc0d;
     user-select: none;
 }
 
-.books-slider section .card .numeric-rating {
+.numeric-rating {
     margin-left: 5px;
     font-size: 15px;
     margin-top: -7px;

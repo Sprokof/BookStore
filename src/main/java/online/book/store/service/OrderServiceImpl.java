@@ -34,6 +34,7 @@ public class OrderServiceImpl implements OrderService{
                     item.getBook().getBookImageName());
             order.setStatus(OrderStatus.PAID);
             addDetails(order, user.getCheckout());
+            takeFromStock(item);
             user.addOrder(order);
         });
 
@@ -56,6 +57,13 @@ public class OrderServiceImpl implements OrderService{
         return date.plusDays(3) + " - " + date.plusDays(7);
     }
 
+    private void takeFromStock(CartItem item){
+        Book book = item.getBook();
+        int currentCopies = book.getAvailableCopies();
+        int quantity = item.getQuantity();
+        book.setAvailableCopies((currentCopies - quantity));
+        this.bookService.updateBook(book);
+    }
 
 
 }

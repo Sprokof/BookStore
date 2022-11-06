@@ -226,3 +226,14 @@ export function userAccept(){
 export function deleteUser() {
     localStorage.removeItem('user');
 }
+
+
+let infos = document.querySelectorAll('.book-info');
+    for (let i = 0; i < infos.length; i++) {
+        let title = infos[i].children[0];
+        title.onclick = () => {
+            let lastIndex = (infos[i].children.length - 1);
+            let isbn = infos[i].children[lastIndex];
+            document.location.href = '/home/book?isbn=' + isbn.innerText;
+        }
+    }

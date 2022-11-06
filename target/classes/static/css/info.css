@@ -1,4 +1,67 @@
-.container-fluid .col-md-6 .book-image {
-    width: 310px;
-    height: 450px;
+#book-info {
+    position: absolute;
+    left: 10%;
+    top: 15%;
+}
+
+.container .book-image {
+    width: 270px;
+    height: 410px;
+    border: 3px solid silver;
+    padding: 5px;
+}
+
+.container .item-container {
+    display: flex;
+    width: 90%;
+}
+
+.container .item-container .book-details {
+    height: 30%;
+}
+
+.container .item-container .buttons {
+    position: absolute;
+    top: 31%;
+    left: 26%;
+}
+
+.container .item-container .buttons button {
+    background: black;
+    border-radius: 8px;
+    color: white;
+    padding-right: 8px;
+    padding-left: 8px;
+    cursor: pointer;
+}
+
+.container .item-container .buttons button:hover {
+    background: #222222;
+}
+
+.container .book-details {
+    margin-left: 10px;
+}
+
+.container .details-container {
+    position: relative;
+    right: 15px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.container .details-container .nav-tabs {
+    overflow-y: hidden;
+}
+
+.container .details-container .nav-tabs .nav-item .nav-link {
+    color: dimgrey;
+}
+
+.container .details-container .nav-tabs .nav-item .nav-link.active {
+    color: black;
+}
+
+.star-rating {
+    color: black;
 }

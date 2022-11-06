@@ -13,6 +13,7 @@ public interface BookDao {
     void saveBook(Book book);
     double averageRating(Integer bookId);
     void insertBookAndCategories(int bookId, int categoryId);
+    void updateBook(Book book);
 
 
 }
