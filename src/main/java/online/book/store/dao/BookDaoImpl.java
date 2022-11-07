@@ -62,7 +62,7 @@ public class BookDaoImpl implements BookDao {
                     createSQLQuery("SELECT * FROM " +
                             "BOOKS as book JOIN BOOKS_REVIEWS as reviews" +
                             " on book.id = reviews.book_id WHERE BOOK_RATING " +
-                            "BETWEEN :min_rating and :max_rating ORDER BY BOOK_RATING").
+                            "BETWEEN :min_rating and :max_rating ORDER BY BOOK_RATING desc limit(6)").
                     addEntity(Book.class).
                     setParameter("min_rating", MIN_POPULAR_RATING).
                     setParameter("max_rating", MAX_POPULAR_RATING).list();
@@ -270,7 +270,6 @@ public class BookDaoImpl implements BookDao {
         session.getTransaction().commit();
     }
     catch (Exception e){
-        e.printStackTrace();
         if(session != null && session.getTransaction() != null){
             session.getTransaction().rollback();
         }

@@ -2,8 +2,8 @@
 Online Book Store using JavaScript, Bootstrap on front side and Java, Spring Boot, Hibernate ORM plus PostgreSQL on back side. 
 
 ## Home page  
-![homePage1](https://user-images.githubusercontent.com/90979711/195891017-b6455c0a-92ed-4bdb-96c5-72a153c59c20.png)
-![homePage2](https://user-images.githubusercontent.com/90979711/195891476-f21beca9-b594-42ef-9ba7-44b73882cf03.png)
+![home1](https://user-images.githubusercontent.com/90979711/200371757-d10212d6-b2cc-4e0d-be3a-5863e632a2eb.png)
+![home2](https://user-images.githubusercontent.com/90979711/200371735-1aac1e95-03da-47e4-a10d-c40b11490068.png)
 
 ## Login window  
 ![loginWindow](https://user-images.githubusercontent.com/90979711/195913064-ec40fdfd-58fc-4547-8b2f-eaeebc692275.png)

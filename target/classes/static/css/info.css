@@ -154,3 +154,11 @@
 #book-info .new-review-btn p {
     font-size: 12px;
 }
+
+#book-info .score.move {
+    margin-left: 65%;
+}
+
+#book-info .new-review-btn.move {
+    margin-left: 88%;
+}
