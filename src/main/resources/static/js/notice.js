@@ -41,7 +41,8 @@ export function blockBackgroundHtml(flag){
     let confirm = document.querySelector('#popup-confirm-reset');
     let success = document.querySelectorAll('#success-window');
     let accept = document.querySelector('#accept-window');
-    let registration = document.querySelector('#popup-sign-in')
+    let registration = document.querySelector('#popup-sign-in');
+    let bookInfo = document.querySelector('#book-info');
     if(flag) {
         navbar.style.pointerEvents = "none";
         if(slider != null) {
@@ -68,6 +69,9 @@ export function blockBackgroundHtml(flag){
             document.querySelector('.close-window-btn').style.pointerEvents = "auto";
         }
 
+        if(bookInfo != null){
+            bookInfo.style.pointerEvents = "none";
+        }
 
         sidebar.style.pointerEvents = "none";
 
@@ -95,6 +99,10 @@ export function blockBackgroundHtml(flag){
 
         if(registration != null && !accept.classList.contains('open')) {
             registration.style.pointerEvents = "auto";
+        }
+
+        if(bookInfo != null){
+            bookInfo.style.pointerEvents = "auto";
         }
 
         sidebar.style.pointerEvents = "auto";

@@ -2,6 +2,7 @@ import {openLoginNotice} from "./notice.js";
 import {getUser} from "./navbar.js";
 import {userEmail} from "./validation.js";
 
+
 export function controlWishlistContent(btn, pageName) {
     btn.onclick = () => {
         if (!sessionActive()) {
@@ -10,10 +11,21 @@ export function controlWishlistContent(btn, pageName) {
             let wishlistDto = requestDto(btn);
             if (!contains(wishlistDto, "/home/wishlist/contains")) {
                 addOrRemoveItem(wishlistDto, "/home/wishlist/add");
-                pageName === 'wishlist' ? setTimeout(reload, 120) : fullHeart(btn, true);
+                if(pageName === 'wishlist') {
+                    setTimeout(reload, 120);
+                }
+                else {
+                    fullHeart(btn, true);
+                }
             } else {
                 addOrRemoveItem(wishlistDto, "/home/wishlist/remove");
-                pageName === 'wishlist' ? setTimeout(reload, 120) : fullHeart(btn, false);
+                if(pageName === 'wishlist') {
+                    setTimeout(reload, 120);
+                }
+                else {
+                    fullHeart(btn, false);
+                }
+
             }
         }
     }
@@ -21,16 +33,16 @@ export function controlWishlistContent(btn, pageName) {
 
 export function requestDto(btn){
     let lasIndex = (btn.parentNode.parentNode.children[1].children.length - 1);
-    let isbn = btn.parentNode.parentNode.children[1].children[lasIndex];
+    let isbnNode = btn.parentNode.parentNode.children[1].children[lasIndex];
     return {
+        "isbn": extractISBN(isbnNode),
         "sessionid" : getUser()['sessionid'],
-        "isbn": isbn.innerText,
     };
 }
 
 
-export function contains(bookDto, url) {
-    let dto;
+export function contains(dto, url) {
+    let obj;
     $.ajax({
         type: "POST",
         contentType: "application/json",
@@ -38,13 +50,13 @@ export function contains(bookDto, url) {
         cache: false,
         dataType: 'json',
         responseType: 'json',
-        data: JSON.stringify(bookDto),
+        data: JSON.stringify(dto),
         async: false,
         success: (data) => {
-            dto = JSON.parse(JSON.stringify(data));
+            obj = JSON.parse(JSON.stringify(data));
         }
     })
-    return dto['itemContains'];
+    return obj['itemContains'];
 }
 
 export function fullHeart(btn, flag) {
@@ -184,7 +196,7 @@ export function sessionActive () {
     return sessionDto['active'];
 }
 
-function addOrRemoveItem(dto, url){
+export function addOrRemoveItem(dto, url){
     $.ajax({
         type: "POST",
         contentType: "application/json",
@@ -233,7 +245,12 @@ let infos = document.querySelectorAll('.book-info');
         let title = infos[i].children[0];
         title.onclick = () => {
             let lastIndex = (infos[i].children.length - 1);
-            let isbn = infos[i].children[lastIndex];
-            document.location.href = '/home/book?isbn=' + isbn.innerText;
+            let isbn = extractISBN(infos[i].children[lastIndex]);
+            document.location.href = '/home/book?isbn=' + isbn;
         }
     }
+
+export function extractISBN(node){
+    let length = (node.innerText.length - 6);
+    return (node.innerText.substr(6, length))
+}

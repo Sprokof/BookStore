@@ -3,8 +3,11 @@ package online.book.store.service;
 
 import online.book.store.dao.BookDao;
 import online.book.store.dto.BookDto;
+import online.book.store.dto.BookReviewDto;
 import online.book.store.entity.Book;
+import online.book.store.entity.BookReview;
 import online.book.store.entity.Category;
+import online.book.store.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,9 @@ public class BookServiceImpl implements BookService{
     @Autowired
     private BookDao bookDao;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public List<Book> getPopularBooks() {
         return this.bookDao.getPopularBooks();
@@ -26,7 +32,7 @@ public class BookServiceImpl implements BookService{
     @Override
     public List<Book> getAllBooks() {
         List<Book> books;
-        if((books = this.bookDao.getPopularBooks()).isEmpty())
+       // if((books = this.bookDao.getPopularBooks()).isEmpty())
             books = this.bookDao.getAllBooks();
 
         for(Book book : books){
@@ -95,4 +101,5 @@ public class BookServiceImpl implements BookService{
     public void updateBook(Book book) {
         this.bookDao.updateBook(book);
     }
+
 }

@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/info.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/reviews.css}"/>
     <script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
@@ -37,8 +38,8 @@
                 <hr>
            </div>
             <div class="buttons">
-                <button>Add to wishlist</button>
-                <button>Add to cart</button>
+                <button></button>
+                <button></button>
             </div>
         </div>
 
@@ -62,34 +63,35 @@
                 <section>
                     <div th:text="${'Authors: ' + book.authors}"></div>
                     <div th:text="${'Format: ' + book.format}"></div>
-                    <div th:text="${'ISBN: ' + book.isbn}"></div>
+                    <div class="isbn" th:text="${'ISBN: ' + book.isbn}"></div>
                     <div th:text="${'Publisher: ' + book.publisher}"></div>
-                    <div th:text="${'Subject: ' + book.subject}"></div>
                     <div th:text="${'Year of production: ' + book.yearPub}"></div>
                 </section>
             </div>
 
             <div class="tab-pane fade" id="reviews">
-                <div class="ratings-container">
-                    <div class="row-ratings">
-                        <div class="col-sm-8">
-                            <div th:each="review : ${book.getBookReviews()}">
-
-                            <div th:text ="${review.user.username}"></div>
-                            <div th:text="${review.comment}"></div>
-
-                            <div class="col-sm-4">
-                                <span th:text="${review.bookRating}"></span>
-                            </div>
-
-                            </div>
+                <div class="review-container">
+                    <div class="row-review" th:each="review : ${book.getBookReviews()}">
+                        <div class="review">
+                            <div style="color: green" class="review-item" th:text ="${'Author: ' + review.user.username}"></div>
+                            <div class="review-item" th:text="${review.review}"></div>
                         </div>
+                        <div class="score"><span class="star-rating" th:text="${review.score}"></span></div>
+                    </div>
+
+                    <div th:if="${!book.getBookReviews().isEmpty()}">
+                        <div class="new-review-btn">
+                            <i class="fa fa-plus"></i>
+                            <p>add new review</p>
+                        </div>
+                    </div>
+
                     </div>
                 </div>
             </div>
-            </div>
         </div>
-    </div>
+    <div th:insert="~{reviews :: review-add}"></div>
+</div>
 </body>
 <script type="module" th:src="@{/js/navbar.js}"></script>
 <script type="module" th:src="@{/js/login.js}"></script>
@@ -100,4 +102,6 @@
 <script type="module" th:src="@{/js/notice.js}"></script>
 <script type="module" th:src="@{/js/main.js}"></script>
 <script type="module" th:src="@{/js/window.js}"></script>
+<script type="module" th:src="@{/js/bookInfo.js}"></script>
+<script type="module" th:src="@{/js/reviews.js}"></script>
 </html>

@@ -14,6 +14,7 @@ public interface BookDao {
     double averageRating(Integer bookId);
     void insertBookAndCategories(int bookId, int categoryId);
     void updateBook(Book book);
+    boolean reviewExist(int bookId, int userId);
 
 
 }

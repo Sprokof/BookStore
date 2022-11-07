@@ -9,31 +9,42 @@ import javax.persistence.*;
 @Entity
 @Table(name = "BOOKS_REVIEWS")
 @NoArgsConstructor
-@Getter
-@Setter
+
 public class BookReview {
-   public static final double MIN_POPULAR_RATING = 3.0d, MAX_POPULAR_RATING = 5.0d;
+    public static final double MIN_POPULAR_RATING = 3.0d, MAX_POPULAR_RATING = 5.0d;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private int id;
+
     @Column(name = "REVIEW")
-    private String comment;
+    @Getter
+    @Setter
+    private String review;
+
     @Column(name = "BOOK_RATING")
-    private double bookRating;
+    @Setter
+    @Getter
+    private double score;
 
     @ManyToOne()
     @JoinColumn(name = "book_id")
+    @Getter
+    @Setter
     private Book book;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+    @Getter
+    @Setter
     private User user;
 
 
-    public BookReview(String comment, int bookRating){
-        this.comment = comment;
-        this.bookRating = bookRating;
+    public BookReview(String review, int score){
+        this.review = review;
+        this.score = score;
     }
+
 }

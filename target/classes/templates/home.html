@@ -34,7 +34,7 @@
                 <span th:text="${book.title}"></span>
                 <div class="star-rating" th:text="${book.bookRating}"></div>
                     <p th:text="${book.description}"></p>
-                    <p class="isbn" th:text="${book.isbn}"></p>
+                    <p class="isbn" th:text="${'ISBN: ' + book.isbn}"></p>
                 </div>
 
                 <div class="buttons">

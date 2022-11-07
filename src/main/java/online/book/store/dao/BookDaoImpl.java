@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +20,6 @@ import static online.book.store.entity.BookReview.MIN_POPULAR_RATING;
 
 @Component
 public class BookDaoImpl implements BookDao {
-
 
     private final SessionFactory sessionFactory =
             SessionFactorySingleton.getInitializationFactory();
@@ -54,14 +54,14 @@ public class BookDaoImpl implements BookDao {
     @SuppressWarnings("unchecked")
     public List<Book> getPopularBooks() {
         Session session = null;
-        List<Book> resultedList = new LinkedList<>();
+        List<Book> resultedList = new ArrayList<>();
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-            resultedList = (LinkedList<Book>) session.
+            resultedList = (ArrayList<Book>) session.
                     createSQLQuery("SELECT * FROM " +
                             "BOOKS as book JOIN BOOKS_REVIEWS as reviews" +
-                            " on book.id = reviews.id WHERE BOOK_RATING " +
+                            " on book.id = reviews.book_id WHERE BOOK_RATING " +
                             "BETWEEN :min_rating and :max_rating ORDER BY BOOK_RATING").
                     addEntity(Book.class).
                     setParameter("min_rating", MIN_POPULAR_RATING).
@@ -69,6 +69,7 @@ public class BookDaoImpl implements BookDao {
 
             session.getTransaction().commit();
         } catch (Exception e) {
+            e.printStackTrace();
             if (session != null) {
                 if (session.getTransaction() != null) {
                     session.getTransaction().rollback();
@@ -186,13 +187,13 @@ public class BookDaoImpl implements BookDao {
     @Override
     public double averageRating(Integer bookId) {
         Session session = null;
-        double rating = 0;
+        BigDecimal rating = new BigDecimal(0);
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-            rating = (double) session.createSQLQuery("SELECT AVG(BOOK_RATING) FROM " +
-                            "BOOKS_REVIEWS WHERE id=:book_id").
-                    setParameter("book_id", bookId).getSingleResult();
+            rating = (BigDecimal) session.createSQLQuery("SELECT AVG(BOOK_RATING) FROM " +
+                            "BOOKS_REVIEWS WHERE book_id=:bookId").
+                    setParameter("bookId", bookId).getSingleResult();
             session.getTransaction().commit();
         } catch (Exception e) {
             if (session != null) {
@@ -206,8 +207,8 @@ public class BookDaoImpl implements BookDao {
                 session.close();
             }
         }
-
-        return rating;
+        if(rating == null) return 0d;
+        return rating.doubleValue();
     }
 
     @Override
@@ -252,6 +253,34 @@ public class BookDaoImpl implements BookDao {
             session.close();
         }
     }
+    }
+
+    @Override
+    public boolean reviewExist(int bookId, int userId) {
+        Session session = null;
+        String review = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        review = (String) session.createSQLQuery("SELECT REVIEW FROM BOOKS_REVIEWS " +
+                "WHERE book_id=:bookId AND user_id=:userId")
+                .setParameter("bookId", bookId)
+                .setParameter("userId", userId)
+                .getSingleResult();
+        session.getTransaction().commit();
+    }
+    catch (Exception e){
+        e.printStackTrace();
+        if(session != null && session.getTransaction() != null){
+            session.getTransaction().rollback();
+        }
+    }
+    finally {
+        if (session != null) {
+            session.close();
+        }
+    }
+    return (review != null);
     }
 }
 
