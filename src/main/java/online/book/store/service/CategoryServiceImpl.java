@@ -18,6 +18,9 @@ public class CategoryServiceImpl implements CategoryService{
 
     private final CategoryDao categoryDao = new CategoryDaoImpl();
 
+    @Autowired
+    private BookService bookService;
+
     @Override
     public List<CategoryDto> getAllCategories() {
         return sort();
@@ -42,5 +45,6 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public List<Book> getBooksByCategories(String category) {
         return this.categoryDao.getCategoryByName(category).getBooks();
+        
     }
 }

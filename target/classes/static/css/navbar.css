@@ -13,7 +13,7 @@ body {
 }
 
 .sidebar {
-    background: rgba(255, 255, 255, 0.1);
+    background: white;
     width: 290px;
     height: 100vh;
     position: fixed;
@@ -203,5 +203,8 @@ header .nav-item a:hover::after {
 
 .accept-message p a:hover {
     color: silver!important;
+}
 
+#sidebar.reveal {
+    height: 100%;
 }

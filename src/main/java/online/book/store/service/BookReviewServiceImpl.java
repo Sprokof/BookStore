@@ -28,10 +28,26 @@ public class BookReviewServiceImpl implements BookReviewService {
         book.addReview(bookReview);
         this.userService.updateUser(user);
         this.bookService.updateBook(book);
+        addAvgRating(book.getId());
     }
 
     @Override
     public boolean reviewExist(Book book, User user) {
         return this.bookDao.reviewExist(book.getId(), user.getId());
     }
+
+    private void addAvgRating(int bookId) {
+        Book book = this.bookService.getBookById(bookId);
+        double rating = round(this.bookDao.averageRating(bookId));
+        book.setBookRating(rating);
+        this.bookService.updateBook(book);
+    }
+
+    private double round(double value) {
+        long factor = (long) Math.pow(10, 1);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+
 }

@@ -95,16 +95,12 @@
 }
 
 #book-info .row-review .review {
-    border-top-left-radius: 3px;
-    max-width: 330px;
-    max-height: 140px;
-    width: 30%;
+    width: 90%;
 }
 
 #book-info .row-review .score{
-    margin-left: 70%;
-    width: 125px;
     line-height: 45px;
+    width: 10%;
 }
 
 .add-review {
@@ -153,12 +149,4 @@
 
 #book-info .new-review-btn p {
     font-size: 12px;
-}
-
-#book-info .score.move {
-    margin-left: 65%;
-}
-
-#book-info .new-review-btn.move {
-    margin-left: 88%;
 }

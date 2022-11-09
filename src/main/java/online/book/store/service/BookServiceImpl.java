@@ -21,8 +21,6 @@ public class BookServiceImpl implements BookService{
     @Autowired
     private BookDao bookDao;
 
-    @Autowired
-    private UserService userService;
 
     @Override
     public List<Book> getPopularBooks() {
@@ -32,13 +30,12 @@ public class BookServiceImpl implements BookService{
     @Override
     public List<Book> getAllBooks() {
         List<Book> books;
-        if((books = this.bookDao.getPopularBooks()).isEmpty())
+        //if((books = this.bookDao.getPopularBooks()).isEmpty())
             books = this.bookDao.getAllBooks();
 
         for(Book book : books){
             String description = book.getDescription();
             String trimDesc = (description.substring(0, lastSubstrIndex(description)) + "...");
-            addBookRating(book);
             book.setDescription(trimDesc);
         }
         return books;
@@ -47,9 +44,7 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public Book getBookByIsbn(String isbn) {
-        Book book = this.bookDao.getBookByIsbn(isbn);
-        addBookRating(book);
-        return book;
+        return this.bookDao.getBookByIsbn(isbn);
     }
 
     @Override
@@ -69,17 +64,7 @@ public class BookServiceImpl implements BookService{
         return this.bookDao.getBookByTitle(title);
     }
 
-    @Override
-    public void addBookRating(Book book) {
-        book.setBookRating(round(this.bookDao.averageRating(book.getId())));
-    }
 
-    private double round(double value) {
-        long factor = (long) Math.pow(10, 1);
-        value = value * factor;
-        long tmp = Math.round(value);
-        return (double) tmp / factor;
-    }
 
     private int lastSubstrIndex(String description){
         int length = description.length();

@@ -54,7 +54,8 @@ public class Book {
 
     @Getter
     @Setter
-    transient double bookRating;
+    @Column(name = "AVG_RATING")
+    private double bookRating = 0d;
 
 
     public Book(String isbn, String title, String publisher,

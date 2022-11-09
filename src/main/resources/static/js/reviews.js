@@ -30,7 +30,7 @@ function postReview(review) {
 function closeReviewWindow() {
     let reviewWindow = document.querySelector('.reviews-container');
     reviewWindow.classList.remove('active');
-    setTimeout(reload, 200);
+    setTimeout(reload, 250);
     blockBackgroundHtml(false);
 }
 

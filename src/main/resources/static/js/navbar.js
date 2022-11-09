@@ -118,14 +118,8 @@ function initBooksCategories(){
         }
 
         if(location[2] === 'book'){
-            let book = document.querySelector('#book-info');
-            let detailsContainer = document.querySelector('.details-container');
-            let rating = document.querySelector('#book-info .score');
-            let newReviewBtn = document.querySelector('#book-info .new-review-btn');
-            book.classList.toggle('compression');
-            detailsContainer.classList.toggle('compression');
-            rating.classList.toggle('move');
-            newReviewBtn.classList.toggle('move');
+            let sidebar = document.querySelector('#sidebar');
+            sidebar.classList.add('reveal');
         }
         document.querySelector(".container-fluid").classList.toggle('compression');
         document.querySelector("#menu").classList.toggle('compression');
