@@ -70,7 +70,7 @@
             </div>
 
             <div class="tab-pane fade" id="reviews">
-                <div class="review-container">
+                <div class="reviews-container">
                     <div class="row-review" th:each="review : ${book.getBookReviews()}">
                         <div class="review">
                             <div style="color: green" class="review-item" th:text ="${'Author: ' + review.user.username}"></div>
@@ -79,16 +79,21 @@
                         <div class="score"><span class="star-rating" th:text="${review.score}"></span></div>
                     </div>
 
-                    <div th:if="${!book.getBookReviews().isEmpty()}">
-                        <div class="new-review-btn">
+                    <div th:switch="${book.getBookReviews().isEmpty()}">
+                        <div th:case="false" class="new-review-btn">
                             <i class="fa fa-plus"></i>
                             <p>add new review</p>
                         </div>
+                        <div th:case="true" class="add-review-btn">
+                            <i class="fa fa-plus"></i>
+                            <p>add review</p>
+                        </div>
                     </div>
 
-                    </div>
                 </div>
+
             </div>
+        </div>
         </div>
     <div th:insert="~{reviews :: review-add}"></div>
 </div>

@@ -16,4 +16,5 @@ public interface SessionService {
     User getCurrentUser(String sessionid);
     SessionDto getSessionData(UserDto userDto);
     void sessionInvalidate(String sessionid);
+
 }

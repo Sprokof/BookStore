@@ -28,7 +28,7 @@ function postReview(review) {
 }
 
 function closeReviewWindow() {
-    let reviewWindow = document.querySelector('.reviews-container');
+    let reviewWindow = document.querySelector('.review-container');
     reviewWindow.classList.remove('active');
     setTimeout(reload, 250);
     blockBackgroundHtml(false);

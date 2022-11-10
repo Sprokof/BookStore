@@ -4,6 +4,7 @@ import online.book.store.dto.CartDto;
 import online.book.store.entity.Book;
 import online.book.store.entity.Cart;
 import online.book.store.entity.CartItem;
+import online.book.store.entity.UserSession;
 
 public interface CartService {
     void addBookToCart(Book book, Cart cart);

@@ -88,6 +88,7 @@
     border-bottom: 1px solid #5f5f5b;
     margin-bottom: 15px;
     width: 100%;
+    overflow-y: hidden;
 }
 
 #book-info .row-review .review-item {
@@ -95,22 +96,27 @@
 }
 
 #book-info .row-review .review {
-    width: 90%;
+    width: 85%;
 }
 
 #book-info .row-review .score{
-    line-height: 45px;
+    position: relative;
     width: 10%;
+    left: 5%;
+    top: 50%;
+    height: 25px;
+    transform: translateY(50%);
 }
 
-.add-review {
+
+.add-review-btn {
     margin-top: 5%;
     margin-left: 45%;
     width: 100px;
     z-index: 0;
 }
 
-.add-review .fa.fa-plus {
+.add-review-btn .fa.fa-plus {
     color: green;
     font-weight: 600;
     font-size: 50px;
@@ -118,7 +124,7 @@
     margin-left: 20%;
 }
 
-.add-review .fa.fa-plus:hover{
+.add-review-btn .fa.fa-plus:hover{
     color: darkgreen;
 }
 

@@ -6,6 +6,7 @@ import online.book.store.dto.CartDto;
 import online.book.store.entity.Book;
 import online.book.store.entity.Cart;
 import online.book.store.entity.CartItem;
+import online.book.store.entity.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -96,5 +97,7 @@ public class CartServiceImpl implements CartService {
         cart.updatePrices();
     updateCart(cart);
     }
+
+
 }
 

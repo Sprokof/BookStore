@@ -84,11 +84,6 @@ public class StoreController{
         return ResponseEntity.ok(String.valueOf(accepted));
     }
 
-    @GetMapping("/expand")
-    public String expand() {
-        return "expand";
-    }
-
 }
 
 

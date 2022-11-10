@@ -70,8 +70,8 @@ public class CartController {
     @PostMapping("/home/cart/quantity")
     public ResponseEntity<CartDto> itemsQuantity(@RequestBody UserDto userDto){
         String sessionid = userDto.getSessionid();
-        User user = sessionService.getCurrentUser(sessionid);
-        Cart cart = user.getCart();
+        if(!sessionService.sessionExist(sessionid)) return ResponseEntity.ok(new CartDto(0));
+        Cart cart = this.sessionService.getCurrentUser(sessionid).getCart();
         return ResponseEntity.ok(cartService.getItemsQuantity(cart));
     }
 

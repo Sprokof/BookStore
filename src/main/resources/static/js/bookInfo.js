@@ -16,13 +16,12 @@ cartBtn.onclick = () => {
 }
 
 function addOrRemoveFromWishlist(btn, isbnNode){
+    if(!sessionActive()){ openLoginNotice(); return; }
     let wishlistDto = {
         "isbn" : extractISBN(isbnNode),
         "sessionid" : getUser()['sessionid']
     }
-    if(!sessionActive()){
-        openLoginNotice();
-    }
+
     if(!contains(wishlistDto, "/home/wishlist/contains")){
         addOrRemoveItem(wishlistDto, "/home/wishlist/add");
         btn.innerHTML = "Remove from wishlist";
@@ -34,13 +33,12 @@ function addOrRemoveFromWishlist(btn, isbnNode){
 }
 
 function addOrRemoveFromCart(btn, isbnNode){
+    if(!sessionActive()){ openLoginNotice(); return; }
     let cartDto = {
         "isbn" : extractISBN(isbnNode),
         "sessionid" : getUser()['sessionid']
     }
-    if(!sessionActive()){
-        openLoginNotice();
-    }
+
     if(!contains(cartDto, "/home/cart/contains")){
         addOrRemoveItem(cartDto, "/home/cart/add");
         btn.innerHTML = "Remove from cart";
@@ -57,6 +55,11 @@ function controlButtonsTextOnLoad(isbnNode, cartBtn, wishlistBtn){
     let dto = {
         "isbn" : extractISBN(isbnNode),
         "sessionid" : getUser()['sessionid'],
+    }
+    if(!sessionActive()){
+        cartBtn.innerHTML = "Add to cart";
+        wishlistBtn.innerHTML = "Add to wishlist";
+        return;
     }
     let cartContains = contains(dto, "/home/cart/contains");
     let wishlistContains = contains(dto, "/home/wishlist/contains");
@@ -77,53 +80,39 @@ function controlButtonsTextOnLoad(isbnNode, cartBtn, wishlistBtn){
 
 document.addEventListener('DOMContentLoaded', () => {
     controlButtonsTextOnLoad(isbnNode, cartBtn, wishlistBtn);
-    createAddReviewButton();
+    if(!sessionActive()){
+        let review = document.querySelector('#book-info .fa.fa-plus').parentNode;
+        invisibleNode(review);
+        return;
+    }
     if(reviewExist()){
         let newReviewBtn = document.querySelector('.new-review-btn');
-        newReviewBtn.style.opacity = "0.6";
-        newReviewBtn.style.pointerEvents = "none";
+        invisibleNode(newReviewBtn);
     }
 })
 
 
-function createAddReviewButton () {
-    let reviews = document.querySelector('#book-info .review-container');
-    if (reviews.children.length === 0) {
-        let addReview = document.createElement('div');
-        addReview.classList.add('add-review');
-        let i = document.createElement("i");
-        i.classList.add('fa', 'fa-plus');
-        i.onclick = () => {
-            openAddReviewWindow()
-        };
-        let p = document.createElement('p');
-        p.innerText = "add review"
-        addReview.appendChild(i);
-        addReview.appendChild(p);
-        reviews.appendChild(addReview);
-    }
-}
 
-let reviewsContainer = document.querySelector('.reviews-container');
+let reviewContainer = document.querySelector('.review-container');
 
 function openAddReviewWindow () {
     window.scrollTo({ top: 0, behavior: 'smooth' })
-    reviewsContainer.classList.add('active');
+    reviewContainer.classList.add('active');
     blockBackgroundHtml(true);
 }
 
 
 document.addEventListener('mouseup', (e) => {
-    if(!reviewsContainer.classList.contains('active')) return ;
-    if(!reviewsContainer.contains(e.target)){
-        reviewsContainer.classList.remove('active');
+    if(!reviewContainer.classList.contains('active')) return ;
+    if(!reviewContainer.contains(e.target)){
+        reviewContainer.classList.remove('active');
         blockBackgroundHtml(false);
     }
 })
 
-let newReviewBtn = document.querySelector('#book-info .new-review-btn');
-if(newReviewBtn !== null){
-    newReviewBtn.onclick = () => {
+let reviewBtn = document.querySelector('#book-info .fa.fa-plus');
+if(reviewBtn !== null){
+    reviewBtn.onclick = () => {
         openAddReviewWindow();
     }
 }
@@ -148,3 +137,7 @@ function reviewExist () {
     return result;
 }
 
+function invisibleNode(btn){
+    btn.style.opacity = "0.6";
+    btn.style.pointerEvents = "none";
+}

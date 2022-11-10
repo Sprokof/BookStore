@@ -2,7 +2,7 @@ import {resetClose} from "./reset.js";
 import {openResetTwoPopup, resetSuccess} from "./confirmReset.js";
 import {getUser} from "./navbar.js";
 import {registrationSuccess} from "./registration.js";
-import {deleteUser} from "./main.js";
+import {deleteUser, reload} from "./main.js";
 
 let login = document.getElementById('login-btn');
 login.addEventListener('click', async () => {
@@ -143,11 +143,6 @@ export function logout() {
     })
 }
 
-
-
-function reload(){
-    window.location.reload();
-}
 
 function backHome() {
     window.location.href = "/";
