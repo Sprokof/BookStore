@@ -1,27 +1,11 @@
-import {signInOpen} from "./registration.js";
 import {loginOpen} from "./login.js";
 
 
-let noticeButton = document.querySelector('#sign-in-notice button');
-let noticeMessage = document.querySelector('#sign-in-notice');
-
-noticeButton.addEventListener('click', () => {
-    noticeMessage.classList.remove('show');
-    signInOpen();
-});
-
-let closeNoticeBtn = document.querySelectorAll('.close-notice-message-btn');
-for(let btn of closeNoticeBtn) {
-    btn.addEventListener('click', () => {
-        noticeMessage.classList.remove('show');
-        blockBackgroundHtml(false);
-    })
-}
 
 export function openLoginNotice(){
-    noticeMessage = document.querySelector('#log-in-notice');
+    let noticeMessage = document.querySelector('#log-in-notice');
     noticeMessage.classList.add('show');
-    noticeButton = document.querySelector('#log-in-notice button');
+    let noticeButton = document.querySelector('#log-in-notice button');
 
     noticeButton.addEventListener("click", () => {
         noticeMessage.classList.remove('show');

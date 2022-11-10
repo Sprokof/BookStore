@@ -82,3 +82,7 @@
     z-index: 1;
     pointer-events: auto;
 }
+
+.review-container .score input.wrong{
+    color: red;
+}

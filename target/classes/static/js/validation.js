@@ -35,7 +35,7 @@ registration.addEventListener("click", async () => {
 let reset = document.getElementById("continue-btn");
 reset.addEventListener("click", () => {
     let confirmDto = {
-        "login" : getUser()['login'],
+        "login" : document.getElementById('reset-login').value,
         "newPassword" : document.getElementById('new-password').value,
         "confirmResetPassword" : document.getElementById('confirm-reset-password').value,
     }
@@ -45,7 +45,7 @@ reset.addEventListener("click", () => {
 let confirm = document.getElementById("done-btn");
 confirm.addEventListener("click", () => {
     let confirmDto = {
-        "login" : getUser()['login'],
+        "login" : getSavedLogin(),
         "inputCode" :document.getElementById("code").value,
     }
     validation(confirmDto, "/home/reset/confirm");
@@ -70,6 +70,7 @@ export function validation(obj, url){
             } else {
                 let value = url.substr(url.lastIndexOf("/") + 1);
                 if (value === 'reset') {
+                    saveLogin(obj['login']);
                     resetClose();
                     openResetTwoPopup();
                 }
@@ -102,6 +103,7 @@ export function deleteErrorMessages(){
     formElements.forEach((element) => element.classList.remove('compression'));
     addElements.forEach((element) => element.classList.remove('compression'));
 }
+
 async function hash(string) {
     const utf8 = new TextEncoder().encode(string);
     return crypto.subtle.digest('SHA-256', utf8).then(async (hashBuffer) => {
@@ -195,4 +197,13 @@ function saveEmail(email){
 
 export function userEmail(){
     return localStorage.getItem('email');
+}
+
+function saveLogin(login) {
+    document.cookie += ', '+login;
+}
+
+export function getSavedLogin() {
+    let cookieValue = document.cookie;
+    return document.cookie.substr(cookieValue.indexOf(',') + 2);
 }

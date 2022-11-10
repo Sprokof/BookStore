@@ -94,3 +94,7 @@
     color: red!important;
 }
 
+.reset .password-block {
+    display: none;
+}
+

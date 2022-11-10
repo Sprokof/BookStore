@@ -1,7 +1,9 @@
 package online.book.store.validation;
 
 import lombok.Getter;
-import online.book.store.dto.ConfirmDto;
+import online.book.store.dto.ResetPasswordDto;
+import online.book.store.entity.User;
+import online.book.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +12,9 @@ import java.util.Map;
 @Component
 public class ResetValidation extends AbstractValidation {
 
+    @Autowired
+    private UserService userService;
+
     @Component
     public static class ConfirmValidation extends ResetValidation{
 
@@ -17,7 +22,7 @@ public class ResetValidation extends AbstractValidation {
 
         @Override
         public boolean supports(Class<?> aClass) {
-            return aClass.equals(ConfirmDto.class);
+            return aClass.equals(ResetPasswordDto.class);
         }
 
         @Override
@@ -41,11 +46,11 @@ public class ResetValidation extends AbstractValidation {
             deleteErrorsMessages();
 
 
-            ConfirmDto confirmDto = ((ConfirmDto) target);
+            ResetPasswordDto resetPasswordDto = ((ResetPasswordDto) target);
 
-            String generatedCode = confirmDto.getGeneratedCode();
+            String generatedCode = resetPasswordDto.getGeneratedCode();
 
-            String inputCode = confirmDto.getInputCode();
+            String inputCode = resetPasswordDto.getInputCode();
 
 
 
@@ -66,7 +71,7 @@ public class ResetValidation extends AbstractValidation {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return aClass.equals(ConfirmDto.class);
+        return aClass.equals(ResetPasswordDto.class);
     }
 
     @Override
@@ -74,13 +79,24 @@ public class ResetValidation extends AbstractValidation {
         if (!supports(target.getClass())) return;
         deleteErrorsMessages();
 
-        ConfirmDto dto = (ConfirmDto) target;
+        ResetPasswordDto dto = (ResetPasswordDto) target;
 
-        String password = dto.getNewPassword();
-        String confirmPassword = dto.getConfirmResetPassword();
 
-        validatePassword(this.response, password, confirmPassword, "new-password",
-                "confirm-reset-password");
+        String login = dto.getLogin();
+        if(login.isEmpty()){
+            this.response.addError("reset-login", "Login can't be empty");
+        }
+
+        if(this.userService.getUserByLogin(login) == null) {
+            this.response.addError("reset-login", "Login not exist");
+        }
+        else {
+            String password = dto.getNewPassword();
+            String confirmPassword = dto.getConfirmResetPassword();
+
+            validatePassword(this.response, password, confirmPassword, "new-password",
+                    "confirm-reset-password");
+        }
 
     }
 

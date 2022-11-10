@@ -30,7 +30,7 @@ public class BookServiceImpl implements BookService{
     @Override
     public List<Book> getAllBooks() {
         List<Book> books;
-        //if((books = this.bookDao.getPopularBooks()).isEmpty())
+        if((books = this.bookDao.getPopularBooks()).isEmpty())
             books = this.bookDao.getAllBooks();
 
         for(Book book : books){

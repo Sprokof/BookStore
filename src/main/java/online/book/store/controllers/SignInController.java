@@ -1,7 +1,7 @@
 package online.book.store.controllers;
 
 
-import online.book.store.dto.ConfirmDto;
+import online.book.store.dto.ResetPasswordDto;
 import online.book.store.dto.UserDto;
 import online.book.store.entity.User;
 import online.book.store.mail.MailSender;
@@ -78,12 +78,12 @@ public class SignInController {
     }
 
     @PostMapping("/home/reset")
-    public ResponseEntity<Map<String, String>> reset(@RequestBody ConfirmDto confirmDto){
-        resetValidation.validation(confirmDto);
+    public ResponseEntity<Map<String, String>> reset(@RequestBody ResetPasswordDto resetPasswordDto){
+        resetValidation.validation(resetPasswordDto);
         if(!resetValidation.hasErrors()){
-            signInService.addResetDto(confirmDto);
+            signInService.addResetDto(resetPasswordDto);
 
-            String login = confirmDto.getLogin();
+            String login = resetPasswordDto.getLogin();
             User user = userService.getUserByLogin(login);
             sender.send(user.getEmail(), Subject.RESET_PASSWORD, this.signInService);
         }
@@ -91,15 +91,15 @@ public class SignInController {
     }
 
     @PostMapping("/home/reset/confirm")
-    public ResponseEntity<Map<String, String>> confirm(@RequestBody ConfirmDto reset){
-        ConfirmDto confirmDto = signInService.getResetDto();
+    public ResponseEntity<Map<String, String>> confirm(@RequestBody ResetPasswordDto reset){
+        ResetPasswordDto resetPasswordDto = signInService.getResetDto();
         String code = reset.getInputCode();
-        confirmDto.setInputCode(code);
-        confirmValidation.validation(confirmDto);
+        resetPasswordDto.setInputCode(code);
+        confirmValidation.validation(resetPasswordDto);
         if(!confirmValidation.hasErrors()){
             String login = reset.getLogin();
             User user = userService.getUserByLogin(login);
-            user.setPassword(confirmDto.getNewPassword());
+            user.setPassword(resetPasswordDto.getNewPassword());
             userService.saveOrUpdate(user);
         }
     return ResponseEntity.ok(confirmValidation.validationErrors());
@@ -107,9 +107,8 @@ public class SignInController {
 
 
     @PostMapping("/home/resend/code")
-    public ResponseEntity<Integer> resendCode(@RequestBody ConfirmDto confirmDto){
-        String login = confirmDto.getLogin();
-        User user = userService.getUserByLogin(login);
+    public ResponseEntity<Integer> resendCode(@RequestBody ResetPasswordDto dto){
+        User user = userService.getUserByLogin(dto.getLogin());
         signInService.generateNewCode();
         sender.send(user.getEmail(), Subject.RESET_PASSWORD, this.signInService);
         return ResponseEntity.ok(200);

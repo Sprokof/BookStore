@@ -1,7 +1,7 @@
 package online.book.store.service;
 
 import lombok.NoArgsConstructor;
-import online.book.store.dto.ConfirmDto;
+import online.book.store.dto.ResetPasswordDto;
 import online.book.store.dto.UserDto;
 import online.book.store.entity.User;
 import online.book.store.entity.UserSession;
@@ -21,7 +21,7 @@ public class SignInServiceImpl implements SignInService {
     @Autowired
     private UserService userService;
 
-    private ConfirmDto passwordDto;
+    private ResetPasswordDto passwordDto;
 
     @Autowired
     private SessionService sessionService;
@@ -49,10 +49,10 @@ public class SignInServiceImpl implements SignInService {
 
 
     @Override
-    public void addResetDto(ConfirmDto confirmDto) {
-        String password = confirmDto.getNewPassword();
-        confirmDto.setNewPassword(SHA256.hash(password));
-        this.passwordDto = confirmDto;
+    public void addResetDto(ResetPasswordDto resetPasswordDto) {
+        String password = resetPasswordDto.getNewPassword();
+        resetPasswordDto.setNewPassword(SHA256.hash(password));
+        this.passwordDto = resetPasswordDto;
         this.passwordDto.setGeneratedCode(generateCode());
     }
 
@@ -66,7 +66,7 @@ public class SignInServiceImpl implements SignInService {
     }
 
     @Override
-    public ConfirmDto getResetDto() {
+    public ResetPasswordDto getResetDto() {
         return this.passwordDto;
     }
 

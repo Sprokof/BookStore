@@ -1,12 +1,12 @@
 package online.book.store.service;
 
-import online.book.store.dto.ConfirmDto;
+import online.book.store.dto.ResetPasswordDto;
 import online.book.store.dto.UserDto;
 import online.book.store.expections.ResourceNotFoundException;
 
 public interface SignInService {
-    void addResetDto(ConfirmDto confirmDto);
-    ConfirmDto getResetDto();
+    void addResetDto(ResetPasswordDto resetPasswordDto);
+    ResetPasswordDto getResetDto();
     int loginUser(UserDto userDto);
     int logout(UserDto userDto);
     void registration(UserDto userDto);

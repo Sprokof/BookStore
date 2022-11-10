@@ -9,11 +9,6 @@ let notice = document.querySelector('.notice-message');
 
 openReset.addEventListener("click", () => {
     loginClose();
-    if(!findUser()){
-        notice.classList.add('show');
-        blockBackgroundHtml(true)
-        return;
-    }
     notice.classList.remove('show');
     resetOpen();
 })
@@ -29,10 +24,6 @@ function resetOpen() {
 
 export function resetClose(){
     resetPopup.classList.remove('visible', 'down');
-}
-
-function findUser(){
-    return localStorage.getItem("user") != null;
 }
 
 

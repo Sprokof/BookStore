@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-public class ConfirmDto {
+public class ResetPasswordDto {
 
     @Getter
     @Setter
@@ -25,6 +25,7 @@ public class ConfirmDto {
 
     @Getter
     private String inputCode;
+
 
 
 

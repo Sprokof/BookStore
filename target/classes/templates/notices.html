@@ -1,21 +1,10 @@
-<div th:fragment="notices-messages">
-<div id="sign-in-notice" class="notice-message" >
-    <div class="close-notice-message-btn"> &times; </div>
-    <header>
-        <span> You Must Sign-In Before </span>
-    </header>
-
-    <button> <span> Sign In </span> </button>
-</div>
-
-<div id="log-in-notice" class="notice-message">
+<div id="log-in-notice" class="notice-message" th:fragment="notices-messages">
     <div class="close-notice-message-btn"> &times; </div>
     <header>
         <span> You Must Log-In Before </span>
     </header>
 
     <button> <span> Log In </span> </button>
-</div>
 </div>
 
 <div class="checkout-notice" th:fragment="checkout-notice">

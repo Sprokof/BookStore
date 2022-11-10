@@ -4,6 +4,13 @@
         <h2> Reset Password </h2>
 
         <div class="form-element">
+            <label for="reset-login"> Login </label>
+            <input type="text" id="reset-login" placeholder="Username or email">
+            <p class="error-message" id="reset-login-error"></p>
+        </div>
+
+
+        <div class="form-element">
             <label for="new-password"> New Password </label>
             <input type="password" id="new-password" placeholder="Enter New Password">
             <p class="error-message" id="new-password-error"></p>
@@ -14,6 +21,7 @@
             <input type="password" id="confirm-reset-password" placeholder="Repeat New Password">
             <p class="error-message" id="confirm-reset-password-error"></p>
         </div>
+
 
         <div class="form-element">
             <button id="continue-btn"> Continue </button>
