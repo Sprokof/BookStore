@@ -28,10 +28,6 @@ public class BookDto extends AbstractBookBuilder {
 
     @Getter
     @Setter
-    private boolean contains;
-
-    @Getter
-    @Setter
     private String bookImage;
 
     @Getter

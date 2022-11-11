@@ -1,5 +1,6 @@
 package online.book.store.service;
 
+import online.book.store.dao.CheckoutDao;
 import online.book.store.dto.CheckoutDto;
 import online.book.store.entity.Checkout;
 import online.book.store.entity.User;
@@ -12,11 +13,19 @@ public class CheckoutServiceImpl implements CheckoutService{
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CheckoutDao checkoutDao;
+
     @Override
     public void saveCheckoutInfo(CheckoutDto checkoutDto, User user) {
         Checkout checkout = checkoutDto.doCheckoutBuilder();
-        user.setCheckout(checkout);
-        this.userService.updateUser(user);
+        if(!checkoutSaved(user)) {
+            user.setCheckout(checkout);
+            this.userService.updateUser(user);
+        }
+        else {
+            this.checkoutDao.updateCheckout(checkout);
+        }
     }
 
     @Override
