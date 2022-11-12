@@ -1,4 +1,4 @@
-import { signInClose } from "./registration.js";
+import { signUpClose } from "./registration.js";
 import { resetClose } from "./reset.js";
 import { closeResetTwoPopup  } from "./confirmReset.js";
 import { clearInputs } from "./validation.js";
@@ -28,7 +28,7 @@ export function loginClose(){
 
 export function loginOpen(){
     clearInputs();
-    signInClose();
+    signUpClose();
     resetClose();
     closeResetTwoPopup();
     loginPopup.classList.add('down', 'visible');

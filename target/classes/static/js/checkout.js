@@ -16,7 +16,7 @@ if(purchase != null) {
             "city" : document.querySelector('#city').value,
             "address": addressFormatting(),
             "zip": document.querySelector('#zip').value,
-            "cardNumber": document.querySelector('#card-num').value,
+            "cardNumber": getCardNumber(),
             "exp": document.querySelector('#exp').value,
             "ccv": document.querySelector("#ccv").value,
             "sessionid" : getUser()['sessionid']
@@ -181,8 +181,23 @@ function controlErrorMessage(field, value){
         return fieldArray;
     }
 
-export function blockInputPointerEvents(input, flag){
-        let value = "none";
-        if(!flag) value = "auto";
-        input.style.pointerEvents = value;
+export function blockInputPointerEvents(input, flag) {
+    let value = "none";
+    if (!flag) value = "auto";
+    input.style.pointerEvents = value;
+}
+
+
+let numberField = document.querySelector('#card-num');
+    let counter = 0;
+    numberField.onkeyup = () => {
+        counter++;
+        if (counter === 4) {
+            numberField.value += ' ';
+            counter = 0;
+        }
     }
+
+function getCardNumber() {
+        return numberField.value.substr(0, 19);
+}

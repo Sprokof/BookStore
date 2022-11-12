@@ -1,6 +1,6 @@
 import {blockBackgroundHtml} from "./notice.js";
 import {createAcceptNotice} from "./navbar.js";
-import {signInClose} from "./registration.js";
+import {signUpClose} from "./registration.js";
 
 let successWindows = document.querySelectorAll('#success-window');
 
@@ -21,7 +21,7 @@ let closeAcceptWindow = document.querySelector('#accept-window .close-window-btn
 closeAcceptWindow.onclick = () => {
     acceptWindow.classList.add('close');
     acceptWindow.classList.remove('open');
-    setTimeout(signInClose, 700);
+    setTimeout(signUpClose, 700);
     setTimeout(createAcceptNotice, 1000);
     blockBackgroundHtml(false);
 }

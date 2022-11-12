@@ -52,14 +52,14 @@ function addOrRemoveFromCart(btn, isbnNode){
 }
 
 function controlButtonsTextOnLoad(isbnNode, cartBtn, wishlistBtn){
-    let dto = {
-        "isbn" : extractISBN(isbnNode),
-        "sessionid" : getUser()['sessionid'],
-    }
     if(!sessionActive()){
         cartBtn.innerHTML = "Add to cart";
         wishlistBtn.innerHTML = "Add to wishlist";
         return;
+    }
+    let dto = {
+        "isbn" : extractISBN(isbnNode),
+        "sessionid" : getUser()['sessionid'],
     }
     let cartContains = contains(dto, "/home/cart/contains");
     let wishlistContains = contains(dto, "/home/wishlist/contains");

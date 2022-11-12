@@ -3,27 +3,27 @@ import {blockBackgroundHtml} from "./notice.js";
 import {openAcceptWindow} from "./window.js";
 
 
-let singInPopup = document.querySelector('#popup-sign-in');
-let openSignIn = document.querySelector('#sign-in');
-let closeSignIn = document.querySelector('#close-sign-in');
+let singInPopup = document.querySelector('#popup-sign-up');
+let openSignIn = document.querySelector('#sign-up');
+let closeSignIn = document.querySelector('#close-sign-up');
 
-export function signInClose(){
+export function signUpClose(){
     singInPopup.classList.remove('visible', 'down');
     blockBackgroundHtml(false);
 
 }
 
-export function signInOpen(){
+export function signUpOpen(){
     singInPopup.classList.add('down', 'visible');
 }
 
 openSignIn.addEventListener("click", () => {
     loginClose();
-    signInOpen();
+    signUpOpen();
 });
 
 closeSignIn.addEventListener('click', () => {
-    signInClose();
+    signUpClose();
 });
 
 export function registrationSuccess(){

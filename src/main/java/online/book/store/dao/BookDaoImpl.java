@@ -60,9 +60,8 @@ public class BookDaoImpl implements BookDao {
             session.beginTransaction();
             resultedList = (ArrayList<Book>) session.
                     createSQLQuery("SELECT * FROM " +
-                            "BOOKS as book JOIN BOOKS_REVIEWS as reviews" +
-                            " on book.id = reviews.book_id WHERE BOOK_RATING " +
-                            "BETWEEN :min_rating and :max_rating ORDER BY BOOK_RATING desc limit(6)").
+                            "BOOKS WHERE AVG_RATING " +
+                            "BETWEEN :min_rating and :max_rating ORDER BY AVG_RATING desc limit(6)").
                     addEntity(Book.class).
                     setParameter("min_rating", MIN_POPULAR_RATING).
                     setParameter("max_rating", MAX_POPULAR_RATING).list();
