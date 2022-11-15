@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Component
 @NoArgsConstructor
-public class SignInServiceImpl implements SignInService {
+public class SignServiceImpl implements SignService {
 
     @Autowired
     private UserService userService;

@@ -19,10 +19,6 @@ public class SessionServiceImpl implements SessionService{
         this.sessionDao.deleteSession(session);
     }
 
-    @Override
-    public void deleteSessionById(String id) {
-        this.sessionDao.deleteSessionById(id);
-    }
 
     @Override
     public boolean sessionExist(String id) {
@@ -32,12 +28,6 @@ public class SessionServiceImpl implements SessionService{
     @Override
     public UserSession getSessionById(String sessionId) {
         return this.sessionDao.getSessionById(sessionId);
-    }
-
-
-    @Override
-    public void updateSession(UserSession userSession) {
-        this.sessionDao.updateSession(userSession);
     }
 
     @Override

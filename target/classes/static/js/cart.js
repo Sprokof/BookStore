@@ -49,41 +49,21 @@ function extractISBN(node){
 }
 
 
-let inputs = document.querySelectorAll('.quantity input');
-inputs.forEach((input) => {
-    input.onkeyup = () => {
-        if(validInput(input)){
-            let isbnNode = input.parentNode.parentNode.children[0].
-                children[0].children[1].children[0]
-            let cartItemDto = {
-                "isbn" : extractISBN(isbnNode),
-                "quantity" : input.value,
-                "sessionid" : getUser()['sessionid']
-            }
-
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: "/home/cart/item/set",
-                data: JSON.stringify(cartItemDto),
-                cache: false,
-                dataType: 'json',
-                responseType: 'json',
-                success: () => {
-                    setItemTotal(input);
-                    setCartTotal();
-                }
-
-            })
-        }
-
+let inputBlocks = document.querySelectorAll('.quantity .input-block');
+inputBlocks.forEach(block => {
+    let input = block.children[1];
+    block.children[0].onclick = () => {
+        decrementItemsQuantity(input);
+    }
+    block.children[2].onclick = () => {
+        incrementItemsQuantity(input);
     }
 })
 
 
 function setItemTotal(input){
-    let priceField = input.parentNode.parentNode.children[2];
-    let totalField = input.parentNode.parentNode.children[3];
+    let priceField = input.parentNode.parentNode.parentNode.children[2];
+    let totalField = input.parentNode.parentNode.parentNode.children[3];
     let price = (Number(priceField.innerText.substr(0, priceField.innerText.length - 2)));
     let inputValue = (Number(input.value))
     totalField.innerText = ((price * inputValue) + sumSuffix);
@@ -102,25 +82,6 @@ function setCartTotal(){
     let cartTotal = document.querySelector('.total .text-right div');
     cartTotal.innerText = ((Number (itemTotal) + shipping_cost) + sumSuffix);
 
-}
-
-function validInput(input){
-    let value = input.value;
-    let stock = input.parentNode.parentNode.children[0].
-        children[0].children[1].children[4];
-    let stockValue = Number(stock.innerText.substr(11,  stock.innerText.length));
-    let valid = (value.match(/^\d+$/) != null)
-        && (((Number(value) >= 1 && Number(value) <= 9 && (Number(value)) <= stockValue)));
-    if(!valid){
-        input.classList.add('wrong-input');
-        return false;
-    }
-    else {
-        if (input.classList.contains('wrong-input')) {
-            input.classList.remove('wrong-input');
-            return true;
-        }
-    }
 }
 
 let checkoutBtn = document.querySelector('#checkout-btn');
@@ -197,4 +158,51 @@ let closeBtn = document.querySelector('.checkout-notice .notice-close-btn');
 export function closeCheckoutNotice () {
     let notice = document.querySelector('.checkout-notice');
     notice.classList.remove("active");
+}
+
+function incrementItemsQuantity(input){
+    let currentValue = Number (input.value);
+    let newValue = currentValue + 1;
+    if(newValue > stockValue(input) || (newValue > 99)) return
+    input.value = newValue;
+    setQuantity(input)
+}
+
+function decrementItemsQuantity(input) {
+    let currentValue = Number (input.value);
+    let newValue;
+    if((newValue = (currentValue - 1)) <= 0) return
+    input.value = newValue;
+    setQuantity(input)
+}
+
+
+function setQuantity(input){
+    let isbnNode = input.parentNode.parentNode.parentNode.children[0].
+        children[0].children[1].children[0];
+    let cartItemDto = {
+        "isbn" : extractISBN(isbnNode),
+        "quantity" : input.value,
+        "sessionid" : getUser()['sessionid']
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/home/cart/item/set",
+        data: JSON.stringify(cartItemDto),
+        cache: false,
+        dataType: 'json',
+        responseType: 'json',
+        success: () => {
+            setItemTotal(input);
+            setCartTotal();
+        }
+    })
+}
+
+function stockValue(input){
+    let stock = input.parentNode.parentNode.parentNode.children[0].
+        children[0].children[1].children[4];
+    return Number(stock.innerText.substr(11,  stock.innerText.length));
 }

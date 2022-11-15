@@ -4,7 +4,7 @@ import online.book.store.dto.ResetPasswordDto;
 import online.book.store.dto.UserDto;
 import online.book.store.expections.ResourceNotFoundException;
 
-public interface SignInService {
+public interface SignService {
     void addResetDto(ResetPasswordDto resetPasswordDto);
     ResetPasswordDto getResetDto();
     int loginUser(UserDto userDto);

@@ -20,9 +20,6 @@ public class OrderServiceImpl implements OrderService{
     private UserService userService;
 
     @Autowired
-    private SignInService signInService;
-
-    @Autowired
     private BookService bookService;
 
     @Override

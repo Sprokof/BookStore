@@ -8,10 +8,8 @@ import online.book.store.entity.UserSession;
 
 public interface SessionService {
     void deleteSession(UserSession session);
-    void deleteSessionById(String id);
     boolean sessionExist(String id);
     UserSession getSessionById(String sessionId);
-    void updateSession(UserSession userSession);
     SessionDto sessionActive(String sessionId);
     User getCurrentUser(String sessionid);
     SessionDto getSessionData(UserDto userDto);

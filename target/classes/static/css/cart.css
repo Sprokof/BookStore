@@ -56,7 +56,6 @@
 
 }
 
-
 .cart-container .cart-item:hover {
     background: none;
 }
@@ -127,10 +126,31 @@
 .cart-container .quantity input {
     box-shadow: none;
     border-color: #b4ad9e;
+    align-items: center;
 }
 
-.cart-container .quantity input.wrong-input {
-    border-color: red;
+.cart-container .quantity .input-block{
+    display: flex;
+    margin-top: -3px;
+}
+
+.cart-container .quantity .input-block input{
+    width: 40px;
+    height: 30px;
+    pointer-events: none;
+    border: none;
+    font-weight: 550;
+    color: black;
+
+}
+.cart-container .quantity .input-block i {
+    cursor: pointer;
+    margin-top: 8px;
+    color: dimgrey;
+    font-size: 13px;
+}
+.cart-container .quantity .input-block i:hover {
+    color: black;
 }
 
 

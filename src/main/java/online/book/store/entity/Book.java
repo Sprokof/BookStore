@@ -18,7 +18,6 @@ import java.util.List;
 @Setter
 public class Book {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

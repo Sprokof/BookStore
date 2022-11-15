@@ -52,8 +52,12 @@
                     </td>
 
                     <td class="col-lg-1 quantity">
-                        <input type="text" class="form-control text-center"
+                        <div class="input-block">
+                            <i class="fa fa-minus"></i>
+                            <input type="text" class="form-control text-center"
                                th:value="${item.quantity}"/>
+                            <i class="fa fa-plus"></i>
+                        </div>
                     </td>
 
 

@@ -1,7 +1,7 @@
 package online.book.store.mail;
 
 
-import online.book.store.service.SignInService;
+import online.book.store.service.SignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -19,7 +19,7 @@ public class MailSender {
     private JavaMailSender mailSender;
 
 
-    public void send(String emailTo, Subject subject, SignInService service) {
+    public void send(String emailTo, Subject subject, SignService service) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
 
         mailMessage.setFrom(username);
@@ -31,13 +31,13 @@ public class MailSender {
 
     }
 
-    private String generateMessage(Subject subject, SignInService signInService, String email) {
+    private String generateMessage(Subject subject, SignService signService, String email) {
         if (subject.equals(Subject.RESET_PASSWORD)) {
-            return Message.CONFIRM_RESET_MESSAGE.message + signInService.getConfirmationCode();
+            return Message.CONFIRM_RESET_MESSAGE.message + signService.getConfirmationCode();
         } else {
             String link = Message.ACCEPT_ACCOUNT_MESSAGE.message;
 
-            return (link + (signInService.generateToken(email)));
+            return (link + (signService.generateToken(email)));
         }
     }
 

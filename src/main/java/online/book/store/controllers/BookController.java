@@ -7,7 +7,7 @@ import online.book.store.entity.Book;
 import online.book.store.expections.ResourceNotFoundException;
 import online.book.store.service.BookService;
 import online.book.store.service.CategoryService;
-import online.book.store.service.SignInService;
+import online.book.store.service.SignService;
 import online.book.store.validation.AbstractValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,7 +32,7 @@ public class BookController {
     private CategoryService categoryService;
 
     @Autowired
-    private SignInService signInService;
+    private SignService signService;
 
     @Autowired
     @Qualifier("bookValidation")
@@ -55,7 +55,7 @@ public class BookController {
 
     @GetMapping("/home/book/add")
     public String addBook(@RequestParam("sessionid") String sessionid){
-        if(!signInService.adminsRequest(sessionid)){
+        if(!signService.adminsRequest(sessionid)){
             throw new ResourceNotFoundException();
         }
         return "addBook";
