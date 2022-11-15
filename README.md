@@ -38,7 +38,7 @@ Online Book Store using JavaScript, Bootstrap on front side and Java, Spring Boo
 
 ## Cart page
 ![cart](https://user-images.githubusercontent.com/90979711/201936815-1d51b25e-10b0-40f7-8414-e03b4e114011.png)
-![cart2](https://user-images.githubusercontent.com/90979711/196478439-cc9537f0-07bc-42bb-aace-fb0ab6fc8480.png)
+![cart2](https://user-images.githubusercontent.com/90979711/201938420-33144a8b-1afa-4352-9e2a-124b76d865ca.png)
 
 ## Checkout window
 ![checkWindow (3)](https://user-images.githubusercontent.com/90979711/197407387-a0e88499-92ca-44b5-a33d-f1961a2189ab.png)
