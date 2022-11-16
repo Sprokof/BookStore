@@ -1,19 +1,23 @@
 import {loginOpen} from "./login.js";
 
+let noticeMessage = document.querySelector('#log-in-notice');
+let loginBtn = document.querySelector('#log-in-notice button');
+let closeBtn = document.querySelector('#log-in-notice .close-notice-message-btn');
 
-
-export function openLoginNotice(){
-    let noticeMessage = document.querySelector('#log-in-notice');
+export function openLoginNotice() {
     noticeMessage.classList.add('show');
-    let noticeButton = document.querySelector('#log-in-notice button');
-
-    noticeButton.addEventListener("click", () => {
-        noticeMessage.classList.remove('show');
-        loginOpen();
-    })
-    blockBackgroundHtml(true);
-
 }
+
+loginBtn.addEventListener("click", () => {
+    noticeMessage.classList.remove('show');
+    loginOpen();
+    blockBackgroundHtml(true);
+})
+
+closeBtn.onclick = () => {
+    noticeMessage.classList.remove('show');
+}
+
 
 export function blockBackgroundHtml(flag){
     let navbar = document.querySelector('#navbar');

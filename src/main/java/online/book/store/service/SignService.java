@@ -18,4 +18,6 @@ public interface SignService {
     void confirmRegistration(String token) throws ResourceNotFoundException;
     void resendConfirmationLink(String login);
     boolean userAccept(UserDto userDto);
+    UserDto validateRequest(UserDto userDto);
+
 }

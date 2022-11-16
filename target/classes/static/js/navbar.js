@@ -177,7 +177,7 @@ export function validateSession() {
 
    export function addBook() {
        let user = getUser();
-       document.location = '/home/book/add?user=' + user['login'] + '&sessionid=' + getUser()['sessionid'];
+       document.location = '/home/book/add?user=' + user['login'] + '&sessionid=' + user['sessionid'];
    }
 
 
@@ -245,34 +245,13 @@ export function validateSession() {
    }
 
    let wishlist = document.getElementById('wishlist');
-   wishlist.addEventListener("click", () => {
-       if(!sessionActive()){
-           openLoginNotice();
-       }
-       else {
-           document.location.href = "/home/wishlist?user=" + (getUser()['login']);
-       }
-   })
+   wishlist.onclick = () => { toPage("/home/wishlist"); }
 
-    let cart = document.getElementById("cart-link");
-    cart.addEventListener('click', () => {
-        if(!sessionActive()){
-            openLoginNotice();
-        }
-        else {
-            document.location.href = "/home/cart?user=" + (getUser()['login']);
-        }
-   })
+    let cart = document.getElementById('cart-link');
+    cart.onclick = () => { toPage("/home/cart"); }
 
     let orders = document.getElementById("orders");
-    orders.addEventListener('click', () => {
-        if(!sessionActive()){
-            openLoginNotice();
-        }
-        else {
-            document.location.href = "/home/orders?user=" + (getUser()['login']);
-        }
-    })
+    orders.onclick = () => { toPage("/home/orders"); }
 
 
 export function createAcceptNotice(){
@@ -309,4 +288,9 @@ export function createAcceptNotice(){
 
     function getRememberedUser(){
         return JSON.parse(localStorage.getItem('rememberedUser'));
+    }
+
+    function toPage(url){
+        if(!sessionActive()) openLoginNotice() ;
+        document.location.href = url + "?user=" + getUser()['login'];
     }

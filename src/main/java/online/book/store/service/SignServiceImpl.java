@@ -73,7 +73,7 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public boolean adminsRequest(String sessionid) {
-        if (!this.sessionService.sessionActive(sessionid).isActive()) return false;
+        if (!this.sessionService.sessionExist(sessionid)) return false;
         return this.sessionService.getCurrentUser(sessionid).isAdmin();
     }
 
@@ -143,6 +143,16 @@ public class SignServiceImpl implements SignService {
     public boolean userAccept(UserDto userDto) {
         String login = userDto.getLogin();
         return this.userService.getUserByLogin(login).isAccepted();
+    }
+
+    @Override
+    public UserDto validateRequest(UserDto userDto) {
+        String login = userDto.getLogin();
+        User user = this.userService.getUserByLogin(login);
+        if(user != null) {
+            return new UserDto(user.getUsername(), user.getEmail());
+        }
+        return null;
     }
 }
 

@@ -1,3 +1,5 @@
+import {validateRequest} from "./main.js";
+
 let orderDetails = document.querySelectorAll('.order-container .order-details-container');
 let detailsBtn = document.querySelectorAll('.details-btn');
 let closeDetailsBtn = document.querySelectorAll('.order-details-container .close-details-btn');
@@ -15,3 +17,5 @@ for(let i = 0; i < closeDetailsBtn.length; i ++){
         detailsBtn[i].style.pointerEvents = 'auto';
     }
 }
+
+document.onload = () => { validateRequest();}

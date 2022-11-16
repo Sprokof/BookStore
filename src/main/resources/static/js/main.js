@@ -254,3 +254,40 @@ export function extractISBN(node){
     let length = (node.innerText.length - 6);
     return (node.innerText.substr(6, length))
 }
+
+export function validateRequest() {
+    if(currentLocation()[3] === 'add') return;
+    let user = getUser();
+    if(user == null) badRequest();
+    let userDto = getUserData(user);
+    let href = document.location.href;
+    let index = 0;
+    if ((index = href.indexOf("=")) >= 0) {
+        let inputLogin = href.substr(index + 1);
+        let currentUsername = userDto['email'];
+        let currentEmail = userDto['username'];
+        if (currentUsername === inputLogin || currentEmail === inputLogin) return ;
+        badRequest();
+    }
+}
+
+function badRequest() {
+    document.location.href = '/request/status?=404';
+}
+
+function getUserData(user){
+    let userDto ;
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/validate/request",
+        cache: false,
+        dataType: 'json',
+        data : JSON.stringify(user),
+        async: false,
+        success : (dto) => {
+            userDto = dto;
+        }
+    })
+    return userDto;
+}

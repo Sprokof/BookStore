@@ -1,6 +1,6 @@
 import {
     controlCartContent,
-    controlCartContentOnLoad, controlWishlistContent,
+    controlCartContentOnLoad, controlWishlistContent, validateRequest,
 } from "./main.js";
 
 
@@ -11,5 +11,8 @@ cartBtn.forEach(btn => controlCartContent(btn, "wishlist"))
 
 document.addEventListener("DOMContentLoaded", () => {
     cartBtn.forEach(btn => controlCartContentOnLoad(btn, "wishlist"));
+    validateRequest();
 
 })
+
+document.onload = () => { validateRequest();}

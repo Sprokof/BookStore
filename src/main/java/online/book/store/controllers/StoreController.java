@@ -82,6 +82,17 @@ public class StoreController{
         return ResponseEntity.ok(String.valueOf(accepted));
     }
 
+    @GetMapping("/request/status?=404")
+    public Exception authorizeData() {
+        throw new ResourceNotFoundException();
+    }
+
+    @PostMapping("/validate/request")
+    public ResponseEntity<UserDto> validateRequest(@RequestBody UserDto user){
+        UserDto userDto = this.signService.validateRequest(user);
+        return ResponseEntity.ok(userDto);
+    }
+
 }
 
 

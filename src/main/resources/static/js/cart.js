@@ -1,6 +1,6 @@
 import {getUser} from "./navbar.js";
 import {blockBackgroundHtml} from "./notice.js";
-import {reload} from "./main.js";
+import {reload, validateRequest} from "./main.js";
 import {blockInputPointerEvents} from "./checkout.js";
 
 const sumSuffix = ".00 ₽";
@@ -206,3 +206,5 @@ function stockValue(input){
         children[0].children[1].children[4];
     return Number(stock.innerText.substr(11,  stock.innerText.length));
 }
+
+document.onload = () => { validateRequest();}

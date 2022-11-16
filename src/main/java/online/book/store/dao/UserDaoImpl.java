@@ -207,6 +207,32 @@ public class UserDaoImpl implements UserDao {
     }
     return user;
     }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<String> getUserSessionsId(int userId) {
+        Session session = null;
+        List<String> ides = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        ides = (List<String>) session.createSQLQuery("SELECT SESSION_ID " +
+                "FROM USERS_SESSIONS WHERE user_id=:id").
+                setParameter("id", userId).list();
+        session.getTransaction().commit();
+    }
+    catch (Exception e){
+        if(session != null && session.getTransaction() != null){
+            session.getTransaction().rollback();
+        }
+    }
+    finally {
+        if(session != null) {
+            session.close();
+        }
+    }
+    return ides;
+    }
 }
 
 
