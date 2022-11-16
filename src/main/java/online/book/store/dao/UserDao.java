@@ -14,5 +14,4 @@ public interface UserDao {
     User getUserByUUID(UUID uuid);
     List<User> getUsersInSession();
     User getUserByToken(String token);
-    List<String> getUserSessionsId(int userId);
 }

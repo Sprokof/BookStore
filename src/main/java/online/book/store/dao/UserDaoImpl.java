@@ -182,57 +182,29 @@ public class UserDaoImpl implements UserDao {
     public User getUserByToken(String token) {
         Session session = null;
         User user = null;
-    try {
-        session = this.sessionFactory.openSession();
-        session.beginTransaction();
-        user = (User) session.createSQLQuery("SELECT * FROM USERS " +
-                "WHERE TOKEN=:token").setParameter("token", token).
-                addEntity(User.class).list().get(0);
-        session.getTransaction().commit();
-    }
-    catch (Exception e){
-        e.printStackTrace();
-        if(session != null){
-            if(session.getTransaction() != null){
-                session.getTransaction().rollback();
-                if(e instanceof ArrayIndexOutOfBoundsException)
-                    return null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            user = (User) session.createSQLQuery("SELECT * FROM USERS " +
+                            "WHERE TOKEN=:token").setParameter("token", token).
+                    addEntity(User.class).list().get(0);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (session != null) {
+                if (session.getTransaction() != null) {
+                    session.getTransaction().rollback();
+                    if (e instanceof ArrayIndexOutOfBoundsException)
+                        return null;
+                }
+            }
+        } finally {
+            if (session != null) {
+                session.close();
             }
         }
-    }
-    finally {
-        if(session != null){
-            session.close();
-        }
-    }
-    return user;
+        return user;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<String> getUserSessionsId(int userId) {
-        Session session = null;
-        List<String> ides = null;
-    try {
-        session = this.sessionFactory.openSession();
-        session.beginTransaction();
-        ides = (List<String>) session.createSQLQuery("SELECT SESSION_ID " +
-                "FROM USERS_SESSIONS WHERE user_id=:id").
-                setParameter("id", userId).list();
-        session.getTransaction().commit();
-    }
-    catch (Exception e){
-        if(session != null && session.getTransaction() != null){
-            session.getTransaction().rollback();
-        }
-    }
-    finally {
-        if(session != null) {
-            session.close();
-        }
-    }
-    return ides;
-    }
 }
-
 
