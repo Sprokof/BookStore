@@ -1,6 +1,4 @@
-import {currentLocation} from "./main.js";
-import {getUser} from "./navbar.js";
-import {updateUser} from "./validation.js";
+import {currentLocation, validateRequest} from "./main.js";
 
 let location = currentLocation();
 document.addEventListener('DOMContentLoaded', () => {
@@ -29,3 +27,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 let homeBtn = document.querySelector('.result-message button');
 homeBtn.onclick = () => { document.location.href = "/"; }
+
+document.onload = () => { validateRequest();}

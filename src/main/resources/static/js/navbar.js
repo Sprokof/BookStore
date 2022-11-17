@@ -244,14 +244,17 @@ export function validateSession() {
         document.querySelector('#search-input').value = '';
    }
 
-   let wishlist = document.getElementById('wishlist');
-   wishlist.onclick = () => { toPage("/home/wishlist"); }
+    let wishlist = document.getElementById('wishlist');
+    wishlist.onclick = () => { toPage("/home/wishlist"); }
 
     let cart = document.getElementById('cart-link');
     cart.onclick = () => { toPage("/home/cart"); }
 
     let orders = document.getElementById("orders");
     orders.onclick = () => { toPage("/home/orders"); }
+
+    let account = document.getElementById('account-link');
+    account.onclick = () => { toPage("/home/account"); }
 
 
 export function createAcceptNotice(){

@@ -1,0 +1,40 @@
+package online.book.store.service;
+
+import online.book.store.dto.UserDto;
+import online.book.store.entity.User;
+import online.book.store.mail.MailSender;
+import online.book.store.mail.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class AccountServiceImpl implements AccountService{
+
+    @Autowired
+    private SessionService sessionService;
+
+    @Autowired
+    private MailSender mailSender;
+
+    @Autowired
+    private SignService signService;
+
+    @Override
+    public int sendNewEmailMessage(UserDto userDto, UserService userService) {
+        String newEmail = userDto.getEmail();
+        String sessionid = userDto.getSessionid();
+        User user = this.sessionService.getCurrentUser(sessionid);
+        String newToken = this.signService.generateToken(newEmail);
+        user.setToken(newToken);
+        userService.updateUser(user);
+        mailSender.send(newEmail, Subject.CONFIRM_NEW_EMAIL, this.signService);
+        return 200;
+    }
+
+    @Override
+    public void confirmNewEmail(String email, String token, UserService userService) {
+        User user = userService.getUserByToken(email);
+        user.setEmail(email);
+        userService.updateUser(user);
+    }
+}

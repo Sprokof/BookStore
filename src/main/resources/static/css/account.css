@@ -1,0 +1,113 @@
+.account-container {
+    position: absolute;
+    top: 20%;
+    left: 25%;
+    width: 50%;
+}
+
+.account-container #email, #password {
+    pointer-events: none;
+}
+
+.account-container .personal-info div{
+    margin-bottom: 15px;
+}
+
+.account-container .personal-info div label {
+    margin-left: 5px;
+    margin-bottom: -5px;
+}
+
+.account-container .personal-info div input {
+    border: 2px solid silver;
+    border-radius: 8px;
+    width: 100%;
+    padding: 4px;
+    height: 40px;
+    font-size: 20px;
+    outline: none;
+}
+
+.account-container .change-link {
+    color: slategrey!important;
+    cursor: pointer;
+    float: right;
+}
+
+.account-container .change-link:hover {
+    color: black!important;
+}
+
+.account-container .save-btn {
+    padding-left: 8px;
+    padding-right: 8px;
+    background: black;
+    border-radius: 8px;
+    color: white;
+    text-transform: uppercase;
+    border: 3px #5f5f5b solid;
+    cursor: pointer;
+}
+.account-container .save-btn:hover {
+    background: #1e1e1e;
+    border: 3px solid #1e1e1e;
+
+}
+
+.change-email-container {
+    position: absolute;
+    top: 5%;
+    left: 15%;
+    width: 70%;
+    background: white;
+    border: 3px solid #5f5f5b;
+    -webkit-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    -moz-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    padding: 10px;
+    border-radius: 4px;
+    display: none;
+
+}
+.change-email-container header {
+    border-bottom: 1px solid #555555;
+}
+
+.change-email-container .new-email {
+    margin-top: 10px;
+    display: block;
+    width: 70%;
+}
+
+.change-email-container .new-email label {
+    margin-left: 5px;
+    margin-bottom: -5px;
+}
+
+.change-email-container .new-email input {
+    outline: none;
+    padding-left: 5px;
+    border: 2px solid slategrey;
+    border-radius: 6px;
+    width: 100%;
+    font-size: 15px;
+    height: 25px;
+}
+
+.change-email-container .send-btn {
+    margin-top: 5px;
+    border: 1px solid black;
+    cursor: pointer;
+    padding-left: 4px;
+    padding-right: 4px;
+    margin-left: 2px;
+}
+
+.change-email-container .send-btn:hover {
+    background: silver;
+}
+
+.change-email-container.open {
+    display: block;
+    transition: 0.3s;
+}

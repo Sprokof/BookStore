@@ -1,6 +1,4 @@
-import {currentLocation} from "./main.js";
-import {getUser} from "./navbar.js";
-import {updateUser} from "./validation.js";
+import {currentLocation, validateRequest} from "./main.js";
 
 let location = currentLocation();
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             message.innerText = 'Wishlist Is Empty';
             message.style.marginLeft = "10px"
             break;
-        case ('registration') :
+        case ('registration' || "newemail") :
             message.innerText = 'Confirmed!';
             message.style.marginLeft = "35px";
             break;
@@ -29,3 +27,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
 let homeBtn = document.querySelector('.result-message button');
 homeBtn.onclick = () => { document.location.href = "/"; }
+
+document.onload = () => { validateRequest();}

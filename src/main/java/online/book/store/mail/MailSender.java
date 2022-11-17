@@ -34,10 +34,16 @@ public class MailSender {
     private String generateMessage(Subject subject, SignService signService, String email) {
         if (subject.equals(Subject.RESET_PASSWORD)) {
             return Message.CONFIRM_RESET_MESSAGE.message + signService.getConfirmationCode();
-        } else {
+        }
+        else if(subject.equals(Subject.CONFIRM_REGISTRATION)) {
             String link = Message.ACCEPT_ACCOUNT_MESSAGE.message;
-
             return (link + (signService.generateToken(email)));
+        }
+        else {
+            String link = Message.CONFIRM_RESET_EMAIL_MESSAGE.message;
+            String leftLinkPart = (link.substring(0, (link.indexOf("=") + 1)) + email);
+            String rightLinkPart = ((link.substring(link.indexOf("&"))) + signService.generateToken(email));
+            return (leftLinkPart + rightLinkPart);
         }
     }
 
