@@ -12,4 +12,5 @@ public interface UserService{
     void updateUser(User user);
     void saveUser(User user);
     User getUserByToken(String token);
+    boolean loginExist(String login);
 }

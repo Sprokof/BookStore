@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             message.innerText = 'Wishlist Is Empty';
             message.style.marginLeft = "10px"
             break;
-        case ('registration') :
+        case ('registration' || "newemail") :
             message.innerText = 'Confirmed!';
             message.style.marginLeft = "35px";
             break;

@@ -3,6 +3,7 @@ import {openResetTwoPopup, resetSuccess} from "./confirmReset.js";
 import {getUser} from "./navbar.js";
 import {registrationSuccess} from "./registration.js";
 import {deleteUser, reload} from "./main.js";
+import {sendVerificationEmail} from "./account.js";
 
 let login = document.getElementById('login-btn');
 login.addEventListener('click', async () => {
@@ -73,6 +74,9 @@ export function validation(obj, url){
                     saveLogin(obj['login']);
                     resetClose();
                     openResetTwoPopup();
+                }
+                else if(value === 'email') {
+                    sendVerificationEmail(obj);
                 }
                 else if(value === 'confirm'){
                     resetSuccess();

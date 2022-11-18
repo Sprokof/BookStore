@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
     @Override
     public void saveOrUpdate(User user) {
         this.userDao.saveOrUpdate(user);
@@ -60,6 +59,10 @@ public class UserServiceImpl implements UserService {
         return this.userDao.getUserByToken(token);
     }
 
+    @Override
+    public boolean loginExist(String login) {
+        return this.userDao.loginExist(login);
+    }
 }
 
 

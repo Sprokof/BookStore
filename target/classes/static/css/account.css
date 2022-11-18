@@ -111,3 +111,7 @@
     display: block;
     transition: 0.3s;
 }
+
+.new-email.compression {
+    margin-bottom: -10px;
+}

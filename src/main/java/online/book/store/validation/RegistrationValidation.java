@@ -32,7 +32,7 @@ public class RegistrationValidation extends AbstractValidation {
             this.response.addError("username", "Username can't be empty");
         }
 
-        if (userService.getUserByLogin(userDto.getUsername()) != null) {
+        if (userService.loginExist(userDto.getUsername())) {
             this.response.addError("username", "Username already taken");
         }
 
@@ -40,7 +40,7 @@ public class RegistrationValidation extends AbstractValidation {
             this.response.addError("reg-email", "Email can't be empty");
         }
 
-        if (userService.getUserByLogin(userDto.getEmail()) != null) {
+        if (userService.loginExist(userDto.getEmail())) {
             this.response.addError("reg-email", "Email already taken");
         }
 

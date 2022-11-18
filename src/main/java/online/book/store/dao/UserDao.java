@@ -12,6 +12,6 @@ public interface UserDao {
     void updateUser(User user);
     void saveOrUpdate(User user);
     User getUserByUUID(UUID uuid);
-    List<User> getUsersInSession();
     User getUserByToken(String token);
+    boolean loginExist(String login);
 }

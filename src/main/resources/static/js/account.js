@@ -1,5 +1,6 @@
 import {validateRequest} from "./main.js";
-import {getUser} from "./navbar";
+import {getUser} from "./navbar.js";
+import {validation} from "./validation.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     validateRequest();
@@ -8,11 +9,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 let emailContainer = document.querySelector('.change-email-container');
 let changeEmail = document.querySelectorAll('.account-container .change-link')[0];
-changeEmail.onclick = () => {
-    emailContainer.classList.add('open');
-    blockAccountHtml(true);
+if(changeEmail != null) {
+    changeEmail.onclick = () => {
+        emailContainer.classList.add('open');
+        blockAccountHtml(true);
+    }
 }
-
 
 document.addEventListener('mouseup', (e) => {
     if(!emailContainer.classList.contains('open')) return ;
@@ -30,16 +32,17 @@ function blockAccountHtml(flag){
 }
 
 let sendBtn = document.querySelector('.send-btn');
-sendBtn.onclick = () => {
-    let newEmail = document.querySelector('.change-email-container .new-email input').value;
-    sendVerificationEmail(newEmail);
+if(sendBtn != null) {
+    sendBtn.onclick = () => {
+        let userDto = {
+            'email': document.querySelector('.change-email-container .new-email input').value,
+            'sessionid': getUser()['sessionid'],
+        }
+        validation(userDto, "/account/send/new/email");
+    }
 }
 
-function sendVerificationEmail(email) {
-      let userDto = {
-          "email" : email,
-          "sessionid" : getUser()['sessionid']
-      }
+export function sendVerificationEmail(userDto) {
       $.ajax({
         type: "POST",
         contentType: "application/json",
@@ -49,7 +52,7 @@ function sendVerificationEmail(email) {
         dataType: 'json',
         responseType: 'json',
         success: () => {
-            setTimeout(closeEmailWindow, 130);
+            setTimeout(closeEmailWindow, 350);
     }
 });
 }

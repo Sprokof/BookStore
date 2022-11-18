@@ -42,7 +42,6 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    @SuppressWarnings("unchecked")
     public void saveOrUpdate(User user) {
         Session session = null;
         try {
@@ -66,15 +65,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByLogin(String login) {
-        Pattern email = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
-                Pattern.CASE_INSENSITIVE);
-
-        String column = "USERNAME";
-
-        if (email.matcher(login).find()) {
-            column = "EMAIL";
-        }
-
+        String column = defineColumn(login);
         User user = null;
         Session session = null;
         try {
@@ -119,32 +110,6 @@ public class UserDaoImpl implements UserDao {
             }
 
         }
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<User> getUsersInSession() {
-        Session session = null;
-        List<User> users = null;
-        try {
-            session = this.sessionFactory.openSession();
-            session.beginTransaction();
-            users = session.createSQLQuery("SELECT * FROM " +
-                    "USERS WHERE IN_SESSION is true").addEntity(User.class).list();
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            if (session != null) {
-                if (session.getTransaction() != null) {
-                    session.getTransaction().rollback();
-                }
-            }
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-        return users;
-
     }
 
 
@@ -194,7 +159,7 @@ public class UserDaoImpl implements UserDao {
             if (session != null) {
                 if (session.getTransaction() != null) {
                     session.getTransaction().rollback();
-                    if (e instanceof ArrayIndexOutOfBoundsException)
+                    if (e instanceof IndexOutOfBoundsException)
                         return null;
                 }
             }
@@ -206,5 +171,39 @@ public class UserDaoImpl implements UserDao {
         return user;
     }
 
+    @Override
+    public boolean loginExist(String login) {
+        Session session = null;
+        String column = defineColumn(login);
+        Integer id = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        id = (Integer) session.createSQLQuery("SELECT id FROM USERS " +
+                "WHERE "+ column + "=:login").
+                setParameter("login", login).getSingleResult();
+        session.getTransaction().commit();
+    }
+    catch (Exception e){
+        if(session != null && session.getTransaction() != null){
+            session.getTransaction().rollback();
+            if(e instanceof NoResultException) return false;
+        }
+    }
+    finally {
+        if(session != null){
+            session.close();
+        }
+    }
+        return (id != null);
+    }
+
+    private String defineColumn(String login){
+        Pattern email = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
+                Pattern.CASE_INSENSITIVE);
+
+        if (email.matcher(login).find())  return "EMAIL";
+        return "USERNAME";
+    }
 }
 
