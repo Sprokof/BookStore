@@ -1,11 +1,13 @@
 package online.book.store.validation;
 
+import online.book.store.config.MailConfig;
 import online.book.store.dto.UserDto;
 import online.book.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @Component
 public class RegistrationValidation extends AbstractValidation {
@@ -35,9 +37,15 @@ public class RegistrationValidation extends AbstractValidation {
         if (userService.loginExist(userDto.getUsername())) {
             this.response.addError("username", "Username already taken");
         }
-
+        String email = userDto.getEmail();
         if(userDto.getEmail().isEmpty()){
             this.response.addError("reg-email", "Email can't be empty");
+        }
+
+        Pattern emailPattern = Pattern.compile(MailConfig.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
+
+        if(emailPattern.matcher(email).find()){
+            this.response.addError("reg-email", "Wrong email format");
         }
 
         if (userService.loginExist(userDto.getEmail())) {

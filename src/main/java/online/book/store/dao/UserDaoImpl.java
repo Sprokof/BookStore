@@ -1,6 +1,7 @@
 package online.book.store.dao;
 
 
+import online.book.store.config.MailConfig;
 import online.book.store.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -199,9 +200,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     private String defineColumn(String login){
-        Pattern email = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$",
-                Pattern.CASE_INSENSITIVE);
-
+        Pattern email = Pattern.compile(MailConfig.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
         if (email.matcher(login).find())  return "EMAIL";
         return "USERNAME";
     }

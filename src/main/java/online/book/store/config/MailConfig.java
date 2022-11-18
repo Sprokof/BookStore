@@ -7,9 +7,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 @Configuration
 public class MailConfig {
+    public static final String EMAIL_PATTERN = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";
 
     @Value("${spring.mail.host}")
     private String host;

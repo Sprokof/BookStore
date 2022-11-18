@@ -2,12 +2,14 @@ package online.book.store.validation;
 
 
 import lombok.Getter;
+import online.book.store.config.MailConfig;
 import online.book.store.dto.UserDto;
 import online.book.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @Component
 public class AccountValidation {
@@ -34,7 +36,15 @@ public class AccountValidation {
             UserDto userDto = (UserDto) target;
 
             String email = userDto.getEmail();
+            if(email.isEmpty()){
+                AccountValidation.this.response.addError("new-email", "Can't be empty");
+            }
+            Pattern emailPattern = Pattern.compile(MailConfig.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
 
+            if(!emailPattern.matcher(email).find()){
+                AccountValidation.this.response.addError("new-email", "Wrong email format");
+
+            }
             boolean emailExist = AccountValidation.this.userService.loginExist(email);
 
             if(emailExist){
