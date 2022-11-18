@@ -11,6 +11,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,6 +44,10 @@ public class User {
     @Getter
     @Setter
     private String password;
+
+    @Column(name = "REGISTRATION_DATE")
+    @Getter
+    private String date;
 
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -141,7 +146,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.token = SHA256.hash(email);
-
+        this.date = LocalDate.now().toString();
     }
 
 
