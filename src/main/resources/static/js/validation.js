@@ -3,7 +3,6 @@ import {openResetTwoPopup, resetSuccess} from "./confirmReset.js";
 import {getUser} from "./navbar.js";
 import {registrationSuccess} from "./registration.js";
 import {deleteUser, reload} from "./main.js";
-import {sendVerificationEmail} from "./account.js";
 
 let login = document.getElementById('login-btn');
 login.addEventListener('click', async () => {
@@ -75,9 +74,6 @@ export function validation(obj, url){
                     resetClose();
                     openResetTwoPopup();
                 }
-                else if(value === 'email') {
-                    sendVerificationEmail(obj);
-                }
                 else if(value === 'confirm'){
                     resetSuccess();
                 }
@@ -103,9 +99,11 @@ export function deleteErrorMessages(){
     let errorsMessages = document.querySelectorAll(".error-message");
     let formElements = document.querySelectorAll('.form-element');
     let addElements = document.querySelectorAll('.add-element');
+    let newEmail = document.querySelector('.new-email');
     errorsMessages.forEach((error) => error.classList.remove('active'));
     formElements.forEach((element) => element.classList.remove('compression'));
     addElements.forEach((element) => element.classList.remove('compression'));
+    if(newEmail != null) { newEmail.classList.remove('compression'); }
 }
 
 async function hash(string) {
@@ -121,9 +119,11 @@ async function hash(string) {
 
 export function clearInputs() {
     let elements = document.querySelectorAll('.form-element input');
+    let emailInput = document.querySelector('.new-email input');
     for (let i = 0; i < elements.length; i++) {
-        elements[i].value = "";
+        elements[i].value = '';
     }
+    emailInput.value = '';
     deleteErrorMessages();
 }
 
@@ -155,7 +155,7 @@ function backHome() {
 }
 
 
-function addErrors(errors){
+export function addErrors(errors){
     for(let [field, message] of errors) {
         let error = document.getElementById(field + '-error');
         let parentNode = error.parentNode;

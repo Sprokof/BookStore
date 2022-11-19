@@ -85,7 +85,7 @@ public class AccountValidation {
             String confirmPassword = userDto.getConfirmPassword();
 
             validatePassword(AccountValidation.this.response, password, confirmPassword,
-                    "acc-password", "acc-confirm-password");
+                    "new-password", "confirm-new-password");
         }
 
         @Override

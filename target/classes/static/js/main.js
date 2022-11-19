@@ -256,19 +256,25 @@ export function extractISBN(node){
 }
 
 export function validateRequest() {
-    if(currentLocation().length === 4 && currentLocation()[3] === 'add') return;
+    if ((currentLocation().length === 4
+        && currentLocation()[3] === 'add') || currentLocation()[1] === '') return;
     let user = getUser();
-    if(user == null) badRequest();
-    let userDto = getUserData(user);
-    let href = document.location.href;
-    let index = 0;
-    if ((index = href.indexOf("=")) >= 0) {
-        let inputLogin = href.substr(index + 1);
-        let currentUsername = userDto['email'];
-        let currentEmail = userDto['username'];
-        if (currentUsername === inputLogin || currentEmail === inputLogin) return ;
+    if(user !== null) {
+        let userDto = getUserData(user);
+        let href = document.location.href;
+        let index = 0;
+        if ((index = href.indexOf("=")) >= 0) {
+            let inputLogin = href.substr(index + 1);
+            let currentUsername = userDto['username'];
+            let currentEmail = userDto['email'];
+            if (currentUsername === inputLogin || currentEmail === inputLogin) return;
+            badRequest()
+        }
+    }
+    else {
         badRequest();
     }
+
 }
 
 function badRequest() {

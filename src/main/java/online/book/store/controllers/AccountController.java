@@ -40,12 +40,7 @@ public class AccountController {
         model.addAttribute("user", user);
         return "account";
     }
-
-    @GetMapping("/change")
-    public String change() {
-        return "change";
-    }
-
+    
     @PostMapping("/account/send/new/email")
     public ResponseEntity<Map<String, String>> newEmail (@RequestBody UserDto userDto){
         emailValidation.validation(userDto);

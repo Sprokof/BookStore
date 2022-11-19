@@ -50,10 +50,29 @@
         <div class="new-email">
             <label for="new-email">New email</label>
             <input id="new-email" type="email" placeholder="New email" minlength="5">
-            <p class="error-message" id="new-email-error"></p>
+            <p class="error-message" id="new-email-error"
+               style="margin-top: 2px; float: left"></p>
         </div>
-        <button class="send-btn">send</button>
+        <button class="btn">send</button>
     </div>
+
+    <div class="change-password-container">
+        <header>
+            <p>Change password</p>
+        </header>
+        <div class="password-block">
+            <label for="new-password">New password</label>
+            <input style="margin-bottom: 15px" id="new-password" type="password" placeholder="New password">
+            <p class="error-message" id="new-password-error"></p>
+
+            <label for="confirm-new-password">Confirm password</label>
+            <input style="margin-bottom: 2px" id="confirm-new-password" type="password" placeholder="Confirm password">
+            <p class="error-message" id="-confirm-new-password-error"></p>
+
+        </div>
+        <button class="btn">save</button>
+    </div>
+
 </div>
 </body>
 <script type="module" th:src="@{/js/login.js}"></script>

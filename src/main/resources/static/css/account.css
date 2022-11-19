@@ -5,6 +5,10 @@
     width: 50%;
 }
 
+.account-container .change-email-container header p, .change-password-container header p {
+    float: left;
+}
+
 .account-container #email, #password {
     pointer-events: none;
 }
@@ -62,16 +66,16 @@
 
 .change-email-container {
     position: absolute;
-    top: 5%;
+    top: 10%;
     left: 15%;
     width: 70%;
     background: white;
-    border: 3px solid #5f5f5b;
+    border: 3px solid slategrey;
     -webkit-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
     -moz-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
     box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
     padding: 10px;
-    border-radius: 4px;
+    border-radius: 8px;
     display: none;
 
 }
@@ -100,17 +104,21 @@
     height: 25px;
 }
 
-.change-email-container .send-btn {
+.account-container .btn {
     margin-top: 5px;
     border: 1px solid black;
     cursor: pointer;
-    padding-left: 4px;
-    padding-right: 4px;
     margin-left: 2px;
+    padding: 2px 4px;
+
 }
 
-.change-email-container .send-btn:hover {
+.account-container .btn:hover {
     background: silver;
+}
+
+.account-container .btn:focus {
+    outline: silver;
 }
 
 .change-email-container.open {
@@ -119,5 +127,44 @@
 }
 
 .new-email.compression {
-    margin-bottom: -10px;
+    margin-bottom: -15px;
+}
+
+.change-password-container {
+    position: absolute;
+    top: 10%;
+    left: 15%;
+    background: whitesmoke;
+    border: 2px solid slategrey;
+    -webkit-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    -moz-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    padding: 10px;
+    border-radius: 8px;
+    width: 70%;
+    display: none;
+}
+
+
+.change-password-container .password-block {
+    width: 70%;
+}
+
+.change-password-container .password-block label {
+    margin-bottom: -5px;
+    margin-left: 5px;
+}
+
+.change-password-container .password-block input{
+    height: 30px;
+    outline: none;
+    border: 2px solid slategrey;
+    border-radius: 8px;
+    padding-left: 8px;
+    width: 100%;
+}
+
+
+.change-password-container.open {
+    display: block;
 }

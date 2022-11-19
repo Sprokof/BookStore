@@ -133,16 +133,20 @@ function controlErrorMessage(field, value){
 }
 
     let createNewBtn = document.querySelectorAll('.checkout-notice .buttons button')[1];
-    createNewBtn.onclick = () => {
-        closeCheckoutNotice();
-        checkoutOpen();
+    if(createNewBtn != null) {
+        createNewBtn.onclick = () => {
+            closeCheckoutNotice();
+            checkoutOpen();
+        }
     }
 
     let savedInfoBtn = document.querySelectorAll('.checkout-notice .buttons button')[0];
-    savedInfoBtn.onclick = () => {
-        fillCheckoutInputs();
-        closeCheckoutNotice();
-        checkoutOpen();
+    if(savedInfoBtn != null) {
+        savedInfoBtn.onclick = () => {
+            fillCheckoutInputs();
+            closeCheckoutNotice();
+            checkoutOpen();
+        }
     }
 
     function fillCheckoutInputs() {
