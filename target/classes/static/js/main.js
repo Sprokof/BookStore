@@ -256,8 +256,8 @@ export function extractISBN(node){
 }
 
 export function validateRequest() {
-    if ((currentLocation().length === 4
-        && currentLocation()[3] === 'add') || currentLocation()[1] === '') return;
+    if ((currentLocation().length === 4 && currentLocation()[3] === 'add')
+        || (currentLocation()[1] === '' || currentLocation()[1] === 'bookstore')) return;
     let user = getUser();
     if(user !== null) {
         let userDto = getUserData(user);

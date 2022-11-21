@@ -261,7 +261,8 @@ export function createAcceptNotice(){
         let windowOpen = document.querySelector('#accept-window').classList.contains('open');
         let location = currentLocation()[2];
         let accept = userAccept();
-        if(accept === undefined || windowOpen || location === 'registration') return;
+        if(accept === undefined || windowOpen ||
+            location === 'registration' || getUser() != null) return;
         if(!accept){
             let div = document.createElement('div');
             div.classList.add('accept-message');

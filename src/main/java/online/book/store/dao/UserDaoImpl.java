@@ -156,7 +156,6 @@ public class UserDaoImpl implements UserDao {
                     addEntity(User.class).list().get(0);
             session.getTransaction().commit();
         } catch (Exception e) {
-            e.printStackTrace();
             if (session != null) {
                 if (session.getTransaction() != null) {
                     session.getTransaction().rollback();

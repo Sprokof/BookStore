@@ -42,7 +42,7 @@ public class RegistrationValidation extends AbstractValidation {
 
         Pattern emailPattern = Pattern.compile(MailConfig.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
 
-        if(emailPattern.matcher(email).find()){
+        if(!emailPattern.matcher(email).find()){
             this.response.addError("reg-email", "Wrong email format");
         }
 

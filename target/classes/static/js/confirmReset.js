@@ -40,7 +40,6 @@ function sendNewCode () {
     let resetPasswordDto = {
         'login' : getSavedLogin()
     }
-    console.log(getSavedLogin());
     $.ajax({
         type: "POST",
         contentType: "application/json",
