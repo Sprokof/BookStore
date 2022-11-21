@@ -12,7 +12,8 @@ $(document).ready(function () {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    manageSession();
+    invalidateSession();
+    autologin();
     createAcceptNotice();
     let session = validateSession();
     if(session === undefined) return ;
@@ -182,10 +183,10 @@ export function validateSession() {
 
 
 
-   function manageSession() {
-       if(!loaded() || getRememberedUser() === null) return;
+   function invalidateSession() {
+       if(!loaded() || getUser() === null) return;
        let sessionDto = {
-           "sessionid" : getRememberedUser()['sessionid']
+           "sessionid" : getUser()['sessionid']
        }
        $.ajax({
            type: "POST",
@@ -196,18 +197,17 @@ export function validateSession() {
            dataType: 'json',
            responseType: "json",
            async: false,
-           success : () => {
-               autologin();
-           }
        })
    }
 
    function autologin() {
+        if(!autologinCondition()) return ;
+        let user = getRememberedUser();
        $.ajax({
            type: "POST",
            contentType: "application/json",
            url: "/autologin",
-           data: JSON.stringify(getRememberedUser()),
+           data: JSON.stringify(user),
            cache: false,
            dataType: 'json',
            responseType: "json",
@@ -296,4 +296,8 @@ export function createAcceptNotice(){
     function toPage(url){
         if(!sessionActive()) openLoginNotice() ;
         document.location.href = url + "?user=" + getUser()['login'];
+    }
+
+    function autologinCondition() {
+        return loaded() && getRememberedUser() == null;
     }

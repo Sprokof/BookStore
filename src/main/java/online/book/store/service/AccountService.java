@@ -6,5 +6,6 @@ public interface AccountService {
     void sendNewEmailMessage(UserDto userDto, UserService userService);
     void confirmNewEmail(String email, String token, UserService userService);
     void confirmNewPassword(UserDto userDto, UserService userService);
+    void confirmNewUsername(UserDto userDto, UserService userService);
     boolean emailSet(String email, UserService userService);
 }

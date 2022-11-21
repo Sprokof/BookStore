@@ -36,7 +36,7 @@ public class OrderController {
         if(userOrders.isEmpty()){
             return "result";
         }
-        model.addAttribute("orders", userOrders);
+        model.addAttribute("orders", orderService.getSortedOrders(userOrders));
         return "orders";
     }
 

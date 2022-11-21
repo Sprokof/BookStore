@@ -11,6 +11,7 @@ import online.book.store.service.BookService;
 import online.book.store.service.BookServiceImpl;
 import online.book.store.service.CategoryService;
 import online.book.store.service.CategoryServiceImpl;
+import online.book.store.status.BookStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,9 +23,6 @@ import java.lang.reflect.Field;
 public class BookDto extends AbstractBookBuilder {
 
     private final CategoryService categoryService = new CategoryServiceImpl();
-
-    public static final String[] AVAILABLE_STATUS = {"is available", "not available"};
-
 
     @Getter
     @Setter
@@ -194,7 +192,7 @@ public class BookDto extends AbstractBookBuilder {
         if(!this.containsNull()){
             book = new Book(this.isbn, this.title,
                         this.publisher, Integer.parseInt(this.price),
-                        Integer.parseInt(this.yearPub), this.subject, this.bookImage, AVAILABLE_STATUS[0],
+                        Integer.parseInt(this.yearPub), this.subject, this.bookImage, BookStatus.AVAILABLE,
                         Integer.parseInt(this.availableCopies), this.description, this.authors, this.format);
 
             addCategoryToBook(book);

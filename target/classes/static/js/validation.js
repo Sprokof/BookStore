@@ -61,9 +61,7 @@ export function validation(obj, url){
         responseType: "json",
         data: JSON.stringify(obj),
         success: function (data) {
-            deleteErrorMessages();
-            let validationErrors = JSON.parse(JSON.stringify(data));
-            let errorMap = new Map(Object.entries(validationErrors));
+            let errorMap = getMap(data);
             let remember = document.querySelector('.remember-me input').checked;
             if (errorMap.size > 0) {
                 addErrors(errorMap);
@@ -99,11 +97,15 @@ export function deleteErrorMessages(){
     let errorsMessages = document.querySelectorAll(".error-message");
     let formElements = document.querySelectorAll('.form-element');
     let addElements = document.querySelectorAll('.add-element');
+    let accountPasswords = document.querySelectorAll('.password-block div');
     let newEmail = document.querySelector('.new-email');
+    let username = document.querySelector('.username');
     errorsMessages.forEach((error) => error.classList.remove('active'));
     formElements.forEach((element) => element.classList.remove('compression'));
     addElements.forEach((element) => element.classList.remove('compression'));
-    if(newEmail != null) { newEmail.classList.remove('compression'); }
+    accountPasswords.forEach(password => password.classList.remove('compression'));
+    if(username != null){ username.classList.remove('compression'); }
+    if(newEmail != null){ newEmail.classList.remove('compression'); }
 }
 
 async function hash(string) {
@@ -120,10 +122,14 @@ async function hash(string) {
 export function clearInputs() {
     let elements = document.querySelectorAll('.form-element input');
     let emailInput = document.querySelector('.new-email input');
+    let passwordsInputs = document.querySelectorAll('.password-block input');
     for (let i = 0; i < elements.length; i++) {
         elements[i].value = '';
     }
-    emailInput.value = '';
+    if(emailInput != null) {
+        emailInput.value = '';
+    }
+    passwordsInputs.forEach(input => input.value = '');
     deleteErrorMessages();
 }
 
@@ -159,7 +165,7 @@ export function addErrors(errors){
     for(let [field, message] of errors) {
         let error = document.getElementById(field + '-error');
         let parentNode = error.parentNode;
-            error.innerText = (String(message));
+        error.innerText = (String(message));
         error.classList.add('active');
         parentNode.classList.add('compression');
     }
@@ -210,4 +216,10 @@ function saveLogin(login) {
 export function getSavedLogin() {
     let cookieValue = document.cookie;
     return document.cookie.substr(cookieValue.indexOf(',') + 2);
+}
+
+export function getMap(data){
+    deleteErrorMessages();
+    let validationErrors = JSON.parse(JSON.stringify(data));
+    return new Map(Object.entries(validationErrors));
 }

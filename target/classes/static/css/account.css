@@ -57,7 +57,7 @@
     border: 3px solid #1e1e1e;
 }
 
-.account-container p {
+.account-container .sign-up-date {
     margin-top: -5px;
     font-weight: 500;
     font-family: Cambria, sans-serif;
@@ -104,7 +104,7 @@
     height: 25px;
 }
 
-.account-container .btn {
+.account-container .acc-btn {
     margin-top: 5px;
     border: 1px solid black;
     cursor: pointer;
@@ -113,13 +113,10 @@
 
 }
 
-.account-container .btn:hover {
+.account-container .acc-btn:hover {
     background: silver;
 }
 
-.account-container .btn:focus {
-    outline: silver;
-}
 
 .change-email-container.open {
     display: block;
@@ -134,7 +131,7 @@
     position: absolute;
     top: 10%;
     left: 15%;
-    background: whitesmoke;
+    background: white;
     border: 2px solid slategrey;
     -webkit-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
     -moz-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
@@ -148,6 +145,7 @@
 
 .change-password-container .password-block {
     width: 70%;
+    overflow-y: hidden;
 }
 
 .change-password-container .password-block label {
@@ -164,7 +162,26 @@
     width: 100%;
 }
 
-
 .change-password-container.open {
     display: block;
+}
+
+.change-password-container .password-block .error-message {
+    font-size: 13px;
+}
+
+.change-password-container .password-block div.compression {
+    margin-bottom: -10px;
+}
+
+.change-password-container .password-block .new-password {
+    margin-bottom: 15px;
+}
+
+.change-password-container .password-block .confirm-new-password {
+    margin-bottom: 2px;
+}
+
+.account-container .username.compression {
+    margin-bottom: -10px;
 }

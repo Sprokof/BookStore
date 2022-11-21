@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -62,5 +63,21 @@ public class OrderServiceImpl implements OrderService{
         this.bookService.updateBook(book);
     }
 
+    @Override
+    public List<Order> getSortedOrders(List<Order> orders) {
+        orders.sort((o1, o2) -> compareOrderDates(o1.getOrderDate(), o2.getOrderDate()));
+        return orders;
+    }
+
+    private int compareOrderDates(String dateOne, String dateTwo){
+        int compareResult = 0;
+        if(Date.valueOf(dateOne).after(Date.valueOf(dateTwo))){
+            compareResult = - 1;
+        }
+        else if(Date.valueOf(dateOne).before(Date.valueOf(dateTwo))){
+            compareResult = 1;
+        }
+        return compareResult;
+    }
 
 }

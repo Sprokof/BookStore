@@ -1,5 +1,7 @@
 package online.book.store.validation;
 
+import online.book.store.service.UserService;
+
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -23,7 +25,6 @@ public abstract class AbstractValidation {
 
     public void validatePassword(ValidateResponse response, String password, String confirmPassword,
                                  String passwordFieldId, String confirmPasswordFieldId){
-
         if (password.isEmpty()) {
             response.addError(passwordFieldId, "Password can't be empty");
         }
@@ -51,5 +52,24 @@ public abstract class AbstractValidation {
         if(!confirmPassword.equals(password)){
             response.addError(confirmPasswordFieldId, "Passwords not equals");
         }
+
+    }
+
+    public void validateUsername(UserService userService, ValidateResponse response,
+                                 String username, String usernameFieldId){
+        if(username.isEmpty()){
+            response.addError(usernameFieldId, "Username can't be empty");
+        }
+
+        if (userService.loginExist(username)) {
+            response.addError(usernameFieldId, "Username already taken");
+        }
+
+        Pattern usernamePattern = Pattern.compile("^[A-Za-z]\\w{5,19}$");
+        if(!usernamePattern.matcher(username).find()){
+            response.addError(usernameFieldId, "Username must starts " +
+                    "from uppercase letter and be between 6 and 20 characters");
+        }
+
     }
 }

@@ -2,6 +2,7 @@ package online.book.store.service;
 
 import online.book.store.dto.UserDto;
 import online.book.store.entity.User;
+import online.book.store.hash.SHA256;
 import online.book.store.mail.MailSender;
 import online.book.store.mail.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,8 @@ public class AccountServiceImpl implements AccountService{
     public void confirmNewPassword(UserDto userDto, UserService userService) {
         String sessionid = userDto.getSessionid();
         User user = this.sessionService.getCurrentUser(sessionid);
-        user.setPassword(user.getPassword());
+        String password = user.getPassword();
+        user.setPassword(SHA256.hash(password));
         userService.updateUser(user);
 
     }
@@ -49,5 +51,13 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public boolean emailSet(String email, UserService userService) {
         return userService.loginExist(email);
+    }
+
+    @Override
+    public void confirmNewUsername(UserDto userDto, UserService userService) {
+        String sessionid = userDto.getSessionid();
+        User user = this.sessionService.getCurrentUser(sessionid);
+        user.setUsername(userDto.getUsername());
+        userService.updateUser(user);
     }
 }

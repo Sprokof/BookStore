@@ -33,6 +33,9 @@ public class AccountController {
     @Autowired
     private AccountValidation.PasswordValidation passwordValidation;
 
+    @Autowired
+    private AccountValidation.UsernameValidation usernameValidation;
+
 
     @GetMapping("/home/account")
     public String account(@RequestParam("user") String login, Model model) {
@@ -67,5 +70,14 @@ public class AccountController {
         if(accountService.emailSet(email, this.userService)) throw new ResourceNotFoundException () ;
         this.accountService.confirmNewEmail(email, token, this.userService);
         return "result";
+    }
+
+    @PostMapping("/account/new/username")
+    public ResponseEntity<Map<String, String>> newUsername(@RequestBody UserDto userDto){
+        usernameValidation.validation(userDto);
+        if(!usernameValidation.hasErrors()){
+            accountService.confirmNewUsername(userDto, this.userService);
+        }
+        return ResponseEntity.ok(usernameValidation.validationErrors());
     }
 }

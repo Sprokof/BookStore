@@ -29,8 +29,9 @@
         </div>
 
         <div class="username">
-            <label for="username">Username</label>
-            <input id="username" type="text" th:value="${user.username}">
+            <label for="acc-username">Username</label>
+            <input id="acc-username" type="text" th:value="${user.username}">
+            <p class="error-message" id="acc-username-error"></p>
         </div>
 
         <div class="password">
@@ -38,7 +39,7 @@
             <a class="change-link">change</a>
             <input id="password" type="text">
         </div>
-        <p th:text="${'Registration date: ' + user.date}"></p>
+        <p class="sign-up-date" th:text="${'Registration date: ' + user.date}"></p>
         <button class="save-btn">save changes</button>
     </div>
 
@@ -53,7 +54,7 @@
             <p class="error-message" id="new-email-error"
                style="margin-top: 2px; float: left"></p>
         </div>
-        <button class="btn">send</button>
+        <button class="acc-btn">send</button>
     </div>
 
     <div class="change-password-container">
@@ -61,16 +62,21 @@
             <p>Change password</p>
         </header>
         <div class="password-block">
-            <label for="new-password">New password</label>
-            <input style="margin-bottom: 15px" id="new-password" type="password" placeholder="New password">
-            <p class="error-message" id="new-password-error"></p>
 
-            <label for="confirm-new-password">Confirm password</label>
-            <input style="margin-bottom: 2px" id="confirm-new-password" type="password" placeholder="Confirm password">
-            <p class="error-message" id="-confirm-new-password-error"></p>
+            <div class="new-password">
+                <label for="acc-new-password">New password</label>
+                <input id="acc-new-password" type="password" placeholder="New password">
+                <p class="error-message" id="acc-new-password-error"></p>
+            </div>
+
+            <div class="confirm-new-password">
+                <label for="acc-confirm-new-password">Confirm password</label>
+                <input id="acc-confirm-new-password" type="password" placeholder="Confirm password">
+                <p class="error-message" id="acc-confirm-new-password-error"></p>
+           </div>
 
         </div>
-        <button class="btn">save</button>
+        <button class="acc-btn">save</button>
     </div>
 
 </div>

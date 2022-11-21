@@ -37,7 +37,7 @@ public class AccountValidation {
 
             String email = userDto.getEmail();
             if(email.isEmpty()){
-                AccountValidation.this.response.addError("new-email", "Can't be empty");
+                AccountValidation.this.response.addError("new-email", "Email can't be empty");
             }
             Pattern emailPattern = Pattern.compile(MailConfig.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE);
 
@@ -79,13 +79,14 @@ public class AccountValidation {
         @Override
         public void validation(Object target) {
             if(!supports(target.getClass())) return ;
+            deleteErrorsMessages();
             UserDto userDto = (UserDto) target;
 
             String password = userDto.getPassword();
             String confirmPassword = userDto.getConfirmPassword();
 
             validatePassword(AccountValidation.this.response, password, confirmPassword,
-                    "new-password", "confirm-new-password");
+                    "acc-new-password", "acc-confirm-new-password");
         }
 
         @Override
@@ -104,6 +105,49 @@ public class AccountValidation {
         @Override
         public void deleteErrorsMessages() {
             AccountValidation.this.response = new ValidateResponse();
+        }
+
+        @Override
+        public Map<String, String> validationErrors() {
+            return AccountValidation.this.response.getFieldErrors();
+        }
+    }
+
+    @Component
+    public class UsernameValidation extends AbstractValidation {
+
+        @Override
+        public boolean supports(Class<?> aClass) {
+            return aClass.equals(UserDto.class);
+        }
+
+        @Override
+        public void validation(Object target) {
+            if(!supports(target.getClass())) return ;
+            deleteErrorsMessages();
+
+            UserDto userDto = (UserDto) target;
+
+            String username = userDto.getUsername();
+
+            validateUsername(AccountValidation.this.userService, AccountValidation.this.response,
+                    username, "acc-username");
+        }
+
+        @Override
+        public boolean hasErrors() {
+            return !AccountValidation.this.response.getFieldErrors().isEmpty();
+        }
+
+        @Override
+        public void deleteErrorsMessages() {
+            AccountValidation.this.response = new ValidateResponse();
+        }
+
+        @Override
+        public void validateUsername(UserService userService, ValidateResponse response,
+                                     String username, String usernameFieldId) {
+            super.validateUsername(userService, response, username, usernameFieldId);
         }
 
         @Override

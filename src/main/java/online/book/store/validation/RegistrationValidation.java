@@ -30,14 +30,12 @@ public class RegistrationValidation extends AbstractValidation {
         UserDto userDto = (UserDto) target;
         deleteErrorsMessages();
 
-        if (userDto.getUsername().isEmpty()) {
-            this.response.addError("username", "Username can't be empty");
-        }
+        String username = userDto.getUsername();
 
-        if (userService.loginExist(userDto.getUsername())) {
-            this.response.addError("username", "Username already taken");
-        }
+        validateUsername(this.userService, this.response, username, "username");
+
         String email = userDto.getEmail();
+
         if(userDto.getEmail().isEmpty()){
             this.response.addError("reg-email", "Email can't be empty");
         }
@@ -80,5 +78,10 @@ public class RegistrationValidation extends AbstractValidation {
     public void validatePassword(ValidateResponse response, String password, String confirmPassword,
                                  String passwordFieldId, String confirmPasswordFieldId) {
         super.validatePassword(response, password, confirmPassword, passwordFieldId, confirmPasswordFieldId);
+    }
+
+    @Override
+    public void validateUsername(UserService service, ValidateResponse response, String username, String usernameFieldId) {
+        super.validateUsername(service, response, username, usernameFieldId);
     }
 }

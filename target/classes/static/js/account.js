@@ -1,11 +1,13 @@
 import {validateRequest} from "./main.js";
 import {getUser} from "./navbar.js";
-import {addErrors, clearInputs, deleteErrorMessages} from "./validation.js";
+import {addErrors, clearInputs, deleteErrorMessages, getMap} from "./validation.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     validateRequest();
+    saveCurrentUsername();
 });
 
+let currentUsername;
 
 let emailContainer = document.querySelector('.change-email-container');
 let passwordContainer = document.querySelector('.change-password-container');
@@ -54,7 +56,7 @@ function blockAccountHtml(flag){
     passwordContainer.style.pointerEvents = "auto";
 }
 
-let buttons = document.querySelectorAll('.btn');
+let buttons = document.querySelectorAll('.acc-btn');
 
 let sendBtn = buttons[0];
 let saveBtn = buttons[1];
@@ -63,13 +65,25 @@ if(sendBtn != null) {
     sendBtn.onclick = () => {
         let userDto = {
             'email': document.querySelector('.change-email-container .new-email input').value,
-            'sessionid': getUser()['sessionid'],
+            'sessionid': getUser()['sessionid']
         }
         validateNewEmail(userDto);
     }
 }
 
-export function sendVerificationEmail(userDto) {
+if(saveBtn != null){
+    saveBtn.onclick = () => {
+        let userDto = {
+            'password': document.querySelector('.password-block #acc-new-password').value,
+            'confirmPassword': document.querySelector('.password-block #acc-confirm-new-password').value,
+            'sessionid' : getUser()['sessionid']
+        }
+
+        validateNewPassword(userDto);
+    }
+}
+
+function sendVerificationEmail(userDto) {
       $.ajax({
         type: "POST",
         contentType: "application/json",
@@ -82,6 +96,27 @@ export function sendVerificationEmail(userDto) {
             setTimeout(closeEmailWindow, 350);
     }
 });
+}
+
+function validateNewPassword(userDto) {
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/account/new/password",
+        cache: false,
+        dataType: 'json',
+        responseType: "json",
+        data: JSON.stringify(userDto),
+        success: function (data) {
+            let errorMap = getMap(data);
+            if (errorMap.size > 0) {
+                addErrors(errorMap);
+            }
+            else {
+                setTimeout(closePasswordWindow, 350);
+            }
+        }
+    })
 }
 
 function closeEmailWindow() {
@@ -106,9 +141,7 @@ function validateNewEmail(userDto) {
         responseType: "json",
         data: JSON.stringify(userDto),
         success: function (data) {
-            deleteErrorMessages();
-            let validationErrors = JSON.parse(JSON.stringify(data));
-            let errorMap = new Map(Object.entries(validationErrors));
+            let errorMap = getMap(data);
             if (errorMap.size > 0) {
                 addErrors(errorMap);
             }
@@ -117,5 +150,47 @@ function validateNewEmail(userDto) {
             }
         }
     })
+
 }
+let saveChangesBtn = document.querySelector('.account-container .save-btn');
+if(saveChangesBtn != null) {
+    saveChangesBtn.onclick = () => {
+        let userDto = {
+            "username": document.getElementById('acc-username').value,
+            "sessionid": getUser()['sessionid']
+        }
+        validateNewUsername(userDto);
+    }
+
+}
+
+function validateNewUsername(userDto){
+    if(userDto['username'] === currentUsername) {
+        deleteErrorMessages();
+        return;
+    }
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/account/new/username",
+        cache: false,
+        dataType: 'json',
+        responseType: "json",
+        data: JSON.stringify(userDto),
+        success: function (data) {
+            let errorMap = getMap(data);
+            if (errorMap.size > 0) {
+                addErrors(errorMap);
+            }
+        }
+    })
+}
+
+function saveCurrentUsername(){
+    if(currentUsername == null) {
+        currentUsername = document.querySelector('.account-container #acc-username').value;
+    }
+}
+
+
 

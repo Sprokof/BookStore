@@ -3,6 +3,7 @@ package online.book.store.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import online.book.store.status.BookStatus;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -58,9 +59,9 @@ public class Book {
 
 
     public Book(String isbn, String title, String publisher,
-                                int price, int yearPub,
-                                String subject, String bookImageName, String available, int availableCopies,
-                                String description, String authors, String format){
+                int price, int yearPub,
+                String subject, String bookImageName, BookStatus status, int availableCopies,
+                String description, String authors, String format){
         this.isbn = isbn;
         this.title = titleToUpperCase(title);
         this.publisher = publisher;
@@ -68,7 +69,7 @@ public class Book {
         this.yearPub = yearPub;
         this.subject = subject;
         this.bookImageName = bookImageName;
-        this.available = available;
+        this.available = status.getStatusText();
         this.availableCopies = availableCopies;
         this.description = description;
         this.authors = authors;
