@@ -55,10 +55,10 @@ Online Book Store using JavaScript, Bootstrap on front side and Java, Spring Boo
 ![adminPage (2)](https://user-images.githubusercontent.com/90979711/191738341-30f25745-851e-4281-a479-39965f2ff7d5.png)
 ![adminPage2 (4)](https://user-images.githubusercontent.com/90979711/191739013-95c98f7b-a7fd-4661-9401-38482ee62b87.png)
 
-##Build project
-###1. Before all, make sure that PostgreSQL has installed in yours machine
-###2. Fork that project.
-###3. Create sql-tables (scripts may be found by next path /src/main/resources/schemes/tables.sql)
+## Build project
+### 1. Before all, make sure that PostgreSQL has installed in yours machine
+### 2. Fork that project.
+### 3. Create sql-tables (scripts may be found by next path /src/main/resources/schemes/tables.sql)
 
-###p.s. create application.properties and hibernate.cfg.xml in resources directory, fill it by yours data
+### p.s. create application.properties and hibernate.cfg.xml in resources directory, fill it by yours data
 

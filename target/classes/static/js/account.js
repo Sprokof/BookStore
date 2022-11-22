@@ -8,11 +8,8 @@ let username = document.getElementById('acc-username');
 document.addEventListener("DOMContentLoaded", () => {
     validateRequest();
     saveCurrentUsername();
-    paramUsername(username.value)
 });
 
-
-let usernameParam;
 let currentUsername;
 
 let emailContainer = document.querySelector('.change-email-container');
@@ -189,7 +186,7 @@ function validateNewUsername(userDto){
                 addErrors(errorMap);
             } else {
 
-                if (usernameParam) {
+                if (paramUsername()) {
                     setLogin(userDto['username']);
                 }
                 currentUsername = userDto['username'];
@@ -211,10 +208,10 @@ function setLogin(username){
     setUrlParam(username);
 }
 
-function paramUsername(username) {
+function paramUsername() {
     let url = document.location.href;
     let loginParam = url.substr(url.indexOf("=") + 1);
-    usernameParam = (loginParam === username);
+    return (loginParam === currentUsername);
 }
 
 function setUrlParam(username){
