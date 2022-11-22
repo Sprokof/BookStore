@@ -149,7 +149,6 @@ public class User {
         this.date = LocalDate.now().toString();
     }
 
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

@@ -11,7 +11,6 @@ import javax.persistence.*;
 @Table(name = "ORDERS_DETAILS")
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 public class OrderDetails {
 
     @Id
@@ -30,10 +29,25 @@ public class OrderDetails {
     private String zip;
 
     @Getter
+    @Column(name = "DELIVERY_INTERVAL")
+    private String deliveryInterval;
+
+    @Getter
     @Setter
-    @Column(name = "DELIVERY_DATES_INTERVAL")
-    private String deliveryDatesInterval;
+    @Column(name = "FIRST_DELIVERY_DATE")
+    private String firstDeliveryDate;
+
+    @Getter
+    @Setter
+    @Column(name = "LAST_DELIVERY_DATE")
+    private String lastDeliveryDate;
 
 
-
+    public OrderDetails(String address, String zip, String firstDeliveryDate, String lastDeliveryDate) {
+        this.address = address;
+        this.zip = zip;
+        this.firstDeliveryDate = firstDeliveryDate;
+        this.lastDeliveryDate = lastDeliveryDate;
+        this.deliveryInterval = (this.firstDeliveryDate + " - " + this.lastDeliveryDate);
+    }
 }

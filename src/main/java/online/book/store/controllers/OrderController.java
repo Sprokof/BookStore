@@ -29,8 +29,10 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
+
     @GetMapping("/home/orders")
     public String orders(@RequestParam ("user") String login, Model model){
+        this.orderService.deleteDeliveredOrders();
         User user = this.userService.getUserByLogin(login);
         List<Order> userOrders = user.getOrders();
         if(userOrders.isEmpty()){

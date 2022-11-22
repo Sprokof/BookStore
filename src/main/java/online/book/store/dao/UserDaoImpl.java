@@ -100,6 +100,7 @@ public class UserDaoImpl implements UserDao {
             session.update(user);
             session.getTransaction().commit();
         } catch (Exception e) {
+            e.printStackTrace();
             if (session != null) {
                 if (session.getTransaction() != null) {
                     session.getTransaction().rollback();
@@ -113,36 +114,6 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
-
-    @Override
-    public User getUserByUUID(UUID uuid) {
-        String stringUUID = uuid.toString();
-        Session session = null;
-        User user = null;
-        try {
-            session = this.sessionFactory.openSession();
-            session.beginTransaction();
-            user = (User) session.createSQLQuery("SELECT * FROM " +
-                            "USERS WHERE USER_ID=:uuid").
-                    setParameter("uuid", stringUUID).addEntity(User.class).
-                    getSingleResult();
-            session.getTransaction().commit();
-        } catch (Exception e) {
-            if (session != null) {
-                if (session.getTransaction() != null) {
-                    session.getTransaction().rollback();
-                    if (e instanceof NoResultException) {
-                        return null;
-                    }
-                }
-            }
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-        return user;
-    }
 
     @Override
     public User getUserByToken(String token) {

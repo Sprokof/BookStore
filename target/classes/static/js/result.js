@@ -2,26 +2,22 @@ import {currentLocation, validateRequest} from "./main.js";
 
 let location = currentLocation();
 document.addEventListener('DOMContentLoaded', () => {
-    let message = document.querySelector('.result-message span');
     switch (location[2]){
         case ('cart') :
-            message.innerText = 'Cart Is Empty';
-            message.style.marginLeft = "25px"
+            messageToCenter("Cart Is Empty", "25px")
             break;
         case ('wishlist') :
-            message.innerText = 'Wishlist Is Empty';
-            message.style.marginLeft = "10px"
+            messageToCenter("Wishlist Is Empty", "10px");
             break;
         case ('registration' || "newemail") :
-            message.innerText = 'Confirmed!';
-            message.style.marginLeft = "35px";
+            messageToCenter("Confirmed!", "35px");
             clearSavedEmail();
             break;
         case ("orders") :
-            message.innerText = "Orders List Is Empty";
+            messageToCenter("Orders List Is Empty", "0px")
             break;
         default :
-            message.innerText = 'No Related Results';
+            messageToCenter("No Related Results", "0px");
     }
 })
 
@@ -33,4 +29,10 @@ document.onload = () => { validateRequest();}
 
 function clearSavedEmail(){
     localStorage.removeItem('email');
+}
+
+function messageToCenter(text, marginValue){
+    let message = document.querySelector('.result-message span');
+    message.innerText = text;
+    message.style.marginLeft = marginValue;
 }

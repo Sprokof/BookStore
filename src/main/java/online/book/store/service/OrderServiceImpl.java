@@ -1,5 +1,6 @@
 package online.book.store.service;
 
+import online.book.store.dao.OrderDao;
 import online.book.store.entity.*;
 import online.book.store.status.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     private BookService bookService;
 
+    @Autowired
+    private OrderDao orderDao;
+
     @Override
     public void addOrders(User user) {
         List<CartItem> userItems = user.getCart().getCartItems();
@@ -41,18 +45,17 @@ public class OrderServiceImpl implements OrderService{
     }
 
     private void addDetails(Order order, Checkout checkout){
-        OrderDetails details = new OrderDetails();
-        details.setAddress(checkout.getAddress());
-        details.setZip(checkout.getZip());
-        details.setDeliveryDatesInterval(generateDeliveryInterval(order.getOrderDate()));
+        OrderDetails details = new OrderDetails(checkout.getAddress(),
+                checkout.getZip(), deliveryDate(order.getOrderDate(), 3),
+                deliveryDate(order.getOrderDate(), 7));
         order.setOrderDetails(details);
     }
 
-    private String generateDeliveryInterval(String orderDate){
+    private String deliveryDate (String orderDate, int countDays){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale(Locale.ENGLISH);
         LocalDate date = LocalDate.parse(orderDate, formatter);
-        return date.plusDays(3) + " - " + date.plusDays(7);
+        return date.plusDays(countDays).toString();
     }
 
     private void takeFromStock(CartItem item){
@@ -80,4 +83,12 @@ public class OrderServiceImpl implements OrderService{
         return compareResult;
     }
 
+    @Override
+    public void deleteDeliveredOrders() {
+        String currentDate = LocalDate.now().toString();
+        String statement = "DELETE FROM ORDERS_DETAILS WHERE " +
+                "cast(LAST_DELIVERY_DATE as date) <= " + "cast('" + currentDate + "' as date)";
+        this.orderDao.deleteOrders(statement);
+
+    }
 }
