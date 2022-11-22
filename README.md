@@ -44,7 +44,6 @@ Online Book Store using JavaScript, Bootstrap on front side and Java, Spring Boo
 ## Change password window
 ![changePassword](https://user-images.githubusercontent.com/90979711/202848119-3cc517d5-f9a3-4b80-8f5e-7531a0c66af8.png)
 
-
 ## Cart page
 ![cart](https://user-images.githubusercontent.com/90979711/201936815-1d51b25e-10b0-40f7-8414-e03b4e114011.png)
 ![cart2](https://user-images.githubusercontent.com/90979711/201938420-33144a8b-1afa-4352-9e2a-124b76d865ca.png)
@@ -56,4 +55,10 @@ Online Book Store using JavaScript, Bootstrap on front side and Java, Spring Boo
 ![adminPage (2)](https://user-images.githubusercontent.com/90979711/191738341-30f25745-851e-4281-a479-39965f2ff7d5.png)
 ![adminPage2 (4)](https://user-images.githubusercontent.com/90979711/191739013-95c98f7b-a7fd-4661-9401-38482ee62b87.png)
 
+##Build project
+###1. Before all, make sure that PostgreSQL has installed in yours machine
+###2. Fork that project.
+###3. Create sql-tables (scripts may be found by next path /src/main/resources/schemes/tables.sql)
+
+###p.s. create application.properties and hibernate.cfg.xml in resources directory, fill it by yours data
 
