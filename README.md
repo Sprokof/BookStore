@@ -33,20 +33,20 @@ Online Book Store using JavaScript, Bootstrap on front side and Java, Spring Boo
 ![review](https://user-images.githubusercontent.com/90979711/201035851-d235d0d1-2429-471b-80ac-f0e9d605dca8.png)
 
 ## Book page (add new review window)
-![](../../Users/user/Pictures/Screenshots/addReview.png)
+![addReview](https://user-images.githubusercontent.com/90979711/203333777-f66f1c3e-f0ea-4af6-ba2d-abff8ebe8bfd.png)
 
 ## Account Page
 ![account](https://user-images.githubusercontent.com/90979711/202753952-6dc2f984-79e3-43a7-93f0-527d7dc9cba1.png)
 
 ## Change email window
-![](../../Users/user/Pictures/Screenshots/changeEmail.png)
+![changeEmail](https://user-images.githubusercontent.com/90979711/203333651-1abe7890-69de-4c78-8900-09c2d03f5128.png)
 
 ## Change password window
-![](../../Users/user/Pictures/Screenshots/changePassword.png)
+![changePassword](https://user-images.githubusercontent.com/90979711/203333665-548fdba0-d4c1-4561-b5fa-8d86bde3380b.png)
 
 ## Cart page
 ![cart](https://user-images.githubusercontent.com/90979711/201936815-1d51b25e-10b0-40f7-8414-e03b4e114011.png)
-![](../../Users/user/Pictures/Screenshots/cart2.png)
+![cart2](https://user-images.githubusercontent.com/90979711/203333629-129e4301-ce13-47e9-b311-a8e745c24968.png)
 
 ## Checkout window
 ![checkWindow (3)](https://user-images.githubusercontent.com/90979711/197407387-a0e88499-92ca-44b5-a33d-f1961a2189ab.png)
