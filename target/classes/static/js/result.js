@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
         case ('registration' || "newemail") :
             message.innerText = 'Confirmed!';
             message.style.marginLeft = "35px";
+            clearSavedEmail();
             break;
         case ("orders") :
             message.innerText = "Orders List Is Empty";
@@ -29,3 +30,7 @@ let homeBtn = document.querySelector('.result-message button');
 homeBtn.onclick = () => { document.location.href = "/"; }
 
 document.onload = () => { validateRequest();}
+
+function clearSavedEmail(){
+    localStorage.removeItem('email');
+}

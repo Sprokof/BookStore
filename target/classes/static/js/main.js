@@ -215,8 +215,8 @@ export function currentLocation(){
 
 export function userAccept(){
     let login = userEmail();
-    if(login === null) return undefined;
-    let user = {
+    if(login === null) return null;
+    let userDto = {
         'login' : login,
     }
     let accept;
@@ -226,7 +226,7 @@ export function userAccept(){
         url: "/bookstore/user/accept",
         cache: false,
         dataType: 'json',
-        data : JSON.stringify(user),
+        data : JSON.stringify(userDto),
         async: false,
         success : (result) => {
             accept = result;

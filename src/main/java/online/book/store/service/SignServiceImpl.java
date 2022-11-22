@@ -142,7 +142,8 @@ public class SignServiceImpl implements SignService {
     @Override
     public boolean userAccept(UserDto userDto) {
         String login = userDto.getLogin();
-        return this.userService.getUserByLogin(login).isAccepted();
+        User user = this.userService.getUserByLogin(login);
+        return user.isAccepted();
     }
 
     @Override

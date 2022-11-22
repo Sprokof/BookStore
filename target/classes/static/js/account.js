@@ -1,12 +1,18 @@
 import {validateRequest} from "./main.js";
 import {getUser} from "./navbar.js";
-import {addErrors, clearInputs, deleteErrorMessages, getMap} from "./validation.js";
+import {addErrors, clearInputs, deleteErrorMessages, getMap, updateUser} from "./validation.js";
+
+
+let username = document.getElementById('acc-username');
 
 document.addEventListener("DOMContentLoaded", () => {
     validateRequest();
     saveCurrentUsername();
+    paramUsername(username.value)
 });
 
+
+let usernameParam;
 let currentUsername;
 
 let emailContainer = document.querySelector('.change-email-container');
@@ -156,7 +162,7 @@ let saveChangesBtn = document.querySelector('.account-container .save-btn');
 if(saveChangesBtn != null) {
     saveChangesBtn.onclick = () => {
         let userDto = {
-            "username": document.getElementById('acc-username').value,
+            "username": username.value,
             "sessionid": getUser()['sessionid']
         }
         validateNewUsername(userDto);
@@ -181,6 +187,12 @@ function validateNewUsername(userDto){
             let errorMap = getMap(data);
             if (errorMap.size > 0) {
                 addErrors(errorMap);
+            } else {
+
+                if (usernameParam) {
+                    setLogin(userDto['username']);
+                }
+                currentUsername = userDto['username'];
             }
         }
     })
@@ -192,5 +204,20 @@ function saveCurrentUsername(){
     }
 }
 
+function setLogin(username){
+    let user = getUser();
+    user['login'] = username;
+    updateUser(user);
+    setUrlParam(username);
+}
 
+function paramUsername(username) {
+    let url = document.location.href;
+    let loginParam = url.substr(url.indexOf("=") + 1);
+    usernameParam = (loginParam === username);
+}
 
+function setUrlParam(username){
+    let url = document.location.href;
+    document.location.href = ((url.substr(0, url.indexOf("=") + 1)) + username);
+}
