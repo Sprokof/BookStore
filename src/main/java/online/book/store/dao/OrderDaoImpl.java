@@ -30,4 +30,25 @@ public class OrderDaoImpl implements OrderDao{
         session.close();
     }
     }
+
+
+    @Override
+    public void updateOrder(Order order) {
+        Session session = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        session.update(order);
+        session.getTransaction().commit();
+    }
+    catch(Exception e){
+        if(session != null && session.getTransaction() != null)
+            session.getTransaction().rollback();
+    }
+    finally {
+        if(session != null){
+            session.close();
+        }
+    }
+    }
 }

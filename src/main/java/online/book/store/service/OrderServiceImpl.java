@@ -51,10 +51,8 @@ public class OrderServiceImpl implements OrderService{
         order.setOrderDetails(details);
     }
 
-    private String deliveryDate (String orderDate, int countDays){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        formatter = formatter.withLocale(Locale.ENGLISH);
-        LocalDate date = LocalDate.parse(orderDate, formatter);
+    private String deliveryDate(String orderDate, int countDays){
+        LocalDate date = parseStringToLocalDate(orderDate);
         return date.plusDays(countDays).toString();
     }
 
@@ -67,12 +65,13 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public List<Order> getSortedOrders(List<Order> orders) {
+    public List<Order> getSortedOrders (List<Order> orders) {
+        orders.forEach(this::setOrderStatus);
         orders.sort((o1, o2) -> compareOrderDates(o1.getOrderDate(), o2.getOrderDate()));
         return orders;
     }
 
-    private int compareOrderDates(String dateOne, String dateTwo){
+    private int compareOrderDates (String dateOne, String dateTwo){
         int compareResult = 0;
         if(Date.valueOf(dateOne).after(Date.valueOf(dateTwo))){
             compareResult = - 1;
@@ -89,6 +88,25 @@ public class OrderServiceImpl implements OrderService{
         String statement = "DELETE FROM ORDERS_DETAILS WHERE " +
                 "cast(LAST_DELIVERY_DATE as date) <= " + "cast('" + currentDate + "' as date)";
         this.orderDao.deleteOrders(statement);
+    }
 
+    private void setOrderStatus(Order order){
+        LocalDate currentDate = LocalDate.now();
+        LocalDate firstDate = parseStringToLocalDate(order.
+                getOrderDetails().
+                getFirstDeliveryDate());
+        if(firstDate.plusDays(2).equals(currentDate)){
+            order.setStatus(OrderStatus.IN_DELIVERY);
+        }
+        else if(firstDate.plusDays(4).equals(currentDate)){
+            order.setStatus(OrderStatus.DELIVERED);
+        }
+        this.orderDao.updateOrder(order);
+    }
+
+    private LocalDate parseStringToLocalDate(String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        formatter = formatter.withLocale(Locale.ENGLISH);
+        return LocalDate.parse(date, formatter);
     }
 }
