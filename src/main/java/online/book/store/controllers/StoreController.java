@@ -7,6 +7,7 @@ import online.book.store.expections.ResourceNotFoundException;
 import online.book.store.service.CategoryService;
 import online.book.store.service.SessionService;
 import online.book.store.service.SignService;
+import online.book.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,9 @@ public class StoreController{
 
     @Autowired
     private SessionService sessionService;
+
+    @Autowired
+    private UserService userService;
 
 
     @GetMapping("/categories")
@@ -78,18 +82,18 @@ public class StoreController{
 
     @PostMapping("/bookstore/accept/user")
     public ResponseEntity<String> userAccept(@RequestParam("user") String login){
-        boolean accepted = this.signService.userAccept(login);
+        boolean accepted = this.userService.userAccepted(login);
         return ResponseEntity.ok(String.valueOf(accepted));
     }
 
     @GetMapping("/error")
-    public Exception authorizeData() {
+    public Exception authorize() {
         throw new ResourceNotFoundException();
     }
 
 
     @GetMapping("/validate/user/request")
-    public ResponseEntity<UserDto> validateRequest(@RequestParam("sessionid") String sessionid){
+    public ResponseEntity<UserDto> validateRequest(@RequestHeader("session") String sessionid){
         UserDto userDto = this.signService.validateRequest(sessionid);
         return ResponseEntity.ok(userDto);
     }

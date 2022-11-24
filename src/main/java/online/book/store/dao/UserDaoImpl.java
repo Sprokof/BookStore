@@ -174,5 +174,31 @@ public class UserDaoImpl implements UserDao {
         if (email.matcher(login).find())  return "EMAIL";
         return "USERNAME";
     }
+
+
+    @Override
+    public boolean userAccept(String login) {
+        Session session = null;
+        String column = defineColumn(login);
+        boolean accepted = false;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        accepted = (boolean) session.createSQLQuery("SELECT ACCEPTED FROM USERS WHERE " +
+            column + "=:" + login).setParameter("login", login).getSingleResult();
+        session.getTransaction().commit();
+    }
+    catch (Exception e){
+        if(session != null && session.getTransaction() != null){
+            session.getTransaction().rollback();
+        }
+    }
+    finally {
+        if(session != null){
+            session.close();
+        }
+    }
+    return accepted;
+    }
 }
 

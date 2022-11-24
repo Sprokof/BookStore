@@ -17,7 +17,6 @@ public interface SignService {
     String generateToken(String email);
     void confirmRegistration(String token) throws ResourceNotFoundException;
     void resendConfirmationLink(String login);
-    boolean userAccept(String login);
     UserDto validateRequest(String sessionid);
 
 }

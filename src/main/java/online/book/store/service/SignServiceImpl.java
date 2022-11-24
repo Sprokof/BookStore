@@ -139,11 +139,6 @@ public class SignServiceImpl implements SignService {
         sender.send(email, Subject.CONFIRM_REGISTRATION, this);
     }
 
-    @Override
-    public boolean userAccept(String login) {
-        User user = this.userService.getUserByLogin(login);
-        return user.isAccepted();
-    }
 
     @Override
     public UserDto validateRequest(String sessionid) {

@@ -46,7 +46,8 @@ export function contains(dto, url) {
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: url + "?isbn=" + dto['isbn'] + "&sessionid=" + dto['sessionid'],
+        url: url + "?isbn=" + dto['isbn'],
+        headers: {"session" : dto['sessionid']},
         cache: false,
         responseType: 'json',
         async: false,
@@ -290,7 +291,8 @@ function getUserData(user){
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "/validate/user/request?sessionid=" + sessionid,
+        url: "/validate/user/request",
+        headers: {"session" : sessionid},
         cache: false,
         dataType: 'json',
         async: false,

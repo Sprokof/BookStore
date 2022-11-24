@@ -71,10 +71,8 @@ public class WishListController {
 
 
     @GetMapping("/wishlist/item/contains")
-    public ResponseEntity<WishlistDto> contains(@RequestParam Map<String, String> params){
-        String isbn = params.get("isbn");
+    public ResponseEntity<WishlistDto> contains(@RequestHeader("session") String sessionid, @RequestParam("isbn") String isbn){
         Book book = bookService.getBookByIsbn(isbn);
-        String sessionid = params.get("sessionid");
         Wishlist userWishlist = sessionService.getCurrentUser(sessionid).getWishList();
         wishlistService.contains(book, userWishlist);
         return ResponseEntity.ok(wishlistService.contains(book, userWishlist));

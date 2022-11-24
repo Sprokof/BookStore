@@ -63,6 +63,11 @@ public class UserServiceImpl implements UserService {
     public boolean loginExist(String login) {
         return this.userDao.loginExist(login);
     }
+
+    @Override
+    public boolean userAccepted(String login) {
+        return this.userDao.userAccept(login);
+    }
 }
 
 

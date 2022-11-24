@@ -29,7 +29,7 @@ function removeItem(isbnNode) {
     $.ajax({
         type: "DELETE",
         contentType: "application/json",
-        url: "/cart/remove",
+        url: "/cart/item/remove",
         data: JSON.stringify(cartDto),
         cache: false,
         dataType: 'json',
@@ -113,17 +113,15 @@ export function checkoutOpen(){
 
 function checkoutSaved(){
     let saved;
-    let checkoutDto = {
-        "sessionid" : getUser()['sessionid']
-    }
+    let sessionid = getUser()['sessionid'];
     $.ajax({
-        type: "POST",
+        type: "GET",
         contentType: "application/json",
-        url: "/checkout/saved",
-        data: JSON.stringify(checkoutDto),
+        url: "/checkout/exist",
+        headers: {"session" : sessionid},
         cache: false,
-        dataType: 'json',
-        responseType: 'json',
+        dataType: "json",
+        responseType: "json",
         async: false,
         success: (result) => {
             saved = result;

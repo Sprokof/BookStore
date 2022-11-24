@@ -223,11 +223,12 @@ export function validateSession() {
 
    export function createCartItemLink(){
        let cart = document.querySelector('#cart-link');
-       let user = getUser();
+       let sessionid = getUser()['sessionid'];
        $.ajax({
            type: "GET",
            contentType: "application/json",
-           url: "/cart/item/quantity?sessionid=" + user['sessionid'],
+           url: "/cart/item/quantity",
+           headers: {"session": sessionid},
            cache: false,
            dataType: 'json',
            responseType: 'json',
@@ -282,7 +283,7 @@ export function createAcceptNotice(){
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "bookstore/registration/resend",
+            url: "/registration/resend",
             data: JSON.stringify(getUser()),
             cache: false,
             dataType: 'json',

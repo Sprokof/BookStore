@@ -13,4 +13,5 @@ public interface UserDao {
     void saveOrUpdate(User user);
     User getUserByToken(String token);
     boolean loginExist(String login);
+    boolean userAccept(String login);
 }

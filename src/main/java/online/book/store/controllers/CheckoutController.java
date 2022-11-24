@@ -52,14 +52,14 @@ public class CheckoutController {
         return ResponseEntity.ok(checkoutValidation.validationErrors());
     }
 
-    @GetMapping("/checkout/saved")
-    public ResponseEntity<String> checkoutSaved(@RequestParam("sessionid") String sessionid){
+    @GetMapping("/checkout/exist")
+    public ResponseEntity<String> checkoutSaved(@RequestHeader("session") String sessionid){
         User user = this.sessionService.getCurrentUser(sessionid);
         return ResponseEntity.ok(String.valueOf(this.checkoutService.checkoutSaved(user)));
     }
 
     @GetMapping("/checkout/data")
-    public ResponseEntity<CheckoutDto> getCheckoutsData(@RequestParam("sessionid") String sessionid){
+    public ResponseEntity<CheckoutDto> getCheckoutsData(@RequestHeader("session") String sessionid){
         User user = this.sessionService.getCurrentUser(sessionid);
         return ResponseEntity.ok(this.checkoutService.getCheckoutsData(user));
     }

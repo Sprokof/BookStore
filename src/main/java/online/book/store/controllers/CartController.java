@@ -61,16 +61,14 @@ public class CartController {
     }
 
     @GetMapping("/cart/item/contains")
-    public ResponseEntity<CartDto> contains(@RequestParam Map<String, String> params){
-        String isbn = params.get("isbn");
-        String sessionid = params.get("sessionid");
+    public ResponseEntity<CartDto> contains(@RequestHeader("session") String sessionid, @RequestParam String isbn){
         User user = sessionService.getCurrentUser(sessionid);
         Book book = bookService.getBookByIsbn(isbn);
         return ResponseEntity.ok(cartService.contains(user.getCart(), book));
     }
 
     @GetMapping("/cart/item/quantity")
-    public ResponseEntity<CartDto> itemsQuantity(@RequestParam("sessionid") String sessionid){
+    public ResponseEntity<CartDto> itemsQuantity(@RequestHeader("session") String sessionid){
         if(!sessionService.sessionExist(sessionid)) return ResponseEntity.ok(new CartDto(0));
         Cart cart = this.sessionService.getCurrentUser(sessionid).getCart();
         return ResponseEntity.ok(cartService.getItemsQuantity(cart));

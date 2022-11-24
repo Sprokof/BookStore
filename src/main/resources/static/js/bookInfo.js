@@ -118,10 +118,13 @@ if(reviewBtn !== null){
 
 function reviewExist () {
     let result;
+    let isbn = extractISBN(isbnNode);
+    let sessionid = getUser()['sessionid'];
     $.ajax({
         type: "GET",
         contentType: "application/json",
-        url: "/reviews/exist?isbn=" + extractISBN(isbnNode) + "&sessionid=" + getUser()['sessionid'],
+        url: "/reviews/exist?isbn=" + isbn,
+        headers: {'session' : sessionid},
         cache: false,
         dataType: 'json',
         responseType: 'json',

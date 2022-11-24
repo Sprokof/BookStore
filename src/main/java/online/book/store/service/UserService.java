@@ -13,4 +13,5 @@ public interface UserService{
     void saveUser(User user);
     User getUserByToken(String token);
     boolean loginExist(String login);
+    boolean userAccepted(String login);
 }

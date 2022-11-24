@@ -161,10 +161,12 @@ function controlErrorMessage(field, value){
 
     function getCheckoutData() {
         let responseDto;
+        let sessionid = getUser()['sessionid'];
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/checkout/data?sessionid" + getUser()['sessionid'],
+            url: "/checkout/data",
+            headers: {'session' : sessionid},
             cache: false,
             dataType: 'json',
             responseType: 'json',
