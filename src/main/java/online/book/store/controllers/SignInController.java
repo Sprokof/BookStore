@@ -47,9 +47,7 @@ public class SignInController {
     @Autowired
     private MailSender sender;
 
-
-
-    @PostMapping("/home/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserDto userDto){
         loginValidation.validation(userDto);
         if(!loginValidation.hasErrors()){
@@ -60,7 +58,7 @@ public class SignInController {
     }
 
 
-    @PostMapping("/home/registration")
+    @PostMapping("/registration")
     public ResponseEntity<?> registration(@RequestBody UserDto userDto){
         registrationValidation.validation(userDto);
         if(!registrationValidation.hasErrors()){
@@ -71,18 +69,17 @@ public class SignInController {
     }
 
 
-    @PostMapping("/home/logout")
+    @DeleteMapping("/logout")
     public ResponseEntity<Integer> logout(@RequestBody UserDto userDto){
         int code = this.signService.logout(userDto);
         return ResponseEntity.ok(code);
     }
 
-    @PostMapping("/home/reset")
+    @PostMapping("/reset")
     public ResponseEntity<Map<String, String>> reset(@RequestBody ResetPasswordDto resetPasswordDto){
         resetValidation.validation(resetPasswordDto);
         if(!resetValidation.hasErrors()){
             signService.addResetDto(resetPasswordDto);
-
             String login = resetPasswordDto.getLogin();
             User user = userService.getUserByLogin(login);
             sender.send(user.getEmail(), Subject.RESET_PASSWORD, this.signService);
@@ -90,7 +87,7 @@ public class SignInController {
         return ResponseEntity.ok(resetValidation.validationErrors());
     }
 
-    @PostMapping("/home/reset/confirm")
+    @PostMapping("/reset/confirm")
     public ResponseEntity<Map<String, String>> confirm(@RequestBody ResetPasswordDto reset){
         ResetPasswordDto resetPasswordDto = signService.getResetDto();
         String code = reset.getInputCode();
@@ -106,7 +103,7 @@ public class SignInController {
     }
 
 
-    @PostMapping("/home/resend/code")
+    @PostMapping("/resend/code")
     public ResponseEntity<Integer> resendCode(@RequestBody ResetPasswordDto dto){
         User user = userService.getUserByLogin(dto.getLogin());
         signService.generateNewCode();

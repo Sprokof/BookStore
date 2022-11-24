@@ -9,8 +9,8 @@ export function controlWishlistContent(btn, pageName) {
             openLoginNotice();
         } else {
             let wishlistDto = requestDto(btn);
-            if (!contains(wishlistDto, "/home/wishlist/contains")) {
-                addOrRemoveItem(wishlistDto, "/home/wishlist/add");
+            if (!contains(wishlistDto, "/wishlist/item/contains")) {
+                itemAdd(wishlistDto, "/wishlist/item/add");
                 if(pageName === 'wishlist') {
                     setTimeout(reload, 120);
                 }
@@ -18,7 +18,7 @@ export function controlWishlistContent(btn, pageName) {
                     fullHeart(btn, true);
                 }
             } else {
-                addOrRemoveItem(wishlistDto, "/home/wishlist/remove");
+                itemRemove(wishlistDto, "/wishlist/item/remove");
                 if(pageName === 'wishlist') {
                     setTimeout(reload, 120);
                 }
@@ -42,21 +42,19 @@ export function requestDto(btn){
 
 
 export function contains(dto, url) {
-    let obj;
+    let responseDto
     $.ajax({
-        type: "POST",
+        type: "GET",
         contentType: "application/json",
-        url: url,
+        url: url + "?isbn=" + dto['isbn'] + "&sessionid=" + dto['sessionid'],
         cache: false,
-        dataType: 'json',
         responseType: 'json',
-        data: JSON.stringify(dto),
         async: false,
         success: (data) => {
-            obj = JSON.parse(JSON.stringify(data));
+            responseDto = JSON.parse(JSON.stringify(data));
         }
     })
-    return obj['itemContains'];
+    return responseDto['itemContains'];
 }
 
 export function fullHeart(btn, flag) {
@@ -102,7 +100,7 @@ export function controlWishlistContentOnLoad(btn){
     }
     else {
         let wishlistDto = requestDto(btn);
-        if (contains(wishlistDto, "/home/wishlist/contains")) {
+        if (contains(wishlistDto, "/wishlist/item/contains")) {
             fullHeart(btn, true);
         } else {
             fullHeart(btn, false);
@@ -118,7 +116,7 @@ export function controlCartContentOnLoad(btn, pageName){
 
         } else {
             let cartDto = requestDto(btn);
-            if (contains(cartDto, "/home/cart/contains")) {
+            if (contains(cartDto, "/cart/item/contains")) {
                 pageName === "home" ?
                     changeCartBtnText(btn, "Remove From Cart") : inCart(btn, true);
             } else {
@@ -144,13 +142,13 @@ export function controlCartContent(btn, pageName) {
             openLoginNotice();
         } else {
             let cartDto = requestDto(btn);
-            if (!contains(cartDto, "/home/cart/contains")) {
-                addOrRemoveItem(cartDto, "/home/cart/add")
+            if (!contains(cartDto, "/cart/item/contains")) {
+                itemAdd(cartDto, "/cart/item/add")
                 pageName === "home" ?
                     changeCartBtnText(btn, "Remove From Cart") : inCart(btn, true);
                 symbol = "+";
             } else {
-                addOrRemoveItem(cartDto, "/home/cart/remove")
+                itemRemove(cartDto, "/cart/item/remove")
                 pageName === "home" ?
                     changeCartBtnText(btn, "Add To Cart") : inCart(btn, false);
                 symbol = "-";
@@ -196,7 +194,19 @@ export function sessionActive () {
     return sessionDto['active'];
 }
 
-export function addOrRemoveItem(dto, url){
+export function itemRemove(dto, url){
+    $.ajax({
+        type: "DELETE",
+        contentType: "application/json",
+        data: JSON.stringify(dto),
+        url: url,
+        cache: false,
+        dataType: 'json',
+        responseType: "json",
+    })
+}
+
+export function itemAdd(dto, url){
     $.ajax({
         type: "POST",
         contentType: "application/json",
@@ -216,17 +226,13 @@ export function currentLocation(){
 export function userAccept(){
     let login = userEmail();
     if(login === null) return null;
-    let userDto = {
-        'login' : login,
-    }
     let accept;
     $.ajax({
-        type: "POST",
+        type: "GET",
         contentType: "application/json",
-        url: "/bookstore/user/accept",
+        url: "/bookstore/accept/user?=" + login,
         cache: false,
         dataType: 'json',
-        data : JSON.stringify(userDto),
         async: false,
         success : (result) => {
             accept = result;
@@ -246,7 +252,7 @@ let infos = document.querySelectorAll('.book-info');
         title.onclick = () => {
             let lastIndex = (infos[i].children.length - 1);
             let isbn = extractISBN(infos[i].children[lastIndex]);
-            document.location.href = '/home/book?isbn=' + isbn;
+            document.location.href = '/book?isbn=' + isbn;
         }
     }
 
@@ -276,19 +282,17 @@ export function validateRequest() {
 
 }
 
-function badRequest() {
-    document.location.href = '/request/status?=404';
-}
+let badRequest = () => { document.location.href = '/error'; }
 
 function getUserData(user){
     let userDto ;
+    let sessionid = user['sessionid']
     $.ajax({
-        type: "POST",
+        type: "GET",
         contentType: "application/json",
-        url: "/validate/request",
+        url: "/validate/user/request?sessionid=" + sessionid,
         cache: false,
         dataType: 'json',
-        data : JSON.stringify(user),
         async: false,
         success : (dto) => {
             userDto = dto;
@@ -298,7 +302,7 @@ function getUserData(user){
 }
 
     function validateConditions(){
-        let location = currentLocation()[2];
+        let location = currentLocation()[1];
         return location === 'cart' || location === 'wishlist'
             || location === 'account' || location === 'orders';
     }

@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class WishListController {
@@ -29,7 +30,6 @@ public class WishListController {
     @Autowired
     UserService userService;
 
-
     @Autowired
     private SiteEngine siteEngine;
 
@@ -37,7 +37,7 @@ public class WishListController {
     private SessionService sessionService;
 
 
-    @GetMapping("/home/wishlist")
+    @GetMapping("/wishlist")
     public String wishlist(@RequestParam("user") String login, Model model){
        User user = userService.getUserByLogin(login);
        Wishlist wishlist = user.getWishList();
@@ -49,7 +49,7 @@ public class WishListController {
        return "wishlist";
     }
 
-    @PostMapping("/home/wishlist/remove")
+    @DeleteMapping("/wishlist/item/remove")
     public ResponseEntity<Integer> removeFromWishlist(@RequestBody WishlistDto wishlistDto){
         String isbn = wishlistDto.getIsbn();
         Book book = bookService.getBookByIsbn(isbn);
@@ -59,7 +59,7 @@ public class WishListController {
         return ResponseEntity.ok(200);
     }
 
-    @PostMapping("/home/wishlist/add")
+    @PostMapping("/wishlist/item/add")
     public ResponseEntity<Integer> addToWishList(@RequestBody WishlistDto wishlistDto) {
         String isbn = wishlistDto.getIsbn();
         Book book = bookService.getBookByIsbn(isbn);
@@ -70,11 +70,11 @@ public class WishListController {
     }
 
 
-    @PostMapping("/home/wishlist/contains")
-    public ResponseEntity<WishlistDto> contains(@RequestBody WishlistDto wishlistDto){
-        String isbn = wishlistDto.getIsbn();
+    @GetMapping("/wishlist/item/contains")
+    public ResponseEntity<WishlistDto> contains(@RequestParam Map<String, String> params){
+        String isbn = params.get("isbn");
         Book book = bookService.getBookByIsbn(isbn);
-        String sessionid = wishlistDto.getSessionid();
+        String sessionid = params.get("sessionid");
         Wishlist userWishlist = sessionService.getCurrentUser(sessionid).getWishList();
         wishlistService.contains(book, userWishlist);
         return ResponseEntity.ok(wishlistService.contains(book, userWishlist));

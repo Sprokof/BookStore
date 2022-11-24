@@ -11,10 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -37,7 +34,7 @@ public class AccountController {
     private AccountValidation.UsernameValidation usernameValidation;
 
 
-    @GetMapping("/home/account")
+    @GetMapping("/account")
     public String account(@RequestParam("user") String login, Model model) {
         User user = this.userService.getUserByLogin(login);
         model.addAttribute("user", user);
@@ -72,7 +69,7 @@ public class AccountController {
         return "result";
     }
 
-    @PostMapping("/account/new/username")
+    @PutMapping("/account/new/username")
     public ResponseEntity<Map<String, String>> newUsername(@RequestBody UserDto userDto){
         usernameValidation.validation(userDto);
         if(!usernameValidation.hasErrors()){

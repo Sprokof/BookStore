@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @Controller
 public class CartController {
@@ -26,7 +28,7 @@ public class CartController {
     private UserService userService;
 
 
-    @GetMapping("/home/cart")
+    @GetMapping("/cart")
     public String cart(@RequestParam("user") String login, Model model){
         Cart cart = userService.getUserByLogin(login).getCart();
         if(cart.isEmpty()){
@@ -37,7 +39,7 @@ public class CartController {
     }
 
 
-    @PostMapping("/home/cart/remove")
+    @DeleteMapping("/cart/item/remove")
     public ResponseEntity<Integer> removeBook(@RequestBody CartDto cartDto){
         String isbn = cartDto.getIsbn();
         String sessionid = cartDto.getSessionid();
@@ -48,7 +50,7 @@ public class CartController {
 
     }
 
-    @PostMapping("/home/cart/add")
+    @PostMapping("/cart/item/add")
     public ResponseEntity<Integer> addBook(@RequestBody CartDto cartDto){
         String isbn = cartDto.getIsbn();
         String sessionid = cartDto.getSessionid();
@@ -58,24 +60,23 @@ public class CartController {
         return ResponseEntity.ok(200);
     }
 
-    @PostMapping("/home/cart/contains")
-    public ResponseEntity<CartDto> contains(@RequestBody CartDto cartDto){
-        String isbn = cartDto.getIsbn();
-        String sessionid = cartDto.getSessionid();
+    @GetMapping("/cart/item/contains")
+    public ResponseEntity<CartDto> contains(@RequestParam Map<String, String> params){
+        String isbn = params.get("isbn");
+        String sessionid = params.get("sessionid");
         User user = sessionService.getCurrentUser(sessionid);
         Book book = bookService.getBookByIsbn(isbn);
         return ResponseEntity.ok(cartService.contains(user.getCart(), book));
     }
 
-    @PostMapping("/home/cart/quantity")
-    public ResponseEntity<CartDto> itemsQuantity(@RequestBody UserDto userDto){
-        String sessionid = userDto.getSessionid();
+    @GetMapping("/cart/item/quantity")
+    public ResponseEntity<CartDto> itemsQuantity(@RequestParam("sessionid") String sessionid){
         if(!sessionService.sessionExist(sessionid)) return ResponseEntity.ok(new CartDto(0));
         Cart cart = this.sessionService.getCurrentUser(sessionid).getCart();
         return ResponseEntity.ok(cartService.getItemsQuantity(cart));
     }
 
-    @PostMapping("/home/cart/item/set")
+    @PutMapping("/cart/item/set")
     public ResponseEntity<Integer> setItem(@RequestBody CartItemDto cartItemDto){
         String sessionid = cartItemDto.getSessionid();
         String isbn = cartItemDto.getIsbn();
@@ -87,7 +88,5 @@ public class CartController {
         cartService.updateCartItem(cartItem, quantity);
         return ResponseEntity.ok(200);
     }
-
-
 
 }

@@ -13,7 +13,7 @@ login.addEventListener('click', async () => {
         'password': await hash(password),
         'sessionid' : await generateSessionId(),
     };
-    validation(user, "/home/login");
+    validation(user, "/login");
 });
 
 let registration = document.getElementById("sign-in-btn");
@@ -27,7 +27,7 @@ registration.addEventListener("click", async () => {
         'confirmPassword': document.getElementById("confirm-reg-password").value,
 
     };
-    validation(user, "/home/registration");
+    validation(user, "/registration");
 });
 
 
@@ -48,7 +48,7 @@ confirm.addEventListener("click", () => {
         "login" : getSavedLogin(),
         "inputCode" :document.getElementById("code").value,
     }
-    validation(confirmDto, "/home/reset/confirm");
+    validation(confirmDto, "/reset/confirm");
 })
 
 export function validation(obj, url){
@@ -137,9 +137,9 @@ export function clearInputs() {
 export function logout() {
     let user = getUser();
     $.ajax({
-        type: "POST",
+        type: "DELETE",
         contentType: "application/json",
-        url: '/home/logout',
+        url: '/logout',
         data : JSON.stringify(user),
         cache: false,
         dataType: 'text',
@@ -160,7 +160,6 @@ function backHome() {
     window.location.href = "/";
 }
 
-
 export function addErrors(errors){
     for(let [field, message] of errors) {
         let error = document.getElementById(field + '-error');
@@ -170,7 +169,6 @@ export function addErrors(errors){
         parentNode.classList.add('compression');
     }
 }
-
 
 function saveUser(obj){
     let user = {
@@ -223,3 +221,4 @@ export function getMap(data){
     let validationErrors = JSON.parse(JSON.stringify(data));
     return new Map(Object.entries(validationErrors));
 }
+

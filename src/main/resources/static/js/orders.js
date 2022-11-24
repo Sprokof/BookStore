@@ -18,4 +18,4 @@ for(let i = 0; i < closeDetailsBtn.length; i ++){
     }
 }
 
-document.onload = () => { validateRequest();}
+document.addEventListener("DOMContentLoaded", () =>  { validateRequest();} )

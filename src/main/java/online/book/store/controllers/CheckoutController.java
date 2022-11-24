@@ -13,8 +13,7 @@ import online.book.store.validation.ValidateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -33,7 +32,8 @@ public class CheckoutController {
     @Autowired
     private CheckoutService checkoutService;
 
-    @PostMapping("/home/cart/clear")
+
+    @DeleteMapping("/cart/clear")
     public ResponseEntity<Integer> clearCart(@RequestBody CartDto cartDto){
         String sessionid = cartDto.getSessionid();
         User user = this.sessionService.getCurrentUser(sessionid);
@@ -42,7 +42,7 @@ public class CheckoutController {
         return ResponseEntity.ok(200);
     }
 
-    @PostMapping("/home/validate/checkout")
+    @PostMapping("/validate/checkout")
     public ResponseEntity<Map<String, String>> validateCheckout(@RequestBody CheckoutDto checkoutDto){
         checkoutValidation.validation(checkoutDto);
         if(!checkoutValidation.hasErrors()){
@@ -52,16 +52,14 @@ public class CheckoutController {
         return ResponseEntity.ok(checkoutValidation.validationErrors());
     }
 
-    @PostMapping("/home/checkout/saved")
-    public ResponseEntity<String> checkoutSaved(@RequestBody CheckoutDto checkoutDto){
-        String sessionid = checkoutDto.getSessionid();
+    @GetMapping("/checkout/saved")
+    public ResponseEntity<String> checkoutSaved(@RequestParam("sessionid") String sessionid){
         User user = this.sessionService.getCurrentUser(sessionid);
         return ResponseEntity.ok(String.valueOf(this.checkoutService.checkoutSaved(user)));
     }
 
-    @PostMapping("/home/get/checkout")
-    public ResponseEntity<CheckoutDto> getCheckoutsData(@RequestBody CheckoutDto checkoutDto){
-        String sessionid = checkoutDto.getSessionid();
+    @GetMapping("/checkout/data")
+    public ResponseEntity<CheckoutDto> getCheckoutsData(@RequestParam("sessionid") String sessionid){
         User user = this.sessionService.getCurrentUser(sessionid);
         return ResponseEntity.ok(this.checkoutService.getCheckoutsData(user));
     }

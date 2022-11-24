@@ -173,7 +173,7 @@ function validateNewUsername(userDto){
         return;
     }
     $.ajax({
-        type: "POST",
+        type: "PUT",
         contentType: "application/json",
         url: "/account/new/username",
         cache: false,

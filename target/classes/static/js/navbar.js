@@ -87,7 +87,7 @@ function initBooksCategories(){
     function executeQuery(value) {
         if(value === null || value === '') return
             value = value.replaceAll(' ', '');
-            document.location.href = '/home/books/search?query=' + value + "&type=popularity";
+            document.location.href = '/books/search?query=' + value + "&type=popularity";
     }
 
     let sideMenu = document.getElementById('side-menu');
@@ -178,7 +178,7 @@ export function validateSession() {
 
    export function addBook() {
        let user = getUser();
-       document.location = '/home/book/add?user=' + user['login'] + '&sessionid=' + user['sessionid'];
+       document.location = '/book/add?user=' + user['login'] + '&sessionid=' + user['sessionid'];
    }
 
 
@@ -225,10 +225,9 @@ export function validateSession() {
        let cart = document.querySelector('#cart-link');
        let user = getUser();
        $.ajax({
-           type: "POST",
+           type: "GET",
            contentType: "application/json",
-           url: "/home/cart/quantity",
-           data: JSON.stringify(user),
+           url: "/cart/item/quantity?sessionid=" + user['sessionid'],
            cache: false,
            dataType: 'json',
            responseType: 'json',
@@ -245,16 +244,16 @@ export function validateSession() {
    }
 
     let wishlist = document.getElementById('wishlist');
-    wishlist.onclick = () => { toPage("/home/wishlist"); }
+    wishlist.onclick = () => { toPage("/wishlist"); }
 
     let cart = document.getElementById('cart-link');
-    cart.onclick = () => { toPage("/home/cart"); }
+    cart.onclick = () => { toPage("/cart"); }
 
     let orders = document.getElementById("orders");
-    orders.onclick = () => { toPage("/home/orders"); }
+    orders.onclick = () => { toPage("/orders"); }
 
     let account = document.getElementById('account-link');
-    account.onclick = () => { toPage("/home/account"); }
+    account.onclick = () => { toPage("/account"); }
 
 
 export function createAcceptNotice(){

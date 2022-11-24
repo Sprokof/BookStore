@@ -27,9 +27,9 @@ function removeItem(isbnNode) {
     }
 
     $.ajax({
-        type: "POST",
+        type: "DELETE",
         contentType: "application/json",
-        url: "/home/cart/remove",
+        url: "/cart/remove",
         data: JSON.stringify(cartDto),
         cache: false,
         dataType: 'json',
@@ -119,7 +119,7 @@ function checkoutSaved(){
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: "/home/checkout/saved",
+        url: "/checkout/saved",
         data: JSON.stringify(checkoutDto),
         cache: false,
         dataType: 'json',
@@ -187,9 +187,9 @@ function setQuantity(input){
     }
 
     $.ajax({
-        type: "POST",
+        type: "PUT",
         contentType: "application/json",
-        url: "/home/cart/item/set",
+        url: "/cart/item/set",
         data: JSON.stringify(cartItemDto),
         cache: false,
         dataType: 'json',
@@ -207,4 +207,4 @@ function stockValue(input){
     return Number(stock.innerText.substr(11,  stock.innerText.length));
 }
 
-document.onload = () => { validateRequest();}
+document.addEventListener("DOMContentLoaded", () =>  { validateRequest();} )

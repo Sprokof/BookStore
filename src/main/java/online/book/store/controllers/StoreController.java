@@ -76,20 +76,21 @@ public class StoreController{
         return ResponseEntity.ok(200);
     }
 
-    @PostMapping("/bookstore/user/accept")
-    public ResponseEntity<String> userAccept(@RequestBody UserDto userDto){
-        boolean accepted = this.signService.userAccept(userDto);
+    @PostMapping("/bookstore/accept/user")
+    public ResponseEntity<String> userAccept(@RequestParam("user") String login){
+        boolean accepted = this.signService.userAccept(login);
         return ResponseEntity.ok(String.valueOf(accepted));
     }
 
-    @GetMapping("/request/status?=404")
+    @GetMapping("/error")
     public Exception authorizeData() {
         throw new ResourceNotFoundException();
     }
 
-    @PostMapping("/validate/request")
-    public ResponseEntity<UserDto> validateRequest(@RequestBody UserDto user){
-        UserDto userDto = this.signService.validateRequest(user);
+
+    @GetMapping("/validate/user/request")
+    public ResponseEntity<UserDto> validateRequest(@RequestParam("sessionid") String sessionid){
+        UserDto userDto = this.signService.validateRequest(sessionid);
         return ResponseEntity.ok(userDto);
     }
 

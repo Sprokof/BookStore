@@ -44,7 +44,7 @@ export function executePurchase(){
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: "/home/orders/add",
+        url: "/orders/add",
         data: JSON.stringify(orderDto),
         cache: false,
         dataType: 'json',
@@ -69,9 +69,9 @@ export function clearCart(){
         "sessionid" : getUser()['sessionid']
     }
     $.ajax({
-        type: "POST",
+        type: "DELETE",
         contentType: "application/json",
-        url: "/home/cart/clear",
+        url: "/cart/clear",
         data: JSON.stringify(cartDto),
         cache: false,
         dataType: 'json',
@@ -86,7 +86,7 @@ function checkoutValidation(checkoutDto) {
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: "/home/validate/checkout",
+        url: "/validate/checkout",
         data: JSON.stringify(checkoutDto),
         cache: false,
         dataType: 'json',
@@ -160,25 +160,22 @@ function controlErrorMessage(field, value){
     }
 
     function getCheckoutData() {
-        let checkoutDto = {
-            "sessionid" : getUser()['sessionid'],
-        }
-        let response;
+        let responseDto;
         $.ajax({
-            type: "POST",
+            type: "GET",
             contentType: "application/json",
-            url: "/home/get/checkout",
-            data: JSON.stringify(checkoutDto),
+            url: "/checkout/data?sessionid" + getUser()['sessionid'],
             cache: false,
             dataType: 'json',
             responseType: 'json',
             async : false,
             success: (dto) => {
-                response = JSON.parse(JSON.stringify(dto));
+                responseDto = JSON.parse(JSON.stringify(dto));
             }
         })
+
         let fieldArray = [];
-        for(let value of Object.values(response)){
+        for(let value of Object.values(responseDto)){
             if(value == null) continue;
             fieldArray.push(value);
         }

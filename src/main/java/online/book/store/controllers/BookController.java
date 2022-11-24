@@ -45,7 +45,7 @@ public class BookController {
     }
 
 
-    @GetMapping("/home/book")
+    @GetMapping("/book")
     public String info(@RequestParam("isbn") String isbn, Model model){
         Book book = bookService.getBookByIsbn(isbn);
         model.addAttribute("book", book);
@@ -53,7 +53,7 @@ public class BookController {
     }
 
 
-    @GetMapping("/home/book/add")
+    @GetMapping("/book/add")
     public String addBook(@RequestParam("sessionid") String sessionid){
         if(!signService.adminsRequest(sessionid)){
             throw new ResourceNotFoundException();
@@ -61,7 +61,7 @@ public class BookController {
         return "addBook";
     }
 
-    @PostMapping("/home/book/add")
+    @PostMapping("/book/add")
     public ResponseEntity<Map<String, String>> addBook(@RequestBody BookDto bookDto){
 
         bookValidation.validation(bookDto);
@@ -73,9 +73,7 @@ public class BookController {
     }
 
 
-
-
-    @GetMapping ("/home/books/search")
+    @GetMapping ("/books/search")
     public String booksList (@RequestParam Map<String, String> params, Model model){
         SearchQuery searchQuery = new SearchQuery(params.get("query"));
         SortTypes sortType = SortTypes.getTypeByName(params.get("type"));

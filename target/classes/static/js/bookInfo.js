@@ -1,4 +1,4 @@
-import {addOrRemoveItem, contains, extractISBN, sessionActive, setItemsCount} from "./main.js";
+import {itemAdd, itemRemove, contains, extractISBN, sessionActive, setItemsCount} from "./main.js";
 import {getUser} from "./navbar.js";
 import {blockBackgroundHtml, openLoginNotice} from "./notice.js";
 
@@ -22,12 +22,12 @@ function addOrRemoveFromWishlist(btn, isbnNode){
         "sessionid" : getUser()['sessionid']
     }
 
-    if(!contains(wishlistDto, "/home/wishlist/contains")){
-        addOrRemoveItem(wishlistDto, "/home/wishlist/add");
+    if(!contains(wishlistDto, "/wishlist/item/contains")){
+        itemAdd(wishlistDto, "/wishlist/item/add");
         btn.innerHTML = "Remove from wishlist";
     }
     else {
-        addOrRemoveItem(wishlistDto, "/home/wishlist/remove");
+        itemRemove(wishlistDto, "/wishlist/item/remove");
         btn.innerHTML = "Add to wishlist";
     }
 }
@@ -39,13 +39,13 @@ function addOrRemoveFromCart(btn, isbnNode){
         "sessionid" : getUser()['sessionid']
     }
 
-    if(!contains(cartDto, "/home/cart/contains")){
-        addOrRemoveItem(cartDto, "/home/cart/add");
+    if(!contains(cartDto, "/cart/item/contains")){
+        itemAdd(cartDto, "/cart/item/add");
         btn.innerHTML = "Remove from cart";
         setItemsCount("+");
     }
     else {
-        addOrRemoveItem(cartDto, "/home/cart/remove");
+        itemRemove(cartDto, "/cart/item/remove");
         btn.innerHTML = "Add to cart";
         setItemsCount("-");
     }
@@ -61,8 +61,8 @@ function controlButtonsTextOnLoad(isbnNode, cartBtn, wishlistBtn){
         "isbn" : extractISBN(isbnNode),
         "sessionid" : getUser()['sessionid'],
     }
-    let cartContains = contains(dto, "/home/cart/contains");
-    let wishlistContains = contains(dto, "/home/wishlist/contains");
+    let cartContains = contains(dto, "/cart/item/contains");
+    let wishlistContains = contains(dto, "/wishlist/item/contains");
     if(!cartContains){
         cartBtn.innerHTML = "Add to cart";
     }
@@ -92,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
 })
 
 
-
 let reviewContainer = document.querySelector('.review-container');
 
 function openAddReviewWindow () {
@@ -118,17 +117,12 @@ if(reviewBtn !== null){
 }
 
 function reviewExist () {
-    let bookReviewDto = {
-        "isbn" : extractISBN(isbnNode),
-        "sessionid" : getUser()['sessionid']
-    }
     let result;
     $.ajax({
-        type: "POST",
+        type: "GET",
         contentType: "application/json",
-        url: "/reviews/exist",
+        url: "/reviews/exist?isbn=" + extractISBN(isbnNode) + "&sessionid=" + getUser()['sessionid'],
         cache: false,
-        data: JSON.stringify(bookReviewDto),
         dataType: 'json',
         responseType: 'json',
         async: false,

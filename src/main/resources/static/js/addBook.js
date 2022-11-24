@@ -16,7 +16,7 @@ saveBook.addEventListener('click', () => {
         "format" : document.querySelector('#format').value,
         "booksCategories" : getCategories(),
     }
-    validation(book, "/home/book/add");
+    validation(book, "/book/add");
 })
 
 

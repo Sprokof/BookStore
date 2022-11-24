@@ -32,11 +32,12 @@ public class SessionServiceImpl implements SessionService{
 
     @Override
     public SessionDto sessionActive(String sessionId) {
-        return new SessionDto(getSessionById(sessionId) != null);
+        return new SessionDto(sessionExist(sessionId));
     }
 
     @Override
     public User getCurrentUser(String sessionid) {
+        if(!sessionExist(sessionid)) return null;
         return this.sessionDao.getSessionById(sessionid).getUser();
     }
 

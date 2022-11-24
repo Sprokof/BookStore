@@ -15,4 +15,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 })
 
-document.onload = () => { validateRequest();}
+document.addEventListener("DOMContentLoaded", () =>  { validateRequest();} )

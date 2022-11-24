@@ -9,8 +9,12 @@ import online.book.store.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Map;
 
 @Controller
 public class ReviewController {
@@ -24,6 +28,7 @@ public class ReviewController {
     @Autowired
     private BookService bookService;
 
+
     @PostMapping("/reviews/post")
     public ResponseEntity<Integer> postReview (@RequestBody BookReviewDto bookReviewDto){
         String sessionid = bookReviewDto.getSessionid();
@@ -32,11 +37,11 @@ public class ReviewController {
         return ResponseEntity.ok(200);
     }
 
-    @PostMapping("/reviews/exist")
-    public ResponseEntity<String> reviewsExist(@RequestBody BookReviewDto bookReviewDto){
-        String sessionid = bookReviewDto.getSessionid();
+    @GetMapping("/reviews/exist")
+    public ResponseEntity<String> reviewsExist(@RequestParam Map<String, String> params){
+        String isbn = params.get("isbn");
+        String sessionid = params.get("sessionid");
         User user = this.sessionService.getCurrentUser(sessionid);
-        String isbn = bookReviewDto.getIsbn();
         Book book = this.bookService.getBookByIsbn(isbn);
         boolean exist = this.bookReviewService.reviewExist(book, user);
         return ResponseEntity.ok(String.valueOf(exist));

@@ -30,7 +30,7 @@ public class OrderController {
     private OrderService orderService;
 
 
-    @GetMapping("/home/orders")
+    @GetMapping("/orders")
     public String orders(@RequestParam ("user") String login, Model model){
         this.orderService.deleteDeliveredOrders();
         User user = this.userService.getUserByLogin(login);
@@ -43,7 +43,7 @@ public class OrderController {
     }
 
 
-    @PostMapping("/home/orders/add")
+    @PostMapping("/orders/add")
     public ResponseEntity<Integer> addOrder(@RequestBody OrderDto orderDto){
         String sessionid = orderDto.getSessionid();
         User user = sessionService.getCurrentUser(sessionid);
