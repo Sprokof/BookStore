@@ -16,23 +16,14 @@ public class HomeController {
     @Autowired
     private BookService bookService;
 
-    @Autowired
-    UserService userService;
-
-
-    @ModelAttribute("books")
-    public List<Book> books() {
-        return bookService.getAllBooks();
-    }
-
 
     @GetMapping(value = {"/", "/home"})
-    @SuppressWarnings("unchecked")
     public String home(Model model) {
-        List<Book> books = (List<Book>) model.getAttribute("books");
+        List<Book> books = bookService.getPopularBooks();
         if(books == null || books.isEmpty()){
             return "result";
         }
+        model.addAttribute("books", books);
         return "home";
     }
 

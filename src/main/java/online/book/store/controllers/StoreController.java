@@ -46,7 +46,7 @@ public class StoreController{
     }
 
 
-    @PostMapping(value = "/invalidate")
+    @DeleteMapping(value = "/invalidate")
     public ResponseEntity<Integer> invalidate(@RequestBody SessionDto sessionDto){
         String sessionid = sessionDto.getSessionid();
         this.sessionService.sessionInvalidate(sessionid);

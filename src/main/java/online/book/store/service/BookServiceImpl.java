@@ -20,21 +20,19 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public List<Book> getPopularBooks() {
-        return this.bookDao.getPopularBooks();
+        List<Book> books = this.bookDao.getPopularBooks();
+        books.forEach(book -> {
+            String description = book.getDescription();
+            String trimDesc = (description.substring(0, lastSubstrIndex(description)) + "...");
+            book.setDescription(trimDesc);
+        });
+        return books;
     }
 
     @Override
     public List<Book> getAllBooks() {
-        List<Book> books;
-        if((books = this.bookDao.getPopularBooks()).isEmpty())
-            books = this.bookDao.getAllBooks();
+        return this.bookDao.getAllBooks();
 
-        for(Book book : books){
-            String description = book.getDescription();
-            String trimDesc = (description.substring(0, lastSubstrIndex(description)) + "...");
-            book.setDescription(trimDesc);
-        }
-        return books;
     }
 
 
@@ -50,11 +48,9 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public synchronized void saveBook(Book book) {
-        new Thread(() -> {
-            this.bookDao.saveBook(book);
-            pause();
-            updateBooksCategories(book);
-        });
+        this.bookDao.saveBook(book);
+        pause();
+        updateBooksCategories(book);
     }
 
 

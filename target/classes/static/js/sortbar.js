@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function sortBooksLists(type){
     let searchParams = getSearchParams();
-    document.location.href = '/home/books/search?query=' +
+    document.location.href = '/books/search?query=' +
         searchParams['query'] + '&type=' + type.toLowerCase();
 
 

@@ -99,7 +99,7 @@ function initBooksCategories(){
             document.querySelector('.books-slider').classList.toggle('right');
             document.querySelector('.control-slider').classList.toggle('left');
         }
-        if (location[1] === 'admin') {
+        if (location[1] === 'session') {
             document.querySelector('.sub-menu').classList.add('none');
         }
         if(location[2] === 'search' || location[1] === 'wishlist'){
@@ -178,7 +178,7 @@ export function validateSession() {
 
    export function addBook() {
        let user = getUser();
-       document.location = '/admin?=' + user['login'] + '&sessionid=' + user['sessionid'];
+       document.location = '/session?id=' + user['sessionid'];
    }
 
 
@@ -189,7 +189,7 @@ export function validateSession() {
            "sessionid" : getUser()['sessionid']
        }
        $.ajax({
-           type: "POST",
+           type: "DELETE",
            contentType: "application/json",
            url: "/invalidate",
            data: JSON.stringify(sessionDto),

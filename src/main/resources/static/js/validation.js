@@ -88,7 +88,7 @@ export function validation(obj, url){
 
                     case('confirm'):
                         resetSuccess();
-                    break
+                    break;
 
                     default:
                         setTimeout(reload, 100)

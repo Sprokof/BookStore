@@ -52,9 +52,8 @@ public class BookController {
         return "bookInfo";
     }
 
-
-    @GetMapping("/admin")
-    public String addBook(@RequestParam("sessionid") String sessionid){
+    @GetMapping("/session")
+    public String addBook(@RequestParam("id") String sessionid){
         if(!signService.adminsRequest(sessionid)){
             throw new ResourceNotFoundException();
         }
