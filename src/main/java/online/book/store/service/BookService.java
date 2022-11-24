@@ -18,5 +18,6 @@ public interface BookService {
     void saveBook(Book book);
     void updateBooksCategories(Book book);
     void updateBook(Book book);
+    boolean bookExist(String isbn);
 
 }

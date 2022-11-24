@@ -2,6 +2,7 @@ package online.book.store.validation;
 
 import online.book.store.dto.BookDto;
 import online.book.store.entity.Category;
+import online.book.store.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -17,6 +18,9 @@ public class BookValidation extends AbstractValidation {
     @Autowired
     private ValidateResponse response;
 
+    @Autowired
+    private BookService bookService;
+
     @Override
     public boolean supports(Class<?> clazz) {
         return clazz.equals(BookDto.class);
@@ -31,8 +35,14 @@ public class BookValidation extends AbstractValidation {
 
             String isbn = bookDto.getIsbn();
 
+
+
             if(isbn.isEmpty()){
                 this.response.addError("isbn", "ISBN can't be empty");
+            }
+
+            if(bookService.bookExist(isbn)){
+                this.response.addError("isbn", "Book already exist");
             }
 
             Pattern isbnPat = Pattern.compile("(\\d-?){13}|(\\d-?){10}");

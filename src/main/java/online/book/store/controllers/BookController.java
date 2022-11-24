@@ -53,7 +53,7 @@ public class BookController {
     }
 
 
-    @GetMapping("/book/add")
+    @GetMapping("/admin")
     public String addBook(@RequestParam("sessionid") String sessionid){
         if(!signService.adminsRequest(sessionid)){
             throw new ResourceNotFoundException();
@@ -63,7 +63,6 @@ public class BookController {
 
     @PostMapping("/book/add")
     public ResponseEntity<Map<String, String>> addBook(@RequestBody BookDto bookDto){
-
         bookValidation.validation(bookDto);
         if(!bookValidation.hasErrors()){
             Book book = bookDto.doBookBuilder();

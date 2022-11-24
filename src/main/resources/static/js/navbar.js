@@ -99,26 +99,26 @@ function initBooksCategories(){
             document.querySelector('.books-slider').classList.toggle('right');
             document.querySelector('.control-slider').classList.toggle('left');
         }
-        if (location[3] === 'add') {
+        if (location[1] === 'admin') {
             document.querySelector('.sub-menu').classList.add('none');
         }
-        if(location[3] === 'search' || location[2] === 'wishlist'){
+        if(location[2] === 'search' || location[1] === 'wishlist'){
             let card = document.querySelector('#card-container');
             if(card !== null)
             card.classList.toggle('right');
             let cards = document.querySelectorAll('.card');
             cards.forEach(card => card.classList.toggle('squeeze'));
         }
-        if(location[2] === 'cart'){
+        if(location[1] === 'cart'){
             let cart = document.querySelector('.cart-container');
             if(cart !== null) cart.classList.toggle('compression');
         }
-        if(location[2] === 'orders'){
+        if(location[1] === 'orders'){
             let orders = document.querySelector('.order-container');
             orders.style.left = "25%";
         }
 
-        if(location[2] === 'book'){
+        if(location[1] === 'book'){
             let sidebar = document.querySelector('#sidebar');
             sidebar.classList.add('reveal');
         }
@@ -178,7 +178,7 @@ export function validateSession() {
 
    export function addBook() {
        let user = getUser();
-       document.location = '/book/add?user=' + user['login'] + '&sessionid=' + user['sessionid'];
+       document.location = '/admin?=' + user['login'] + '&sessionid=' + user['sessionid'];
    }
 
 

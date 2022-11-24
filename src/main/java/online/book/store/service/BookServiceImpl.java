@@ -2,12 +2,8 @@ package online.book.store.service;
 
 
 import online.book.store.dao.BookDao;
-import online.book.store.dto.BookDto;
-import online.book.store.dto.BookReviewDto;
 import online.book.store.entity.Book;
-import online.book.store.entity.BookReview;
 import online.book.store.entity.Category;
-import online.book.store.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -53,9 +49,12 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public void saveBook(Book book) {
-        this.bookDao.saveBook(book);
-        updateBooksCategories(book);
+    public synchronized void saveBook(Book book) {
+        new Thread(() -> {
+            this.bookDao.saveBook(book);
+            pause();
+            updateBooksCategories(book);
+        });
     }
 
 
@@ -87,4 +86,17 @@ public class BookServiceImpl implements BookService{
         this.bookDao.updateBook(book);
     }
 
+    private synchronized void pause(){
+        try {
+            wait(130);
+        }
+        catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean bookExist(String isbn) {
+        return this.bookDao.bookExist(isbn);
+    }
 }

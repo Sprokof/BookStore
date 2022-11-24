@@ -280,6 +280,31 @@ public class BookDaoImpl implements BookDao {
     }
     return (review != null);
     }
+
+    @Override
+    public boolean bookExist(String isbn) {
+        Session session = null;
+        Integer id = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        id = (Integer) session.createSQLQuery("SELECT ID FROM " +
+                "BOOKS WHERE ISBN=:isbn").setParameter("isbn", isbn).getSingleResult();
+        session.getTransaction().commit();
+    }
+    catch (Exception e){
+        if(session != null && session.getTransaction() != null){
+            session.getTransaction().rollback();
+            if(e instanceof NoResultException) return false;
+        }
+    }
+    finally {
+        if(session != null){
+            session.close();
+        }
+    }
+    return id != null;
+    }
 }
 
 

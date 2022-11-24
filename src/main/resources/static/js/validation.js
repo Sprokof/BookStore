@@ -67,24 +67,32 @@ export function validation(obj, url){
                 addErrors(errorMap);
             } else {
                 let value = url.substr(url.lastIndexOf("/") + 1);
-                if (value === 'reset') {
-                    saveLogin(obj['login']);
-                    resetClose();
-                    openResetTwoPopup();
-                }
-                else if(value === 'confirm'){
-                    resetSuccess();
-                }
-                else {
-                    if(value === 'registration'){
+                switch (value){
+
+                    case('registration') :
                         saveEmail(obj['email']);
                         registrationSuccess();
-                    }
-                    else if (value === 'login') {
+                    break;
+
+                    case('login') :
                         saveUser(obj);
                         rememberUser(remember);
-                        setTimeout(reload, 130);
-                    }
+                        setTimeout(reload, 130)
+                    break;
+
+                    case ('reset') :
+                        saveLogin(obj['login']);
+                        resetClose();
+                        openResetTwoPopup();
+                    break;
+
+                    case('confirm'):
+                        resetSuccess();
+                    break
+
+                    default:
+                        setTimeout(reload, 100)
+
 
                 }
             }
