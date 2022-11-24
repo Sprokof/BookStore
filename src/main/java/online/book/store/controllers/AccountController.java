@@ -60,7 +60,7 @@ public class AccountController {
     return ResponseEntity.ok(passwordValidation.validationErrors());
     }
 
-    @GetMapping("/bookstore/newemail/confirm")
+    @GetMapping("/newemail/confirm")
     public String confirmNewEmail(@RequestParam Map<String, String> params) {
         String email = params.get("email");
         String token = params.get("token");

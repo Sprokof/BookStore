@@ -6,8 +6,8 @@ import lombok.Setter;
 
 public enum Message {
     CONFIRM_RESET_MESSAGE("Your code to accept new password is "),
-    ACCEPT_ACCOUNT_MESSAGE("http://localhost:8080/bookstore/registration/confirm?token="),
-    CONFIRM_RESET_EMAIL_MESSAGE("http://localhost:8080/bookstore/newemail/confirm?email=&token=");
+    ACCEPT_ACCOUNT_MESSAGE("http://localhost:8080/registration/confirm?token="),
+    CONFIRM_RESET_EMAIL_MESSAGE("http://localhost:8080/newemail/confirm?email=&token=");
 
     @Getter
     @Setter

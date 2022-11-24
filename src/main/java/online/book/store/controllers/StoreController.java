@@ -63,13 +63,13 @@ public class StoreController{
     }
 
 
-    @GetMapping("/bookstore/registration/confirm")
+    @GetMapping("/registration/confirm")
     public String confirmRegistration(@RequestParam ("token") String token) throws ResourceNotFoundException {
         signService.confirmRegistration(token);
         return "result";
     }
 
-    @PostMapping("/bookstore/registration/resend")
+    @PostMapping("/registration/resend")
     public ResponseEntity<Integer> resendConfirmLink(@RequestBody UserDto userDto) {
         String login = userDto.getLogin();
         signService.resendConfirmationLink(login);

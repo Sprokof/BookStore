@@ -2,7 +2,7 @@ import {currentLocation, validateRequest} from "./main.js";
 
 let location = currentLocation();
 document.addEventListener('DOMContentLoaded', () => {
-    switch (location[2]){
+    switch (location[1]){
         case ('cart') :
             messageToCenter("Cart Is Empty", "25px")
             break;
