@@ -111,7 +111,8 @@ public class SiteEngine {
         if (this.bookList.isEmpty()) return;
         switch (this.searchParam.currentType()) {
             case POPULARITY:
-                this.bookList.sort(Comparator.comparingDouble(Book::getBookRating));
+                this.bookList.sort((book, bookNext) ->
+                    compareBookRating(book.getBookRating(), bookNext.getBookRating()));
                 break;
             case LOWEST:
                 this.bookList.sort(Comparator.comparingDouble(Book::getPrice));
@@ -123,7 +124,7 @@ public class SiteEngine {
                 break;
             case LATEST:
                 this.bookList.sort((book, bookNext) ->
-                        compareAddedDate(book.getAddedDate(), bookNext.getAddedDate()));
+                        compareAddedDate(bookNext.getAddedDate(), book.getAddedDate()));
                 break;
 
         }
@@ -134,7 +135,18 @@ public class SiteEngine {
         if (firstDate.isAfter(secondDate)) {
             result = 1;
         } else {
-            result = -1;
+            result = - 1;
+        }
+        return result;
+    }
+
+    private int compareBookRating(double firstRating, double secondRating){
+        int result = 0;
+        if(firstRating < secondRating) {
+            result = 1;
+        }
+        else {
+            result = - 1;
         }
         return result;
     }
