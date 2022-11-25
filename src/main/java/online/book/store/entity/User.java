@@ -4,6 +4,7 @@ package online.book.store.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import online.book.store.enums.Role;
 import online.book.store.hash.SHA256;
 import online.book.store.service.SessionService;
 import org.hibernate.annotations.LazyCollection;
@@ -56,10 +57,8 @@ public class User {
     @JoinColumn(name = "checkout_id")
     private Checkout checkout;
 
-    @Column(name = "IS_ADMIN")
-    @Getter
-    @Setter
-    private boolean admin = false;
+    @Column(name = "USER_ROLE")
+    private String role;
 
     @Column(name = "ACCEPTED")
     @Getter
@@ -74,12 +73,15 @@ public class User {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "wishlist_id")
+    @Getter
+    @Setter
     private Wishlist wishList;
 
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     @Setter
+    @Getter
     private Cart cart;
 
 
@@ -158,16 +160,12 @@ public class User {
     }
 
 
-    public Wishlist getWishList() {
-        return wishList;
+    public void setRole(Role role){
+        this.role = role.getRole();
     }
 
-    public Cart getCart() {
-        return this.cart;
-    }
-
-    public void setWishList(Wishlist wishList) {
-        this.wishList = wishList;
+    public Role getRole(){
+        return Role.toRole(this.role);
     }
 
     @Override

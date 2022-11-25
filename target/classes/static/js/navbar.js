@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     autologin();
     createAcceptNotice();
     let session = validateSession();
-    if(session === undefined) return ;
+    if(session == null) return ;
         if(session['active']) {
             let menu = document.querySelector('.menu');
             let lastChild = menu.children[4];
@@ -139,7 +139,7 @@ function executeCategorySearch() {
 export function validateSession() {
     createCookie();
     let user = getUser();
-        if(user == null) return undefined;
+    if(user == null) return null;
         let sessionDto
         $.ajax({
             type: "POST",

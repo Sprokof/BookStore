@@ -7,12 +7,9 @@ import online.book.store.builder.AbstractBookBuilder;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
 
-import online.book.store.service.BookService;
-import online.book.store.service.BookServiceImpl;
 import online.book.store.service.CategoryService;
 import online.book.store.service.CategoryServiceImpl;
-import online.book.store.status.BookStatus;
-import org.springframework.beans.factory.annotation.Autowired;
+import online.book.store.enums.BookStatus;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;

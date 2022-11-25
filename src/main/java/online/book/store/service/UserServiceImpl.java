@@ -8,6 +8,7 @@ import online.book.store.entity.User;
 
 
 import online.book.store.entity.Wishlist;
+import online.book.store.enums.Role;
 import online.book.store.hash.SHA256;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -48,7 +49,8 @@ public class UserServiceImpl implements UserService {
     public void saveUser(User user) {
         String password = SHA256.hash(user.getPassword());
         user.setPassword(password);
-        user.setAdmin(user.getEmail().equals(adminEmail));
+        Role role = defineRole(user.getEmail());
+        user.setRole(role);
         user.setWishList(new Wishlist());
         user.setCart(new Cart());
         this.userDao.saveUser(user);
@@ -67,6 +69,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean userAccepted(String login) {
         return this.userDao.userAccept(login);
+    }
+
+    private Role defineRole(String email){
+        if(email.equals(adminEmail)) return Role.ADMIN;
+        return Role.USER;
     }
 }
 

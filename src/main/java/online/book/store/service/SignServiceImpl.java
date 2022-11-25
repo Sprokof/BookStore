@@ -74,7 +74,8 @@ public class SignServiceImpl implements SignService {
     @Override
     public boolean adminsRequest(String sessionid) {
         if (!this.sessionService.sessionExist(sessionid)) return false;
-        return this.sessionService.getCurrentUser(sessionid).isAdmin();
+        UserSession userSession = this.sessionService.getSessionById(sessionid);
+        return this.sessionService.adminSession(userSession);
     }
 
     @Override

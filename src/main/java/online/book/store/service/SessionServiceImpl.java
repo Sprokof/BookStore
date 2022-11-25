@@ -5,6 +5,7 @@ import online.book.store.dto.SessionDto;
 import online.book.store.dto.UserDto;
 import online.book.store.entity.User;
 import online.book.store.entity.UserSession;
+import online.book.store.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -44,14 +45,18 @@ public class SessionServiceImpl implements SessionService{
     @Override
     public SessionDto getSessionData(UserDto userDto) {
         UserSession session = getSessionById(userDto.getSessionid());
-        if(session == null) return null;
-        String sessionid = session.getSessionId();
-        boolean adminSession = session.getUser().isAdmin();
-        return new SessionDto(true, sessionid, adminSession);
+        if(session == null) return new SessionDto(false);
+        boolean adminSession = adminSession(session);
+        return new SessionDto(true, adminSession);
     }
 
     @Override
     public void sessionInvalidate(String sessionid) {
         this.sessionDao.deleteSessionById(sessionid);
+    }
+
+    public boolean adminSession(UserSession userSession){
+        Role userRole = userSession.getUser().getRole();
+        return userRole.equals(Role.ADMIN);
     }
 }

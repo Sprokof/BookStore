@@ -1,4 +1,4 @@
-package online.book.store.status;
+package online.book.store.enums;
 
 import lombok.Getter;
 

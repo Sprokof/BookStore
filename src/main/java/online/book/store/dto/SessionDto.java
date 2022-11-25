@@ -14,11 +14,14 @@ public class SessionDto {
     private String sessionid;
     private boolean adminSession;
 
-    public SessionDto(String sessionid) {
-        this.sessionid = sessionid;
+    public SessionDto(boolean active, boolean adminSession) {
+        this.active = active;
+        this.adminSession = adminSession;
     }
 
     public SessionDto(boolean active) {
         this.active = active;
     }
+
+
 }

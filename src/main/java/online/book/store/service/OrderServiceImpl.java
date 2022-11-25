@@ -2,7 +2,7 @@ package online.book.store.service;
 
 import online.book.store.dao.OrderDao;
 import online.book.store.entity.*;
-import online.book.store.status.OrderStatus;
+import online.book.store.enums.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;

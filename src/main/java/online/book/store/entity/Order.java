@@ -4,7 +4,7 @@ package online.book.store.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import online.book.store.status.OrderStatus;
+import online.book.store.enums.OrderStatus;
 
 import javax.persistence.*;
 import java.time.LocalDate;
