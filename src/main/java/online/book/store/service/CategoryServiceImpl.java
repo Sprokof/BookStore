@@ -44,4 +44,15 @@ public class CategoryServiceImpl implements CategoryService{
         return this.categoryDao.getCategoryByName(category).getBooks();
         
     }
+
+    @Override
+    public void updateCategory(Category category) {
+        this.categoryDao.updateCategory(category);
+    }
+
+    @Override
+    public List<CategoryDto> getPopularCategories() {
+        return this.categoryDao.getPopularCategories().
+                stream().map(CategoryDto :: new).collect(Collectors.toList());
+    }
 }

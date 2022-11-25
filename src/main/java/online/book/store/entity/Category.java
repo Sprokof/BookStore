@@ -20,8 +20,11 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(name = "CATEGORY")
     private String category;
+    @Column(name = "CATEGORY_RATING")
+    private Double rating = 0d;
 
     @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -38,7 +41,7 @@ public class Category {
         if(!(obj instanceof Category)) return false;
 
         Category cat = (Category) obj;
-        return this.getCategory().equalsIgnoreCase(cat.getCategory());
+        return this.category.equalsIgnoreCase(cat.getCategory());
     }
 
     @Override

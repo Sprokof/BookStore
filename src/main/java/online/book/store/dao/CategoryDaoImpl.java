@@ -4,6 +4,7 @@ import online.book.store.entity.Category;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
+import static online.book.store.entity.BookReview.*;
 
 import java.util.List;
 
@@ -97,5 +98,53 @@ public class CategoryDaoImpl implements CategoryDao{
         }
     }
     return category;
+    }
+
+    @Override
+    public void updateCategory(Category category) {
+        Session session = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        session.update(category);
+        session.getTransaction().commit();
+    }
+    catch (Exception e){
+        if(session != null && session.getTransaction() != null){
+            session.getTransaction().rollback();
+        }
+    }
+    finally {
+        if(session != null){
+            session.close();
+        }
+    }
+    }
+
+    @Override
+    @SuppressWarnings ("unchecked")
+    public List<String> getPopularCategories() {
+        Session session = null;
+        List<String> categories = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        categories = (List<String>) session.createSQLQuery("SELECT CATEGORY FROM CATEGORIES WHERE " +
+                "CATEGORY_RATING BETWEEN :min AND :max ORDER BY CATEGORY_RATING limit (10)").setParameter("min",
+                MIN_POPULAR_RATING).
+                setParameter("max", MAX_POPULAR_RATING).list();
+        session.getTransaction().commit();
+    }
+    catch (Exception e){
+        if(session != null && session.getTransaction() != null){
+            session.getTransaction().rollback();
+        }
+    }
+    finally {
+        if(session != null){
+            session.close();
+        }
+    }
+    return categories;
     }
 }

@@ -86,7 +86,7 @@ public class Book {
 
 
 
-    @ManyToMany()
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable (name = "BOOKS_CATEGORIES",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = {@JoinColumn(name = "category_id")})

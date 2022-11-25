@@ -35,7 +35,6 @@ public class BookServiceImpl implements BookService{
 
     }
 
-
     @Override
     public Book getBookByIsbn(String isbn) {
         return this.bookDao.getBookByIsbn(isbn);
@@ -48,9 +47,11 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public synchronized void saveBook(Book book) {
-        this.bookDao.saveBook(book);
-        pause();
-        updateBooksCategories(book);
+        new Thread(() -> {
+            this.bookDao.saveBook(book);
+            pause();
+            updateBooksCategories(book);
+        }).start();
     }
 
 
