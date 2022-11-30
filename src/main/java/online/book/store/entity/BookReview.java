@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "BOOKS_REVIEWS")
@@ -34,6 +35,10 @@ public class BookReview {
     @Setter
     private Book book;
 
+    @Column(name = "POST_DATE")
+    @Getter
+    private String postDate;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     @Getter
@@ -44,6 +49,7 @@ public class BookReview {
     public BookReview(String review, int score){
         this.review = review;
         this.score = score;
+        this.postDate = LocalDate.now().toString();
     }
 
 }

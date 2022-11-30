@@ -2,6 +2,7 @@ import {getUser} from "./navbar.js";
 import {closeSuccessWindow, openSuccessWindow} from "./window.js";
 import {reload} from "./main.js";
 import {checkoutOpen, closeCheckoutNotice} from "./cart.js";
+import {blockBackgroundHtml} from "./notice.js";
 
 
 
@@ -203,4 +204,25 @@ let numberField = document.querySelector('#card-num');
 
 function getCardNumber() {
         return numberField.value.substr(0, 19);
+}
+
+export function checkoutClose(){
+    let checkout = document.querySelector('#checkout');
+    clearCheckoutInputs();
+    checkout.classList.remove('active');
+    blockBackgroundHtml(false);
+
+}
+
+function clearCheckoutInputs(){
+    let inputs = document.querySelectorAll('.checkout-container div input');
+    inputs.forEach((input) => {
+        input.value = '';
+        input.classList.remove('highlight');
+    });
+}
+
+let closeCheckoutBtn = document.querySelectorAll('#checkout .buttons button')[0];
+closeCheckoutBtn.onclick = () => {
+    setTimeout(checkoutClose, 150);
 }

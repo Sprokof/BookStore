@@ -173,6 +173,9 @@
     opacity: 0;
     margin-left: 35%;
     z-index: 1;
+    -webkit-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    -moz-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
 }
 
 .notice-message header {

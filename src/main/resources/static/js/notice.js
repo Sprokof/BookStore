@@ -6,6 +6,7 @@ let closeBtn = document.querySelector('#log-in-notice .close-notice-message-btn'
 
 export function openLoginNotice() {
     noticeMessage.classList.add('show');
+    blockBackgroundHtml(true)
 }
 
 loginBtn.addEventListener("click", () => {
@@ -16,6 +17,7 @@ loginBtn.addEventListener("click", () => {
 
 closeBtn.onclick = () => {
     noticeMessage.classList.remove('show');
+    blockBackgroundHtml(false);
 }
 
 

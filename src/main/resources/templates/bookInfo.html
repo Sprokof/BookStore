@@ -54,9 +54,7 @@
 
         <div class="tab-content">
         <div  class="tab-pane fade show active" id="description">
-            <section th:text="${book.getDescription()}"
-                     class="product-desc">
-            </section>
+            <section th:text="${book.getDescription()}"></section>
         </div>
 
             <div class="tab-pane fade" id="information">
@@ -76,7 +74,10 @@
                             <div style="color: green" class="review-item" th:text ="${'Author: ' + review.user.username}"></div>
                             <div class="review-item text" th:text="${review.review}"></div>
                         </div>
-                        <div class="score"><span class="star-rating" th:text="${review.score}"></span></div>
+                        <div class="score">
+                            <span class="star-rating" th:text="${review.score}"></span>
+                            <span class="post-date" th:text="${review.postDate}"></span>
+                        </div>
                     </div>
 
                     <div th:switch="${book.getBookReviews().isEmpty()}">

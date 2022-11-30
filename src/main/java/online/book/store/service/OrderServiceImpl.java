@@ -98,7 +98,7 @@ public class OrderServiceImpl implements OrderService{
         if(firstDate.minusDays(1).equals(currentDate)){
             order.setStatus(OrderStatus.IN_DELIVERY);
         }
-        else if(firstDate.plusDays(2).equals(currentDate)){
+        else if(firstDate.plusDays(3).equals(currentDate)){
             order.setStatus(OrderStatus.DELIVERED);
         }
         this.orderDao.updateOrder(order);

@@ -200,19 +200,18 @@ export function validateSession() {
        })
    }
 
-   function autologin() {
+   async function autologin() {
         if(!autologinCondition()) return ;
         let user = getRememberedUser();
-       $.ajax({
+        $.ajax({
            type: "POST",
            contentType: "application/json",
            url: "/autologin",
+           dataType: 'json',
            data: JSON.stringify(user),
            cache: false,
-           dataType: 'json',
-           responseType: "json",
            async: false
-       })
+        })
    }
 
 
@@ -300,5 +299,5 @@ export function createAcceptNotice(){
     }
 
     function autologinCondition() {
-        return loaded() && getRememberedUser() == null;
+        return loaded() && getRememberedUser() != null;
     }

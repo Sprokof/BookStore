@@ -1,7 +1,7 @@
 import {getUser} from "./navbar.js";
 import {blockBackgroundHtml} from "./notice.js";
 import {reload, validateRequest} from "./main.js";
-import {blockInputPointerEvents} from "./checkout.js";
+import {blockInputPointerEvents, checkoutClose} from "./checkout.js";
 
 const sumSuffix = ".00 ₽";
 const shipping_cost = 170;
@@ -95,11 +95,6 @@ checkoutBtn.onclick = () => {
     }
 }
 
-let toCart = document.querySelectorAll('#checkout .buttons button')[0];
-toCart.onclick = () => {
-    setTimeout(checkoutClose, 150);
-}
-
 
 export function checkoutOpen(){
     let checkout = document.querySelector('#checkout');
@@ -130,18 +125,7 @@ function checkoutSaved(){
     return saved;
 }
 
-function checkoutClose(){
-    let checkout = document.querySelector('#checkout');
-    clearCheckoutInputs();
-    checkout.classList.remove('active');
-    blockBackgroundHtml(false);
 
-}
-
-function clearCheckoutInputs(){
-    let inputs = document.querySelectorAll('.checkout-container div input');
-    inputs.forEach((input) => input.value = '');
-}
 
 function openCheckoutNotice() {
     let notice = document.querySelector('.checkout-notice');
