@@ -10,6 +10,7 @@ import online.book.store.hash.SHA256;
 import online.book.store.mail.MailSender;
 import online.book.store.mail.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +31,8 @@ public class SignServiceImpl implements SignService {
     private MailSender sender;
 
     @Override
-    public int loginUser(UserDto userDto) {
+    public void loginUser(UserDto userDto) {
         initUserSession(userDto);
-        String sessionid = userDto.getSessionid();
-        boolean active = sessionService.sessionActive(sessionid).isActive();
-        return active ? 200 : 501;
-
     }
 
 
@@ -43,8 +40,9 @@ public class SignServiceImpl implements SignService {
     public int logout(UserDto userDto) {
         String sessionid = userDto.getSessionid();
         this.sessionService.sessionInvalidate(sessionid);
-        boolean active = sessionService.sessionActive(sessionid).isActive();
-        return !active ? 200 : 501;
+        boolean active = sessionService.sessionActive(sessionid);
+        if(!active) return 200;
+        return 500;
     }
 
 

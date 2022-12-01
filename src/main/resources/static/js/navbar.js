@@ -1,6 +1,6 @@
 import {logout, userEmail} from "./validation.js"
 import {openLoginNotice} from "./notice.js";
-import {currentLocation, sessionActive, userAccept} from "./main.js";
+import {currentLocation, deleteUser, sessionActive, userAccept} from "./main.js";
 
 
 $(document).ready(function () {
@@ -197,10 +197,11 @@ export function validateSession() {
            dataType: 'json',
            responseType: "json",
            async: false,
+           success : () => { deleteUser(); }
        })
    }
 
-   async function autologin() {
+   function autologin() {
         if(!autologinCondition()) return ;
         let user = getRememberedUser();
         $.ajax({

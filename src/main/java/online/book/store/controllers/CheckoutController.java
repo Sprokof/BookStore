@@ -34,12 +34,11 @@ public class CheckoutController {
 
 
     @DeleteMapping("/cart/clear")
-    public ResponseEntity<Integer> clearCart(@RequestBody CartDto cartDto){
+    public void clearCart(@RequestBody CartDto cartDto){
         String sessionid = cartDto.getSessionid();
         User user = this.sessionService.getCurrentUser(sessionid);
         Cart cart = user.getCart();
         cartService.clearCart(cart);
-        return ResponseEntity.ok(200);
     }
 
     @PostMapping("/validate/checkout")

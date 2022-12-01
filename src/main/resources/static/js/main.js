@@ -176,23 +176,9 @@ export function reload(){
 }
 
 export function sessionActive () {
-    let sessionDto;
     let user = getUser();
-    if(user == null) return false;
-    $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: "/session/active",
-        cache: false,
-        data: JSON.stringify(user),
-        dataType: 'json',
-        responseType: 'json',
-        async: false,
-        success: (data) => {
-            sessionDto = JSON.parse(JSON.stringify(data));
-        }
-    })
-    return sessionDto['active'];
+    console.log(user)
+    return user != null;
 }
 
 export function itemRemove(dto, url){

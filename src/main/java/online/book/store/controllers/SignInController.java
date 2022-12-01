@@ -12,6 +12,7 @@ import online.book.store.validation.AbstractValidation;
 import online.book.store.validation.ResetValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -104,10 +105,9 @@ public class SignInController {
 
 
     @PostMapping("/resend/code")
-    public ResponseEntity<Integer> resendCode(@RequestBody ResetPasswordDto dto){
+    public void resendCode(@RequestBody ResetPasswordDto dto){
         User user = userService.getUserByLogin(dto.getLogin());
         signService.generateNewCode();
         sender.send(user.getEmail(), Subject.RESET_PASSWORD, this.signService);
-        return ResponseEntity.ok(200);
     }
 }

@@ -152,14 +152,7 @@ export function logout() {
         cache: false,
         dataType: 'text',
         responseType: "text",
-        success: function (status) {
-            let code = JSON.parse(JSON.stringify(status));
-            if (Number(code) === 200) {
-                deleteUser();
-                setTimeout(backHome, 100);
-
-            }
-        }
+        success: () => { deleteUser(); setTimeout(backHome, 100); }
     })
 }
 

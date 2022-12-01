@@ -44,11 +44,10 @@ public class OrderController {
 
 
     @PostMapping("/orders/add")
-    public ResponseEntity<Integer> addOrder(@RequestBody OrderDto orderDto){
+    public void addOrder(@RequestBody OrderDto orderDto){
         String sessionid = orderDto.getSessionid();
         User user = sessionService.getCurrentUser(sessionid);
         orderService.addOrders(user);
-        return ResponseEntity.ok(200);
     }
 
 }

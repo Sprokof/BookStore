@@ -59,14 +59,6 @@ public class StoreController{
         return ResponseEntity.ok(200);
     }
 
-
-    @PostMapping("/session/active")
-    public ResponseEntity<SessionDto> sessionActive(@RequestBody UserDto userDto){
-        String sessionid = userDto.getSessionid();
-        return ResponseEntity.ok(this.sessionService.sessionActive(sessionid));
-    }
-
-
     @GetMapping("/registration/confirm")
     public String confirmRegistration(@RequestParam ("token") String token) throws ResourceNotFoundException {
         signService.confirmRegistration(token);

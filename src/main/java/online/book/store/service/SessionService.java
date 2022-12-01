@@ -10,7 +10,7 @@ public interface SessionService {
     void deleteSession(UserSession session);
     boolean sessionExist(String id);
     UserSession getSessionById(String sessionId);
-    SessionDto sessionActive(String sessionId);
+    boolean sessionActive(String sessionId);
     User getCurrentUser(String sessionid);
     SessionDto getSessionData(UserDto userDto);
     void sessionInvalidate(String sessionid);

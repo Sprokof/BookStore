@@ -32,8 +32,8 @@ public class SessionServiceImpl implements SessionService{
     }
 
     @Override
-    public SessionDto sessionActive(String sessionId) {
-        return new SessionDto(sessionExist(sessionId));
+    public boolean sessionActive(String sessionId) {
+        return sessionExist(sessionId);
     }
 
     @Override

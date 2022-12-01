@@ -4,6 +4,7 @@ import online.book.store.dto.*;
 import online.book.store.entity.*;
 import online.book.store.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,19 +46,18 @@ public class CartController {
         String sessionid = cartDto.getSessionid();
         User user = sessionService.getCurrentUser(sessionid);
         Book book = bookService.getBookByIsbn(isbn);
-        cartService.removeBookFromCart(book, user.getCart());
-        return ResponseEntity.ok(200);
-
+        int code = cartService.removeBookFromCart(book, user.getCart());
+        return ResponseEntity.ok(code);
     }
 
     @PostMapping("/cart/item/add")
-    public ResponseEntity<Integer> addBook(@RequestBody CartDto cartDto){
+    public void addBook(@RequestBody CartDto cartDto){
         String isbn = cartDto.getIsbn();
         String sessionid = cartDto.getSessionid();
         User user = sessionService.getCurrentUser(sessionid);
         Book book = bookService.getBookByIsbn(isbn);
         cartService.addBookToCart(book, user.getCart());
-        return ResponseEntity.ok(200);
+
     }
 
     @GetMapping("/cart/item/contains")
@@ -83,8 +83,8 @@ public class CartController {
         Cart cart = user.getCart();
         Book book = bookService.getBookByIsbn(isbn);
         CartItem cartItem = cartService.getCartItemByBook(cart, book);
-        cartService.updateCartItem(cartItem, quantity);
-        return ResponseEntity.ok(200);
+        int code = cartService.updateCartItem(cartItem, quantity);
+        return ResponseEntity.ok(code);
     }
 
 }

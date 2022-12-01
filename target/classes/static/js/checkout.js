@@ -193,12 +193,14 @@ export function blockInputPointerEvents(input, flag) {
 
 
 let numberField = document.querySelector('#card-num');
-    let counter = 0;
-    numberField.onkeyup = () => {
-        counter++;
-        if (counter === 4) {
-            numberField.value += ' ';
-            counter = 0;
+    if(numberField != null) {
+        let counter = 0;
+        numberField.onkeyup = () => {
+            counter++;
+            if (counter === 4) {
+                numberField.value += ' ';
+                counter = 0;
+            }
         }
     }
 

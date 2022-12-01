@@ -10,6 +10,7 @@ import online.book.store.service.SessionService;
 import online.book.store.service.UserService;
 import online.book.store.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -55,18 +56,17 @@ public class WishListController {
         Book book = bookService.getBookByIsbn(isbn);
         String sessionid = wishlistDto.getSessionid();
         Wishlist userWishlist = sessionService.getCurrentUser(sessionid).getWishList();
-        wishlistService.removeFromWishlist(book, userWishlist);
-        return ResponseEntity.ok(200);
+        int code = wishlistService.removeFromWishlist(book, userWishlist);
+        return ResponseEntity.ok(code);
     }
 
     @PostMapping("/wishlist/item/add")
-    public ResponseEntity<Integer> addToWishList(@RequestBody WishlistDto wishlistDto) {
+    public void addToWishList(@RequestBody WishlistDto wishlistDto) {
         String isbn = wishlistDto.getIsbn();
         Book book = bookService.getBookByIsbn(isbn);
         String sessionid = wishlistDto.getSessionid();
         Wishlist userWishlist = sessionService.getCurrentUser(sessionid).getWishList();
         wishlistService.addBookToWishlist(book, userWishlist);
-        return ResponseEntity.ok(200);
     }
 
 

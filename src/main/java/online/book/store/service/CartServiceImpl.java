@@ -8,6 +8,7 @@ import online.book.store.entity.Cart;
 import online.book.store.entity.CartItem;
 import online.book.store.entity.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,6 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartDao cartDao;
-
 
     @Override
     public CartDto contains(Cart cart, Book book) {
@@ -40,11 +40,12 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void removeBookFromCart(Book book, Cart cart){
+    public int removeBookFromCart(Book book, Cart cart){
         CartItem cartItem = getCartItemByBook(cart, book);
         cart.removeItem(cartItem).updatePrices();
         deleteCartItem(cartItem);
         updateCart(cart);
+        return 200;
     }
 
     @Override
@@ -54,17 +55,13 @@ public class CartServiceImpl implements CartService {
 
 
     @Override
-    public void updateCartItem(CartItem cartItem, int quantity) {
+    public int updateCartItem(CartItem cartItem, int quantity) {
         cartItem.setQuantity(quantity);
         cartItem.getCart().updatePrices();
         this.cartDao.updateCartItem(cartItem);
-
+        return 200;
     }
 
-    @Override
-    public CartItem getCartItemById(int id) {
-        return this.cartDao.getCartItemById(id);
-    }
 
     @Override
     public CartItem getCartItemByBook(Cart cart, Book book) {

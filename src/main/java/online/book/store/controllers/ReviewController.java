@@ -29,11 +29,10 @@ public class ReviewController {
 
 
     @PostMapping("/reviews/post")
-    public ResponseEntity<Integer> postReview (@RequestBody BookReviewDto bookReviewDto){
+    public void postReview (@RequestBody BookReviewDto bookReviewDto){
         String sessionid = bookReviewDto.getSessionid();
         User user = this.sessionService.getCurrentUser(sessionid);
         this.bookReviewService.addReview(bookReviewDto, user);
-        return ResponseEntity.ok(200);
     }
 
     @GetMapping("/reviews/exist")
