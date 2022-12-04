@@ -1,6 +1,7 @@
 package online.book.store.service;
 
 
+import online.book.store.dao.BookDao;
 import online.book.store.dao.CartDao;
 import online.book.store.dto.CartDto;
 import online.book.store.entity.Book;
@@ -23,9 +24,13 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private CartDao cartDao;
 
+    @Autowired
+    private BookDao bookDao;
+
     @Override
-    public CartDto contains(Cart cart, Book book) {
-        boolean contains = this.cartDao.contains(cart, book);
+    public CartDto contains(Cart cart, String isbn) {
+        int bookId = bookDao.getBookIdByISBN(isbn);
+        boolean contains = this.cartDao.contains(cart, bookId);
         return new CartDto(contains);
 
     }

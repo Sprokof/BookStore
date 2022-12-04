@@ -79,6 +79,9 @@
                             <span class="post-date" th:text="${review.postDate}"></span>
                         </div>
                     </div>
+                    <div th:if="${book.getBookReviews().size() > 10}">
+                        <button class="load-btn">Load More</button>
+                    </div>
 
                     <div th:switch="${book.getBookReviews().isEmpty()}">
                         <div th:case="false" class="new-review-btn">
@@ -96,7 +99,7 @@
             </div>
         </div>
         </div>
-    <div th:insert="~{reviews :: review-add}"></div>
+    <div th:insert="~{review :: review-add}"></div>
 </div>
 </body>
 <script type="module" th:src="@{/js/navbar.js}"></script>

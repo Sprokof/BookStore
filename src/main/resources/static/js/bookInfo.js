@@ -89,6 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let newReviewBtn = document.querySelector('.new-review-btn');
         invisibleNode(newReviewBtn);
     }
+
 })
 
 
@@ -134,7 +135,7 @@ function reviewExist () {
     return result;
 }
 
-function invisibleNode(btn){
+function invisibleNode(btn) {
     btn.style.opacity = "0.6";
     btn.style.pointerEvents = "none";
 }

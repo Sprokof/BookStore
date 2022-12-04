@@ -51,12 +51,13 @@ public class CartController {
     }
 
     @PostMapping("/cart/item/add")
-    public void addBook(@RequestBody CartDto cartDto){
+    public ResponseEntity<HttpStatus> addBook(@RequestBody CartDto cartDto){
         String isbn = cartDto.getIsbn();
         String sessionid = cartDto.getSessionid();
         User user = sessionService.getCurrentUser(sessionid);
         Book book = bookService.getBookByIsbn(isbn);
         cartService.addBookToCart(book, user.getCart());
+        return ResponseEntity.ok(HttpStatus.CREATED);
 
     }
 
@@ -64,7 +65,7 @@ public class CartController {
     public ResponseEntity<CartDto> contains(@RequestHeader("session") String sessionid, @RequestParam String isbn){
         User user = sessionService.getCurrentUser(sessionid);
         Book book = bookService.getBookByIsbn(isbn);
-        return ResponseEntity.ok(cartService.contains(user.getCart(), book));
+        return ResponseEntity.ok(cartService.contains(user.getCart(), isbn));
     }
 
     @GetMapping("/cart/item/quantity")

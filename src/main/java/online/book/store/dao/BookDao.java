@@ -16,6 +16,7 @@ public interface BookDao {
     void updateBook(Book book);
     boolean reviewExist(int bookId, int userId);
     boolean bookExist(String isbn);
+    int getBookIdByISBN(String isbn);
 
 
 }

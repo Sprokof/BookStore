@@ -160,3 +160,18 @@
 #book-info .new-review-btn p {
     font-size: 12px;
 }
+
+#book-info .load-btn {
+    width: 80%;
+    color: slategrey;
+    border: 2px solid silver;
+    background: white;
+    border-radius: 8px;
+    position: relative;
+    margin-top: 2%;
+    left: 10%;
+}
+
+#book-info .load-btn:hover {
+    background: whitesmoke;
+}

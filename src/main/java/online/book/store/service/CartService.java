@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 public interface CartService {
     void addBookToCart(Book book, Cart cart);
     int removeBookFromCart(Book book, Cart cart);
-    CartDto contains(Cart cart, Book book);
+    CartDto contains(Cart cart, String isbn);
     void updateCart(Cart cart);
     int updateCartItem(CartItem cartItem, int quantity);
     CartItem getCartItemByBook(Cart cart, Book book);

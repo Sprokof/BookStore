@@ -17,7 +17,7 @@ public class CartDaoImpl implements CartDao{
     private final SessionFactory sessionFactory = SessionFactorySingleton.getInitializationFactory();
 
     @Override
-    public boolean contains(Cart cart, Book book) {
+    public boolean contains(Cart cart, int bookId) {
         Session session = null;
         CartItem cartItem = null;
     try{
@@ -25,7 +25,7 @@ public class CartDaoImpl implements CartDao{
         session.beginTransaction();
         cartItem = (CartItem) session.createSQLQuery("SELECT * FROM CARTS_ITEMS WHERE CART_ID=:c_id AND BOOK_ID=:b_id").
                 setParameter("c_id", cart.getId()).
-                setParameter("b_id", book.getId()).
+                setParameter("b_id", bookId).
                 addEntity(CartItem.class).list().get(0);
         session.getTransaction().commit();
     }
@@ -87,30 +87,6 @@ public class CartDaoImpl implements CartDao{
         }
     }
 
-    @Override
-    public CartItem getCartItemById(int id) {
-        Session session = null;
-        CartItem cartItem = null;
-    try{
-        session = this.sessionFactory.openSession();
-        session.beginTransaction();
-        cartItem = (CartItem) session.createSQLQuery("SELECT * FROM CARTS_ITEMS WHERE id=:id")
-                .setParameter("id", id).addEntity(CartItem.class).getSingleResult();
-        session.getTransaction().commit();
-    } catch (Exception e) {
-        if (session != null) {
-            if (session.getTransaction() != null) {
-                session.getTransaction().rollback();
-                if(e instanceof NoResultException) return null;
-            }
-        }
-    } finally {
-        if (session != null) {
-            session.close();
-        }
-    }
-    return cartItem;
-    }
 
     @Override
     public CartItem getCartItemByBook(Cart cart, Book book) {
@@ -199,30 +175,4 @@ public class CartDaoImpl implements CartDao{
     return quantity;
     }
 
-    @Override
-    public void deleteCartItemById(int id) {
-        Session session = null;
-    try {
-        session = this.sessionFactory.openSession();
-        session.beginTransaction();
-        session.beginTransaction();
-        session.createSQLQuery("DELETE FROM " +
-                "CART_ITEMS WHERE ID=:id").setParameter("id", id).
-                executeUpdate();
-        session.getTransaction().commit();
-    }
-
-    catch (Exception e){
-        if (session != null) {
-            if(session.getTransaction() != null){
-                session.getTransaction().rollback();
-            }
-        }
-    }
-    finally {
-        if(session != null){
-            session.close();
-        }
-    }
-    }
 }

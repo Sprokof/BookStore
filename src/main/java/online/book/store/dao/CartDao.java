@@ -9,12 +9,10 @@ import online.book.store.entity.CartItem;
 import java.math.BigInteger;
 
 public interface CartDao {
-    boolean contains(Cart cart, Book book);
+    boolean contains(Cart cart, int bookId);
     void updateCart(Cart cart);
-    CartItem getCartItemById(int id);
     CartItem getCartItemByBook(Cart cart, Book book);
     void deleteCartItem(CartItem cartItem);
     Integer getItemsQuantity(int cartId);
     void updateCartItem(CartItem cartItem);
-    void deleteCartItemById(int id);
 }

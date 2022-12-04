@@ -61,21 +61,20 @@ public class WishListController {
     }
 
     @PostMapping("/wishlist/item/add")
-    public void addToWishList(@RequestBody WishlistDto wishlistDto) {
+    public ResponseEntity<HttpStatus> addToWishList(@RequestBody WishlistDto wishlistDto) {
         String isbn = wishlistDto.getIsbn();
         Book book = bookService.getBookByIsbn(isbn);
         String sessionid = wishlistDto.getSessionid();
         Wishlist userWishlist = sessionService.getCurrentUser(sessionid).getWishList();
         wishlistService.addBookToWishlist(book, userWishlist);
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
 
     @GetMapping("/wishlist/item/contains")
     public ResponseEntity<WishlistDto> contains(@RequestHeader("session") String sessionid, @RequestParam("isbn") String isbn){
-        Book book = bookService.getBookByIsbn(isbn);
         Wishlist userWishlist = sessionService.getCurrentUser(sessionid).getWishList();
-        wishlistService.contains(book, userWishlist);
-        return ResponseEntity.ok(wishlistService.contains(book, userWishlist));
+        return ResponseEntity.ok(wishlistService.contains(isbn, userWishlist));
     }
 
 

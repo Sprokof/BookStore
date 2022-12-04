@@ -16,7 +16,7 @@ public class WishlistDaoImpl implements WishlistDao{
     private final SessionFactory sessionFactory = SessionFactorySingleton.getInitializationFactory();
 
     @Override
-    public boolean contains(Book book, Wishlist wishlist) {
+    public boolean contains(int bookId, Wishlist wishlist) {
         Session session = null;
         Integer id = null;
         try {
@@ -24,7 +24,7 @@ public class WishlistDaoImpl implements WishlistDao{
             session.beginTransaction();
             id = (Integer) session.createSQLQuery("SELECT book_id " +
                             "FROM BOOKS_WISHLISTS WHERE book_id=:b_id AND wishlist_id=:w_id").
-                    setParameter("b_id", book.getId()).
+                    setParameter("b_id", bookId).
                     setParameter("w_id", wishlist.getId()).list().get(0);
             session.getTransaction().commit();
         } catch (Exception e) {
