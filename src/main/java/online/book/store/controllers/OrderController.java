@@ -7,6 +7,7 @@ import online.book.store.service.OrderService;
 import online.book.store.service.SessionService;
 import online.book.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,10 +45,11 @@ public class OrderController {
 
 
     @PostMapping("/orders/add")
-    public void addOrder(@RequestBody OrderDto orderDto){
+    public ResponseEntity<HttpStatus> addOrder(@RequestBody OrderDto orderDto){
         String sessionid = orderDto.getSessionid();
         User user = sessionService.getCurrentUser(sessionid);
         orderService.addOrders(user);
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
 }

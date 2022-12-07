@@ -2,9 +2,16 @@ package online.book.store.service;
 
 import online.book.store.dto.BookReviewDto;
 import online.book.store.entity.Book;
+import online.book.store.entity.BookReview;
 import online.book.store.entity.User;
+
+import java.util.List;
 
 public interface BookReviewService {
     void addReview(BookReviewDto bookReviewDto, User user);
     boolean reviewExist(Book book, User user);
+    int countReviews(String isbn);
+    List<BookReview> getBookReviews(String isbn);
+    List<BookReview> loadReviewsByISBN(String isbn, int index);
+    boolean hasReviews(String isbn, int index);
 }

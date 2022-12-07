@@ -4,10 +4,10 @@ import online.book.store.entity.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class SessionFactorySingleton {
+public class SessionFactoryInitialization {
     private static SessionFactory instance;
 
-    private SessionFactorySingleton(){}
+    private SessionFactoryInitialization(){}
 
     public static SessionFactory getInitializationFactory() {
         if (instance == null) {

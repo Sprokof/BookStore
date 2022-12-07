@@ -1,17 +1,13 @@
 package online.book.store.dao;
 
 import online.book.store.entity.Book;
-import online.book.store.entity.Category;
-import online.book.store.service.CategoryService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import static online.book.store.entity.BookReview.MAX_POPULAR_RATING;
@@ -22,7 +18,7 @@ import static online.book.store.entity.BookReview.MIN_POPULAR_RATING;
 public class BookDaoImpl implements BookDao {
 
     private final SessionFactory sessionFactory =
-            SessionFactorySingleton.getInitializationFactory();
+            SessionFactoryInitialization.getInitializationFactory();
 
     @Override
     @SuppressWarnings("unchecked")

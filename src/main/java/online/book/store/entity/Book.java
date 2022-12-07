@@ -15,42 +15,79 @@ import java.util.List;
 @Entity
 @Table(name = "BOOKS")
 @NoArgsConstructor
-@Getter
-@Setter
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private int id;
 
     @Column(name = "ISBN")
+    @Getter
+    @Setter
     private String isbn;
+
     @Column(name = "TITLE")
+    @Getter
+    @Setter
     private String title;
+
     @Column(name = "PUBLISHER")
+    @Getter
+    @Setter
     private String publisher;
+
     @Column(name = "PRICE")
+    @Getter
+    @Setter
     private int price;
+
     @Column(name = "YEAR_OF_PUBLISHING")
+    @Getter
+    @Setter
     private int yearPub;
+
     @Column(name = "SUBJECT")
+    @Getter
+    @Setter
     private String subject;
+
     @Column(name = "BOOK_IMAGE_NAME")
+    @Getter
+    @Setter
     private String bookImageName;
+
+
     @Column(name = "AVAILABLE")
+    @Getter
+    @Setter
     private String available;
+
     @Column(name = "AVAILABLE_COPIES")
+    @Getter
+    @Setter
     private int availableCopies;
+
+
     @Column(name = "DESCRIPTION")
+    @Getter
+    @Setter
     private String description;
+
     @Column(name = "AUTHORS")
+    @Getter
+    @Setter
     private String authors;
+
     @Column(name = "FORMAT")
+    @Getter
+    @Setter
     private String format;
+
     @Column(name = "ADDED_DATE")
+    @Getter
+    @Setter
     private LocalDate addedDate;
-
-
 
     @Getter
     @Setter
@@ -91,6 +128,7 @@ public class Book {
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = {@JoinColumn(name = "category_id")})
     @LazyCollection(LazyCollectionOption.FALSE)
+    @Getter
     private List<Category> categories;
 
 
@@ -142,6 +180,14 @@ public class Book {
     private String titleToUpperCase(String title){
         String upperCaseLetter = (String.valueOf(title.charAt(0)).toUpperCase());
         return String.format("%s%s", upperCaseLetter, title.substring(1));
+    }
+
+    public List<BookReview> getBookReviews(){
+        if(this.bookReviews.size() > 5){
+            return this.bookReviews.subList(0, 5);
+        }
+        return this.bookReviews;
+
     }
 
     @Override

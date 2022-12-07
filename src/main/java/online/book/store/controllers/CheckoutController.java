@@ -11,6 +11,7 @@ import online.book.store.service.SessionService;
 import online.book.store.validation.CheckoutValidation;
 import online.book.store.validation.ValidateResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,11 +35,12 @@ public class CheckoutController {
 
 
     @DeleteMapping("/cart/clear")
-    public void clearCart(@RequestBody CartDto cartDto){
+    public ResponseEntity<HttpStatus> clearCart(@RequestBody CartDto cartDto){
         String sessionid = cartDto.getSessionid();
         User user = this.sessionService.getCurrentUser(sessionid);
         Cart cart = user.getCart();
         cartService.clearCart(cart);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PostMapping("/validate/checkout")

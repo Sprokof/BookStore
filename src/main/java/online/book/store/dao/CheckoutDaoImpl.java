@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CheckoutDaoImpl implements CheckoutDao{
 
-    private final SessionFactory sessionFactory = SessionFactorySingleton.getInitializationFactory();
+    private final SessionFactory sessionFactory = SessionFactoryInitialization.getInitializationFactory();
 
     @Override
     public void updateCheckout(Checkout checkout) {

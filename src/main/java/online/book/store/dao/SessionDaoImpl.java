@@ -11,7 +11,7 @@ import javax.persistence.NoResultException;
 public class SessionDaoImpl implements SessionDao {
 
     private final SessionFactory sessionFactory =
-            SessionFactorySingleton.getInitializationFactory();
+            SessionFactoryInitialization.getInitializationFactory();
 
     @Override
     public void deleteSession(UserSession userSession) {

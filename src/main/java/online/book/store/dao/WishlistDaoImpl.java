@@ -1,19 +1,15 @@
 package online.book.store.dao;
 
 
-import online.book.store.entity.Book;
 import online.book.store.entity.Wishlist;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.NoResultException;
-import java.util.List;
-
 @Component
 public class WishlistDaoImpl implements WishlistDao{
 
-    private final SessionFactory sessionFactory = SessionFactorySingleton.getInitializationFactory();
+    private final SessionFactory sessionFactory = SessionFactoryInitialization.getInitializationFactory();
 
     @Override
     public boolean contains(int bookId, Wishlist wishlist) {

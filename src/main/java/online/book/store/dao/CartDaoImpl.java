@@ -8,13 +8,11 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
-import java.math.BigInteger;
-import java.util.stream.Collectors;
 
 @Component
 public class CartDaoImpl implements CartDao{
 
-    private final SessionFactory sessionFactory = SessionFactorySingleton.getInitializationFactory();
+    private final SessionFactory sessionFactory = SessionFactoryInitialization.getInitializationFactory();
 
     @Override
     public boolean contains(Cart cart, int bookId) {

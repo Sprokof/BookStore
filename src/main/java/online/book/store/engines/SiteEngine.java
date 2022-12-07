@@ -166,9 +166,9 @@ public class SiteEngine {
     public List<Row> mapBooksToRow(List<Book> booksToMap) {
         int rowSize = 4;
         this.rows = new LinkedList<>();
-        for (int i = 0; i < booksToMap.size(); i += rowSize) {
-            Row row = new Row(booksToMap.subList(i,
-                    Math.min(i + rowSize, booksToMap.size())));
+        int size = booksToMap.size();
+        for (int i = 0; i < size; i += rowSize) {
+            Row row = new Row(booksToMap.subList(i, Math.min(i + rowSize, size)));
             rows.add(row);
         }
         return this.rows;

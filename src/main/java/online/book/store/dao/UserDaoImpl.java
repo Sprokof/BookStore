@@ -8,15 +8,13 @@ import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
-import java.util.List;
-import java.util.UUID;
 import java.util.regex.Pattern;
 
 @Component
 public class UserDaoImpl implements UserDao {
 
     private final SessionFactory sessionFactory =
-            SessionFactorySingleton.getInitializationFactory();
+            SessionFactoryInitialization.getInitializationFactory();
 
     @Override
     public void saveUser(User user) {

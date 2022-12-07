@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderDaoImpl implements OrderDao{
 
-    private final SessionFactory sessionFactory = SessionFactorySingleton.getInitializationFactory();
+    private final SessionFactory sessionFactory = SessionFactoryInitialization.getInitializationFactory();
 
 
     @Override

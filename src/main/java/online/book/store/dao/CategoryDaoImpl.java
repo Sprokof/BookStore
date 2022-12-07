@@ -11,7 +11,7 @@ import java.util.List;
 @Component
 public class CategoryDaoImpl implements CategoryDao{
 
-    private final SessionFactory sessionFactory = SessionFactorySingleton.
+    private final SessionFactory sessionFactory = SessionFactoryInitialization.
             getInitializationFactory();
 
     @Override
