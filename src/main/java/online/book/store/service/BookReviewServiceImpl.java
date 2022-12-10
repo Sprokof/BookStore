@@ -1,9 +1,7 @@
 package online.book.store.service;
 
 import online.book.store.dao.BookDao;
-import online.book.store.dao.ReviewsDao;
 import online.book.store.dto.BookReviewDto;
-import online.book.store.engines.SiteEngine;
 import online.book.store.entity.Book;
 import online.book.store.entity.BookReview;
 import online.book.store.entity.Category;
@@ -11,7 +9,6 @@ import online.book.store.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Component
@@ -25,9 +22,6 @@ public class BookReviewServiceImpl implements BookReviewService {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private ReviewsDao reviewsDao;
 
     @Override
     public void addReview(BookReviewDto bookReviewDto, User user) {
@@ -77,26 +71,4 @@ public class BookReviewServiceImpl implements BookReviewService {
         return round(rating / size);
     }
 
-    @Override
-    public int countReviews(String isbn) {
-        return this.reviewsDao.bookReviewCount(isbn);
-    }
-
-    @Override
-    public List<BookReview> getBookReviews(String isbn) {
-        return this.reviewsDao.getBookReviews(isbn);
-    }
-
-    @Override
-    public List<BookReview> loadReviewsByISBN(String isbn, int index) {
-        int loadCount = 5;
-        int count = countReviews(isbn);
-        return getBookReviews(isbn).subList(index, Math.min(index + loadCount, count));
-    }
-
-    @Override
-    public boolean hasReviews(String isbn, int index) {
-        int count = countReviews(isbn);
-        return index < count;
-    }
 }

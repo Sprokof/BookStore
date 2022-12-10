@@ -139,3 +139,37 @@ function invisibleNode(btn) {
     btn.style.opacity = "0.6";
     btn.style.pointerEvents = "none";
 }
+
+let loadBtn = document.querySelector("#book-info .load-btn");
+if(loadBtn != null) {
+    loadBtn.onclick = () => {
+        let container = document.querySelector("#book-info .reviews-container");
+        let lastIndex = (container.children.length - 1);
+        let lastVisibleReview = container.children[lastIndex];
+
+    }
+
+}
+
+
+function loadReviews(index) {
+    let loadedReviews;
+    let isbn = extractISBN(isbnNode);
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/reviews/load?isbn=" + isbn + "&index=" + index,
+        cache: false,
+        dataType: 'json',
+        responseType: 'json',
+        async: false,
+        success: (data) => {
+            loadedReviews = JSON.parse(JSON.stringify(data));
+        }
+    })
+    return loadedReviews;
+}
+
+function hasReviews(){
+
+}

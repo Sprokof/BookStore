@@ -183,11 +183,7 @@ public class Book {
     }
 
     public List<BookReview> getBookReviews(){
-        if(this.bookReviews.size() > 5){
-            return this.bookReviews.subList(0, 5);
-        }
         return this.bookReviews;
-
     }
 
     @Override

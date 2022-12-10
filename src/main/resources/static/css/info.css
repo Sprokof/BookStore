@@ -175,3 +175,17 @@
 #book-info .load-btn:hover {
     background: whitesmoke;
 }
+
+#book-info.disable {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+#book-info .row-review.hide {
+    display: none;
+}
+
+#book-info .row-review.reveal {
+    transition: 0.3s ease-in-out;
+    display: block;
+}

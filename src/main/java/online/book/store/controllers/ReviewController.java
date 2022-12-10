@@ -44,20 +44,6 @@ public class ReviewController {
         boolean exist = this.bookReviewService.reviewExist(book, user);
         return ResponseEntity.ok(String.valueOf(exist));
     }
-
-    @GetMapping("/reviews/load")
-    public ResponseEntity<List<BookReview>> loadReviews(@RequestParam Map<String, String> params) {
-        int index = Integer.parseInt(params.get("index"));
-        String isbn = params.get("isbn");
-        List<BookReview> loadedReviews = this.bookReviewService.loadReviewsByISBN(isbn, index);
-        return ResponseEntity.ok(loadedReviews);
-    }
-
-    @GetMapping("/review/has")
-    public ResponseEntity<String> hasReviews(@RequestParam Map<String, String> params){
-        int index = Integer.parseInt(params.get("index"));
-        String isbn = params.get("isbn");
-        return ResponseEntity.ok(String.valueOf(this.bookReviewService.hasReviews(isbn, index)));
-    }
+    
 
 }

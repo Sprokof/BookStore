@@ -39,7 +39,7 @@ reset.addEventListener("click", () => {
         "newPassword" : document.getElementById('new-password').value,
         "confirmResetPassword" : document.getElementById('confirm-reset-password').value,
     }
-    validation(confirmDto, "/home/reset");
+    validation(confirmDto, "/reset");
 })
 
 let confirm = document.getElementById("done-btn");

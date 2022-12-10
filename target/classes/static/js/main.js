@@ -177,7 +177,6 @@ export function reload(){
 
 export function sessionActive () {
     let user = getUser();
-    console.log(user)
     return user != null;
 }
 

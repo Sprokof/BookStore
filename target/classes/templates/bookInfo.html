@@ -79,7 +79,8 @@
                             <span class="post-date" th:text="${review.postDate}"></span>
                         </div>
                     </div>
-                    <div th:if="${book.getBookReviews().size() > 10}">
+
+                    <div th:if="${book.getBookReviews().size() > 5}">
                         <button class="load-btn">Load More</button>
                     </div>
 
