@@ -162,10 +162,18 @@ function hideReviews(){
 }
 
 function revealReviews(value) {
+    value = correctingIndex(value)
     let revealSize = 5;
     for(let i = 0; i < revealSize; i ++ ){
         let index = (i + value);
         if(index >= rowReviews.length) return;
         rowReviews[index].classList.add('reveal');
     }
+
+function correctingIndex(index){
+        if(index >= rowReviews.length){
+            index = (rowReviews.length - 1)
+        }
+        return index;
+}
 }

@@ -5,6 +5,8 @@ import {blockBackgroundHtml, openLoginNotice} from "./notice.js";
 let buttons = document.querySelectorAll('#book-info .item-container .buttons button');
 let isbnNode = document.querySelector('#book-info .isbn');
 
+let rowReviews = document.querySelectorAll('#book-info .row-review');
+
 let wishlistBtn = buttons[0];
 wishlistBtn.onclick = () => {
     addOrRemoveFromWishlist(wishlistBtn, isbnNode);
@@ -90,6 +92,8 @@ document.addEventListener('DOMContentLoaded', () => {
         invisibleNode(newReviewBtn);
     }
 
+    hideReviews();
+
 })
 
 
@@ -142,34 +146,26 @@ function invisibleNode(btn) {
 
 let loadBtn = document.querySelector("#book-info .load-btn");
 if(loadBtn != null) {
+    let index = 5;
     loadBtn.onclick = () => {
-        let container = document.querySelector("#book-info .reviews-container");
-        let lastIndex = (container.children.length - 1);
-        let lastVisibleReview = container.children[lastIndex];
-
+        revealReviews(index);
+        index += 5;
     }
-
 }
 
 
-function loadReviews(index) {
-    let loadedReviews;
-    let isbn = extractISBN(isbnNode);
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "/reviews/load?isbn=" + isbn + "&index=" + index,
-        cache: false,
-        dataType: 'json',
-        responseType: 'json',
-        async: false,
-        success: (data) => {
-            loadedReviews = JSON.parse(JSON.stringify(data));
-        }
-    })
-    return loadedReviews;
+function hideReviews(){
+    if(rowReviews.length < 6) return ;
+    for(let i = 5; i < rowReviews.length; i ++ ){
+        rowReviews[i].classList.add("hide");
+    }
 }
 
-function hasReviews(){
-
+function revealReviews(value) {
+    let revealSize = 5;
+    for(let i = 0; i < revealSize; i ++ ){
+        let index = (i + value);
+        if(index >= rowReviews.length) return;
+        rowReviews[index].classList.add('reveal');
+    }
 }

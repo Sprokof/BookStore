@@ -44,6 +44,6 @@ public class ReviewController {
         boolean exist = this.bookReviewService.reviewExist(book, user);
         return ResponseEntity.ok(String.valueOf(exist));
     }
-    
+
 
 }
