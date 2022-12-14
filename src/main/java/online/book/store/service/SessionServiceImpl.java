@@ -15,11 +15,13 @@ public class SessionServiceImpl implements SessionService{
     @Autowired
     private SessionDao sessionDao;
 
+    @Autowired
+    private SessionStatisticsService statService;
+
     @Override
     public void deleteSession(UserSession session) {
         this.sessionDao.deleteSession(session);
     }
-
 
     @Override
     public boolean sessionExist(String id) {
@@ -52,11 +54,19 @@ public class SessionServiceImpl implements SessionService{
 
     @Override
     public void sessionInvalidate(String sessionid) {
+        boolean first = sessionFirst(sessionid);
+        statService.decrementActiveSession(first);
         this.sessionDao.deleteSessionById(sessionid);
     }
 
     public boolean adminSession(UserSession userSession){
         Role userRole = userSession.getUser().getRole();
         return userRole.equals(Role.ADMIN);
+    }
+
+
+    @Override
+    public boolean sessionFirst(String sessionid) {
+        return this.sessionDao.sessionFirst(sessionid);
     }
 }

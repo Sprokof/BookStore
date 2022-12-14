@@ -71,9 +71,9 @@ public class SignInController {
 
 
     @DeleteMapping("/logout")
-    public ResponseEntity<Integer> logout(@RequestBody UserDto userDto){
-        int code = this.signService.logout(userDto);
-        return ResponseEntity.ok(code);
+    public ResponseEntity<HttpStatus> logout(@RequestBody UserDto userDto){
+        HttpStatus response = this.signService.logout(userDto);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/reset")
@@ -109,5 +109,11 @@ public class SignInController {
         User user = userService.getUserByLogin(dto.getLogin());
         signService.generateNewCode();
         sender.send(user.getEmail(), Subject.RESET_PASSWORD, this.signService);
+    }
+
+    @PostMapping(value = "/autologin")
+    public ResponseEntity<HttpStatus> autologin(@RequestBody UserDto userDto){
+        this.signService.loginUser(userDto);
+        return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 }

@@ -6,11 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
 
 @Entity
 @Table(name = "USERS_SESSIONS")
 @NoArgsConstructor
 public class UserSession {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
@@ -21,11 +26,22 @@ public class UserSession {
     @Setter
     private String sessionId;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @Column(name = "DATESTAMP")
+    @Getter
+    @Setter
+    private String dateStamp;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @Getter
     @Setter
     private User user;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "stat_id")
+    @Getter
+    @Setter
+    private SessionStatistics sessionStatistics;
 
     @Override
     public boolean equals(Object obj) {
@@ -35,15 +51,29 @@ public class UserSession {
         return this.sessionId.equals(userSession.sessionId);
     }
 
-    public UserSession(String sessionId) {
+    public UserSession(String sessionId, SessionStatistics statistics) {
         this.sessionId = sessionId;
+        this.dateStamp = datestamp();
+        initStatistics(statistics);
+
     }
 
     @Override
     public String toString() {
-        return "UserSession{" +
+        return "UserSession { " +
                 ", sessionId='" + sessionId + '\'' +
-                ", user=" + user +
+                ", user=" + user + " " +
                 '}';
+    }
+
+    private String datestamp(){
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss");
+        return sdf.format(now);
+    }
+
+    private void initStatistics(SessionStatistics statistics){
+        this.sessionStatistics = statistics;
+        this.sessionStatistics.addSession(this);
     }
 }

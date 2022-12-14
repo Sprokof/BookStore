@@ -22,27 +22,29 @@ public class SignServiceImpl implements SignService {
     @Autowired
     private UserService userService;
 
-    private ResetPasswordDto passwordDto;
-
     @Autowired
     private SessionService sessionService;
 
     @Autowired
+    private SessionStatisticsService statisticsService;
+
+    @Autowired
     private MailSender sender;
+
+    private ResetPasswordDto passwordDto;
 
     @Override
     public void loginUser(UserDto userDto) {
-        initUserSession(userDto);
+        initSession(userDto);
     }
 
-
     @Override
-    public int logout(UserDto userDto) {
+    public HttpStatus logout(UserDto userDto) {
         String sessionid = userDto.getSessionid();
         this.sessionService.sessionInvalidate(sessionid);
         boolean active = sessionService.sessionActive(sessionid);
-        if(!active) return 200;
-        return 500;
+        if(!active) return HttpStatus.ACCEPTED;
+        return HttpStatus.CONFLICT;
     }
 
 
@@ -87,21 +89,15 @@ public class SignServiceImpl implements SignService {
     }
 
 
-    @Override
-    public void autologin(UserDto userDto) {
+
+    private void initSession(UserDto userDto) {
         String sessionid = userDto.getSessionid();
         User user = getUser(userDto);
-        user.addSession(new UserSession(sessionid));
-        this.userService.saveOrUpdate(user);
-    }
-
-
-    private void initUserSession(UserDto userDto) {
-        String sessionId = userDto.getSessionid();
-        User user = getUser(userDto);
-        UserSession session = new UserSession(sessionId);
-        user.addSession(session);
-        this.userService.updateUser(user);
+        user.addSession(new UserSession(sessionid, this.statisticsService.statistics()));
+        if(this.userService.updateUser(user)) {
+            boolean first = this.sessionService.sessionFirst(sessionid);
+            this.statisticsService.incrementActiveSession(first);
+        }
     }
 
     private User getUser(UserDto userDto) {

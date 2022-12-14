@@ -9,12 +9,11 @@ public interface SignService {
     void addResetDto(ResetPasswordDto resetPasswordDto);
     ResetPasswordDto getResetDto();
     void loginUser(UserDto userDto);
-    int logout(UserDto userDto);
+    HttpStatus logout(UserDto userDto);
     void registration(UserDto userDto);
     boolean adminsRequest(String sessionid);
     String getConfirmationCode();
     void generateNewCode();
-    void autologin(UserDto userDto);
     String generateToken(String email);
     void confirmRegistration(String token) throws ResourceNotFoundException;
     void resendConfirmationLink(String login);

@@ -8,5 +8,5 @@ public interface SessionDao {
     void deleteSessionById(String id);
     boolean sessionExist(String id);
     UserSession getSessionById(String sessionId);
-    void updateSession(UserSession session);
+    boolean sessionFirst(String sessionid);
 }

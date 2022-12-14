@@ -166,7 +166,10 @@ function revealReviews(value) {
     let revealSize = 5;
     for(let i = 0; i < revealSize; i ++ ){
         let index = (i + value);
-        if(index >= rowReviews.length) return;
+        if(index >= rowReviews.length){
+            loadBtn.classList.add("disable");
+            return;
+        }
         rowReviews[index].classList.add('reveal');
     }
 

@@ -15,5 +15,6 @@ public interface SessionService {
     SessionDto getSessionData(UserDto userDto);
     void sessionInvalidate(String sessionid);
     boolean adminSession(UserSession userSession);
+    boolean sessionFirst(String sessionid);
 
 }

@@ -53,11 +53,6 @@ public class StoreController{
         return ResponseEntity.ok(200);
     }
 
-    @PostMapping(value = "/autologin")
-    public ResponseEntity<Integer> autologin(@RequestBody UserDto userDto){
-        this.signService.autologin(userDto);
-        return ResponseEntity.ok(200);
-    }
 
     @GetMapping("/registration/confirm")
     public String confirmRegistration(@RequestParam ("token") String token) throws ResourceNotFoundException {

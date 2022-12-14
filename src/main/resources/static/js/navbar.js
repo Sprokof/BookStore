@@ -12,9 +12,7 @@ $(document).ready(function () {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    invalidateSession();
-    autologin();
-    createAcceptNotice();
+    loadInit();
     let session = validateSession();
     if(session == null) return ;
         if(session['active']) {
@@ -301,4 +299,10 @@ export function createAcceptNotice(){
 
     function autologinCondition() {
         return loaded() && getRememberedUser() != null;
+    }
+
+    function loadInit(){
+        invalidateSession();
+        autologin();
+        createAcceptNotice();
     }

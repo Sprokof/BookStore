@@ -13,8 +13,9 @@ public class SessionFactoryInitialization {
         if (instance == null) {
             instance = getSessionFactory(new Class[]{Book.class,
                                         Category.class, User.class, CartItem.class, Cart.class,
-                                        BookReview.class, Wishlist.class,
-                    Checkout.class, Order.class, UserSession.class, OrderDetails.class});
+                                        BookReview.class,
+                    Wishlist.class, SessionStatistics.class, Checkout.class,
+                    Order.class, UserSession.class, OrderDetails.class});
         }
     return instance;
     }

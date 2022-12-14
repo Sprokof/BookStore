@@ -77,7 +77,7 @@ export function validation(obj, url){
                     case('login') :
                         saveUser(obj);
                         rememberUser(remember);
-                        setTimeout(reload, 130)
+                        setTimeout(reload, 50)
                     break;
 
                     case ('reset') :
@@ -91,7 +91,7 @@ export function validation(obj, url){
                     break;
 
                     default:
-                        setTimeout(reload, 100)
+                        setTimeout(reload, 70)
 
 
                 }

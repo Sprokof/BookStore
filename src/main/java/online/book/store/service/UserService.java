@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface UserService{
     User getUserByLogin(String login);
     void saveOrUpdate(User user);
-    void updateUser(User user);
+    boolean updateUser(User user);
     void saveUser(User user);
     User getUserByToken(String token);
     boolean loginExist(String login);
