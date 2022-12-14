@@ -118,7 +118,7 @@ public class SessionDaoImpl implements SessionDao {
     }
 
     @Override
-    public boolean sessionFirst(String sessionid) {
+    public boolean uniqueUserSession(String sessionid) {
         Session session = null;
         BigInteger countSessions = BigInteger.valueOf(0L);
         int userId = findUserId(sessionid);

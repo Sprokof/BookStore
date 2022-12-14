@@ -30,20 +30,5 @@ public class SessionStatistics {
     @Setter
     private long usersCount;
 
-    @OneToMany(cascade = CascadeType.REFRESH, mappedBy = "sessionStatistics")
-    @Getter
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<UserSession> userSessions;
-
-    public void addSession(UserSession session){
-        if(this.userSessions == null) this.userSessions = new LinkedList<>();
-        this.userSessions.add(session);
-    }
-
-    public void removeSession(UserSession session){
-        if(this.userSessions != null){
-            this.userSessions.remove(session);
-        }
-    }
 
 }

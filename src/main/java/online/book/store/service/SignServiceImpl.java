@@ -95,8 +95,8 @@ public class SignServiceImpl implements SignService {
         User user = getUser(userDto);
         user.addSession(new UserSession(sessionid, this.statisticsService.statistics()));
         if(this.userService.updateUser(user)) {
-            boolean first = this.sessionService.sessionFirst(sessionid);
-            this.statisticsService.incrementActiveSession(first);
+            boolean uniqueUserSession = this.sessionService.uniqueUserSession(sessionid);
+            this.statisticsService.incrementActiveSession(uniqueUserSession);
         }
     }
 

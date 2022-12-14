@@ -13,23 +13,23 @@ public class SessionStatisticsService {
     @Autowired
     private SessionStatisticsDao statisticsDao;
 
-    public void incrementActiveSession(boolean sessionFirst){
+    public void incrementActiveSession(boolean sessionUnique){
         SessionStatistics statistics = statistics();
         long currentCount = statistics.getActiveSessionCount();
         currentCount += 1;
         statistics.setActiveSessionCount(currentCount);
         if(statisticsDao.updateStatistics(statistics)) {
-            if(sessionFirst) incrementUsersCount(statistics);
+            if(sessionUnique) incrementUsersCount(statistics);
         }
     }
 
-    public void decrementActiveSession(boolean sessionFirst) {
+    public void decrementActiveSession(boolean sessionUnique) {
         SessionStatistics statistics = statistics();
         long currentCount = statistics.getActiveSessionCount();
         currentCount -= 1;
         statistics.setActiveSessionCount(currentCount);
         if(statisticsDao.updateStatistics(statistics)){
-            if(sessionFirst) decrementUsersCount(statistics);
+            if(sessionUnique) decrementUsersCount(statistics);
         }
     }
 

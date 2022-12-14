@@ -54,8 +54,7 @@ public class UserSession {
     public UserSession(String sessionId, SessionStatistics statistics) {
         this.sessionId = sessionId;
         this.dateStamp = datestamp();
-        initStatistics(statistics);
-
+        this.sessionStatistics = statistics;
     }
 
     @Override
@@ -71,9 +70,5 @@ public class UserSession {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss");
         return sdf.format(now);
     }
-
-    private void initStatistics(SessionStatistics statistics){
-        this.sessionStatistics = statistics;
-        this.sessionStatistics.addSession(this);
-    }
+    
 }

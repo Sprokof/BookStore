@@ -54,8 +54,8 @@ public class SessionServiceImpl implements SessionService{
 
     @Override
     public void sessionInvalidate(String sessionid) {
-        boolean first = sessionFirst(sessionid);
-        statService.decrementActiveSession(first);
+        boolean userSession = uniqueUserSession(sessionid);
+        statService.decrementActiveSession(userSession);
         this.sessionDao.deleteSessionById(sessionid);
     }
 
@@ -66,7 +66,7 @@ public class SessionServiceImpl implements SessionService{
 
 
     @Override
-    public boolean sessionFirst(String sessionid) {
-        return this.sessionDao.sessionFirst(sessionid);
+    public boolean uniqueUserSession(String sessionid) {
+        return this.sessionDao.uniqueUserSession(sessionid);
     }
 }
