@@ -27,6 +27,7 @@ function postReview(review) {
         success: () => { closeReviewWindow (); }
         })
 }
+
 let reviewWindow = document.querySelector('.review-container');
 let scoreField = document.querySelector('.review-container .score input');
 

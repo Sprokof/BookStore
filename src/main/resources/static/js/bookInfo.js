@@ -122,7 +122,7 @@ if(reviewBtn !== null){
 }
 
 function reviewExist () {
-    let result;
+    let bookReviewDto;
     let isbn = extractISBN(isbnNode);
     let sessionid = getUser()['sessionid'];
     $.ajax({
@@ -134,9 +134,12 @@ function reviewExist () {
         dataType: 'json',
         responseType: 'json',
         async: false,
-        success: (exist) => { result = exist; }
+        success: (dto) => {
+            bookReviewDto = JSON.parse(JSON.stringify(dto)); }
     })
-    return result;
+    let author = bookReviewDto['author'];
+    if(author !== undefined){ findReview(author); return true; }
+    return false;
 }
 
 function invisibleNode(btn) {
@@ -164,14 +167,15 @@ function hideReviews(){
 function revealReviews(value) {
     value = correctingIndex(value)
     let revealSize = 5;
-    for(let i = 0; i < revealSize; i ++ ){
+    for (let i = 0; i < revealSize; i++) {
         let index = (i + value);
-        if(index >= rowReviews.length){
+        if (index >= rowReviews.length) {
             loadBtn.classList.add("disable");
             return;
         }
         rowReviews[index].classList.add('reveal');
     }
+}
 
 function correctingIndex(index){
         if(index >= rowReviews.length){
@@ -179,4 +183,17 @@ function correctingIndex(index){
         }
         return index;
 }
+
+function findReview(username){
+        for(let row of rowReviews) {
+            let review = row.children[0];
+            let authorInfo = review.children[0].innerText;
+            let index = (authorInfo.indexOf(":") + 2);
+            let substrLength = (authorInfo.length - index);
+            let author = authorInfo.substr(index, substrLength);
+            if (author === username) {
+                review.children[0].innerText = "Author: You";
+                review.children[0].style.color = "slategray";
+            }
+        }
 }

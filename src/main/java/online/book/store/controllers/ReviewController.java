@@ -10,6 +10,7 @@ import online.book.store.service.BookService;
 import online.book.store.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -31,18 +32,18 @@ public class ReviewController {
 
 
     @PostMapping("/reviews/post")
-    public void postReview (@RequestBody BookReviewDto bookReviewDto){
+    public ResponseEntity<HttpStatus> postReview (@RequestBody BookReviewDto bookReviewDto){
         String sessionid = bookReviewDto.getSessionid();
         User user = this.sessionService.getCurrentUser(sessionid);
         this.bookReviewService.addReview(bookReviewDto, user);
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
     @GetMapping("/reviews/exist")
-    public ResponseEntity<String> reviewExist(@RequestHeader("session") String sessionid, @RequestParam("isbn") String isbn){
+    public ResponseEntity<BookReviewDto> reviewExist(@RequestHeader("session") String sessionid, @RequestParam("isbn") String isbn){
         User user = this.sessionService.getCurrentUser(sessionid);
         Book book = this.bookService.getBookByIsbn(isbn);
-        boolean exist = this.bookReviewService.reviewExist(book, user);
-        return ResponseEntity.ok(String.valueOf(exist));
+        return ResponseEntity.ok(this.bookReviewService.reviewExist(book, user));
     }
 
 

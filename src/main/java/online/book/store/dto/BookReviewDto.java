@@ -19,6 +19,7 @@ public class BookReviewDto extends AbstractReviewBuilder {
     private String score;
     private String isbn;
     private String sessionid;
+    private String author;
 
     @Override
     public AbstractReviewBuilder builder() {

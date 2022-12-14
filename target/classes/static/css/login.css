@@ -161,6 +161,9 @@
     margin-left: 1px;
     margin-bottom: -5px;
 }
+.form .remember-me input {
+    outline: none;
+}
 
 .notice-message{
     position: absolute;

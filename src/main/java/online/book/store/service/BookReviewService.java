@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface BookReviewService {
     void addReview(BookReviewDto bookReviewDto, User user);
-    boolean reviewExist(Book book, User user);
+    BookReviewDto reviewExist(Book book, User user);
 
 }

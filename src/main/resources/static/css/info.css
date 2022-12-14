@@ -170,13 +170,14 @@
     position: relative;
     margin-top: 2%;
     left: 10%;
+    outline: none;
 }
 
 #book-info .load-btn:hover {
     background: whitesmoke;
 }
 
-#book-info.disable {
+#book-info .load-btn.disable {
     opacity: 0.6;
     pointer-events: none;
 }
@@ -186,6 +187,6 @@
 }
 
 #book-info .row-review.reveal {
-    transition: 0.3s ease-in-out;
-    display: block;
+    transition: 0.5s ease-in-out;
+    display: flex;
 }

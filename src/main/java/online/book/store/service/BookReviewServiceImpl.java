@@ -36,8 +36,13 @@ public class BookReviewServiceImpl implements BookReviewService {
     }
 
     @Override
-    public boolean reviewExist(Book book, User user) {
-        return this.bookDao.reviewExist(book.getId(), user.getId());
+    public BookReviewDto reviewExist(Book book, User user) {
+        BookReviewDto bookReviewDto = new BookReviewDto();
+        if(this.bookDao.reviewExist(book.getId(), user.getId())){
+            String username = user.getUsername();
+            bookReviewDto.setAuthor(username);
+        }
+        return bookReviewDto;
     }
 
     private void averageRatings(Book book, List<Category> booksCategories) {
