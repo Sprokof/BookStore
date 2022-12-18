@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @Table(name = "USERS")
 @NoArgsConstructor
@@ -156,7 +157,7 @@ public class User {
         if (this == obj) return true;
         if (!(obj instanceof User)) return false;
         User user = (User) obj;
-        return this.email.equals(user.email);
+        return Objects.equals(this.id, user.id);
     }
 
 

@@ -61,7 +61,6 @@ public class BookServiceImpl implements BookService{
     }
 
 
-
     private int lastSubstrIndex(String description){
         int length = description.length();
         return Math.min(length, 210);

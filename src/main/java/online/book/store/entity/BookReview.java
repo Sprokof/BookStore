@@ -19,6 +19,10 @@ public class BookReview {
     @Getter
     private int id;
 
+    @Getter
+    @Setter
+    private transient String author;
+
     @Column(name = "REVIEW")
     @Getter
     @Setter
@@ -42,7 +46,6 @@ public class BookReview {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     @Getter
-    @Setter
     private User user;
 
 
@@ -50,6 +53,11 @@ public class BookReview {
         this.review = review;
         this.score = score;
         this.postDate = LocalDate.now().toString();
+    }
+
+    public void setUser(User user){
+        this.author = user.getUsername();
+        this.user = user;
     }
 
 }

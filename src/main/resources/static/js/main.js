@@ -238,7 +238,7 @@ let infos = document.querySelectorAll('.book-info');
         title.onclick = () => {
             let lastIndex = (infos[i].children.length - 1);
             let isbn = extractISBN(infos[i].children[lastIndex]);
-            document.location.href = '/book?isbn=' + isbn;
+            document.location.href = "/book?isbn=" + isbn;
         }
     }
 
