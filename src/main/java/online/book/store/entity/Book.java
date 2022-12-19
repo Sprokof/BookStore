@@ -32,6 +32,21 @@ public class Book {
     @Setter
     private String title;
 
+    @Column(name = "AUTHORS")
+    @Getter
+    @Setter
+    private String authors;
+
+    @Column(name = "DESCRIPTION")
+    @Getter
+    @Setter
+    private String description;
+
+    @Column(name = "SUBJECT")
+    @Getter
+    @Setter
+    private String subject;
+
     @Column(name = "PUBLISHER")
     @Getter
     @Setter
@@ -47,16 +62,10 @@ public class Book {
     @Setter
     private int yearPub;
 
-    @Column(name = "SUBJECT")
-    @Getter
-    @Setter
-    private String subject;
-
     @Column(name = "BOOK_IMAGE_NAME")
     @Getter
     @Setter
     private String bookImageName;
-
 
     @Column(name = "AVAILABLE")
     @Getter
@@ -67,17 +76,6 @@ public class Book {
     @Getter
     @Setter
     private int availableCopies;
-
-
-    @Column(name = "DESCRIPTION")
-    @Getter
-    @Setter
-    private String description;
-
-    @Column(name = "AUTHORS")
-    @Getter
-    @Setter
-    private String authors;
 
     @Column(name = "FORMAT")
     @Getter

@@ -14,10 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -99,7 +96,7 @@ public class SiteEngine {
                             equalsIgnoreCase(String.valueOf(value.charAt(i)))) {
                         if (++k == queryLength) {
                             RotationPriority priority = RotationPriority.valueOfField(getFieldName(field));
-                            this.searchResults.add(new SearchResult(book, priority));
+                            addResults(new SearchResult(book, priority));
                             return;
                         }
                         break;
@@ -177,12 +174,9 @@ public class SiteEngine {
     }
 
     private int compareRotationValue(SearchResult resultFirst, SearchResult resultSecond){
-        int result = 0;
-        if(resultFirst.getPriority().getValue() < resultSecond.getPriority().getValue()){
-            result = 1;
-        }
-        else result = - 1;
-        return result;
+        int valueFirst = resultFirst.getPriority().getValue();
+        int valueSecond = resultSecond.getPriority().getValue();
+        return valueSecond - valueFirst;
     }
 
 
@@ -232,7 +226,7 @@ public class SiteEngine {
         String fieldName = getFieldName(field);
         return fieldName.equals("isbn") || fieldName.equals("title") ||
                 fieldName.equals("description") || fieldName.equals("authors") ||
-                fieldName.equals("subject");
+        fieldName.equals("subject") || fieldName.equals("publisher");
     }
 
     private String getFieldName(Field field){
@@ -251,7 +245,14 @@ public class SiteEngine {
         } catch (Exception e) {
             return result;
         }
-        return result.replaceAll("\\s", "");
+        return result.replaceAll("\\s", "").toLowerCase(Locale.ROOT);
+    }
+
+
+    private void addResults(SearchResult result){
+        if(!this.searchResults.contains(result)){
+            this.searchResults.add(result);
+        }
     }
 
 }

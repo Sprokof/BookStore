@@ -17,4 +17,13 @@ public class SearchResult {
     private Book book;
     private RotationPriority priority;
 
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) return true;
+        if(!(obj instanceof SearchResult)) return false;
+        SearchResult result = (SearchResult) obj;
+        return this.book.equals(result.book);
+
+    }
 }

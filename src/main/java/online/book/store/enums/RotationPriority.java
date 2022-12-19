@@ -4,14 +4,15 @@ import lombok.Getter;
 
 @Getter
 public enum RotationPriority {
-    A(5, "isbn"),
-    B(4, "title"),
-    C(3, "description"),
-    D(2, "authors"),
-    E(1, "subject");
+    A(6, "isbn"),
+    B(5, "title"),
+    C(4, "authors"),
+    D(3, "description"),
+    E(2, "subject"),
+    F(1, "publisher");
 
-    private int value;
-    private String coincidenceField;
+    private final int value;
+    private final String coincidenceField;
 
     RotationPriority (int value, String coincidenceField) {
         this.value = value;
@@ -26,4 +27,11 @@ public enum RotationPriority {
     return priority;
     }
 
+    @Override
+    public String toString() {
+        return "RotationPriority{" +
+                "value=" + value +
+                ", coincidenceField='" + coincidenceField + '\'' +
+                '}';
+    }
 }
