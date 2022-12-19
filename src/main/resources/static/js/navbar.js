@@ -85,7 +85,7 @@ function initBooksCategories(){
     function executeQuery(value) {
         if(value === null || value === '') return
             value = value.replaceAll(' ', '');
-            document.location.href = '/books/search?query=' + value + "&type=popularity";
+            document.location.href = '/books/search?query=' + value + "&type=rotation";
     }
 
     let sideMenu = document.getElementById('side-menu');

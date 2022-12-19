@@ -1,5 +1,6 @@
 package online.book.store.dao;
 
+import online.book.store.engines.SearchResult;
 import online.book.store.entity.Book;
 
 import java.util.List;

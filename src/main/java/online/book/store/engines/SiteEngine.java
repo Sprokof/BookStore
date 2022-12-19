@@ -6,15 +6,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
+import online.book.store.enums.RotationPriority;
 import online.book.store.service.BookService;
 import online.book.store.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -42,20 +46,20 @@ public class SiteEngine {
     private List<Book> bookList;
 
     @Getter
+    private List<SearchResult> searchResults;
+
+    @Getter
     private SearchParam searchParam;
 
 
     public SiteEngine executeSearchQuery(SearchQuery query, SortTypes type) {
         if (isCategory(query)) {
             String category = query.getQueryText();
-            this.bookList = this.categoryService.getBooksByCategories(category);
+            this.searchResults = this.categoryService.getBooksByCategories(category);
         } else {
-            this.bookList = new LinkedList<>();
-            for (Book book : bookService.getAllBooks()) {
-                if (kmpMatcher(book, query)) {
-                    this.bookList.add(book);
-                }
-            }
+            this.searchResults = new LinkedList<>();
+            for (Book book : bookService.getAllBooks())
+                kmpMatcher(book, query);
         }
 
         saveParams(query, type).sortSearchResult();
@@ -79,28 +83,33 @@ public class SiteEngine {
     }
 
 
-    public boolean kmpMatcher(Book book, SearchQuery searchQuery) {
-        String booksContent = solidBookText(book);
+    public void kmpMatcher(Book book, SearchQuery searchQuery) {
         int queryLength = searchQuery.length();
-        if (queryLength == 0) {
-            return false;
-        }
-        String text = searchQuery.getQueryText();
-        int[] p = prefixFunction(searchQuery);
-        for (int i = 0, k = 0; i < booksContent.length(); i++) {
-            for (; ; k = p[k - 1]) {
-                if (String.valueOf(text.charAt(k)).equalsIgnoreCase(String.valueOf(booksContent.charAt(i)))) {
-                    if (++k == queryLength) {
-                        return true;
+        if (queryLength == 0) return ;
+
+        String queryText = searchQuery.getQueryText();
+        Field[] fields = extractIndexingFields(book);
+        for (Field field : fields) {
+            String value = fieldValue(book, field);
+            int fieldLength = value.length();
+            int[] p = prefixFunction(searchQuery);
+            for (int i = 0, k = 0; i < fieldLength; i++) {
+                for (; ; k = p[k - 1]) {
+                    if (String.valueOf(queryText.charAt(k)).
+                            equalsIgnoreCase(String.valueOf(value.charAt(i)))) {
+                        if (++k == queryLength) {
+                            RotationPriority priority = RotationPriority.valueOfField(getFieldName(field));
+                            this.searchResults.add(new SearchResult(book, priority));
+                            return;
+                        }
+                        break;
                     }
-                    break;
-                }
-                if (k == 0) {
-                    break;
+                    if (k == 0) {
+                        break;
+                    }
                 }
             }
         }
-        return false;
     }
 
     private boolean isCategory(SearchQuery query) {
@@ -108,46 +117,71 @@ public class SiteEngine {
     }
 
     private void sortSearchResult() {
-        if (this.bookList.isEmpty()) return;
+        if (this.searchResults.isEmpty()) return;
         switch (this.searchParam.currentType()) {
+            case ROTATION:
+                this.searchResults.sort(this::compareRotationValue);
+                break;
             case POPULARITY:
-                this.bookList.sort((book, bookNext) ->
-                    compareBookRating(book.getBookRating(), bookNext.getBookRating()));
+                this.searchResults.sort(this::compareBookRating);
                 break;
             case LOWEST:
-                this.bookList.sort(Comparator.comparingDouble(Book::getPrice));
+                this.searchResults.sort((r1, r2) -> comparePrice(r1, r2, true));
                 break;
             case HIGHEST:
-                this.bookList.sort((book, bookNext) -> {
-                    return ((int) bookNext.getPrice() - (int) book.getPrice());
-                });
+                this.searchResults.sort((r1, r2) -> comparePrice(r1, r2, false));
                 break;
             case LATEST:
-                this.bookList.sort((book, bookNext) ->
-                        compareAddedDate(bookNext.getAddedDate(), book.getAddedDate()));
+                this.searchResults.sort(this::compareAddedDate);
                 break;
 
         }
     }
 
-    private int compareAddedDate(LocalDate firstDate, LocalDate secondDate) {
+    private int compareAddedDate(SearchResult resultFirst, SearchResult resultSecond) {
         int result = 0;
+        LocalDate firstDate = resultFirst.getBook().getAddedDate();
+        LocalDate secondDate = resultSecond.getBook().getAddedDate();
         if (firstDate.isAfter(secondDate)) {
             result = 1;
+
         } else {
             result = - 1;
         }
         return result;
     }
 
-    private int compareBookRating(double firstRating, double secondRating){
+    private int compareBookRating(SearchResult resultFirst, SearchResult resultSecond){
+        double ratingOne = resultFirst.getBook().getBookRating();
+        double ratingTwo = resultSecond.getBook().getBookRating();
         int result = 0;
-        if(firstRating < secondRating) {
+        if(ratingOne < ratingTwo){
             result = 1;
         }
-        else {
-            result = - 1;
+        else result = - 1;
+        return result;
+    }
+
+    private int comparePrice(SearchResult resultFirst, SearchResult resultSecond, boolean desc){
+        double priceOne = resultFirst.getBook().getPrice();
+        double priceTwo = resultSecond.getBook().getPrice();
+        int result = 0;
+        if(priceOne < priceTwo){
+            if(desc) result = - 1;
+            else result = 1;
         }
+        else
+            if(desc) result = 1;
+            else result = - 1;
+        return result;
+    }
+
+    private int compareRotationValue(SearchResult resultFirst, SearchResult resultSecond){
+        int result = 0;
+        if(resultFirst.getPriority().getValue() < resultSecond.getPriority().getValue()){
+            result = 1;
+        }
+        else result = - 1;
         return result;
     }
 
@@ -155,9 +189,10 @@ public class SiteEngine {
     public List<Row> mapResultToRow() {
         int rowSize = 4;
         this.rows = new LinkedList<>();
-        for (int i = 0; i < this.bookList.size(); i += rowSize) {
-            Row row = new Row(this.bookList.subList(i,
-                    Math.min(i + rowSize, this.bookList.size())));
+        for (int i = 0; i < this.searchResults.size(); i += rowSize) {
+            Row row = new Row(this.searchResults.subList(i,
+                    Math.min(i + rowSize, this.searchResults.size())).stream().
+                    map(SearchResult::getBook).collect(Collectors.toList()));
             rows.add(row);
         }
         return this.rows;
@@ -166,16 +201,17 @@ public class SiteEngine {
     public List<Row> mapBooksToRow(List<Book> booksToMap) {
         int rowSize = 4;
         this.rows = new LinkedList<>();
-        int size = booksToMap.size();
-        for (int i = 0; i < size; i += rowSize) {
-            Row row = new Row(booksToMap.subList(i, Math.min(i + rowSize, size)));
+        for (int i = 0; i < booksToMap.size(); i += rowSize) {
+            Row row = new Row(booksToMap.subList(i,
+                            Math.min(i + rowSize, this.searchResults.size())));
             rows.add(row);
         }
         return this.rows;
     }
 
+
     public boolean hasResult() {
-        return !this.bookList.isEmpty();
+        return !this.searchResults.isEmpty();
     }
 
     private SiteEngine saveParams(SearchQuery searchQuery, SortTypes sortType) {
@@ -183,11 +219,39 @@ public class SiteEngine {
         return this;
     }
 
-    private String solidBookText(Book book){
-    return String.format("%s%s%s%d%s%d%s",
-                book.getIsbn(), book.getTitle(), book.getPublisher(),
-                book.getYearPub(), book.getSubject(),
-                book.getPrice(), book.getAuthors()).replaceAll("\\s", "");
+
+    private Field[] extractIndexingFields(Book book){
+        Field[] booksFields = book.getClass().getDeclaredFields();
+        return Arrays.stream((booksFields)).
+                filter((this::fieldIndexing)).
+                collect(Collectors.toList()).toArray(Field[]::new);
+    }
+
+
+    private boolean fieldIndexing(Field field){
+        String fieldName = getFieldName(field);
+        return fieldName.equals("isbn") || fieldName.equals("title") ||
+                fieldName.equals("description") || fieldName.equals("authors") ||
+                fieldName.equals("subject");
+    }
+
+    private String getFieldName(Field field){
+        field.setAccessible(true);
+        return field.getName();
+    }
+
+    private String fieldValue(Book book, Field field) {
+        String result = "";
+        field.setAccessible(true);
+        try {
+            String value = field.get(book).toString();
+            if (value != null) {
+                result = value;
+            }
+        } catch (Exception e) {
+            return result;
+        }
+        return result.replaceAll("\\s", "");
     }
 
 }

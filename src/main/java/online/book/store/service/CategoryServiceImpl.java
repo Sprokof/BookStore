@@ -3,8 +3,10 @@ package online.book.store.service;
 import online.book.store.dao.CategoryDao;
 import online.book.store.dao.CategoryDaoImpl;
 import online.book.store.dto.CategoryDto;
+import online.book.store.engines.SearchResult;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
+import online.book.store.enums.RotationPriority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -40,9 +42,10 @@ public class CategoryServiceImpl implements CategoryService{
     }
 
     @Override
-    public List<Book> getBooksByCategories(String category) {
-        return this.categoryDao.getCategoryByName(category).getBooks();
-        
+    public List<SearchResult> getBooksByCategories(String category) {
+        List<Book> books = this.categoryDao.getCategoryByName(category).getBooks();
+        return books.stream().map((book) ->
+                new SearchResult(book, RotationPriority.A)).collect(Collectors.toList());
     }
 
     @Override

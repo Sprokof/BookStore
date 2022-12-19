@@ -2,6 +2,7 @@ package online.book.store.service;
 
 
 import online.book.store.dto.CategoryDto;
+import online.book.store.engines.SearchResult;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
 
@@ -11,7 +12,8 @@ public interface CategoryService {
     boolean existCategory(String category);
     List<CategoryDto> getAllCategories();
     Category getCategoryByName(String categoryName);
-    List<Book> getBooksByCategories (String category);
+    List<SearchResult> getBooksByCategories (String category);
     void updateCategory(Category category);
     List<CategoryDto> getPopularCategories();
+
 }

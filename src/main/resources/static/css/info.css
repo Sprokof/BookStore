@@ -35,7 +35,8 @@
     color: white;
     cursor: pointer;
     text-align: center;
-    border: 3px solid #555555;
+    border: 2px solid steelblue;
+    outline: none;
 }
 
 .container .item-container .buttons button:hover {
@@ -190,3 +191,4 @@
     transition: 0.5s ease-in-out;
     display: flex;
 }
+

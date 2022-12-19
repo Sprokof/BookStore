@@ -15,6 +15,7 @@ public class SiteEngineTests {
         book.setTitle("TITLE");
         book.setAuthors("AUTHOR");
         SearchQuery searchQuery = new SearchQuery("TITLE");
-        assertTrue(engine.kmpMatcher(book, searchQuery));
+        engine.kmpMatcher(book, searchQuery);
+        assertFalse(engine.getSearchResults().isEmpty());
     }
 }
