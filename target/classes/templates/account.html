@@ -46,7 +46,9 @@
     <div class="change-email-container">
         <header>
             <p>Change email</p>
-            <p th:text="${'We will send an activation email to the new address. Until you confirm the change of email, the profile will be valid: ' + user.email}"></p>
+            <p>We will send an activation email to the new address.
+                Until you confirm the change of email,
+                the profile will be valid: <span style="color: green" th:text="${user.email}"></span></p>
         </header>
         <div class="new-email">
             <label for="new-email">New email</label>

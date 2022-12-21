@@ -164,15 +164,15 @@ public class BookDto extends AbstractBookBuilder {
 
     @Override
     public AbstractBookBuilder description(String description) {
-        this.description = description.trim();
+        this.description = description.trim().replaceAll("([\\d])", "");
         return this;
     }
 
     @Override
     public boolean containsNull() {
         Field[] fields = this.getClass().getFields();
-        for (int i = 0; i < fields.length; i++) {
-            if (fields[i] == null) return true;
+        for (Field field : fields) {
+            if (field == null) return true;
         }
         return false;
     }

@@ -106,10 +106,11 @@
 
 .account-container .acc-btn {
     margin-top: 5px;
-    border: 1px solid black;
+    border: 2px grey solid;
     cursor: pointer;
     margin-left: 2px;
     padding: 2px 4px;
+    border-radius: 3px;
 
 }
 

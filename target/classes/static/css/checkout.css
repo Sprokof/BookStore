@@ -204,19 +204,6 @@
     background: #222222;
 }
 
-.checkout-notice .notice-close-btn {
-    position: relative;
-    color: black;
-    font-size: 22px;
-    left: 93%;
-    font-weight: 700;
-    cursor: pointer;
-
-}
-.checkout-notice .notice-close-btn:hover {
-    color: #222222;
-}
-
 .checkout-notice.active {
     top: 55%;
     opacity: 1;

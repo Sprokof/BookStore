@@ -132,15 +132,7 @@ function openCheckoutNotice() {
     notice.classList.add("active");
 }
 
-let closeBtn = document.querySelector('.checkout-notice .notice-close-btn');
-    closeBtn.onclick = () => {
-        closeCheckoutNotice();
-}
 
-export function closeCheckoutNotice () {
-    let notice = document.querySelector('.checkout-notice');
-    notice.classList.remove("active");
-}
 
 function incrementItemsQuantity(input){
     let currentValue = Number (input.value);

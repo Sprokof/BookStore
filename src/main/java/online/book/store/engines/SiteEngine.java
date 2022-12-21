@@ -96,7 +96,8 @@ public class SiteEngine {
                             equalsIgnoreCase(String.valueOf(value.charAt(i)))) {
                         if (++k == queryLength) {
                             RotationPriority priority = RotationPriority.valueOfField(getFieldName(field));
-                            addResults(new SearchResult(book, priority));
+                            SearchResult result = new SearchResult(book, priority);
+                            this.searchResults.add(result);
                             return;
                         }
                         break;
@@ -246,13 +247,6 @@ public class SiteEngine {
             return result;
         }
         return result.replaceAll("\\s", "").toLowerCase(Locale.ROOT);
-    }
-
-
-    private void addResults(SearchResult result){
-        if(!this.searchResults.contains(result)){
-            this.searchResults.add(result);
-        }
     }
 
 }

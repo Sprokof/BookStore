@@ -23,7 +23,7 @@ public class CategoryDaoImpl implements CategoryDao{
             session = this.sessionFactory.openSession();
             session.beginTransaction();
             booksCategories = session.
-                    createSQLQuery("SELECT CATEGORY FROM CATEGORIES LIMIT(10)").list();
+                    createSQLQuery("SELECT CATEGORY FROM CATEGORIES").list();
             session.getTransaction().commit();
         } catch (Exception e) {
             if (session != null) {

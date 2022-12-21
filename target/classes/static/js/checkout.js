@@ -1,9 +1,10 @@
 import {getUser} from "./navbar.js";
 import {closeSuccessWindow, openSuccessWindow} from "./window.js";
 import {reload} from "./main.js";
-import {checkoutOpen, closeCheckoutNotice} from "./cart.js";
+import {checkoutOpen} from "./cart.js";
 import {blockBackgroundHtml} from "./notice.js";
 
+let noticeContainer = document.querySelector('.checkout-notice');
 
 
 let purchase = document.querySelector('#purchase');
@@ -227,4 +228,16 @@ function clearCheckoutInputs(){
 let closeCheckoutBtn = document.querySelectorAll('#checkout .buttons button')[0];
 closeCheckoutBtn.onclick = () => {
     setTimeout(checkoutClose, 150);
+}
+
+document.addEventListener('mouseup', (e) => {
+    if (noticeContainer.classList.contains('active') &&
+        !noticeContainer.contains(e.target)) {
+        closeCheckoutNotice();
+    }
+})
+
+function closeCheckoutNotice(){
+    noticeContainer.classList.remove('active');
+
 }
