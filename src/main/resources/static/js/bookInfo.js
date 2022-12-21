@@ -138,8 +138,7 @@ function reviewExist () {
             bookReviewDto = JSON.parse(JSON.stringify(dto)); }
     })
     let author = bookReviewDto['author'];
-    if(author !== undefined){ findReview(author); return true; }
-    return false;
+    return findReview(author);
 }
 
 function invisibleNode(btn) {
@@ -185,6 +184,7 @@ function correctingIndex(index){
 }
 
 function findReview(username){
+        if(username == null) return false
         for(let row of rowReviews) {
             let review = row.children[0];
             let authorInfo = review.children[0].innerText;
@@ -196,4 +196,5 @@ function findReview(username){
                 review.children[0].style.color = "slategray";
             }
         }
+        return true;
 }
