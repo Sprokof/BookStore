@@ -239,5 +239,4 @@ document.addEventListener('mouseup', (e) => {
 
 function closeCheckoutNotice(){
     noticeContainer.classList.remove('active');
-
 }

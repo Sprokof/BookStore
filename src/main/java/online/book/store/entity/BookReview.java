@@ -19,10 +19,6 @@ public class BookReview {
     @Getter
     private int id;
 
-    @Getter
-    @Setter
-    private transient String author;
-
     @Column(name = "REVIEW")
     @Getter
     @Setter
@@ -48,6 +44,9 @@ public class BookReview {
     @Getter
     private User user;
 
+    @Setter
+    private transient String author;
+
 
     public BookReview(String review, int score){
         this.review = review;
@@ -58,6 +57,11 @@ public class BookReview {
     public void setUser(User user){
         this.author = user.getUsername();
         this.user = user;
+    }
+
+    public String getAuthor() {
+        if(author == null) author = this.user.getUsername();
+        return author;
     }
 
 }

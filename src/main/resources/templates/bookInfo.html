@@ -71,7 +71,7 @@
                 <div class="reviews-container">
                     <div class="row-review" th:each="review : ${book.getBookReviews()}">
                         <div class="review">
-                            <div style="color: green" class="review-item" th:text ="${'Author: ' + review.user.username}"></div>
+                            <div style="color: green" class="review-item" th:text ="${'Author: ' + review.author}"></div>
                             <div class="review-item text" th:text="${review.review}"></div>
                         </div>
                         <div class="score">

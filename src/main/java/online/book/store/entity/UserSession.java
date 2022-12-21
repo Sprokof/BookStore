@@ -67,7 +67,7 @@ public class UserSession {
 
     private String datestamp(){
         Date now = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd:HH-mm-ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd, HH:mm:ss");
         return sdf.format(now);
     }
 
