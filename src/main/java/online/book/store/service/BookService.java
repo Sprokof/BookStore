@@ -2,6 +2,7 @@ package online.book.store.service;
 
 import online.book.store.dto.BookDto;
 import online.book.store.dto.BookReviewDto;
+import online.book.store.engines.SearchResult;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
 import online.book.store.entity.User;
@@ -19,5 +20,6 @@ public interface BookService {
     void updateBooksCategories(Book book);
     void updateBook(Book book);
     boolean bookExist(String isbn);
+    List<SearchResult> findBooksByParam(String param);
 
 }

@@ -14,21 +14,20 @@ public class OrderDaoImpl implements OrderDao{
     @Override
     public void deleteOrders(String statement) {
         Session session = null;
-    try {
-        session = this.sessionFactory.openSession();
-        session.beginTransaction();
-        session.createSQLQuery(statement).executeUpdate();
-        session.getTransaction().commit();
-    }
-    catch (Exception e){
-        e.printStackTrace();
-        if(session != null && session.getTransaction() != null){
-            session.getTransaction().rollback();
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.createSQLQuery(statement).executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (session != null && session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
         }
-    }
-    if(session != null){
-        session.close();
-    }
+        if (session != null) {
+            session.close();
+        }
     }
 
 

@@ -2,13 +2,17 @@ package online.book.store.service;
 
 
 import online.book.store.dao.BookDao;
+import online.book.store.engines.SearchResult;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
+import online.book.store.enums.RotationPriority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Component
@@ -94,5 +98,41 @@ public class BookServiceImpl implements BookService{
     @Override
     public boolean bookExist(String isbn) {
         return this.bookDao.bookExist(isbn);
+    }
+
+    @Override
+    public List<SearchResult> findBooksByParam(String param){
+        List<Book> books;
+        if((books = this.bookDao.getBooksByISBN(param)) != null){
+            return mapToSearchResult(books, RotationPriority.A);
+        }
+
+        if((books = this.bookDao.getBooksByTitle(param)) != null){
+            return mapToSearchResult(books, RotationPriority.B);
+        }
+
+        if((books = this.bookDao.getBooksByAuthors(param)) != null){
+            return mapToSearchResult(books, RotationPriority.C);
+        }
+
+        if((books = this.bookDao.getBooksByDescription(param)) != null){
+            return mapToSearchResult(books, RotationPriority.D);
+        }
+
+        if((books = this.bookDao.getBooksBySubject(param)) != null){
+            return mapToSearchResult(books, RotationPriority.E);
+        }
+
+        if((books = this.bookDao.getBooksPublisher(param)) != null){
+            return mapToSearchResult(books, RotationPriority.F);
+        }
+
+
+        return new LinkedList<>();
+    }
+
+    private List<SearchResult> mapToSearchResult(List<Book> books, RotationPriority priority){
+        return books.stream().map((book) ->
+                new SearchResult(book, priority)).collect(Collectors.toList());
     }
 }

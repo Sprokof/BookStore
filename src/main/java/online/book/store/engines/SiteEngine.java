@@ -40,7 +40,6 @@ public class SiteEngine {
     @Autowired
     private CategoryService categoryService;
 
-    private List<Book> bookList;
 
     @Getter
     private List<SearchResult> searchResults;

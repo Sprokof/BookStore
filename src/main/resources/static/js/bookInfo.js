@@ -137,8 +137,7 @@ function reviewExist () {
         success: (dto) => {
             bookReviewDto = JSON.parse(JSON.stringify(dto)); }
     })
-    let author = bookReviewDto['author'];
-    return findReview(author);
+    return findReview(bookReviewDto['author'])
 }
 
 function invisibleNode(btn) {

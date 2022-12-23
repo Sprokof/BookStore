@@ -164,7 +164,7 @@ public class BookDto extends AbstractBookBuilder {
 
     @Override
     public AbstractBookBuilder description(String description) {
-        this.description = description.trim().replaceAll("([\\d])", "");
+        this.description = description.trim().replaceAll("(\\[\\d\\])", "");
         return this;
     }
 

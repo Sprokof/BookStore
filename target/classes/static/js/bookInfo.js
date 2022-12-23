@@ -137,8 +137,7 @@ function reviewExist () {
         success: (dto) => {
             bookReviewDto = JSON.parse(JSON.stringify(dto)); }
     })
-    let author = bookReviewDto['author'];
-    return findReview(author);
+    return findReview(bookReviewDto['author'])
 }
 
 function invisibleNode(btn) {
@@ -184,7 +183,7 @@ function correctingIndex(index){
 }
 
 function findReview(username){
-        if(username === null) return false
+        if(username == null) return false
         for(let row of rowReviews) {
             let review = row.children[0];
             let authorInfo = review.children[0].innerText;

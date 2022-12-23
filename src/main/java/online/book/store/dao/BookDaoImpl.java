@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.NoResultException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static online.book.store.entity.BookReview.MAX_POPULAR_RATING;
@@ -326,6 +327,65 @@ public class BookDaoImpl implements BookDao {
     }
     return id;
     }
+
+    @Override
+    public List<Book> getBooksByTitle(String title) {
+      return getBooks(title, "title");
+    }
+
+    @Override
+    public List<Book> getBooksByISBN(String isbn) {
+        return getBooks(isbn, "isbn");
+    }
+
+    @Override
+    public List<Book> getBooksByAuthors(String authors) {
+        return getBooks(authors, "authors");
+    }
+
+    @Override
+    public List<Book> getBooksByDescription(String description) {
+        return getBooks(description, "description");
+
+    }
+
+    @Override
+    public List<Book> getBooksPublisher(String publisher) {
+        return getBooks(publisher, "publisher");
+
+    }
+
+
+    @Override
+    public List<Book> getBooksBySubject(String subject) {
+        return getBooks(subject, "subject");
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<Book> getBooks(String param, String column){
+        Session session = null;
+        List<Book> books = null;
+        try{
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+        books  = (List<Book>) session.
+                createSQLQuery("SELECT * FROM BOOKS WHERE " + column + " LIKE concat(%,:param,%)").
+                    addEntity(Book.class).setParameter("param", param).list();
+        session.getTransaction().commit();
+        }
+        catch (Exception e){
+            if(session != null && session.getTransaction() != null){
+                session.getTransaction().rollback();
+            }
+        }
+    finally {
+            if(session != null){
+                session.close();
+            }
+        }
+    return books;
+    }
+
 }
 
 
