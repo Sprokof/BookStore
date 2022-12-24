@@ -53,9 +53,9 @@ public class SiteEngine {
             String category = query.getQueryText();
             this.searchResults = this.categoryService.getBooksByCategories(category);
         } else {
-            this.searchResults = new LinkedList<>();
-            for (Book book : bookService.getAllBooks())
-                kmpMatcher(book, query);
+            this.searchResults = this.bookService.findBooksByParam(query.getQueryText());
+            //for (Book book : bookService.getAllBooks())
+               // kmpMatcher(book, query);
         }
 
         saveParams(query, type).sortSearchResult();

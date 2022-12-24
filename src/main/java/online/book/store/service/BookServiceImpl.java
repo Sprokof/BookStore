@@ -21,7 +21,6 @@ public class BookServiceImpl implements BookService{
     @Autowired
     private BookDao bookDao;
 
-
     @Override
     public List<Book> getPopularBooks() {
         List<Book> books = this.bookDao.getPopularBooks();
@@ -103,27 +102,27 @@ public class BookServiceImpl implements BookService{
     @Override
     public List<SearchResult> findBooksByParam(String param){
         List<Book> books;
-        if((books = this.bookDao.getBooksByISBN(param)) != null){
+        if(!(books = this.bookDao.getBooksByISBN(param)).isEmpty()){
             return mapToSearchResult(books, RotationPriority.A);
         }
 
-        if((books = this.bookDao.getBooksByTitle(param)) != null){
+        if(!(books = this.bookDao.getBooksByTitle(param)).isEmpty()){
             return mapToSearchResult(books, RotationPriority.B);
         }
 
-        if((books = this.bookDao.getBooksByAuthors(param)) != null){
+        if(!(books = this.bookDao.getBooksByAuthors(param)).isEmpty()){
             return mapToSearchResult(books, RotationPriority.C);
         }
 
-        if((books = this.bookDao.getBooksByDescription(param)) != null){
+        if(!(books = this.bookDao.getBooksByDescription(param)).isEmpty()){
             return mapToSearchResult(books, RotationPriority.D);
         }
 
-        if((books = this.bookDao.getBooksBySubject(param)) != null){
+        if(!(books = this.bookDao.getBooksBySubject(param)).isEmpty()){
             return mapToSearchResult(books, RotationPriority.E);
         }
 
-        if((books = this.bookDao.getBooksPublisher(param)) != null){
+        if(!(books = this.bookDao.getBooksPublisher(param)).isEmpty()){
             return mapToSearchResult(books, RotationPriority.F);
         }
 
@@ -133,6 +132,7 @@ public class BookServiceImpl implements BookService{
 
     private List<SearchResult> mapToSearchResult(List<Book> books, RotationPriority priority){
         return books.stream().map((book) ->
-                new SearchResult(book, priority)).collect(Collectors.toList());
+                new SearchResult(book, priority)).
+                collect(Collectors.toList());
     }
 }

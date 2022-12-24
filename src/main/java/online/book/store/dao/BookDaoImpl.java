@@ -3,13 +3,14 @@ package online.book.store.dao;
 import online.book.store.entity.Book;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import static online.book.store.entity.BookReview.MAX_POPULAR_RATING;
 import static online.book.store.entity.BookReview.MIN_POPULAR_RATING;
@@ -361,6 +362,7 @@ public class BookDaoImpl implements BookDao {
         return getBooks(subject, "subject");
     }
 
+
     @SuppressWarnings("unchecked")
     private List<Book> getBooks(String param, String column){
         Session session = null;
@@ -368,9 +370,8 @@ public class BookDaoImpl implements BookDao {
         try{
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-        books  = (List<Book>) session.
-                createSQLQuery("SELECT * FROM BOOKS WHERE " + column + " LIKE concat(%,:param,%)").
-                    addEntity(Book.class).setParameter("param", param).list();
+        books  = session.createSQLQuery("SELECT * FROM BOOKS WHERE LOWER(" + column + ")" + " LIKE :param").
+                    addEntity(Book.class).setParameter("param", "%" + param.toLowerCase(Locale.ROOT) + "%").list();
         session.getTransaction().commit();
         }
         catch (Exception e){
@@ -379,10 +380,11 @@ public class BookDaoImpl implements BookDao {
             }
         }
     finally {
-            if(session != null){
+            if (session != null) {
                 session.close();
             }
         }
+
     return books;
     }
 
