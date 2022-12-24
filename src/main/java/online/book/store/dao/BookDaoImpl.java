@@ -308,86 +308,51 @@ public class BookDaoImpl implements BookDao {
     public int getBookIdByISBN(String isbn) {
         Session session = null;
         Integer id = 0;
-    try {
-        session = this.sessionFactory.openSession();
-        session.beginTransaction();
-        id = (Integer) session.createSQLQuery("SELECT ID " +
-                "FROM BOOKS WHERE ISBN=:isbn").
-                setParameter("isbn", isbn).getSingleResult();
-        session.getTransaction().commit();
-    }
-    catch (Exception e){
-        if(session != null && session.getTransaction() != null){
-            session.getTransaction().rollback();
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            id = (Integer) session.createSQLQuery("SELECT ID " +
+                            "FROM BOOKS WHERE ISBN=:isbn").
+                    setParameter("isbn", isbn).getSingleResult();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
-    }
-    finally {
-        if(session != null){
-            session.close();
-        }
-    }
-    return id;
+        return id;
     }
 
     @Override
-    public List<Book> getBooksByTitle(String title) {
-      return getBooks(title, "title");
-    }
-
-    @Override
-    public List<Book> getBooksByISBN(String isbn) {
-        return getBooks(isbn, "isbn");
-    }
-
-    @Override
-    public List<Book> getBooksByAuthors(String authors) {
-        return getBooks(authors, "authors");
-    }
-
-    @Override
-    public List<Book> getBooksByDescription(String description) {
-        return getBooks(description, "description");
-
-    }
-
-    @Override
-    public List<Book> getBooksPublisher(String publisher) {
-        return getBooks(publisher, "publisher");
-
-    }
-
-
-    @Override
-    public List<Book> getBooksBySubject(String subject) {
-        return getBooks(subject, "subject");
-    }
-
-
     @SuppressWarnings("unchecked")
-    private List<Book> getBooks(String param, String column){
+    public List<Book> findBooksBySearchQuery(String query, String column) {
         Session session = null;
         List<Book> books = null;
         try{
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-        books  = session.createSQLQuery("SELECT * FROM BOOKS WHERE LOWER(" + column + ")" + " LIKE :param").
-                    addEntity(Book.class).setParameter("param", "%" + param.toLowerCase(Locale.ROOT) + "%").list();
-        session.getTransaction().commit();
+            books  = session.createSQLQuery("SELECT * FROM BOOKS " +
+                            "WHERE LOWER(" + column + ")" + " LIKE :param").
+                    addEntity(Book.class).setParameter("param", "%" + query.toLowerCase(Locale.ROOT) + "%").list();
+            session.getTransaction().commit();
         }
         catch (Exception e){
             if(session != null && session.getTransaction() != null){
                 session.getTransaction().rollback();
             }
         }
-    finally {
+        finally {
             if (session != null) {
                 session.close();
             }
         }
 
-    return books;
+        return books;
     }
-
 }
 
 

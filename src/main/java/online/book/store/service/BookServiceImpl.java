@@ -2,6 +2,7 @@ package online.book.store.service;
 
 
 import online.book.store.dao.BookDao;
+import online.book.store.engines.SearchQuery;
 import online.book.store.engines.SearchResult;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
@@ -99,40 +100,26 @@ public class BookServiceImpl implements BookService{
         return this.bookDao.bookExist(isbn);
     }
 
+
     @Override
-    public List<SearchResult> findBooksByParam(String param){
-        List<Book> books;
-        if(!(books = this.bookDao.getBooksByISBN(param)).isEmpty()){
-            return mapToSearchResult(books, RotationPriority.A);
+    public List<SearchResult> findBooksBySearchQuery(SearchQuery searchQuery, String[] searchColumns) {
+        List<SearchResult> results = new LinkedList<>();
+        String query = searchQuery.getQueryText();
+        for (String column : searchColumns) {
+            List<Book> books = this.bookDao.findBooksBySearchQuery(query, column);
+            if (!books.isEmpty()) {
+                RotationPriority priority = RotationPriority.valueOfField(column);
+                addBooksToResults(books, results, priority);
+            }
         }
-
-        if(!(books = this.bookDao.getBooksByTitle(param)).isEmpty()){
-            return mapToSearchResult(books, RotationPriority.B);
-        }
-
-        if(!(books = this.bookDao.getBooksByAuthors(param)).isEmpty()){
-            return mapToSearchResult(books, RotationPriority.C);
-        }
-
-        if(!(books = this.bookDao.getBooksByDescription(param)).isEmpty()){
-            return mapToSearchResult(books, RotationPriority.D);
-        }
-
-        if(!(books = this.bookDao.getBooksBySubject(param)).isEmpty()){
-            return mapToSearchResult(books, RotationPriority.E);
-        }
-
-        if(!(books = this.bookDao.getBooksPublisher(param)).isEmpty()){
-            return mapToSearchResult(books, RotationPriority.F);
-        }
-
-
-        return new LinkedList<>();
+    return results;
     }
 
-    private List<SearchResult> mapToSearchResult(List<Book> books, RotationPriority priority){
-        return books.stream().map((book) ->
-                new SearchResult(book, priority)).
-                collect(Collectors.toList());
+    private void addBooksToResults(List<Book> books, List<SearchResult> results, RotationPriority priority){
+        for (Book book : books) {
+            SearchResult result = new SearchResult(book, priority);
+            if (!results.contains(result)) results.add(result);
+        }
     }
+
 }

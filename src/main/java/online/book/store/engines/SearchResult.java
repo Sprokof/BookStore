@@ -14,6 +14,7 @@ import online.book.store.enums.RotationPriority;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchResult {
+
     private Book book;
     private RotationPriority priority;
 

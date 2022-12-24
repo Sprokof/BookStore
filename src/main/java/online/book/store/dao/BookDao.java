@@ -17,12 +17,7 @@ public interface BookDao {
     boolean reviewExist(int bookId, int userId);
     boolean bookExist(String isbn);
     int getBookIdByISBN(String isbn);
-    List<Book> getBooksByTitle(String title);
-    List<Book> getBooksByISBN(String isbn);
-    List<Book> getBooksByAuthors(String authors);
-    List<Book> getBooksByDescription(String description);
-    List<Book> getBooksPublisher(String publisher);
-    List<Book> getBooksBySubject(String subject);
+    List<Book> findBooksBySearchQuery(String query, String column);
 
 
 }

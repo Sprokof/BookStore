@@ -1,6 +1,8 @@
 package online.book.store.service;
 
 import online.book.store.dto.BookReviewDto;
+import online.book.store.engines.SearchQuery;
+import online.book.store.engines.SearchResult;
 import online.book.store.entity.Book;
 import online.book.store.entity.BookReview;
 import online.book.store.entity.User;

@@ -76,4 +76,6 @@ public class BookReviewServiceImpl implements BookReviewService {
         return round(rating / size);
     }
 
+
+
 }

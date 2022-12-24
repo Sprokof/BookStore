@@ -15,11 +15,16 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 
 @Component
 public class SiteEngine {
+
+    private Logger logger = Logger.getLogger("Logger");
+
 
     @Getter
     @Setter
@@ -53,9 +58,7 @@ public class SiteEngine {
             String category = query.getQueryText();
             this.searchResults = this.categoryService.getBooksByCategories(category);
         } else {
-            this.searchResults = this.bookService.findBooksByParam(query.getQueryText());
-            //for (Book book : bookService.getAllBooks())
-               // kmpMatcher(book, query);
+            this.searchResults = this.bookService.findBooksBySearchQuery(query, SearchParam.SEARCH_COLUMNS);
         }
 
         saveParams(query, type).sortSearchResult();
@@ -247,5 +250,10 @@ public class SiteEngine {
         }
         return result.replaceAll("\\s", "").toLowerCase(Locale.ROOT);
     }
+
+    private long getMills() {
+        return Calendar.getInstance().getTimeInMillis();
+    }
+    
 
 }

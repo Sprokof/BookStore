@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @Component
 public class SearchParam  {
+    public static final String[] SEARCH_COLUMNS = {"isbn", "title", "authors", "description", "subject", "publisher"};
+
     private String query;
     private String sortType;
 
