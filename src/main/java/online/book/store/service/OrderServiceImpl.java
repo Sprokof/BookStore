@@ -92,15 +92,16 @@ public class OrderServiceImpl implements OrderService{
 
     private void setOrderStatus(Order order){
         LocalDate currentDate = LocalDate.now();
-        LocalDate firstDate = parseStringToLocalDate(order.
-                getOrderDetails().
+        LocalDate firstDate = parseStringToLocalDate(order.getOrderDetails().
                 getFirstDeliveryDate());
         if(firstDate.minusDays(1).equals(currentDate)){
             order.setStatus(OrderStatus.IN_DELIVERY);
         }
+
         else if(firstDate.plusDays(3).equals(currentDate)){
             order.setStatus(OrderStatus.DELIVERED);
         }
+
         this.orderDao.updateOrder(order);
     }
 

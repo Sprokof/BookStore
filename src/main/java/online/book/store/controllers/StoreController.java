@@ -85,6 +85,11 @@ public class StoreController{
         return ResponseEntity.ok(userDto);
     }
 
+    @GetMapping("/paging")
+    public String paging(){
+        return "paging";
+    }
+
 }
 
 

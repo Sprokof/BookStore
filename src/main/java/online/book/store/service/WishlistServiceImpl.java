@@ -23,10 +23,10 @@ public class WishlistServiceImpl implements WishlistService{
 
 
     @Override
-    public int removeFromWishlist(Book book, Wishlist wishlist) {
+    public HttpStatus removeFromWishlist(Book book, Wishlist wishlist) {
         wishlist.remove(book);
         updateWishlist(wishlist);
-        return 200;
+        return HttpStatus.OK;
     }
 
     @Override

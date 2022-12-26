@@ -41,6 +41,7 @@ public class OrderDaoImpl implements OrderDao{
         session.getTransaction().commit();
     }
     catch(Exception e){
+        e.printStackTrace();
         if(session != null && session.getTransaction() != null)
             session.getTransaction().rollback();
     }

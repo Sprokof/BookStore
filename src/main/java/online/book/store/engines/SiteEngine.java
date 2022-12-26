@@ -19,7 +19,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-
 @Component
 public class SiteEngine {
 
@@ -30,14 +29,23 @@ public class SiteEngine {
     @Setter
     private List<Row> rows = new LinkedList<>();
 
+    @Getter
+    @Setter
+    private List<Page> pages;
+
     @Setter
     @Getter
-    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Page {
+        List<Row> rowsInPage;
+    }
+
+    @Setter
+    @Getter
     @AllArgsConstructor
     public static class Row {
         List<Book> bookInRow;
     }
-
 
     @Autowired
     private BookService bookService;
@@ -53,7 +61,7 @@ public class SiteEngine {
     private SearchParam searchParam;
 
 
-    public SiteEngine executeSearchQuery(SearchQuery query, SortTypes type) {
+    public SiteEngine executeSearchQuery(SearchQuery query, SortTypes type, String pageNumber) {
         if (isCategory(query)) {
             String category = query.getQueryText();
             this.searchResults = this.categoryService.getBooksByCategories(category);
@@ -61,7 +69,7 @@ public class SiteEngine {
             this.searchResults = this.bookService.findBooksBySearchQuery(query, SearchParam.SEARCH_COLUMNS);
         }
 
-        saveParams(query, type).sortSearchResult();
+        saveParams(query, type, pageNumber).sortSearchResult();
         return this;
     }
 
@@ -183,16 +191,33 @@ public class SiteEngine {
     }
 
 
-    public List<Row> mapResultToRow() {
+    public void initPages() {
+        List<Row> rows = mapResultToRow();
+        int pageSize = 8;
+        this.pages = new LinkedList<>();
+        for(int i = 0; i < rows.size(); i += pageSize){
+            Page page = new Page(rows.subList(i, Math.min(i + pageSize,
+                    rows.size())));
+            this.pages.add(page);
+        }
+
+    }
+
+    public Page getPage(String pageNumber){
+        int index = (Integer.parseInt(pageNumber) - 1);
+        return this.pages.get(index);
+    }
+
+    private List<Row> mapResultToRow() {
         int rowSize = 4;
-        this.rows = new LinkedList<>();
+        List<Row> rows = new LinkedList<>();
         for (int i = 0; i < this.searchResults.size(); i += rowSize) {
             Row row = new Row(this.searchResults.subList(i,
                     Math.min(i + rowSize, this.searchResults.size())).stream().
                     map(SearchResult::getBook).collect(Collectors.toList()));
             rows.add(row);
         }
-        return this.rows;
+        return rows;
     }
 
     public List<Row> mapBooksToRow(List<Book> booksToMap) {
@@ -200,7 +225,7 @@ public class SiteEngine {
         this.rows = new LinkedList<>();
         for (int i = 0; i < booksToMap.size(); i += rowSize) {
             Row row = new Row(booksToMap.subList(i,
-                            Math.min(i + rowSize, this.searchResults.size())));
+                            Math.min(i + rowSize, booksToMap.size())));
             rows.add(row);
         }
         return this.rows;
@@ -211,8 +236,8 @@ public class SiteEngine {
         return !this.searchResults.isEmpty();
     }
 
-    private SiteEngine saveParams(SearchQuery searchQuery, SortTypes sortType) {
-        this.searchParam = new SearchParam(searchQuery, sortType);
+    private SiteEngine saveParams(SearchQuery searchQuery, SortTypes sortType, String pageNumber) {
+        this.searchParam = new SearchParam(searchQuery, sortType, pageNumber);
         return this;
     }
 
@@ -251,9 +276,5 @@ public class SiteEngine {
         return result.replaceAll("\\s", "").toLowerCase(Locale.ROOT);
     }
 
-    private long getMills() {
-        return Calendar.getInstance().getTimeInMillis();
-    }
-    
 
 }

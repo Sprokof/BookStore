@@ -42,7 +42,8 @@ function closeReviewWindow () {
 scoreField.onkeyup = () => {
     let value = scoreField.value;
     if(value === '') deleteWrongClass();
-    let valid = (value.match(/^\d+$/) != null && (Number (value) >= 1 && Number (value) <= 5));
+    let valid = (value.match(/^\d+$/) != null &&
+        (Number (value) >= 1 && Number (value) <= 5));
     if (valid) {
         deleteWrongClass();
     } else {
@@ -58,6 +59,7 @@ function clearReviewForm () {
 }
 
 function valid(){
+    if(scoreField.value === '') scoreField.classList.add('wrong');
     return !scoreField.classList.contains('wrong');
 }
 

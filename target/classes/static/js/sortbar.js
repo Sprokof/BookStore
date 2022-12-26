@@ -4,38 +4,39 @@ btn.onclick = () => {
     document.querySelector('.arrow-down').classList.toggle('rotate');
 }
 
+let btnText = document.querySelector('.btn-text');
 let sortTypes = document.querySelectorAll('.type');
 sortTypes.forEach((type) => {
     type.addEventListener("click", () => {
-        let currentType = type.children[0].innerText;
-        sortBooksLists(currentType);
-
+        let selectedType = type.children[0].innerText;
+        sortBooksLists(selectedType);
     })
 })
 
-let btnText = document.querySelector('.btn-text');
 document.addEventListener("DOMContentLoaded", () => {
-    let sortType = getSearchParams()['sortType'];
-    if(sortType !== "Popularity"){
-        btnText.innerText += (" " + (sortType.substr(0, 9) + " ..."));
+    saveParams();
+    let type = modifyType(getSearchParams()['type']);
+    if(type !== "Popularity"){
+        btnText.innerText += (" " + (type.substr(0, 9) + " ..."));
     }
     else {
-        btnText.innerText += (" " + sortType);
+        btnText.innerText += (" " + type);
     }
-    highlightSelectedType(sortType);
-})
+    highlightSelectedType(type);
 
+})
 
 function sortBooksLists(type){
     let searchParams = getSearchParams();
     document.location.href = '/books/search?query=' +
-        searchParams['query'] + '&type=' + type.toLowerCase();
+        searchParams['query'] + '&type=' + type.toLowerCase() + "&page=" + searchParams['page'];
 
 
 }
 
 function getSearchParams(){
-    let searchParams;
+    let searchParams = localStorage.getItem("params");
+    return JSON.parse(searchParams);
     $.ajax({
         type: "GET",
         contentType: "application/json",
@@ -63,7 +64,46 @@ function highlightSelectedType(currentType){
        }
 }
 
+function saveParams() {
+    let url = document.location.href;
+    let params = {
+        "query" : extractQuery(url),
+        "type" : extractType(url),
+        "page" : extractPageNumber(url),
+    }
+    localStorage.setItem("params", JSON.stringify(params));
+}
+
+function extractQuery(url){
+    let index = url.indexOf("=") + 1;
+    let lastIndex = url.indexOf("&");
+    let length = (lastIndex - index);
+    return url.substr(index, length);
+}
 
 
+function extractType(url) {
+    let index = url.indexOf("&") + 6;
+    let lastIndex = url.lastIndexOf("&");
+    let length = (lastIndex - index);
+    return url.substr(index, length);
+
+}
+
+function extractPageNumber(url) {
+    let index = url.lastIndexOf("=") + 1;
+    let urlLength = url.length;
+    let length = (urlLength - index) ;
+    return url.substr(index, length);
+}
 
 
+function modifyType(type){
+    return capitalize(type.replaceAll("%20", " "));
+
+}
+
+
+function capitalize(str){
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}

@@ -6,7 +6,6 @@ import {
 } from "./main.js";
 
 
-
 let wishlistBtn = document.querySelectorAll('.wishlist.btn');
 let cartBtn = document.querySelectorAll('.shop.cart.btn');
     wishlistBtn.forEach(btn => controlWishlistContent(btn, "books"));
@@ -16,4 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
     wishlistBtn.forEach(btn => controlWishlistContentOnLoad(btn));
     cartBtn.forEach(btn => controlCartContentOnLoad(btn, "books"))
 })
+
+
 

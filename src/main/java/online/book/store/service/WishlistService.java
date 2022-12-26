@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 
 public interface WishlistService {
     void addBookToWishlist(Book book, Wishlist wishlist);
-    int removeFromWishlist(Book book, Wishlist wishlist);
+    HttpStatus removeFromWishlist(Book book, Wishlist wishlist);
     WishlistDto contains(String isbn, Wishlist wishlist);
     void updateWishlist(Wishlist wishlist);
 }

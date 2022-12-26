@@ -14,6 +14,7 @@ import online.book.store.service.SignService;
 import online.book.store.validation.AbstractValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@Scope("request")
 public class BookController {
 
     @Autowired
@@ -79,13 +81,15 @@ public class BookController {
     public String booksList (@RequestParam Map<String, String> params, Model model){
         SearchQuery searchQuery = new SearchQuery(params.get("query"));
         SortTypes sortType = SortTypes.getTypeByName(params.get("type"));
-        boolean hasResult = this.engine.executeSearchQuery(searchQuery, sortType).hasResult();
+        String pageNumber = params.get("page");
+        boolean hasResult = this.engine.executeSearchQuery(searchQuery, sortType, pageNumber).hasResult();
         if(!hasResult){
             return "result";
         }
         else {
-            List<SiteEngine.Row> resultRows = this.engine.mapResultToRow();
-            model.addAttribute("rows", resultRows);
+            this.engine.initPages();
+            SiteEngine.Page page = this.engine.getPage(pageNumber);
+            model.addAttribute("page", page);
             return "books";
         }
     }

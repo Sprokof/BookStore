@@ -12,6 +12,7 @@ import online.book.store.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -51,13 +52,13 @@ public class WishListController {
     }
 
     @DeleteMapping("/wishlist/item/remove")
-    public ResponseEntity<Integer> removeFromWishlist(@RequestBody WishlistDto wishlistDto){
+    public ResponseEntity<HttpStatus> removeFromWishlist(@RequestBody WishlistDto wishlistDto){
         String isbn = wishlistDto.getIsbn();
         Book book = bookService.getBookByIsbn(isbn);
         String sessionid = wishlistDto.getSessionid();
         Wishlist userWishlist = sessionService.getCurrentUser(sessionid).getWishList();
-        int code = wishlistService.removeFromWishlist(book, userWishlist);
-        return ResponseEntity.ok(code);
+        HttpStatus status = wishlistService.removeFromWishlist(book, userWishlist);
+        return ResponseEntity.ok(status);
     }
 
     @PostMapping("/wishlist/item/add")

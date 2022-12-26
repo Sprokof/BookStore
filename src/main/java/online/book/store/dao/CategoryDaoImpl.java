@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import static online.book.store.entity.BookReview.*;
 
 import java.util.List;
+import java.util.Locale;
 
 @Component
 public class CategoryDaoImpl implements CategoryDao{
@@ -50,9 +51,9 @@ public class CategoryDaoImpl implements CategoryDao{
         session = this.sessionFactory.openSession();;
         session.beginTransaction();
         findCategory = (Category) session.
-                createSQLQuery("SELECT * FROM CATEGORIES WHERE CATEGORY=:category")
+                createSQLQuery("SELECT * FROM CATEGORIES WHERE LOWER(CATEGORY)=:category")
                 .addEntity(Category.class).
-                setParameter("category", category).list().get(0);
+                setParameter("category", category.toLowerCase(Locale.ROOT)).list().get(0);
         session.getTransaction().commit();
     }
     catch (Exception e){
@@ -82,8 +83,8 @@ public class CategoryDaoImpl implements CategoryDao{
         session = this.sessionFactory.openSession();
         session.beginTransaction();
         category =  (Category) session.createSQLQuery("SELECT * FROM " +
-                "CATEGORIES WHERE CATEGORY=:category").
-                setParameter("category", categoryName).
+                "CATEGORIES WHERE LOWER(CATEGORY)=:category").
+                setParameter("category", categoryName.toLowerCase(Locale.ROOT)).
                 addEntity(Category.class).getSingleResult();
         session.getTransaction().commit();
     }

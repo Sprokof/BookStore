@@ -10,23 +10,13 @@ export function controlWishlistContent(btn, pageName) {
         } else {
             let wishlistDto = requestDto(btn);
             if (!contains(wishlistDto, "/wishlist/item/contains")) {
-                itemAdd(wishlistDto, "/wishlist/item/add");
-                if(pageName === 'wishlist') {
-                    setTimeout(reload, 120);
-                }
-                else {
-                    fullHeart(btn, true);
-                }
+                itemAdd(wishlistDto, "/wishlist/item/add", pageName);
+                fullHeart(btn, true);
             } else {
                 itemRemove(wishlistDto, "/wishlist/item/remove");
-                if(pageName === 'wishlist') {
-                    setTimeout(reload, 120);
-                }
-                else {
-                    fullHeart(btn, false);
-                }
-
+                fullHeart(btn, false);
             }
+
         }
     }
 }
@@ -180,7 +170,7 @@ export function sessionActive () {
     return user != null;
 }
 
-export function itemRemove(dto, url){
+export function itemRemove(dto, url, pageName){
     $.ajax({
         type: "DELETE",
         contentType: "application/json",
@@ -189,10 +179,15 @@ export function itemRemove(dto, url){
         cache: false,
         dataType: 'json',
         responseType: "json",
+        success: () => {
+            if(pageName === "wishlist"){
+                setTimeout(reload, 50);
+            }
+        }
     })
 }
 
-export function itemAdd(dto, url){
+export function itemAdd(dto, url, pageName){
     $.ajax({
         type: "POST",
         contentType: "application/json",
@@ -201,6 +196,11 @@ export function itemAdd(dto, url){
         cache: false,
         dataType: 'json',
         responseType: "json",
+        success: () => {
+            if(pageName === "wishlist"){
+                setTimeout(reload, 50);
+            }
+        }
     })
 }
 
