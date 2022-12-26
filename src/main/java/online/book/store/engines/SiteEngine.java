@@ -2,10 +2,8 @@ package online.book.store.engines;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.book.store.entity.Book;
-import online.book.store.entity.Category;
 import online.book.store.enums.RotationPriority;
 import online.book.store.service.BookService;
 import online.book.store.service.CategoryService;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -57,19 +54,17 @@ public class SiteEngine {
     @Getter
     private List<SearchResult> searchResults;
 
-    @Getter
-    private SearchParam searchParam;
 
 
-    public SiteEngine executeSearchQuery(SearchQuery query, SortTypes type, String pageNumber) {
+    public SiteEngine executeSearchQuery(SearchQuery query, SortTypes type) {
         if (isCategory(query)) {
             String category = query.getQueryText();
             this.searchResults = this.categoryService.getBooksByCategories(category);
         } else {
-            this.searchResults = this.bookService.findBooksBySearchQuery(query, SearchParam.SEARCH_COLUMNS);
+            this.searchResults = this.bookService.findBooksBySearchQuery(query, SearchQuery.INDEXING_COLUMNS);
         }
-
-        saveParams(query, type, pageNumber).sortSearchResult();
+        if(this.searchResults != null) initPages();
+        sortSearchResult(type);
         return this;
     }
 
@@ -124,9 +119,9 @@ public class SiteEngine {
         return this.categoryService.existCategory(query.getQueryText());
     }
 
-    private void sortSearchResult() {
+    private void sortSearchResult(SortTypes type) {
         if (this.searchResults.isEmpty()) return;
-        switch (this.searchParam.currentType()) {
+        switch (type) {
             case ROTATION:
                 this.searchResults.sort(this::compareRotationValue);
                 break;
@@ -191,19 +186,27 @@ public class SiteEngine {
     }
 
 
-    public void initPages() {
+    private void initPages() {
         List<Row> rows = mapResultToRow();
         int pageSize = 8;
         this.pages = new LinkedList<>();
-        for(int i = 0; i < rows.size(); i += pageSize){
+        for (int i = 0; i < rows.size(); i += pageSize) {
             Page page = new Page(rows.subList(i, Math.min(i + pageSize,
                     rows.size())));
             this.pages.add(page);
-        }
+          }
 
     }
 
-    public Page getPage(String pageNumber){
+    public synchronized Page getPage(String pageNumber){
+        while(this.pages == null) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         int index = (Integer.parseInt(pageNumber) - 1);
         return this.pages.get(index);
     }
@@ -236,10 +239,6 @@ public class SiteEngine {
         return !this.searchResults.isEmpty();
     }
 
-    private SiteEngine saveParams(SearchQuery searchQuery, SortTypes sortType, String pageNumber) {
-        this.searchParam = new SearchParam(searchQuery, sortType, pageNumber);
-        return this;
-    }
 
 
     private Field[] extractIndexingFields(Book book){

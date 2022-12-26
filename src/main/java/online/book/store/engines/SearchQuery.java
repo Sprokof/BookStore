@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SearchQuery {
+    public static final String[] INDEXING_COLUMNS = {"isbn", "title", "authors", "description", "subject", "publisher"};
     private String queryText;
 
     public int length(){
