@@ -130,4 +130,41 @@
     cursor: pointer;
 }
 
+#card-container #pages {
+    opacity: 0;
+}
+
+.pages {
+    display: flex;
+    position: relative;
+    left: 40%;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.pages div {
+    color: #1b1b1b;
+    background: gainsboro;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    text-align: center;
+    padding: 2px;
+    overflow-y: hidden;
+    line-height: 13px;
+
+}
+
+.pages div:hover {
+    background: #5f5f5b;
+    color: whitesmoke;
+}
+
+.pages div.current {
+    background: #5f5f5b;
+    pointer-events: none;
+    color: whitesmoke;
+}
 

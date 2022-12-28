@@ -1,5 +1,6 @@
 .pages {
    display: flex;
+   opacity: 1;
 }
 
 .pages div {

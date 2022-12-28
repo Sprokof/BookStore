@@ -87,19 +87,11 @@ public class BookController {
             return "result";
         }
         else {
-            SiteEngine.Page page = this.engine.getPage(pageNumber);
+            SiteEngine.Page page = this.engine.getPage(pageNumber, sortType);
             model.addAttribute("page", page);
             return "books";
         }
     }
-
-
-    @GetMapping("/search/params")
-    public ResponseEntity<SearchParam> searchParams (){
-        SearchParam searchParam = this.engine.getSearchParam();
-        return ResponseEntity.ok(searchParam);
-    }
-
 
 
 }

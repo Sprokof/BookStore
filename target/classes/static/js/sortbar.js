@@ -35,21 +35,8 @@ function sortBooksLists(type){
 }
 
 function getSearchParams(){
-    let searchParams = localStorage.getItem("params");
+    let searchParams = sessionStorage.getItem("params");
     return JSON.parse(searchParams);
-    $.ajax({
-        type: "GET",
-        contentType: "application/json",
-        url: "/search/params",
-        cache: false,
-        dataType: 'json',
-        responseType : 'json',
-        async: false,
-        success: (params) => {
-            searchParams = JSON.parse(JSON.stringify(params));
-        }
-    })
-    return searchParams;
 }
 
 function highlightSelectedType(currentType){
@@ -71,7 +58,7 @@ function saveParams() {
         "type" : extractType(url),
         "page" : extractPageNumber(url),
     }
-    localStorage.setItem("params", JSON.stringify(params));
+    sessionStorage.setItem("params", JSON.stringify(params));
 }
 
 function extractQuery(url){
@@ -102,7 +89,6 @@ function modifyType(type){
     return capitalize(type.replaceAll("%20", " "));
 
 }
-
 
 function capitalize(str){
     let result = "";
