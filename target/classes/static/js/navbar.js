@@ -85,7 +85,7 @@ function initBooksCategories(){
     function executeQuery(value) {
         if(value === null || value === '') return
             value = value.replaceAll(' ', '');
-            document.location.href = '/books/search?query=' + value + "&type=rotation&page=1";
+            document.location.href = '/books/search?query=' + value + "&type=relevance&page=1";
 
     }
 

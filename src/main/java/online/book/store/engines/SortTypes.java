@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum SortTypes {
 
-    ROTATION("Rotation"),
+    Relevance("Relevance"),
     POPULARITY("Popularity"),
     HIGHEST("Price High To Low"),
     LOWEST("Price Low To High"),

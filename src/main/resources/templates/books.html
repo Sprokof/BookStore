@@ -48,7 +48,15 @@
         </div>
     </div>
 
-    <section th:text="${page.getCurrentPage() + ':' + page.getPagesCount()}"></section>
+    <div th:if="${page.getPagesCount() > 1}">
+        <div class="pages">
+            <button>GO TO PAGE</button>
+            <div style="margin-top: 2px">
+            <input th:value="${page.getCurrentPage()}" placeholder="№">
+            <span th:text="${'/' + page.getPagesCount()}"></span>
+            </div>
+        </div>
+    </div>
 
 </div>
 <script type="module" th:src="@{/js/navbar.js}"></script>

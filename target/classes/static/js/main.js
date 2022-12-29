@@ -13,7 +13,7 @@ export function controlWishlistContent(btn, pageName) {
                 itemAdd(wishlistDto, "/wishlist/item/add", pageName);
                 fullHeart(btn, true);
             } else {
-                itemRemove(wishlistDto, "/wishlist/item/remove");
+                itemRemove(wishlistDto, "/wishlist/item/remove", pageName);
                 fullHeart(btn, false);
             }
 

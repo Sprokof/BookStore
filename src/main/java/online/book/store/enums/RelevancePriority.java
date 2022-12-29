@@ -3,7 +3,7 @@ package online.book.store.enums;
 import lombok.Getter;
 
 @Getter
-public enum RotationPriority {
+public enum RelevancePriority {
     A(6, "isbn"),
     B(5, "title"),
     C(4, "authors"),
@@ -14,14 +14,14 @@ public enum RotationPriority {
     private final int value;
     private final String coincidenceField;
 
-    RotationPriority (int value, String coincidenceField) {
+    RelevancePriority(int value, String coincidenceField) {
         this.value = value;
         this.coincidenceField = coincidenceField;
     }
 
-    public static RotationPriority valueOfField(String field){
-        RotationPriority priority = null;
-        for(RotationPriority p : RotationPriority.values()){
+    public static RelevancePriority valueOfField(String field){
+        RelevancePriority priority = null;
+        for(RelevancePriority p : RelevancePriority.values()){
             if(p.getCoincidenceField().equals(field)) priority = p;
         }
     return priority;

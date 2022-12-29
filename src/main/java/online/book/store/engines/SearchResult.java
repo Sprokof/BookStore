@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.book.store.entity.Book;
-import online.book.store.enums.RotationPriority;
+import online.book.store.enums.RelevancePriority;
 
 
 @Getter
@@ -16,7 +16,7 @@ import online.book.store.enums.RotationPriority;
 public class SearchResult {
 
     private Book book;
-    private RotationPriority priority;
+    private RelevancePriority priority;
 
 
     @Override

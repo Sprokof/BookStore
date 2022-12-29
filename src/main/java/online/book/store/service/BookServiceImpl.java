@@ -6,14 +6,13 @@ import online.book.store.engines.SearchQuery;
 import online.book.store.engines.SearchResult;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
-import online.book.store.enums.RotationPriority;
+import online.book.store.enums.RelevancePriority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Component
@@ -108,14 +107,14 @@ public class BookServiceImpl implements BookService{
         for (String column : searchColumns) {
             List<Book> books = this.bookDao.findBooksBySearchQuery(query, column);
             if (!books.isEmpty()) {
-                RotationPriority priority = RotationPriority.valueOfField(column);
+                RelevancePriority priority = RelevancePriority.valueOfField(column);
                 addBooksToResults(books, results, priority);
             }
         }
     return results;
     }
 
-    private void addBooksToResults(List<Book> books, List<SearchResult> results, RotationPriority priority){
+    private void addBooksToResults(List<Book> books, List<SearchResult> results, RelevancePriority priority){
         for (Book book : books) {
             SearchResult result = new SearchResult(book, priority);
             if (!results.contains(result)) results.add(result);

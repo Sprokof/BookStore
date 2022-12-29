@@ -134,37 +134,45 @@
     opacity: 0;
 }
 
-.pages {
+
+#card-container .pages {
     display: flex;
     position: relative;
-    left: 40%;
+    left: 37%;
     height: auto;
     margin-bottom: 20px;
 }
 
-.pages div {
-    color: #1b1b1b;
-    background: gainsboro;
-    cursor: pointer;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-    text-align: center;
-    padding: 2px;
-    overflow-y: hidden;
-    line-height: 13px;
-
-}
-
-.pages div:hover {
-    background: #5f5f5b;
-    color: whitesmoke;
-}
-
-.pages div.current {
-    background: #5f5f5b;
+#card-container .pages button {
+    background: wheat;
+    color: black;
+    border: whitesmoke 2px solid;
+    padding-left: 4px;
+    padding-right: 4px;
+    outline: none;
+    opacity: 0.5;
     pointer-events: none;
-    color: whitesmoke;
 }
+
+#card-container .pages button:hover {
+    transition: 0.3s ease-in-out;
+    background: antiquewhite;
+}
+
+#card-container .pages button.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#card-container .pages input {
+    outline: none;
+    border: none;
+    text-align: right;
+    width: 25px;
+    max-width: 50px;
+    color: slategrey;
+    font-weight: 600;
+}
+
+
 

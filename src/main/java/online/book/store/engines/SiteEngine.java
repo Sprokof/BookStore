@@ -4,16 +4,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.book.store.entity.Book;
-import online.book.store.enums.RotationPriority;
 import online.book.store.service.BookService;
 import online.book.store.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class SiteEngine {
@@ -36,7 +33,6 @@ public class SiteEngine {
         public Page(List<Row> rowsInPage) {
             this.rowsInPage = rowsInPage;
         }
-
     }
 
     @Getter
@@ -151,7 +147,7 @@ public class SiteEngine {
     }
 
     private List<Row> mapResultToRow() {
-        int rowSize = 4;
+        int rowSize = 2;
         List<Row> rows = new LinkedList<>();
         for (int i = 0; i < this.searchResults.size(); i += rowSize) {
             rows.add(new Row().setResultsInRows(this.searchResults.subList(i,
@@ -176,7 +172,6 @@ public class SiteEngine {
     }
 
 
-    
     private List<SearchResult> findAndSort(SearchQuery query){
         List<SearchResult> results = this.bookService.findBooksBySearchQuery(query, SearchQuery.INDEXING_COLUMNS);
         if(!results.isEmpty()){
@@ -187,7 +182,7 @@ public class SiteEngine {
 
     private SiteEngine.Page getSortedPage(Page page, SortTypes type) {
         switch (type) {
-            case ROTATION:
+            case Relevance:
                 for(Row row : page.getRowsInPage()) {
                     row.getResultsInRows().sort(this::compareRotationValue);
                 }

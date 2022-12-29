@@ -6,8 +6,7 @@ import online.book.store.dto.CategoryDto;
 import online.book.store.engines.SearchResult;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
-import online.book.store.enums.RotationPriority;
-import org.springframework.beans.factory.annotation.Autowired;
+import online.book.store.enums.RelevancePriority;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService{
     public List<SearchResult> getBooksByCategories(String category) {
         List<Book> books = this.categoryDao.getCategoryByName(category).getBooks();
         return books.stream().map((book) ->
-                new SearchResult(book, RotationPriority.A)).collect(Collectors.toList());
+                new SearchResult(book, RelevancePriority.A)).collect(Collectors.toList());
     }
 
     @Override
