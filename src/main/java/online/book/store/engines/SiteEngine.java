@@ -1,7 +1,6 @@
 package online.book.store.engines;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.book.store.entity.Book;
 import online.book.store.service.BookService;
@@ -17,40 +16,8 @@ public class SiteEngine {
 
     @Getter
     @Setter
-    private List<Row> rows = new LinkedList<>();
-
-    @Getter
-    @Setter
     private List<Page> pages;
 
-    @Setter
-    @Getter
-    public static class Page {
-        List<Row> rowsInPage;
-        int pagesCount;
-        int currentPage;
-
-        public Page(List<Row> rowsInPage) {
-            this.rowsInPage = rowsInPage;
-        }
-    }
-
-    @Getter
-    @NoArgsConstructor
-    public static class Row {
-        List<SearchResult> resultsInRows;
-        List<Book> booksInRows;
-
-        public Row setResultsInRows(List<SearchResult> resultsInRows) {
-            this.resultsInRows = resultsInRows;
-            return this;
-        }
-
-        public Row setBooksInRows(List<Book> booksInRows) {
-            this.booksInRows = booksInRows;
-            return this;
-        }
-    }
 
     @Autowired
     private BookService bookService;
@@ -64,14 +31,16 @@ public class SiteEngine {
 
 
 
-    public SiteEngine executeSearchQuery(SearchQuery query, SortTypes type) {
-        if (isCategory(query)) {
-            String category = query.getQueryText();
-            this.searchResults = this.categoryService.getBooksByCategories(category);
-        } else {
-            this.searchResults = findAndSort(query);
+    public SiteEngine executeSearchQuery(SearchQuery query) {
+        if(!query.isStopWord()) {
+            if (isCategory(query)) {
+                String category = query.getQueryText();
+                this.searchResults = this.categoryService.getBooksByCategories(category);
+            } else {
+                this.searchResults = findAndSort(query);
+            }
         }
-        if(!searchResults.isEmpty()) initPages();
+        if(hasResult()) initPages();
         return this;
     }
 
@@ -127,11 +96,11 @@ public class SiteEngine {
 
 
     private void initPages() {
-        List<Row> rows = mapResultToRow();
-        int pageSize = 1;
+        List<Page.Row> rows = mapResultsToRow();
+        int count = Page.MAX_COUNT_ROWS_IN_PAGE;
         this.pages = new LinkedList<>();
-        for (int i = 0; i < rows.size(); i += pageSize) {
-            Page page = new Page(rows.subList(i, Math.min(i + pageSize,
+        for (int i = 0; i < rows.size(); i += count) {
+            Page page = new Page(rows.subList(i, Math.min(i + count,
                     rows.size())));
             this.pages.add(page);
           }
@@ -146,29 +115,29 @@ public class SiteEngine {
         return getSortedPage(page, type);
     }
 
-    private List<Row> mapResultToRow() {
-        int rowSize = 2;
-        List<Row> rows = new LinkedList<>();
-        for (int i = 0; i < this.searchResults.size(); i += rowSize) {
-            rows.add(new Row().setResultsInRows(this.searchResults.subList(i,
-                    Math.min(i + rowSize, this.searchResults.size()))));
+    private List<Page.Row> mapResultsToRow() {
+        int count = Page.Row.MAX_COUNT_BOOKS_IN_ROWS;
+        List<Page.Row> rows = new LinkedList<>();
+        for (int i = 0; i < this.searchResults.size(); i += count) {
+            rows.add(new Page.Row().setResultsInRow(this.searchResults.subList(i,
+                    Math.min(i + count, this.searchResults.size()))));
         }
         return rows;
     }
 
-    public List<Row> mapBooksToRow(List<Book> booksToMap) {
-        int rowSize = 4;
-        this.rows = new LinkedList<>();
-        for (int i = 0; i < booksToMap.size(); i += rowSize) {
-            rows.add(new Row().setBooksInRows(booksToMap.subList(i,
-                    Math.min(i + rowSize, booksToMap.size()))));
+    public List<Page.Row> mapBooksToRow(List<Book> booksToMap) {
+        int count = Page.Row.MAX_COUNT_BOOKS_IN_ROWS;
+        List<Page.Row> rows = new LinkedList<>();
+        for (int i = 0; i < booksToMap.size(); i += count) {
+            rows.add(new Page.Row().setBooksInRow(booksToMap.subList(i,
+                    Math.min(i + count, booksToMap.size()))));
         }
-        return this.rows;
+        return rows;
     }
 
 
     public boolean hasResult() {
-        return !this.searchResults.isEmpty();
+        return this.searchResults != null && !this.searchResults.isEmpty();
     }
 
 
@@ -180,31 +149,31 @@ public class SiteEngine {
         return results;
     }
 
-    private SiteEngine.Page getSortedPage(Page page, SortTypes type) {
+    private Page getSortedPage(Page page, SortTypes type) {
         switch (type) {
             case Relevance:
-                for(Row row : page.getRowsInPage()) {
-                    row.getResultsInRows().sort(this::compareRotationValue);
+                for(Page.Row row : page.getRowsInPage()) {
+                    row.getResultsInRow().sort(this::compareRotationValue);
                 }
                 break;
             case POPULARITY:
-                for(Row row : page.getRowsInPage()) {
-                    row.getResultsInRows().sort(this::compareBookRating);
+                for(Page.Row row : page.getRowsInPage()) {
+                    row.getResultsInRow().sort(this::compareBookRating);
                 }
                 break;
             case LOWEST:
-                for(Row row : page.getRowsInPage()) {
-                    row.getResultsInRows().sort((r1, r2) -> comparePrice(r1, r2, true));
+                for(Page.Row row : page.getRowsInPage()) {
+                    row.getResultsInRow().sort((r1, r2) -> comparePrice(r1, r2, true));
                 }
                 break;
             case HIGHEST:
-                for(Row row : page.getRowsInPage()) {
-                    row.getResultsInRows().sort((r1, r2) -> comparePrice(r1, r2, false));
+                for(Page.Row row : page.getRowsInPage()) {
+                    row.getResultsInRow().sort((r1, r2) -> comparePrice(r1, r2, false));
                 }
                 break;
             case LATEST:
-                for(Row row : page.getRowsInPage()) {
-                    row.getResultsInRows().sort(this::compareAddedDate);
+                for(Page.Row row : page.getRowsInPage()) {
+                    row.getResultsInRow().sort(this::compareAddedDate);
                 }
                 break;
         }

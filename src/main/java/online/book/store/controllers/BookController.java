@@ -82,12 +82,12 @@ public class BookController {
         SearchQuery searchQuery = new SearchQuery(params.get("query"));
         SortTypes sortType = SortTypes.getTypeByName(params.get("type"));
         String pageNumber = params.get("page");
-        boolean hasResult = this.engine.executeSearchQuery(searchQuery, sortType).hasResult();
+        boolean hasResult = this.engine.executeSearchQuery(searchQuery).hasResult();
         if(!hasResult){
             return "result";
         }
         else {
-            SiteEngine.Page page = this.engine.getPage(pageNumber, sortType);
+            Page page = this.engine.getPage(pageNumber, sortType);
             model.addAttribute("page", page);
             return "books";
         }
