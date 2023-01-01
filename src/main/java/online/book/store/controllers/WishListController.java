@@ -1,7 +1,6 @@
 package online.book.store.controllers;
 
 import online.book.store.dto.WishlistDto;
-import online.book.store.engines.SiteEngine;
 import online.book.store.entity.Book;
 import online.book.store.entity.User;
 import online.book.store.entity.Wishlist;
@@ -12,13 +11,9 @@ import online.book.store.service.WishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @Controller
 public class WishListController {
@@ -33,9 +28,6 @@ public class WishListController {
     UserService userService;
 
     @Autowired
-    private SiteEngine siteEngine;
-
-    @Autowired
     private SessionService sessionService;
 
 
@@ -46,8 +38,7 @@ public class WishListController {
        if(wishlist.isEmpty()){
            return "result";
        }
-       List<Book> wishlistsBooks = user.getWishList().getBooks();
-       model.addAttribute("rows", siteEngine.mapBooksToRow(wishlistsBooks));
+       model.addAttribute("rows", wishlistService.map(wishlist));
        return "wishlist";
     }
 

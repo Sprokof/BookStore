@@ -1,7 +1,6 @@
 package online.book.store.enums;
 
 import lombok.Getter;
-import online.book.store.engines.SortTypes;
 
 public enum Role {
     ADMIN("admin"),

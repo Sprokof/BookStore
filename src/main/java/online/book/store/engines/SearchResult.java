@@ -25,6 +25,11 @@ public class SearchResult {
         if(!(obj instanceof SearchResult)) return false;
         SearchResult result = (SearchResult) obj;
         return this.book.equals(result.book);
+    }
 
+    public static int compareResults(SearchResult resultFirst, SearchResult resultSecond){
+        int valueFirst = resultFirst.getPriority().getValue();
+        int valueSecond = resultSecond.getPriority().getValue();
+        return valueSecond - valueFirst;
     }
 }

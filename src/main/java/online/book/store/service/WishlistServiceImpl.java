@@ -3,12 +3,16 @@ package online.book.store.service;
 import online.book.store.dao.BookDao;
 import online.book.store.dao.WishlistDao;
 import online.book.store.dto.WishlistDto;
+import online.book.store.engines.Page;
 import online.book.store.entity.Book;
 import online.book.store.entity.Wishlist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.util.LinkedList;
+import java.util.List;
 
 
 @Service
@@ -45,5 +49,17 @@ public class WishlistServiceImpl implements WishlistService{
     @Override
     public void updateWishlist(Wishlist wishlist) {
         this.wishlistDao.updateWishlist(wishlist);
+    }
+
+    @Override
+    public List<Page.Row> map(Wishlist wishlist) {
+        int count = Page.Row.MAX_COUNT_BOOKS_IN_ROWS;
+        List<Page.Row> rows = new LinkedList<>();
+        List<Book> books = wishlist.getBooks();
+        for (int i = 0; i < books.size(); i += count) {
+            rows.add(new Page.Row().setBooksInRow(books.subList(i,
+                    Math.min(i + count, books.size()))));
+        }
+        return rows;
     }
 }

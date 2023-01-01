@@ -3,9 +3,9 @@ package online.book.store.engines;
 import lombok.Getter;
 
 @Getter
-public enum SortTypes {
+public enum SortType {
 
-    Relevance("Relevance"),
+    RELEVANCE("Relevance"),
     POPULARITY("Popularity"),
     HIGHEST("Price High To Low"),
     LOWEST("Price Low To High"),
@@ -14,14 +14,14 @@ public enum SortTypes {
     private final String type;
 
 
-    SortTypes(String type){
+    SortType(String type){
         this.type = type;
     }
 
 
 
-    public static SortTypes getTypeByName(String name){
-        for(SortTypes type: SortTypes.values()){
+    public static SortType getTypeByName(String name){
+        for(SortType type: SortType.values()){
             if(type.getType().equalsIgnoreCase(name)) return type;
         }
     return null;
