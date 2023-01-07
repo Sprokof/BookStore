@@ -21,7 +21,8 @@ public class CartDaoImpl implements CartDao{
     try{
         session = this.sessionFactory.openSession();
         session.beginTransaction();
-        cartItem = (CartItem) session.createSQLQuery("SELECT * FROM CARTS_ITEMS WHERE CART_ID=:c_id AND BOOK_ID=:b_id").
+        cartItem = (CartItem) session.createSQLQuery("SELECT * FROM " +
+                        "CARTS_ITEMS WHERE CART_ID=:c_id AND BOOK_ID=:b_id").
                 setParameter("c_id", cart.getId()).
                 setParameter("b_id", bookId).
                 addEntity(CartItem.class).list().get(0);

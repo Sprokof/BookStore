@@ -46,7 +46,7 @@ public class Page {
         return this.allResults;
     }
 
-    public Page rebuildRows(){
+    public Page createRows(){
         this.rowsInPage = new LinkedList<>();
         for (int i = 0; i < this.allResults.size(); i += Row.MAX_COUNT_BOOKS_IN_ROWS) {
             rowsInPage.add(new Row().setResultsInRow(this.allResults.subList(i,

@@ -31,8 +31,9 @@ public class SearchQuery {
     private final BookService bookService;
     private final CategoryService categoryService;
 
+
     @Autowired
-    public SearchQuery(String queryText, SortType type, String pageNumber,
+    private SearchQuery(String queryText, SortType type, String pageNumber,
                        BookService bookService, CategoryService categoryService) {
         this.queryText = queryText;
         this.type = type;
@@ -54,7 +55,7 @@ public class SearchQuery {
     }
 
     public SearchQuery execute(){
-        if(!this.isStopWord()){
+        if(!wrongQuery()){
             if(isCategory(this)) {
                 this.results = this.categoryService.getBooksByCategories(queryText);
             }
@@ -173,7 +174,11 @@ public class SearchQuery {
                 page.getAllResults().sort(this::compareAddedDate);
                 break;
         }
-        return page.rebuildRows();
+        return page.createRows();
 
+    }
+
+    private boolean wrongQuery(){
+        return this.isStopWord() || this.queryText.length() <= 2;
     }
 }

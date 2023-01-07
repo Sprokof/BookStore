@@ -1,4 +1,4 @@
-import {logout, userEmail} from "./validation.js"
+import {logout, updateUser, userEmail} from "./validation.js"
 import {openLoginNotice} from "./notice.js";
 import {currentLocation, deleteUser, sessionActive, userAccept} from "./main.js";
 
@@ -135,6 +135,7 @@ function executeCategorySearch() {
         }
     }
 }
+
 export function validateSession() {
     createCookie();
     let user = getUser();
@@ -209,8 +210,10 @@ export function validateSession() {
            url: "/autologin",
            dataType: 'json',
            data: JSON.stringify(user),
-           cache: false,
-           async: false
+           async: false,
+           success: () => {
+               updateUser(user);
+           }
         })
    }
 
@@ -307,3 +310,4 @@ export function createAcceptNotice(){
         autologin();
         createAcceptNotice();
     }
+
