@@ -93,6 +93,9 @@ public class Book {
     private double bookRating = 0d;
 
 
+    private transient Integer reviewCounts;
+
+
     public Book(String isbn, String title, String publisher,
                 int price, int yearPub,
                 String subject, String bookImageName, BookStatus status, int availableCopies,
@@ -190,5 +193,12 @@ public class Book {
         if(!(obj instanceof Book)) return false;
         Book book = (Book) obj;
         return this.isbn.equals(book.isbn);
+    }
+
+    public int getReviewCounts() {
+        if(this.reviewCounts == null){
+            this.reviewCounts = this.bookReviews.size();
+        }
+    return reviewCounts;
     }
 }

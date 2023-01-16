@@ -31,7 +31,16 @@
             <div class="book-details">
                 <div th:text="${'Title: ' + book.title}"></div>
                 <div th:text="${'Subject: ' + book.subject}"></div>
-                <div class="star-rating" th:text="${book.bookRating}"></div>
+                <div class="star-rating" th:text="${book.bookRating + ' (' + book.reviewCounts + ' scores)'}"></div>
+
+                <div class="star-rating set">
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                </div>
+
                 <hr>
                 <div th:text="${'Price: ' + book.price + ' ₽'}"></div>
                 <div th:text="${'In Stock: ' + book.availableCopies}"></div>
