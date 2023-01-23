@@ -198,20 +198,6 @@ function findReview(username){
         return true;
 }
 
-let rating = document.querySelector('#book-info .star-rating');
-let setRating = document.querySelector('#book-info .set.star-rating');
-rating.onmouseover = () => {
-    rating.classList.add("over");
-    setRating.classList.add("over");
-    for(let star of setRating.children){
-        star.style.cursor = "pointer";
-    }
-}
-
-rating.onmouseout = () => {
-    rating.classList.remove("over");
-    setRating.classList.remove("over");
-}
 
 
 

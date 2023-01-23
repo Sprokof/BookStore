@@ -1,7 +1,7 @@
 import {getUser} from "./navbar.js";
 import {blockBackgroundHtml} from "./notice.js";
-import {reload, validateRequest} from "./main.js";
-import {blockInputPointerEvents, checkoutClose} from "./checkout.js";
+import {reload, toBookInfo, validateRequest} from "./main.js";
+import {blockInputPointerEvents} from "./checkout.js";
 
 const sumSuffix = ".00 ₽";
 const shipping_cost = 170;
@@ -130,6 +130,13 @@ function checkoutSaved(){
 function openCheckoutNotice() {
     let notice = document.querySelector('.checkout-notice');
     notice.classList.add("active");
+}
+
+let isbnNodes = document.querySelectorAll('.cart-container .isbn');
+for(let isbn of isbnNodes){
+    isbn.onclick = () => {
+        toBookInfo(extractISBN(isbn));
+    }
 }
 
 

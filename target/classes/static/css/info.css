@@ -192,21 +192,3 @@
     display: flex;
 }
 
-#book-info .star-rating.over {
-    display: none;
-    transition: 210ms;
-}
-
-#book-info .star-rating.set {
-    display: none;
-}
-
-#book-info .star-rating.set.over {
-    display: flex;
-    transition: 210ms;
-    width: 70px;
-    height: 20px;
-}
-
-
-

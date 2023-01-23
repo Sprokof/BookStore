@@ -236,10 +236,11 @@ let infos = document.querySelectorAll('.book-info');
     for (let i = 0; i < infos.length; i++) {
         let title = infos[i].children[0];
         title.onclick = () => {
-            let lastIndex = (infos[i].children.length - 1);
-            let isbn = extractISBN(infos[i].children[lastIndex]);
-            document.location.href = "/book?isbn=" + isbn;
-        }
+            toBookInfo(title.innerText);}
+    }
+
+    export function toBookInfo(paramValue){
+        document.location.href = "/book/search?value=" + paramValue;
     }
 
 export function extractISBN(node){

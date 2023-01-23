@@ -159,7 +159,10 @@ export function validateSession() {
     }
 
     function createCookie(){
-        document.cookie = "cookie=" + String ((Math.random() * 10));
+        for(let i = 0; i < 10; i ++) {
+            let number = String(Math.round(Math.random() * 10));
+            document.cookie = "cookie=" + number;
+        }
     }
 
     function loaded(){

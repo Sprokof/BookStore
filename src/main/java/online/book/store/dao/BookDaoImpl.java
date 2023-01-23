@@ -162,7 +162,7 @@ public class BookDaoImpl implements BookDao {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
             book = (Book) session.createSQLQuery("SELECT * FROM BOOKS WHERE TITLE=:title").
-                    setParameter("isbn", title).addEntity(Book.class).getSingleResult();
+                    setParameter("title", title).addEntity(Book.class).getSingleResult();
             session.getTransaction().commit();
         } catch (Exception e) {
             if (session != null) {

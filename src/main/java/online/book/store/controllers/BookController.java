@@ -44,12 +44,13 @@ public class BookController {
     }
 
 
-    @GetMapping("/book")
-    public String info(@RequestParam("isbn") String isbn, Model model) {
-        Book book = bookService.getBookByIsbn(isbn);
+    @GetMapping("/book/search")
+    public String book(@RequestParam("value") String value, Model model) {
+        Book book = bookService.getBookByParams(value);
         model.addAttribute("book", book);
         return "bookInfo";
     }
+
 
     @GetMapping("/session")
     public String addBook(@RequestParam("id") String sessionid) {

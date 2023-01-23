@@ -13,6 +13,7 @@ import java.util.List;
 
 public interface BookService {
     List<Book> getPopularBooks();
+    Book getBookByParams(String param);
     List<Book> getAllBooks();
     Book getBookByIsbn(String isbn);
     Book getBookByTitle(String title);

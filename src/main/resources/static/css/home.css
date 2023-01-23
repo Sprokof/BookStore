@@ -171,13 +171,6 @@
     border-bottom: white 1px;
 }
 
-.books-slider .card .book-info .isbn {
-    z-index: -1;
-    opacity: 0;
-    pointer-events: none;
-    font-size: 0;
-    width: 0;
-}
 
 .books-slider .wishlist.btn .fa-heart {
     margin-left: -2px;
