@@ -124,9 +124,10 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public Book getBookByParams(String param) {
-        Book book;
-        if((book = this.getBookByIsbn(param)) != null) return book;
-        return this.getBookByTitle(param.replaceAll(REQUEST_PARAM_WHITESPACE, " "));
+    public Book getBookByParams(String title, String isbn) {
+        Book book = null;
+        if (title != null) book = this.getBookByTitle(title);
+        if(isbn != null) book = this.getBookByIsbn(isbn);
+        return book;
     }
 }

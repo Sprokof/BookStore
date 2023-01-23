@@ -208,3 +208,26 @@ header .nav-item a:hover::after {
 #sidebar.reveal {
     height: 100%;
 }
+
+.about {
+    background: whitesmoke;
+    width: 280px;
+    text-align: center;
+    padding: 3px 3px;
+    border-radius: 15px;
+    border: 2px solid slategrey;
+    opacity: 0;
+    -webkit-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    -moz-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    position: absolute;
+    top: 30%;
+    left: 50%;
+
+}
+
+.about.show {
+    transition: 300ms ease-out;
+    opacity: 1;
+    z-index: 1;
+}

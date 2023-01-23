@@ -135,7 +135,7 @@ function openCheckoutNotice() {
 let isbnNodes = document.querySelectorAll('.cart-container .isbn');
 for(let isbn of isbnNodes){
     isbn.onclick = () => {
-        toBookInfo(extractISBN(isbn));
+        toBookInfo("isbn", extractISBN(isbn));
     }
 }
 

@@ -85,6 +85,10 @@ public class StoreController{
         return ResponseEntity.ok(userDto);
     }
 
+    @GetMapping("/about")
+    public String about () {
+        return "about";
+    }
 
 }
 

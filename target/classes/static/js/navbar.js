@@ -1,5 +1,5 @@
 import {logout, updateUser, userEmail} from "./validation.js"
-import {openLoginNotice} from "./notice.js";
+import {blockBackgroundHtml, openLoginNotice} from "./notice.js";
 import {currentLocation, deleteUser, sessionActive, userAccept} from "./main.js";
 
 
@@ -314,3 +314,22 @@ export function createAcceptNotice(){
         createAcceptNotice();
     }
 
+let aboutLink = document.getElementById('about');
+let about = document.querySelector('.about');
+    aboutLink.onclick = () => {
+        showAboutWindow();
+    }
+
+function showAboutWindow() {
+    about.classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    blockBackgroundHtml(true)
+}
+
+document.addEventListener("mouseup", (e) => {
+    if(about == null || !about.classList.contains('show')) return ;
+    if(!about.contains(e.target)) {
+        blockBackgroundHtml(false);
+        about.classList.remove('show');
+    }
+})

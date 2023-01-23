@@ -44,9 +44,10 @@ public class BookController {
     }
 
 
-    @GetMapping("/book/search")
-    public String book(@RequestParam("value") String value, Model model) {
-        Book book = bookService.getBookByParams(value);
+    @GetMapping("/book")
+    public String book(@RequestParam(value = "title", required = false) String title,
+                       @RequestParam(value = "isbn", required = false) String isbn, Model model) {
+        Book book = bookService.getBookByParams(title, isbn);
         model.addAttribute("book", book);
         return "bookInfo";
     }

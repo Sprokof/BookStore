@@ -31,7 +31,8 @@
             <div class="book-details">
                 <div th:text="${'Title: ' + book.title}"></div>
                 <div th:text="${'Subject: ' + book.subject}"></div>
-                <div class="star-rating" th:text="${book.bookRating + ' (' + book.reviewCounts + ' scores)'}"></div>
+                <div class="star-rating"
+                     th:text="${book.bookRating + ' (' + book.reviewCounts + ' scores)'}"></div>
 
 
                 <hr>
