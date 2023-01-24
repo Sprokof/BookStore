@@ -24,6 +24,7 @@
 
             <div class="book-info">
                 <span th:text="${result.book.title}" style="margin-top: -15px"></span>
+                <p class="isbn" th:text="${'ISBN: ' + result.book.isbn}"></p>
 
                 <div class="star-rating"
                      th:text="${result.book.bookRating}">

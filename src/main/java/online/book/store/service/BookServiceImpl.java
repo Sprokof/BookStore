@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @Component
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl implements BookService {
 
     private static final String REQUEST_PARAM_WHITESPACE = "%20";
 
@@ -25,6 +25,7 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public List<Book> getPopularBooks() {
+        setBooksStatus();
         List<Book> books = this.bookDao.getPopularBooks();
         books.forEach(book -> {
             String description = book.getDescription();
@@ -36,12 +37,14 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public List<Book> getAllBooks() {
+        setBooksStatus();
         return this.bookDao.getAllBooks();
 
     }
 
     @Override
     public Book getBookByIsbn(String isbn) {
+        setBooksStatus();
         return this.bookDao.getBookByIsbn(isbn);
     }
 
@@ -62,6 +65,7 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public Book getBookByTitle(String title) {
+        setBooksStatus();
         return this.bookDao.getBookByTitle(title);
     }
 
@@ -126,8 +130,23 @@ public class BookServiceImpl implements BookService{
     @Override
     public Book getBookByParams(String title, String isbn) {
         Book book = null;
-        if (title != null) book = this.getBookByTitle(title);
+        if (title != null) book = this.getBookByTitle(title.
+                replaceAll(REQUEST_PARAM_WHITESPACE, " "));
         if(isbn != null) book = this.getBookByIsbn(isbn);
         return book;
     }
+
+
+    private synchronized void setBooksStatus() {
+        while (this.bookDao.existNotAvailableBooks()) {
+            this.bookDao.setBooksStatus();
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            notify();
+        }
+    }
+
 }

@@ -18,6 +18,8 @@ public interface BookDao {
     boolean bookExist(String isbn);
     int getBookIdByISBN(String isbn);
     List<Book> findBooksBySearchQuery(String query, String column);
+    void setBooksStatus();
+    boolean existNotAvailableBooks();
 
 
 }

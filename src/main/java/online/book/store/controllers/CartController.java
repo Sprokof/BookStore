@@ -32,6 +32,7 @@ public class CartController {
     @GetMapping("/cart")
     public String cart(@RequestParam("user") String login, Model model){
         Cart cart = userService.getUserByLogin(login).getCart();
+        System.out.println(cart.getId());
         if(cart.isEmpty()){
             return "result";
         }

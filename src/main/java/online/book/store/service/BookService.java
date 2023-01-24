@@ -7,6 +7,7 @@ import online.book.store.engines.SearchResult;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
 import online.book.store.entity.User;
+import org.springframework.boot.CommandLineRunner;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public interface BookService {
     void updateBook(Book book);
     boolean bookExist(String isbn);
     List<SearchResult> findBooksBySearchQuery(SearchQuery searchQuery, String[] searchColumns);
+
 
 
 }

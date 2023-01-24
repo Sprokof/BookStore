@@ -1,6 +1,7 @@
 package online.book.store.dao;
 
 import online.book.store.entity.Book;
+import online.book.store.enums.BookStatus;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.type.StandardBasicTypes;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.NoResultException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -58,9 +60,9 @@ public class BookDaoImpl implements BookDao {
             session.beginTransaction();
             resultedList = (ArrayList<Book>) session.
                     createSQLQuery("SELECT * FROM " +
-                            "BOOKS WHERE AVG_RATING " +
+                            "BOOKS WHERE AVAILABLE=:true and AVG_RATING " +
                             "BETWEEN :min_rating and :max_rating ORDER BY AVG_RATING desc limit(6)").
-                    addEntity(Book.class).
+                    addEntity(Book.class).setParameter("true", BookStatus.AVAILABLE.getStatusText()).
                     setParameter("min_rating", MIN_POPULAR_RATING).
                     setParameter("max_rating", MAX_POPULAR_RATING).list();
 
@@ -81,7 +83,6 @@ public class BookDaoImpl implements BookDao {
     }
 
 
-    // That method is needed for getting info
     @Override
     public Book getBookByIsbn(String isbn) {
         Session session = null;
@@ -352,6 +353,53 @@ public class BookDaoImpl implements BookDao {
         }
 
         return books;
+    }
+
+    @Override
+    public void setBooksStatus() {
+        Session session = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        session.createSQLQuery("UPDATE BOOKS SET AVAILABLE=:false" +
+                " WHERE AVAILABLE_COPIES = 0").setParameter("false",
+                BookStatus.NOT_AVAILABLE.getStatusText()).executeUpdate();
+        session.getTransaction().commit();
+    }
+    catch(Exception e){
+        if(session != null && session.getTransaction() != null){
+            session.getTransaction().rollback();
+        }
+    }
+    finally{
+        if(session != null){
+            session.close();
+        }
+    }
+
+    }
+
+    @Override
+    public boolean existNotAvailableBooks() {
+        Session session = null;
+        BigInteger count = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        count = (BigInteger) session.createSQLQuery("SELECT COUNT(ID) FROM " +
+                "BOOKS WHERE AVAILABLE_COPIES = 0");
+        session.getTransaction().commit();
+    }
+    catch (Exception e){
+        if(session != null && session.getTransaction() != null){
+            session.getTransaction().rollback();
+        }
+    }
+    finally {
+        if(session != null)
+            session.close();
+    }
+    return count != null;
     }
 }
 

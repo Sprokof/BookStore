@@ -164,5 +164,9 @@
     font-weight: 600;
 }
 
-
+.isbn {
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
 

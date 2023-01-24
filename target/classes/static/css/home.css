@@ -182,3 +182,9 @@
     transition: 0.2s ease-in-out;
 }
 
+.isbn {
+    width: 0;
+    height: 0;
+    opacity: 0;
+}
+
