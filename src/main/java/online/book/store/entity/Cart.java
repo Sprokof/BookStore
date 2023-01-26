@@ -91,7 +91,6 @@ public class Cart {
     }
 
     public boolean isEmpty(){
-        System.out.println(cartItems);
         return this.cartItems == null || this.cartItems.isEmpty();
     }
 
