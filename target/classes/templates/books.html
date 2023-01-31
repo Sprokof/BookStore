@@ -25,7 +25,6 @@
             <div class="book-info">
                 <span th:text="${result.book.title}" style="margin-top: -15px"></span>
                 <p class="isbn" th:text="${'ISBN: ' + result.book.isbn}"></p>
-                <p class="status" th:text="${result.book.available}"></p>
 
                 <div class="star-rating"
                      th:text="${result.book.bookRating}">
@@ -37,15 +36,27 @@
                 <div style="font-weight: 700;
                 font-size: 1.0rem; color: white" th:text="${result.book.price + ' ₽'}">
                 </div>
-                <span class="shop cart btn">
-                    <i class="fa fa-shopping-cart" style="margin-top: 5px"></i>
-                </span>
+
+                <div th:switch="${result.book.available()}">
+                        <div th:case="${false}">
+                            <span class="shop cart btn non-active">
+                                <i class="fa fa-shopping-cart" style="margin-top: 5px"></i>
+                            </span>
+                        </div>
+                        <div th:case="${true}">
+                            <span class="shop cart btn">
+                                <i class="fa fa-shopping-cart" style="margin-top: 5px"></i>
+                            </span>
+                        </div>
+                </div>
 
                 <span class="wishlist btn">
                     <i class="far fa-heart" style="margin-left: -1px"></i>
                 </span>
             </div>
+
         </div>
+
     </div>
 
     <div th:if="${page.getPagesCount() > 1}">

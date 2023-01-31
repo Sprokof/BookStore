@@ -168,6 +168,13 @@ public class Book {
     private List<Wishlist> wishlists;
 
 
+    @Getter
+    @Setter
+    @ManyToMany(mappedBy = "books")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<WaitList> waitLists;
+
+
     @Override
     public String toString(){
         return "book { isbn" + this.isbn + "}";
@@ -200,5 +207,9 @@ public class Book {
             this.reviewCounts = this.bookReviews.size();
         }
     return reviewCounts;
+    }
+
+    public boolean available(){
+        return this.available.equals(BookStatus.AVAILABLE.getStatusText());
     }
 }

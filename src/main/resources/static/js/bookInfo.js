@@ -199,5 +199,12 @@ function findReview(username){
 }
 
 
+let noticeBtn = document.querySelector('#book-info .notice-btn');
+if(noticeBtn != null) {
+    noticeBtn.onclick = () => {
+        noticeBtn.classList.add('create');
+    }
+}
+
 
 

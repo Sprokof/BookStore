@@ -192,3 +192,26 @@
     display: flex;
 }
 
+#book-info .notice-btn {
+    background: whitesmoke;
+    border-radius: 8px;
+    border: 2px solid silver;
+    color: #1b1b1b;
+    font-family: "Cascadia Code", sans-serif;
+    font-weight: 500;
+    padding: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin-top: 10px;
+}
+
+#book-info .notice-btn:hover {
+    background: silver;
+}
+
+#book-info .notice-btn.create {
+    transition: 150ms ease;
+    pointer-events: none;
+    color: silver;
+}
+

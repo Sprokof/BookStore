@@ -35,7 +35,7 @@
     color: #fdcc0d;
     user-select: none;
     position: relative;
-    bottom: 25px;
+    bottom: 10px;
 }
 
 #card-container .card .numeric-rating {
@@ -166,12 +166,15 @@
     font-weight: 600;
 }
 
-.isbn, .status{
+.isbn {
     width: 0;
     height: 0;
     opacity: 0;
-    z-index: -1;
 }
 
+#card-container .btn.non-active {
+    pointer-events: none;
+    opacity: 0.6;
+}
 
 

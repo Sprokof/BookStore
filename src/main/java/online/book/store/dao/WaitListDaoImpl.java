@@ -1,0 +1,57 @@
+package online.book.store.dao;
+
+import online.book.store.entity.WaitList;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Component;
+
+import javax.persistence.NoResultException;
+
+@Component
+public class WaitListDaoImpl implements WaitListDao {
+
+    private final SessionFactory sessionFactory =
+            SessionFactoryInitialization.getInitializationFactory();
+
+    @Override
+    public boolean contains(int bookId, WaitList waitList) {
+        Session session = null;
+        Integer id = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        id = (Integer) session.createSQLQuery("SELECT book_id FROM BOOKS_WAITS_LISTS " +
+                "WHERE book_id=:b_id and wait_list_id=:wl_id").getSingleResult();
+        session.getTransaction().commit();
+    }
+        catch (Exception e){
+            if(session != null && session.getTransaction() != null) {
+                session.getTransaction().rollback();
+                if(e instanceof NoResultException) return false;
+            }
+        }
+    finally {
+        if(session != null) session.close();
+    }
+    return id != null;
+    }
+
+    @Override
+    public void updateWaitList(WaitList waitList) {
+        Session session = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        session.update(waitList);
+        session.getTransaction().commit();
+    }
+    catch (Exception e){
+        if(session != null && session.getTransaction() != null){
+            session.getTransaction().rollback();
+        }
+    }
+    finally {
+        if(session != null) session.close();
+    }
+    }
+}

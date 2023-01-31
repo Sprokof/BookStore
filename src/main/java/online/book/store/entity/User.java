@@ -23,7 +23,6 @@ import java.util.Objects;
 @Entity
 public class User {
 
-    @Autowired
     private transient SessionService sessionService;
 
     @Id
@@ -78,13 +77,18 @@ public class User {
     @Setter
     private Wishlist wishList;
 
+    @OneToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name = "wait_list_id")
+    @Getter
+    @Setter
+    private WaitList waitList;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     @Setter
     @Getter
     private Cart cart;
-
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @Setter

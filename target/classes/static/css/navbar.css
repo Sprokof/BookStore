@@ -231,3 +231,29 @@ header .nav-item a:hover::after {
     opacity: 1;
     z-index: 1;
 }
+
+.bell {
+    margin-top: 12px;
+    width: 25px;
+    height: 15px;
+    overflow-y: hidden;
+}
+
+.bell i {
+    color: #5f5f5b;
+}
+
+.bell .notice-count {
+   color: darkred;
+   font-weight: 700;
+   overflow-y: hidden;
+   position: relative;
+   bottom: 28px;
+   left: 2px;
+   z-index: 1;
+   font-family: 'Cascadia Code', sans-serif ;
+   text-align: center;
+   font-size: 12px;
+
+}
+

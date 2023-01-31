@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8">
     <link rel="shortcut icon" href="#">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}">
@@ -12,10 +12,10 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/window.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/info.css}"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/reviews.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/info.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/reviews.css}">
     <script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
-    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
     <script type="text/javascript" th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
 
 
@@ -31,8 +31,7 @@
             <div class="book-details">
                 <div th:text="${'Title: ' + book.title}"></div>
                 <div th:text="${'Subject: ' + book.subject}"></div>
-                <div class="star-rating"
-                     th:text="${book.bookRating + ' (' + book.reviewCounts + ' scores)'}"></div>
+                <div class="star-rating" th:text="${book.bookRating + ' (' + book.reviewCounts + ' scores)'}"></div>
 
 
                 <hr>
@@ -43,6 +42,9 @@
             <div class="buttons">
                 <button></button>
                 <button></button>
+                <div th:if="${!book.available()}">
+                    <button class="notice-btn">Notice when available</button>
+                </div>
             </div>
         </div>
 
@@ -56,7 +58,7 @@
             </ul>
 
         <div class="tab-content">
-        <div  class="tab-pane fade show active" id="description">
+        <div class="tab-pane fade show active" id="description">
             <section th:text="${book.getDescription()}"></section>
         </div>
 
@@ -74,7 +76,7 @@
                 <div class="reviews-container">
                     <div class="row-review" th:each="review : ${book.getBookReviews()}">
                         <div class="review">
-                            <div style="color: green" class="review-item" th:text ="${'Author: ' + review.author}"></div>
+                            <div style="color: green" class="review-item" th:text="${'Author: ' + review.author}"></div>
                             <div class="review-item text" th:text="${review.review}"></div>
                         </div>
                         <div class="score">

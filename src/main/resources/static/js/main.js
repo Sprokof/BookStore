@@ -294,3 +294,4 @@ function getUserData(user){
         return location === 'cart' || location === 'wishlist'
             || location === 'account' || location === 'orders';
     }
+    
