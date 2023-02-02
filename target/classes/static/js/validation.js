@@ -209,12 +209,11 @@ export function userEmail(){
 }
 
 function saveLogin(login) {
-    document.cookie += ', '+login;
+    sessionStorage.setItem('login', login);
 }
 
 export function getSavedLogin() {
-    let cookieValue = document.cookie;
-    return document.cookie.substr(cookieValue.indexOf(',') + 2);
+    return sessionStorage.getItem('login');
 }
 
 export function getMap(data){

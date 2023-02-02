@@ -149,4 +149,8 @@ public class BookServiceImpl implements BookService {
         }
     }
 
+    @Override
+    public int getBookIdByISBN(String isbn) {
+        return this.bookDao.getBookIdByISBN(isbn);
+    }
 }

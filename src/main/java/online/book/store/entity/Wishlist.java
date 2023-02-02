@@ -29,7 +29,6 @@ public class Wishlist {
     private List<Book> books;
 
 
-
     public void addBook(Book book){
         if(this.books == null) this.books = new LinkedList<>();
         this.books.add(book);
@@ -47,7 +46,7 @@ public class Wishlist {
     private User user;
 
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return this.books == null || this.books.isEmpty();
     }
 

@@ -22,8 +22,11 @@ export function controlWishlistContent(btn, pageName) {
 }
 
 export function requestDto(btn){
-    let lasIndex = (btn.parentNode.parentNode.children[1].children.length - 1);
-    let isbnNode = btn.parentNode.parentNode.children[1].children[lasIndex];
+    let cardNode = getCardNode(btn);
+    let infoNode = cardNode.children[1];
+    let children = infoNode.children;
+    let index = children.length - 1;
+    let isbnNode = cardNode.children[1].children[index];
     return {
         "isbn": extractISBN(isbnNode),
         "sessionid" : getUser()['sessionid'],
@@ -294,4 +297,9 @@ function getUserData(user){
         return location === 'cart' || location === 'wishlist'
             || location === 'account' || location === 'orders';
     }
-    
+
+
+    function getCardNode(btn) {
+        return btn.classList.contains('shop')
+            ? btn.parentNode.parentNode.parentNode.parentNode : btn.parentNode.parentNode;
+    }

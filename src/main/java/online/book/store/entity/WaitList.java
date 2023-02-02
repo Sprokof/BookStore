@@ -19,6 +19,11 @@ public class WaitList {
     @Getter
     private int id;
 
+    @Column(name = "user_id")
+    @Getter
+    @Setter
+    private int userId;
+
     @ManyToMany()
     @JoinTable (name = "BOOKS_WAITS_LISTS",
             joinColumns = @JoinColumn(name = "wait_list_id"),
@@ -42,9 +47,11 @@ public class WaitList {
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "waitList", fetch = FetchType.EAGER)
     @Getter
-    @Setter
     private User user;
 
 
-
+    public void setUser(User user) {
+        this.user = user;
+        this.userId = user.getId();
+    }
 }

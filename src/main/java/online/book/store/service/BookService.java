@@ -24,6 +24,7 @@ public interface BookService {
     void updateBook(Book book);
     boolean bookExist(String isbn);
     List<SearchResult> findBooksBySearchQuery(SearchQuery searchQuery, String[] searchColumns);
+    int getBookIdByISBN(String isbn);
 
 
 

@@ -39,19 +39,57 @@ public class WaitListDaoImpl implements WaitListDao {
     @Override
     public void updateWaitList(WaitList waitList) {
         Session session = null;
-    try {
-        session = this.sessionFactory.openSession();
-        session.beginTransaction();
-        session.update(waitList);
-        session.getTransaction().commit();
-    }
-    catch (Exception e){
-        if(session != null && session.getTransaction() != null){
-            session.getTransaction().rollback();
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(waitList);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if (session != null) session.close();
         }
     }
-    finally {
-        if(session != null) session.close();
+
+    @Override
+    public WaitList saveWaitList(WaitList waitList) {
+        Session session = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.save(waitList);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if (session != null) session.close();
+        }
+
+        int userId = waitList.getUserId();
+        return getWaitListByUserId(userId);
     }
+
+    private WaitList getWaitListByUserId(int userId) {
+        Session session = null;
+        WaitList waitList = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            waitList = (WaitList) session.createSQLQuery("SELECT * FROM WAITS_LISTS " +
+                            "WHERE user_id=:id").addEntity(WaitList.class).
+                    setParameter("id", userId).getSingleResult();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if (session != null) session.close();
+        }
+        return waitList;
     }
 }

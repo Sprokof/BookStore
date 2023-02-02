@@ -43,7 +43,7 @@ function sendNewCode () {
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        url: "/home/resend/code",
+        url: "/resend/code",
         data: JSON.stringify(resetPasswordDto),
         cache: false,
         dataType: 'json',

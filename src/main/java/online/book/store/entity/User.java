@@ -7,6 +7,7 @@ import lombok.Setter;
 import online.book.store.enums.Role;
 import online.book.store.hash.SHA256;
 import online.book.store.service.SessionService;
+import online.book.store.service.SessionServiceImpl;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,7 @@ import java.util.Objects;
 @Entity
 public class User {
 
-    private transient SessionService sessionService;
-
+    private transient final SessionService sessionService = new SessionServiceImpl();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
@@ -79,8 +79,6 @@ public class User {
 
     @OneToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "wait_list_id")
-    @Getter
-    @Setter
     private WaitList waitList;
 
 
@@ -181,5 +179,16 @@ public class User {
                 ", password='" + password + '\'' + "";
     }
 
+    public void setWaitList(WaitList waitList) {
+        this.waitList = waitList;
+        waitList.setUser(this);
+    }
 
+    public WaitList getWaitList(){
+        if(this.waitList == null) {
+            this.waitList = new WaitList();
+            this.waitList.setUser(this);
+        }
+        return this.waitList;
+    }
 }

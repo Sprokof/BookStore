@@ -254,6 +254,7 @@ header .nav-item a:hover::after {
    font-family: 'Cascadia Code', sans-serif ;
    text-align: center;
    font-size: 12px;
+   display: none;
 
 }
 

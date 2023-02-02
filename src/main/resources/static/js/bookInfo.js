@@ -4,6 +4,8 @@ import {blockBackgroundHtml, openLoginNotice} from "./notice.js";
 
 let buttons = document.querySelectorAll('#book-info .item-container .buttons button');
 let isbnNode = document.querySelector('#book-info .isbn');
+let noticeBtn = document.querySelector('#book-info .notice-btn');
+
 
 let rowReviews = document.querySelectorAll('#book-info .row-review');
 
@@ -15,6 +17,13 @@ wishlistBtn.onclick = () => {
 let cartBtn = buttons[1];
 cartBtn.onclick = () => {
     addOrRemoveFromCart(cartBtn, isbnNode);
+}
+if(noticeBtn != null) {
+    noticeBtn.onclick = () => {
+        if (!waitListContains(isbnNode)) {
+            createNotice(isbnNode, noticeBtn);
+        }
+    }
 }
 
 function addOrRemoveFromWishlist(btn, isbnNode){
@@ -93,6 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     hideReviews();
+
+    controlWaitListContentOnLoad(isbnNode);
 
 })
 
@@ -199,12 +210,57 @@ function findReview(username){
 }
 
 
-let noticeBtn = document.querySelector('#book-info .notice-btn');
-if(noticeBtn != null) {
-    noticeBtn.onclick = () => {
+function createNotice(isbnNode, btn){
+    let dto = {
+        'sessionid' : getUser()['sessionid'],
+        'isbn' : extractISBN(isbnNode)
+    }
+
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/waitlist/add",
+        cache: false,
+        dataType: 'json',
+        responseType: 'json',
+        async: false,
+        data: JSON.stringify(dto),
+        success: () => {
+            btn.classList.add('create');
+        }
+    })
+}
+
+function waitListContains(isbnNode) {
+    let requestDto = {
+        'sessionid' : getUser()['sessionid'],
+        'isbn' : extractISBN(isbnNode)
+    }
+
+    let responseDto;
+
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/waitlist/contains?" + "isbn=" + requestDto['isbn'],
+        headers: {'session' : requestDto['sessionid']},
+        cache: false,
+        dataType: 'json',
+        responseType: 'json',
+        async: false,
+        success: (response) => {
+            responseDto = JSON.parse(JSON.stringify(response));
+        }
+    })
+
+    return responseDto['itemContains'];
+}
+
+function controlWaitListContentOnLoad(isbnNode) {
+    if(noticeBtn == null) return ;
+    if(waitListContains(isbnNode)){
         noticeBtn.classList.add('create');
     }
 }
-
 
 

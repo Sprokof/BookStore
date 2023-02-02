@@ -12,4 +12,9 @@ import lombok.Setter;
 public class WaitListDto {
     private String sessionid;
     private String isbn;
+    private boolean itemContains;
+
+    public WaitListDto(boolean itemContains) {
+        this.itemContains = itemContains;
+    }
 }

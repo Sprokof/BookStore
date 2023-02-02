@@ -105,10 +105,11 @@ public class SignInController {
 
 
     @PostMapping("/resend/code")
-    public void resendCode(@RequestBody ResetPasswordDto dto){
+    public ResponseEntity<HttpStatus> resendCode(@RequestBody ResetPasswordDto dto){
         User user = userService.getUserByLogin(dto.getLogin());
         signService.generateNewCode();
         sender.send(user.getEmail(), Subject.RESET_PASSWORD, this.signService);
+        return ResponseEntity.ok(HttpStatus.CONTINUE);
     }
 
     @PostMapping(value = "/autologin")

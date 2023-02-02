@@ -35,7 +35,7 @@
     color: #fdcc0d;
     user-select: none;
     position: relative;
-    bottom: 10px;
+    top: 3px;
 }
 
 #card-container .card .numeric-rating {

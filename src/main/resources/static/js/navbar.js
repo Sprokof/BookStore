@@ -300,7 +300,7 @@ export function createAcceptNotice(){
     }
 
     function toPage(url){
-        if(!sessionActive()) openLoginNotice() ;
+        if(!sessionActive()){ openLoginNotice(); return; }
         document.location.href = url + "?user=" + getUser()['login'];
     }
 

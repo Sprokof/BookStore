@@ -25,7 +25,6 @@ public class WishlistServiceImpl implements WishlistService{
     @Autowired
     private BookDao bookDao;
 
-
     @Override
     public HttpStatus removeFromWishlist(Book book, Wishlist wishlist) {
         wishlist.remove(book);
