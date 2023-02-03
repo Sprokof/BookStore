@@ -383,23 +383,23 @@ public class BookDaoImpl implements BookDao {
     public boolean existNotAvailableBooks() {
         Session session = null;
         BigInteger count = null;
-    try {
-        session = this.sessionFactory.openSession();
-        session.beginTransaction();
-        count = (BigInteger) session.createSQLQuery("SELECT COUNT(ID) FROM " +
-                "BOOKS WHERE AVAILABLE_COPIES = 0");
-        session.getTransaction().commit();
-    }
-    catch (Exception e){
-        if(session != null && session.getTransaction() != null){
-            session.getTransaction().rollback();
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            count = (BigInteger) session.createSQLQuery("SELECT COUNT(ID) FROM " +
+                            "BOOKS WHERE AVAILABLE_COPIES = 0 and AVAILABLE=:true").
+                    setParameter("true", BookStatus.AVAILABLE.getStatusText()).getSingleResult();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (session != null && session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if (session != null)
+                session.close();
         }
-    }
-    finally {
-        if(session != null)
-            session.close();
-    }
-    return count != null;
+        return count != null && count.intValue() > 0;
     }
 }
 

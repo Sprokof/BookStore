@@ -85,9 +85,9 @@ public class StoreController{
         return ResponseEntity.ok(userDto);
     }
 
-    @GetMapping("/bell")
+    @GetMapping("/up")
     public String about () {
-        return "bell";
+        return "updateBook";
     }
 
 

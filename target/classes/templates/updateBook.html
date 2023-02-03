@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}">
+    <title>Title</title>
+</head>
+<body>
+    <div id="updateBook" class="container">
+        <h3>Update book</h3>
+
+        <div class="book-element">
+            <label for="book_id">Book id</label>
+            <input id="book_id" placeholder="Book id" type="text">
+            <p class="error-message" id="id-error"></p>
+        </div>
+
+        <div class="book-element">
+            <label for="count">Books count</label>
+            <input id="count" placeholder="Books count" type="text">
+            <p class="error-message" id="count-error"></p>
+        </div>
+
+        <button class="submit-btn"> <span> Update </span> </button>
+
+    </div>
+</body>
+</html>

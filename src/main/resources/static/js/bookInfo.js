@@ -15,9 +15,12 @@ wishlistBtn.onclick = () => {
 }
 
 let cartBtn = buttons[1];
+if(noticeBtn != null) cartBtn.classList.add('non-active');
 cartBtn.onclick = () => {
     addOrRemoveFromCart(cartBtn, isbnNode);
 }
+
+
 if(noticeBtn != null) {
     noticeBtn.onclick = () => {
         if (!waitListContains(isbnNode)) {
@@ -94,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(!sessionActive()){
         let review = document.querySelector('#book-info .fa.fa-plus').parentNode;
         invisibleNode(review);
+        if(noticeBtn != null) noticeBtn.classList.add('create');
         return;
     }
     if(reviewExist()){

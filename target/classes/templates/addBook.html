@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/addbook.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/admin.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/categories.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}">
@@ -20,64 +20,64 @@
 <div class="container">
     <h3> Add book </h3>
 
-    <div class="add-element">
+    <div class="book-element">
         <label for="isbn"> ISBN </label>
         <input type="text" id="isbn" placeholder="ISBN">
         <p class="error-message" id="isbn-error"></p>
     </div>
 
 
-    <div class="add-element">
+    <div class="book-element">
         <label for="title"> Title </label>
         <input type="text" id="title" placeholder="Title">
         <p class="error-message" id="title-error"></p>
     </div>
 
-    <div class="add-element">
+    <div class="book-element">
         <label for="publisher"> Publisher </label>
         <input type="text" id="publisher" placeholder="Publisher">
         <p class="error-message" id="publisher-error"></p>
     </div>
 
-    <div class="add-element">
+    <div class="book-element">
         <label for="year"> Year Of Publication </label>
         <input type="text" id="year" placeholder="Year Of Publication">
         <p class="error-message" id="year-error"></p>
     </div>
 
-    <div class="add-element">
+    <div class="book-element">
         <label for="subject"> Subject </label>
         <input type="text" id="subject" placeholder="Subject">
         <p class="error-message" id="subject-error"></p>
     </div>
 
 
-    <div class="add-element">
+    <div class="book-element">
         <label for="copies"> Available Copies </label>
         <input type="text" id="copies" placeholder="Available Copies">
         <p class="error-message" id="copies-error"></p>
     </div>
 
-    <div class="add-element">
+    <div class="book-element">
         <label for="price"> Price </label>
         <input type="text" id="price" placeholder="Price">
         <p class="error-message" id="price-error"></p>
     </div>
 
 
-    <div class="add-element">
+    <div class="book-element">
         <label for="desc"> Description </label>
         <textarea type="text" id="desc" placeholder="Description"></textarea>
         <p class="error-message" id="desc-error"></p>
     </div>
 
-    <div class="add-element">
+    <div class="book-element">
         <label for="author"> Author </label>
         <input type="text" id="author" placeholder="Author">
         <p class="error-message" id="author-error"></p>
     </div>
 
-    <div class="add-element">
+    <div class="book-element">
         <label for="format"> Format </label>
         <input type="text" id="format" placeholder="Format">
         <p class="error-message" id="format-error"></p>
@@ -113,7 +113,7 @@
         <p class="error-message" id="categories-error"></p>
     </div>
 
-    <button class="save-btn"> <span> Save Book </span></button>
+    <button class="submit-btn"> <span> Save Book </span> </button>
 
 </div>
 

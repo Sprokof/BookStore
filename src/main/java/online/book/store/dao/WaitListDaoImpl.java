@@ -21,7 +21,10 @@ public class WaitListDaoImpl implements WaitListDao {
         session = this.sessionFactory.openSession();
         session.beginTransaction();
         id = (Integer) session.createSQLQuery("SELECT book_id FROM BOOKS_WAITS_LISTS " +
-                "WHERE book_id=:b_id and wait_list_id=:wl_id").getSingleResult();
+                "WHERE book_id=:b_id and wait_list_id=:wl_id").
+                setParameter("b_id", bookId).
+                setParameter("wl_id", waitList.getId())
+                .getSingleResult();
         session.getTransaction().commit();
     }
         catch (Exception e){

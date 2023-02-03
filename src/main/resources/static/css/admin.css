@@ -14,17 +14,17 @@
 
 }
 
-.add-element {
+.book-element {
     margin-bottom: 20px;
     width: 270px;
 }
 
-.add-element label {
+.book-element label {
     margin-left: 10px;
     margin-bottom: -5px;
 }
 
-.add-element input[type=text]{
+.book-element input[type=text]{
     border: 1px solid #cecece;
     background: #F6F6f6;
     border-radius: 8px;
@@ -115,25 +115,26 @@
 
 }
 
-.container .save-btn {
+.container .submit-btn {
     margin-top: 20px;
     background-color: black;
     width: 270px;
     border-radius: 20px;
     height: 50px;
     margin-bottom: 30px;
+    cursor: pointer;
 }
 
-.container .save-btn span {
+.container .submit-btn span {
     font-size: 20px;
     color: white;
 }
 
-.container .save-btn:hover{
+.container .submit-btn:hover{
     background-color: #1b1b1b;
 }
 
-.error-message{
+.error-message {
     font-size: 13px;
 }
 
@@ -142,7 +143,7 @@
     display: block;
 }
 
-.add-element.compression {
+.book-element.compression {
     margin-bottom: -10px;
 }
 

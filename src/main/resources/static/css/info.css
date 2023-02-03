@@ -215,3 +215,8 @@
     color: silver;
 }
 
+#book-info .buttons button.non-active {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
