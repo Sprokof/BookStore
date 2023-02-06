@@ -1,6 +1,6 @@
 import {validation} from "./validation.js";
 
-let saveBook = document.querySelector('.save-btn');
+let saveBook = document.querySelector('#add-page .save-btn');
 saveBook.addEventListener('click', () => {
     let book = {
         "isbn" : document.querySelector('#isbn').value,
@@ -79,3 +79,4 @@ function getCategories(){
 
     return allCategories;
 }
+

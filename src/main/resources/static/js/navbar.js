@@ -23,12 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
             newChild.children[0].onclick = () => logout();
             menu.replaceChild(newChild, lastChild);
 
-            if (session['adminSession']) {
-                newChild = createChild(['item', 'main'], ['div', 'a'],
-                    'Add book');
-                newChild.children[0].onclick = () => addBook();
-                menu.appendChild(newChild);
-            }
+            if (session['adminSession']) { createAdmins(menu); }
+
             createCartItemLink();
         }
     clearSearchValue();
@@ -61,7 +57,7 @@ function initBooksCategories(){
         if (childrenNodes.length < categories.length) {
             for (let i = childrenNodes.length; i < categories.length; i++) {
                 newNode = document.createElement('a');
-                newNode.classList.add('sub-item')
+                newNode.classList.add('sub-item', 'category')
                 newNode.innerText = categories[i]['category'];
                 subMenu.appendChild(newNode);
             }
@@ -127,7 +123,7 @@ function initBooksCategories(){
     })
 
 function executeCategorySearch() {
-    let items = document.querySelectorAll('.sub-item');
+    let items = document.querySelectorAll('.category');
     for (let item of items) {
         item.onclick = () => {
             let category = item.innerText;
@@ -181,7 +177,12 @@ export function validateSession() {
 
    export function addBook() {
        let user = getUser();
-       document.location = '/session?id=' + user['sessionid'];
+       document.location = '/add/session?id=' + user['sessionid'];
+   }
+
+   function updateBook() {
+        let user = getUser();
+        document.location = '/update/session?id=' + user['sessionid'];
    }
 
 
@@ -245,7 +246,7 @@ export function validateSession() {
    }
 
 
-   function clearSearchValue(){
+   function clearSearchValue() {
         document.querySelector('#search-input').value = '';
    }
 
@@ -333,3 +334,39 @@ document.addEventListener("mouseup", (e) => {
         about.classList.remove('show');
     }
 })
+
+
+function createAdmins(menu) {
+        let item = document.createElement('div');
+        item.classList.add('admin', 'item');
+
+
+        let btn = document.createElement('a');
+        btn.innerText = "Admin'"
+        btn.classList.add('sub-btn');
+
+        let arrow = document.createElement('i');
+        arrow.classList.add('fas', 'fa-angle-right', 'dropdown');
+        btn.appendChild(arrow);
+
+        let subMenu = document.createElement('div');
+        subMenu.classList.add('sub-menu');
+
+        let update = document.createElement('a');
+        update.innerText = "Update book";
+        update.classList.add('sub-item');
+        update.onclick = () => updateBook();
+
+        let add = document.createElement('a');
+        add.innerText = "Add book";
+        add.classList.add('sub-item');
+        add.onclick = () => addBook();
+
+        subMenu.appendChild(update);
+        subMenu.appendChild(add);
+
+        item.appendChild(btn);
+        item.appendChild(subMenu);
+
+        menu.appendChild(item);
+}

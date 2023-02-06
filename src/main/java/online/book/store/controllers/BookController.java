@@ -53,7 +53,7 @@ public class BookController {
     }
 
 
-    @GetMapping("/session")
+    @GetMapping("/add/session")
     public String addBook(@RequestParam("id") String sessionid) {
         if (!signService.adminsRequest(sessionid)) {
             throw new ResourceNotFoundException();
@@ -69,6 +69,21 @@ public class BookController {
             bookService.saveBook(book);
         }
         return ResponseEntity.ok(bookValidation.validationErrors());
+    }
+
+    @GetMapping("/update/session")
+    public String updateBook(@RequestParam ("id") String sessionid) {
+        if (!signService.adminsRequest(sessionid)) {
+            throw new ResourceNotFoundException();
+        }
+        return "updateBook";
+    }
+
+
+    @PostMapping("/book/update")
+    public ResponseEntity<Map<String, String>> updateBook(@RequestBody BookDto bookDto){
+
+        return null;
     }
 
 
