@@ -2,10 +2,13 @@ package online.book.store.service;
 
 
 import online.book.store.dao.BookDao;
+import online.book.store.dto.BookDto;
 import online.book.store.engines.SearchQuery;
 import online.book.store.engines.SearchResult;
 import online.book.store.entity.Book;
 import online.book.store.entity.Category;
+import online.book.store.entity.WaitList;
+import online.book.store.enums.BookStatus;
 import online.book.store.enums.RelevancePriority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -108,6 +111,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<SearchResult> findBooksBySearchQuery(SearchQuery searchQuery, String[] searchColumns) {
+        setBooksStatus();
         List<SearchResult> results = new LinkedList<>();
         String query = searchQuery.getQueryText();
         for (String column : searchColumns) {
@@ -137,15 +141,9 @@ public class BookServiceImpl implements BookService {
     }
 
 
-    private synchronized void setBooksStatus() {
-        while (this.bookDao.existNotAvailableBooks()) {
+    private void setBooksStatus() {
+        if (this.bookDao.existNotAvailableBooks()) {
             this.bookDao.setBooksStatus();
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            notify();
         }
     }
 
@@ -153,4 +151,19 @@ public class BookServiceImpl implements BookService {
     public int getBookIdByISBN(String isbn) {
         return this.bookDao.getBookIdByISBN(isbn);
     }
+
+    @Override
+    public Book updateBook(BookDto bookDto) {
+        int id = Integer.parseInt(bookDto.getId());
+        int availableCopies = Integer.parseInt(bookDto.getAvailableCopies());
+        Book book = this.getBookById(id);
+        int currentCount = book.getAvailableCopies();
+        int newCount = currentCount + availableCopies;
+        book.setAvailableCopies(newCount);
+        updateBook(book);
+        return book;
+    }
+
+
+
 }

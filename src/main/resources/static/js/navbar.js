@@ -352,18 +352,18 @@ function createAdmins(menu) {
         let subMenu = document.createElement('div');
         subMenu.classList.add('sub-menu');
 
-        let update = document.createElement('a');
-        update.innerText = "Update book";
-        update.classList.add('sub-item');
-        update.onclick = () => updateBook();
-
         let add = document.createElement('a');
         add.innerText = "Add book";
         add.classList.add('sub-item');
         add.onclick = () => addBook();
 
-        subMenu.appendChild(update);
+        let update = document.createElement('a');
+        update.innerText = "Set book's count";
+        update.classList.add('sub-item');
+        update.onclick = () => updateBook();
+
         subMenu.appendChild(add);
+        subMenu.appendChild(update);
 
         item.appendChild(btn);
         item.appendChild(subMenu);

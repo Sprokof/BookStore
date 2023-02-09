@@ -6,4 +6,6 @@ public interface WaitListDao {
     boolean contains(int bookId, WaitList waitList);
     void updateWaitList(WaitList waitList);
     WaitList saveWaitList(WaitList waitList);
+
+    void deleteFromWaitsLists(int bookId);
 }

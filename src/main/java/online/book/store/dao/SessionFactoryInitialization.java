@@ -15,7 +15,7 @@ public class SessionFactoryInitialization {
                                         Category.class, User.class, CartItem.class, Cart.class,
                                         BookReview.class,
                     Wishlist.class, SessionStatistics.class, Checkout.class,
-                    Order.class, UserSession.class, OrderDetails.class, WaitList.class});
+                    Order.class, UserSession.class, OrderDetails.class, WaitList.class, Notice.class});
         }
     return instance;
     }

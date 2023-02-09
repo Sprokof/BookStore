@@ -17,18 +17,18 @@
 <body>
     <nav th:insert="~{navbar :: navbar}"></nav>
 
-    <div id="update-book" class="container">
+    <div id= "update" class="container">
         <h3>Update book</h3>
 
         <div class="book-element">
-            <label for="book_id">Book id</label>
-            <input id="book_id" placeholder="Book id" type="text">
-            <p class="error-message" id="id-error"></p>
+            <label for="bookId">Book id</label>
+            <input id="bookId" placeholder="Book id" type="text">
+            <p class="error-message" id="bookId-error"></p>
         </div>
 
         <div class="book-element">
             <label for="count">Books count</label>
-            <input id="count" placeholder="Books count" type="text">
+            <input id="count" placeholder="New books count" type="text">
             <p class="error-message" id="count-error"></p>
         </div>
 
@@ -42,8 +42,9 @@
 <script type="module" th:src="@{/js/reset.js}"></script>
 <script type="module" th:src="@{/js/confirmReset.js}"></script>
 <script type="module" th:src="@{/js/validation.js}"></script>
-<script type="module" th:src="@{/js/home.js}"></script>
 <script type="module" th:src="@{/js/main.js}"></script>
 <script type="module" th:src="@{/js/window.js}"></script>
+<script type="module" th:src="@{/js/admins.js}"></script>
+
 
 </html>

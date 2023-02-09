@@ -69,7 +69,6 @@ public class Book {
 
     @Column(name = "AVAILABLE")
     @Getter
-    @Setter
     private String available;
 
     @Column(name = "AVAILABLE_COPIES")
@@ -211,5 +210,9 @@ public class Book {
 
     public boolean available(){
         return this.available.equals(BookStatus.AVAILABLE.getStatusText());
+    }
+
+    public void setAvailable(BookStatus status) {
+        this.available = status.getStatusText();
     }
 }

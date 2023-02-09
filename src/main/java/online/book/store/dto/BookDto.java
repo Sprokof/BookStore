@@ -21,6 +21,11 @@ public class BookDto extends AbstractBookBuilder {
 
     private final CategoryService categoryService = new CategoryServiceImpl();
 
+
+    @Getter
+    @Setter
+    private String id;
+
     @Getter
     @Setter
     private String bookImage;

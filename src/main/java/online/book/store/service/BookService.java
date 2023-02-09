@@ -26,6 +26,8 @@ public interface BookService {
     List<SearchResult> findBooksBySearchQuery(SearchQuery searchQuery, String[] searchColumns);
     int getBookIdByISBN(String isbn);
 
+    Book updateBook(BookDto bookDto);
+
 
 
 }

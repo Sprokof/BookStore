@@ -45,7 +45,7 @@ public class WaitList {
         book.getWaitLists().remove(this);
     }
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "waitList", fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.REFRESH, mappedBy = "waitList", fetch = FetchType.EAGER)
     @Getter
     private User user;
 

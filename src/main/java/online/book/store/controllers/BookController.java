@@ -7,8 +7,10 @@ import online.book.store.entity.Book;
 import online.book.store.expections.ResourceNotFoundException;
 import online.book.store.service.BookService;
 import online.book.store.service.CategoryService;
+import online.book.store.service.NoticeService;
 import online.book.store.service.SignService;
 import online.book.store.validation.AbstractValidation;
+import online.book.store.validation.BookValidation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
@@ -34,7 +36,9 @@ public class BookController {
     private SignService signService;
 
     @Autowired
-    @Qualifier("bookValidation")
+    private NoticeService noticeService;
+
+
     private AbstractValidation bookValidation;
 
 
@@ -63,6 +67,7 @@ public class BookController {
 
     @PostMapping("/book/add")
     public ResponseEntity<Map<String, String>> addBook(@RequestBody BookDto bookDto) {
+        this.bookValidation = new BookValidation.AddBookValidation(this.bookService);
         bookValidation.validation(bookDto);
         if (!bookValidation.hasErrors()) {
             Book book = bookDto.doBookBuilder();
@@ -82,8 +87,15 @@ public class BookController {
 
     @PostMapping("/book/update")
     public ResponseEntity<Map<String, String>> updateBook(@RequestBody BookDto bookDto){
-
-        return null;
+        this.bookValidation = new BookValidation.UpdateBookValidation(this.bookService);
+        bookValidation.validation(bookDto);
+        if (!bookValidation.hasErrors()) {
+            Book book;
+            if(!(book = bookService.updateBook(bookDto)).available()){
+                noticeService.createAvailableNotice(book);
+            }
+        }
+        return ResponseEntity.ok(bookValidation.validationErrors());
     }
 
 

@@ -9,5 +9,6 @@ public interface WaitListService {
     WaitListDto contains(int bookId, WaitList waitList);
     void updateWaitList(WaitList waitList);
     void addToWaitList(Book book, WaitList waitList);
+    void deleteBookFromWaitsLists(int bookId);
 
 }

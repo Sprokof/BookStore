@@ -95,4 +95,23 @@ public class WaitListDaoImpl implements WaitListDao {
         }
         return waitList;
     }
+
+    @Override
+    public void deleteFromWaitsLists(int bookId) {
+        Session session = null;
+        try {
+            session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            session.createSQLQuery("DELETE FROM " +
+                            "BOOKS_WAITS_LISTS WHERE book_id=:id").
+                    setParameter("id", bookId).executeUpdate();
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null) {
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if (session != null) session.close();
+        }
+    }
 }

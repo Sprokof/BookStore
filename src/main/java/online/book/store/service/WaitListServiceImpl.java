@@ -48,4 +48,9 @@ public class WaitListServiceImpl implements WaitListService {
         waitList.addBook(book);
         this.userService.updateUser(waitList.getUser());
     }
+
+    @Override
+    public void deleteBookFromWaitsLists(int bookId) {
+        this.waitListDao.deleteFromWaitsLists(bookId);
+    }
 }

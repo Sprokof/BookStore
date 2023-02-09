@@ -259,3 +259,7 @@ header .nav-item a:hover::after {
 }
 
 .category {}
+
+.sidebar i {
+    font-size: 15px;
+}

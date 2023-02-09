@@ -1,31 +1,46 @@
 import {validation} from "./validation.js";
 
-let saveBook = document.querySelector('#add-page .save-btn');
-saveBook.addEventListener('click', () => {
-    let book = {
-        "isbn" : document.querySelector('#isbn').value,
-        "title" : document.querySelector('#title').value,
-        "publisher" : document.querySelector('#publisher').value,
-        "price" : document.querySelector('#price').value,
-        "yearPub" : document.querySelector('#year').value,
-        "subject" : document.querySelector('#subject').value,
-        "bookImage" : fileName(document.querySelector('#file')),
-        "availableCopies" : document.querySelector('#copies').value,
-        "description" : document.querySelector('#desc').value,
-        "authors" : document.querySelector('#author').value,
-        "format" : document.querySelector('#format').value,
-        "booksCategories" : getCategories(),
-    }
-    validation(book, "/book/add");
-})
+let saveBook = document.querySelector('#save .submit-btn');
+if(saveBook != null) {
+    saveBook.addEventListener('click', () => {
+        let book = {
+            "isbn": document.querySelector('#isbn').value,
+            "title": document.querySelector('#title').value,
+            "publisher": document.querySelector('#publisher').value,
+            "price": document.querySelector('#price').value,
+            "yearPub": document.querySelector('#year').value,
+            "subject": document.querySelector('#subject').value,
+            "bookImage": fileName(document.querySelector('#file')),
+            "availableCopies": document.querySelector('#copies').value,
+            "description": document.querySelector('#desc').value,
+            "authors": document.querySelector('#author').value,
+            "format": document.querySelector('#format').value,
+            "booksCategories": getCategories(),
+        }
+        validation(book, "/book/add");
+    })
+}
+
+let updateBook = document.querySelector("#update .submit-btn");
+if(updateBook != null) {
+    updateBook.addEventListener('click', () => {
+        let book = {
+            "id": document.querySelector("#bookId").value,
+            "availableCopies": document.querySelector('#count').value
+        }
+        validation(book, "/book/update");
+    })
+}
 
 
-
-document.querySelector(".select-btn").addEventListener('click', (e) => {
-    selectCategory();
-    document.querySelector('.list-items').classList.toggle("active");
-    document.querySelector('.fas.fa-chevron-down').classList.toggle('rotate');
-});
+let selectBtn = document.querySelector(".select-btn");
+if(selectBtn != null) {
+    selectBtn.addEventListener('click', (e) => {
+        selectCategory();
+        document.querySelector('.list-items').classList.toggle("active");
+        document.querySelector('.fas.fa-chevron-down').classList.toggle('rotate');
+    });
+}
 
 
 function selectCategory() {

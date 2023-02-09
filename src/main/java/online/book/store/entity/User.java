@@ -4,6 +4,7 @@ package online.book.store.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import online.book.store.enums.NoticeMessage;
 import online.book.store.enums.Role;
 import online.book.store.hash.SHA256;
 import online.book.store.service.SessionService;
@@ -190,5 +191,24 @@ public class User {
             this.waitList.setUser(this);
         }
         return this.waitList;
+    }
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @Getter
+    private List<Notice> notices;
+
+    public void addNotice(NoticeMessage message){
+        if(this.notices == null) this.notices = new LinkedList<>();
+        Notice notice = new Notice(message);
+        this.notices.add(notice);
+        notice.setUser(this);
+    }
+
+    public void removeNotice(Notice notice){
+        if(this.notices != null){
+            this.notices.remove(notice);
+            notice.setUser(null);
+        }
     }
 }

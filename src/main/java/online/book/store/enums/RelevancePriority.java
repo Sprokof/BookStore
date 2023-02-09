@@ -29,7 +29,7 @@ public enum RelevancePriority {
 
     @Override
     public String toString() {
-        return "RotationPriority{" +
+        return "RotationPriority {" +
                 "value=" + value +
                 ", coincidenceField='" + coincidenceField + '\'' +
                 '}';
