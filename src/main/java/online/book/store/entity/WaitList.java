@@ -17,12 +17,7 @@ public class WaitList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
-    private int id;
-
-    @Column(name = "user_id")
-    @Getter
-    @Setter
-    private int userId;
+    private Integer id;
 
     @ManyToMany()
     @JoinTable (name = "BOOKS_WAITS_LISTS",
@@ -45,13 +40,12 @@ public class WaitList {
         book.getWaitLists().remove(this);
     }
 
-    @OneToOne(cascade = CascadeType.REFRESH, mappedBy = "waitList", fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "waitList", fetch = FetchType.EAGER)
     @Getter
     private User user;
 
 
     public void setUser(User user) {
         this.user = user;
-        this.userId = user.getId();
     }
 }

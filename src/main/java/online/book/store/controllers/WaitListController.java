@@ -28,8 +28,10 @@ import org.springframework.web.bind.annotation.*;
     public ResponseEntity<HttpStatus> addToWaitList(@RequestBody WaitListDto waitListDto){
         String isbn = waitListDto.getIsbn();
         String sessionid = waitListDto.getSessionid();
+        System.out.println(sessionid);
         Book book = this.bookService.getBookByIsbn(isbn);
         WaitList waitList = this.sessionService.getCurrentUser(sessionid).getWaitList();
+        System.out.println(waitList == null);
         this.waitListService.addToWaitList(book, waitList);
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }

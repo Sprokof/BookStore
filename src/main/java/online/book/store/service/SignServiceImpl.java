@@ -138,9 +138,7 @@ public class SignServiceImpl implements SignService {
     @Override
     public UserDto validateRequest(String sessionid) {
         User user = this.sessionService.getCurrentUser(sessionid);
-        if(user != null) {
-            return new UserDto(user.getUsername(), user.getEmail());
-        }
+        if(user != null) return new UserDto(user.getUsername(), user.getEmail());
         return null;
     }
 }

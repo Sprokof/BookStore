@@ -30,23 +30,8 @@ public class WaitListServiceImpl implements WaitListService {
 
     @Override
     public void addToWaitList(Book book, WaitList waitList) {
-        if (waitListNotExist(waitList)) {
-            saveWaitList(waitList, book);
-            return;
-        }
         waitList.addBook(book);
         this.updateWaitList(waitList);
-    }
-
-    private boolean waitListNotExist(WaitList waitList) {
-        return waitList.getId() == 0;
-    }
-
-
-    private void saveWaitList(WaitList waitList, Book book){
-        waitList = this.waitListDao.saveWaitList(waitList);
-        waitList.addBook(book);
-        this.userService.updateUser(waitList.getUser());
     }
 
     @Override

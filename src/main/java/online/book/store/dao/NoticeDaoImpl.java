@@ -6,6 +6,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.NoResultException;
+import java.math.BigInteger;
 import java.util.List;
 
 @Component
@@ -15,15 +17,14 @@ public class NoticeDaoImpl implements NoticeDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Notice> getAllNewUsersNotices(int userId) {
+    public List<Notice> getAllUsersNotices(int userId) {
         Session session = null;
         List<Notice> notices = null;
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-            notices = (List<Notice>) session.createSQLQuery("SELECT * FROM NOTICES WHERE" +
-                            " STATUS=:new AND USER_ID=:id").
-                    setParameter("new", NoticeStatus.NEW.getStatus()).
+            notices = (List<Notice>) session.
+                    createSQLQuery("SELECT * FROM NOTICES WHERE USER_ID=:id").
                     setParameter("id", userId).addEntity(Notice.class).list();
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -34,5 +35,29 @@ public class NoticeDaoImpl implements NoticeDao {
             if (session != null) session.close();
         }
         return notices;
+    }
+
+    @Override
+    public int getCountNewUsersNotices(int userId) {
+        Session session = null;
+        BigInteger integer = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        integer = (BigInteger) session.createSQLQuery("SELECT COUNT(ID) FROM NOTICES " +
+                "WHERE STATUS=:new and USER_ID=:id").
+                setParameter("new", NoticeStatus.NEW.getStatus()).
+                setParameter("id", userId).getSingleResult();
+        session.getTransaction().rollback();
+    } catch (Exception e) {
+        if (session != null && session.getTransaction() != null) {
+            session.getTransaction().rollback();
+            if(e instanceof NoResultException) return 0;
+        }
+    } finally {
+        if (session != null) session.close();
+    }
+    if(integer == null) return 0;
+    return integer.intValue();
     }
 }

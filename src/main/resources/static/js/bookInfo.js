@@ -242,6 +242,7 @@ function waitListContains(isbnNode) {
     }
 
     let responseDto;
+    console.log(requestDto)
 
     $.ajax({
         type: "GET",

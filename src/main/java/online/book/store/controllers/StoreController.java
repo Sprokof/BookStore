@@ -67,7 +67,7 @@ public class StoreController{
         return ResponseEntity.ok(200);
     }
 
-    @PostMapping("/bookstore/accept/user")
+    @GetMapping("/bookstore/accept")
     public ResponseEntity<String> userAccept(@RequestParam("user") String login){
         boolean accepted = this.userService.userAccepted(login);
         return ResponseEntity.ok(String.valueOf(accepted));
@@ -85,9 +85,9 @@ public class StoreController{
         return ResponseEntity.ok(userDto);
     }
 
-    @GetMapping("/up")
+    @GetMapping("/notice")
     public String about () {
-        return "updateBook";
+        return "notifications";
     }
 
 

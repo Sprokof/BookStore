@@ -18,4 +18,8 @@ public enum NoticeMessage {
         this.message = (title += message);
         return this;
     }
+
+    public void unsetBookTitle(){
+        this.message = " is now available";
+    }
 }

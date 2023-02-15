@@ -243,6 +243,10 @@ header .nav-item a:hover::after {
     color: #5f5f5b;
 }
 
+.bell i:hover {
+    color: #1e1e1e;
+}
+
 .bell .notice-count {
    color: darkred;
    font-weight: 700;

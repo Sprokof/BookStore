@@ -15,15 +15,16 @@ public class WaitListDaoImpl implements WaitListDao {
 
     @Override
     public boolean contains(int bookId, WaitList waitList) {
+        Integer id = waitList.getId() == null ? 0 : waitList.getId();
         Session session = null;
-        Integer id = null;
+        Integer result = null;
     try {
         session = this.sessionFactory.openSession();
         session.beginTransaction();
-        id = (Integer) session.createSQLQuery("SELECT book_id FROM BOOKS_WAITS_LISTS " +
+        result = (Integer) session.createSQLQuery("SELECT book_id FROM BOOKS_WAITS_LISTS " +
                 "WHERE book_id=:b_id and wait_list_id=:wl_id").
                 setParameter("b_id", bookId).
-                setParameter("wl_id", waitList.getId())
+                setParameter("wl_id", id)
                 .getSingleResult();
         session.getTransaction().commit();
     }
@@ -36,7 +37,7 @@ public class WaitListDaoImpl implements WaitListDao {
     finally {
         if(session != null) session.close();
     }
-    return id != null;
+    return result != null;
     }
 
     @Override
@@ -72,8 +73,8 @@ public class WaitListDaoImpl implements WaitListDao {
             if (session != null) session.close();
         }
 
-        int userId = waitList.getUserId();
-        return getWaitListByUserId(userId);
+        return waitList;
+
     }
 
     private WaitList getWaitListByUserId(int userId) {
@@ -87,6 +88,7 @@ public class WaitListDaoImpl implements WaitListDao {
                     setParameter("id", userId).getSingleResult();
             session.getTransaction().commit();
         } catch (Exception e) {
+            e.printStackTrace();
             if (session != null && session.getTransaction() != null) {
                 session.getTransaction().rollback();
             }

@@ -1,6 +1,8 @@
 import {logout, updateUser, userEmail} from "./validation.js"
 import {blockBackgroundHtml, openLoginNotice} from "./notice.js";
 import {currentLocation, deleteUser, sessionActive, userAccept} from "./main.js";
+let bell = document.querySelector('.bell');
+
 
 
 $(document).ready(function () {
@@ -24,11 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
             menu.replaceChild(newChild, lastChild);
 
             if (session['adminSession']) { createAdmins(menu); }
-
             createCartItemLink();
+            setInterval(updateNoticesCount, 300);
+
         }
     clearSearchValue();
+
 })
+
 
 
 function initBooksCategories(){
@@ -265,10 +270,9 @@ export function validateSession() {
 
 export function createAcceptNotice(){
         let windowOpen = document.querySelector('#accept-window').classList.contains('open');
-        let location = currentLocation()[2];
+        let location = currentLocation()[1];
         let accept = userAccept();
-        if(accept === null || windowOpen ||
-            location === 'registration' || getUser() != null) return;
+        if(accept === null || windowOpen || location === 'registration' || userEmail() == null) return;
         if(!accept){
             let div = document.createElement('div');
             div.classList.add('accept-message');
@@ -286,11 +290,14 @@ export function createAcceptNotice(){
 }
 
     function resendLink() {
+        let user = {
+            "login" : userEmail(),
+        }
         $.ajax({
             type: "POST",
             contentType: "application/json",
             url: "/registration/resend",
-            data: JSON.stringify(getUser()),
+            data: JSON.stringify(user),
             cache: false,
             dataType: 'json',
         });
@@ -313,6 +320,7 @@ export function createAcceptNotice(){
         invalidateSession();
         autologin();
         createAcceptNotice();
+
     }
 
 let aboutLink = document.getElementById('about');
@@ -371,3 +379,86 @@ function createAdmins(menu) {
         menu.appendChild(item);
 }
 
+bell.onclick = () => {
+        let notices = document.querySelector('.notice-container');
+        findNotice();
+        notices.classList.toggle('active')
+}
+function updateNoticesCount() {
+        let sessionid = getUser()['sessionid'];
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/notice/count/get",
+            headers: {"session": sessionid},
+            cache: false,
+            dataType: 'json',
+            responseType: 'json',
+            success: (data) => {
+                let dto = JSON.parse(JSON.stringify(data));
+                let count = dto['count'];
+                if (count > 0) {
+                    let countNode = document.querySelector('.bell .notice-count');
+                    countNode.innerText = count
+                    countNode.style.display = "block";
+                }
+            }
+        });
+}
+
+function findNotice() {
+        if(!sessionActive()) return ;
+        let sessionid = getUser()['sessionid'];
+            $.ajax({
+                type: "GET",
+                contentType: "application/json",
+                url: "/notice/get",
+                headers: {"session" : sessionid},
+                cache: false,
+                dataType: 'json',
+                responseType: 'json',
+                success: function (list) {
+                    let notices = JSON.parse(JSON.stringify(list))
+                    if(notices.length !== 0) {
+                        for(let notice of notices){
+                            if(!noticeNotAdded(notice)) addNotice(notice);
+
+                        }
+                    }
+                }
+
+            });
+
+}
+
+function addNotice(item) {
+        let notices = document.querySelector('.notices');
+        let notice = document.createElement('li');
+        notice.classList.add("notice");
+        let text = document.createElement('span');
+        text.classList.add("text");
+        text.innerText = item['noticeMessage'];
+        let date = document.createElement('p');
+        date.classList.add('notice-date');
+        date.innerText = item['noticeDate'];
+        let btn = document.createElement('a');
+        btn.innerText = "mark as read";
+        btn.classList.add('n-btn');
+        console.log(notice)
+        notice.appendChild(text);
+        notice.appendChild(date);
+        notice.appendChild(btn);
+
+        notices.appendChild(notice);
+
+
+}
+
+function noticeNotAdded(notice){
+        let noticeText = notice['noticeMessage'];
+        let noticesTexts = document.querySelectorAll('.notices .notice .text');
+        for(let text of noticesTexts){
+            if(noticeText === text.innerText) return true;
+        }
+        return false;
+}

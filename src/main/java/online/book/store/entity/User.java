@@ -78,7 +78,7 @@ public class User {
     @Setter
     private Wishlist wishList;
 
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "wait_list_id")
     private WaitList waitList;
 

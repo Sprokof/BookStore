@@ -4,7 +4,8 @@ import lombok.Getter;
 
 public enum NoticeStatus {
     NEW("New"),
-    OLD("Old");
+    OLD("Old"),
+    READ("Read");
 
     @Getter
     private final String status;

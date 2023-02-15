@@ -1,6 +1,7 @@
 package online.book.store.service;
 
 import online.book.store.dao.NoticeDao;
+import online.book.store.dto.NoticeDto;
 import online.book.store.entity.Book;
 import online.book.store.entity.Notice;
 import online.book.store.entity.User;
@@ -9,12 +10,11 @@ import online.book.store.enums.BookStatus;
 import online.book.store.enums.NoticeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Flux;
+
 
 import java.sql.Date;
-import java.time.Duration;
-import java.util.ConcurrentModificationException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -46,6 +46,7 @@ public class NoticeServiceImpl implements NoticeService {
                 User user = wl.getUser();
                 user.addNotice(NoticeMessage.NOW_AVAILABLE.setBookTitle(title));
                 userService.updateUser(user);
+                NoticeMessage.NOW_AVAILABLE.unsetBookTitle();
 
                 index++;
             }
@@ -61,11 +62,13 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public List<Notice> getAllNewNotice(User user) {
+    public List<NoticeDto> getAllNewNotice(User user) {
         int userId = user.getId();
-        List<Notice> notices = this.noticeDao.getAllNewUsersNotices(userId);
+        List<Notice> notices = this.noticeDao.getAllUsersNotices(userId);
         notices.sort(this::sortNotices);
-        return notices;
+        return notices.stream().map((n) ->
+                new NoticeDto(n.getMessage(), n.getStamp())).
+                collect(Collectors.toList());
     }
 
     private int sortNotices(Notice n1, Notice n2) {
@@ -79,5 +82,11 @@ public class NoticeServiceImpl implements NoticeService {
         else result = - 1;
 
         return result;
+    }
+
+    @Override
+    public NoticeDto getCountNewUsersNotices(User user) {
+        int count = this.noticeDao.getCountNewUsersNotices(user.getId());
+        return new NoticeDto(count);
     }
 }

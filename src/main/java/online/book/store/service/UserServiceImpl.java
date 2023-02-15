@@ -7,6 +7,7 @@ import online.book.store.entity.Cart;
 import online.book.store.entity.User;
 
 
+import online.book.store.entity.WaitList;
 import online.book.store.entity.Wishlist;
 import online.book.store.enums.Role;
 import online.book.store.hash.SHA256;
@@ -54,6 +55,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(role);
         user.setWishList(new Wishlist());
         user.setCart(new Cart());
+        user.setWaitList(new WaitList());
         this.userDao.saveUser(user);
     }
 
