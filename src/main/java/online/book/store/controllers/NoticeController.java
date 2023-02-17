@@ -4,12 +4,15 @@ import online.book.store.dto.NoticeDto;
 import online.book.store.dto.UserDto;
 import online.book.store.entity.Notice;
 import online.book.store.entity.User;
+import online.book.store.enums.NoticeStatus;
 import online.book.store.service.NoticeService;
 import online.book.store.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
@@ -36,6 +39,13 @@ public class NoticeController {
     public ResponseEntity<NoticeDto> countNotices(@RequestHeader("session") String sessionid) {
         User user = this.sessionService.getCurrentUser(sessionid);
         return ResponseEntity.ok(this.noticeService.getCountNewUsersNotices(user));
+    }
+
+    @PostMapping("/notice/status/set")
+    public ResponseEntity<HttpStatus> markAsRead(@RequestBody NoticeDto dto){
+        int id = dto.getId();
+        this.noticeService.setNoticeStatus(id, NoticeStatus.READ);
+        return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
 

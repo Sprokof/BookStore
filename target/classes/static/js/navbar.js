@@ -2,6 +2,7 @@ import {logout, updateUser, userEmail} from "./validation.js"
 import {blockBackgroundHtml, openLoginNotice} from "./notice.js";
 import {currentLocation, deleteUser, sessionActive, userAccept} from "./main.js";
 let bell = document.querySelector('.bell');
+let noticeContainer = document.querySelector('.notice-container');
 
 
 
@@ -9,14 +10,14 @@ $(document).ready(function () {
     $('.sub-btn').click(function (){
         $(this).next('.sub-menu').slideToggle();
         $(this).find('.dropdown').toggleClass('rotate');
-    })
+    });
 
 });
 
 document.addEventListener('DOMContentLoaded', () => {
     loadInit();
     let session = validateSession();
-    if(session == null) return ;
+    if(session === null) return ;
         if(session['active']) {
             let menu = document.querySelector('.menu');
             let lastChild = menu.children[4];
@@ -125,7 +126,7 @@ function initBooksCategories(){
         document.querySelector(".container-fluid").classList.toggle('compression');
         document.querySelector("#menu").classList.toggle('compression');
 
-    })
+    });
 
 function executeCategorySearch() {
     let items = document.querySelectorAll('.category');
@@ -133,15 +134,15 @@ function executeCategorySearch() {
         item.onclick = () => {
             let category = item.innerText;
             executeQuery(category);
-        }
+        };
     }
 }
 
 export function validateSession() {
     createCookie();
     let user = getUser();
-    if(user == null) return null;
-        let sessionDto
+    if(user === null) return null;
+        let sessionDto;
         $.ajax({
             type: "POST",
             contentType: "application/json",
@@ -154,7 +155,7 @@ export function validateSession() {
             success: (data) => {
                 sessionDto = JSON.parse(JSON.stringify(data));
             }
-        })
+        });
 
         return sessionDto;
     }
@@ -272,7 +273,7 @@ export function createAcceptNotice(){
         let windowOpen = document.querySelector('#accept-window').classList.contains('open');
         let location = currentLocation()[1];
         let accept = userAccept();
-        if(accept === null || windowOpen || location === 'registration' || userEmail() == null) return;
+        if(accept === null || windowOpen || location === 'registration' || userEmail() === null) return;
         if(!accept){
             let div = document.createElement('div');
             div.classList.add('accept-message');
@@ -291,8 +292,8 @@ export function createAcceptNotice(){
 
     function resendLink() {
         let user = {
-            "login" : userEmail(),
-        }
+            "login" : userEmail()
+        };
         $.ajax({
             type: "POST",
             contentType: "application/json",
@@ -313,7 +314,7 @@ export function createAcceptNotice(){
     }
 
     function autologinCondition() {
-        return loaded() && getRememberedUser() != null;
+        return loaded() && getRememberedUser() !== null;
     }
 
     function loadInit(){
@@ -331,17 +332,17 @@ let about = document.querySelector('.about');
 
 function showAboutWindow() {
     about.classList.add('show');
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    blockBackgroundHtml(true)
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    blockBackgroundHtml(true);
 }
 
 document.addEventListener("mouseup", (e) => {
-    if(about == null || !about.classList.contains('show')) return ;
+    if(about === null || !about.classList.contains('show')) return ;
     if(!about.contains(e.target)) {
         blockBackgroundHtml(false);
         about.classList.remove('show');
     }
-})
+});
 
 
 function createAdmins(menu) {
@@ -350,7 +351,7 @@ function createAdmins(menu) {
 
 
         let btn = document.createElement('a');
-        btn.innerText = "Admin'"
+        btn.innerText = "Admin'";
         btn.classList.add('sub-btn');
 
         let arrow = document.createElement('i');
@@ -379,11 +380,8 @@ function createAdmins(menu) {
         menu.appendChild(item);
 }
 
-bell.onclick = () => {
-        let notices = document.querySelector('.notice-container');
-        findNotice();
-        notices.classList.toggle('active')
-}
+bell.onclick = () => { findNotice(noticeContainer); };
+
 function updateNoticesCount() {
         let sessionid = getUser()['sessionid'];
         $.ajax({
@@ -397,16 +395,19 @@ function updateNoticesCount() {
             success: (data) => {
                 let dto = JSON.parse(JSON.stringify(data));
                 let count = dto['count'];
+                let countNode = document.querySelector('.bell .notice-count');
                 if (count > 0) {
-                    let countNode = document.querySelector('.bell .notice-count');
-                    countNode.innerText = count
+                    countNode.innerText = count;
                     countNode.style.display = "block";
+                }
+                else {
+                    countNode.style.display = 'none';
                 }
             }
         });
 }
 
-function findNotice() {
+function findNotice(container) {
         if(!sessionActive()) return ;
         let sessionid = getUser()['sessionid'];
             $.ajax({
@@ -418,47 +419,122 @@ function findNotice() {
                 dataType: 'json',
                 responseType: 'json',
                 success: function (list) {
-                    let notices = JSON.parse(JSON.stringify(list))
-                    if(notices.length !== 0) {
-                        for(let notice of notices){
-                            if(!noticeNotAdded(notice)) addNotice(notice);
-
+                    sortNoticesNodes();
+                    let notices = JSON.parse(JSON.stringify(list));
+                        if(notices.length !== 0) {
+                            for(let notice of notices){
+                                if(!noticeAdded(notice)) addNotice(notice);
                         }
+                        if(!container.classList.contains('active')) container.classList.add('active');
                     }
                 }
-
             });
 
 }
 
 function addNotice(item) {
         let notices = document.querySelector('.notices');
+
         let notice = document.createElement('li');
         notice.classList.add("notice");
+
         let text = document.createElement('span');
         text.classList.add("text");
         text.innerText = item['noticeMessage'];
+
         let date = document.createElement('p');
         date.classList.add('notice-date');
         date.innerText = item['noticeDate'];
+
+        let id = document.createElement('p');
+        id.classList.add('notice-id');
+        id.innerText = item['id'];
+
         let btn = document.createElement('a');
         btn.innerText = "mark as read";
         btn.classList.add('n-btn');
-        console.log(notice)
+        if(item['status'] !== 'Read'){ btn.onclick = () => markAsRead(btn, id.innerText); }
+        else { setBtnViewToRead(btn); }
+
         notice.appendChild(text);
         notice.appendChild(date);
+        notice.appendChild(id);
         notice.appendChild(btn);
+     
 
         notices.appendChild(notice);
-
-
 }
 
-function noticeNotAdded(notice){
-        let noticeText = notice['noticeMessage'];
-        let noticesTexts = document.querySelectorAll('.notices .notice .text');
-        for(let text of noticesTexts){
-            if(noticeText === text.innerText) return true;
+function noticeAdded(notice){
+        let noticeId = notice['id'];
+        let ides = document.querySelectorAll('.notices .notice .notice-id');
+        for(let id of ides){
+            if(Number(noticeId) === Number(id.innerText)) return true;
         }
         return false;
 }
+
+function markAsRead(btn, id) {
+        let noticeDto = { "id" : id };
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/notice/status/set",
+        data: JSON.stringify(noticeDto),
+        cache: false,
+        dataType: 'json',
+        success : () => {
+            setBtnViewToRead(btn);
+        }
+    });
+}
+
+function setBtnViewToRead(btn) {
+        btn.classList.add('non-active');
+        btn.innerText = 'already read';
+}
+
+document.addEventListener('click', (e) => {
+            if(!noticeContainer.classList.contains('active')) return ;
+            if(!noticeContainer.contains(e.target)) {
+                noticeContainer.classList.remove('active');
+            }
+});
+
+
+function sortNotices(n1, n2){
+    let id1 = Number(n1.children[2].innerText);
+    let id2 = Number(n2.children[2].innerText);
+    let result = 0;
+    if(id1 > id2) {
+        result = 1;
+    }
+    
+    else {
+        result =  - 1;
+    }
+    return result;
+    
+}
+
+function sortNoticesNodes(){
+    let notices = document.querySelectorAll('.notice-container ol li');
+    let array = [];
+    for(let notice of notices){
+        array.push(notice);
+    }
+    array.sort((i1, i2) => { return sortNotices(i1, i2); });
+    
+    let index = 0;
+    while(index < notices.length){
+        let newNode = array[index];
+        let oldNode = notices.item(index);
+      
+        noticeContainer.children[0].replaceChild(newNode, oldNode);
+        
+        index ++ ;
+   
+}
+}
+
+

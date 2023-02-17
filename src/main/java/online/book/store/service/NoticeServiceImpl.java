@@ -8,7 +8,9 @@ import online.book.store.entity.User;
 import online.book.store.entity.WaitList;
 import online.book.store.enums.BookStatus;
 import online.book.store.enums.NoticeMessage;
+import online.book.store.enums.NoticeStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 
@@ -67,7 +69,7 @@ public class NoticeServiceImpl implements NoticeService {
         List<Notice> notices = this.noticeDao.getAllUsersNotices(userId);
         notices.sort(this::sortNotices);
         return notices.stream().map((n) ->
-                new NoticeDto(n.getMessage(), n.getStamp())).
+                new NoticeDto(n.getId(), n.getMessage(), n.getStamp(), n.getStatus())).
                 collect(Collectors.toList());
     }
 
@@ -88,5 +90,26 @@ public class NoticeServiceImpl implements NoticeService {
     public NoticeDto getCountNewUsersNotices(User user) {
         int count = this.noticeDao.getCountNewUsersNotices(user.getId());
         return new NoticeDto(count);
+    }
+
+    @Override
+    public void setNoticeStatus(int noticeId, NoticeStatus status) {
+        Notice notice = getNoticeById(noticeId);
+        notice.setStatus(status.getStatus());
+        this.noticeDao.updateNotice(notice);
+    }
+
+    @Override
+    public Notice getNoticeById(int id) {
+        return this.noticeDao.getNoticeById(id);
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+        new Thread(() -> {
+            while ((true)) {
+                this.noticeDao.setAllReadNoticesToOld();
+            }
+        });
     }
 }
