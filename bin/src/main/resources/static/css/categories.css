@@ -1,0 +1,109 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Bahnschrift", sans-serif;
+}
+
+
+.select-btn {
+    display: flex;
+    height: 50px;
+    align-items: center;
+    padding: 0 16px;
+    justify-content: space-between;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid #cecece;
+    background: #F6F6f6;
+    width: 270px;
+}
+
+.select-btn:hover {
+    background: #e6e6e6;
+}
+
+.select-btn .btn-text {
+    font-size: 17px;
+    font-weight: 400;
+    color: #1b1b1b;
+    margin-left: 10px;
+}
+.select-btn .arrow-down {
+    height: 21px;
+    width: 21px;
+    color: #1b1b1b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.list-items {
+    position: relative;
+    margin-top: 15px;
+    border: 1px solid #cecece;
+    background: #F6F6f6;
+    padding: 16px;
+    display: none;
+    border-radius: 8px;
+    max-height: 500px;
+    overflow-y: auto;
+    width: 270px;
+}
+
+
+.list-items .item {
+    list-style: none;
+    align-items: center;
+    display: flex;
+    height: 50px;
+}
+.item:hover {
+    background-color: gainsboro;
+    border-radius: 8px;
+}
+.item span {
+    color: #1b1b1b;
+}
+
+.item.item-text {
+    font-size: 16px;
+    font-weight: 400;
+    color: #333;
+}
+
+.item .checkbox {
+    height: 16px;
+    width: 16px;
+    border: 1.5px solid #c0c0c0;
+    border-radius: 4px;
+    margin-right: 16px;
+    display: flex;
+    justify-content: center;
+    transition: all 0.3s ease-in-out;
+}
+.checkbox .fa-check {
+    font-size: 13px;
+    align-items: center;
+    transform: scale(0);
+    transition: all 0.1s ease-in-out;
+    color: blue;
+
+}
+
+.item.select .fa-check {
+    transform: scale(1);
+}
+
+
+.list-items.active{
+    transition: 0.3s ease-in;
+    display: block;
+}
+
+.fas.fa-chevron-down.rotate {
+    transition: 0.3ms;
+    transform: rotate(180deg);
+}
+

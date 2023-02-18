@@ -20,16 +20,17 @@ public class NoticeDaoImpl implements NoticeDao {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Notice> getAllUsersNotices(int userId) {
+    public List<Notice> getFewUsersNotices(int userId, int count) {
         Session session = null;
         List<Notice> notices = null;
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
             notices = (List<Notice>) session.
-                    createSQLQuery("SELECT * FROM NOTICES WHERE USER_ID=:id AND STATUS !=:old").
+                    createSQLQuery("SELECT * FROM NOTICES WHERE USER_ID=:id AND STATUS !=:old ORDER BY ID DESC limit(:count)").
                     setParameter("id", userId).
                     setParameter("old", NoticeStatus.OLD.getStatus()).
+                    setParameter("count", count).
                     addEntity(Notice.class).list();
 
             session.getTransaction().commit();
@@ -131,5 +132,29 @@ public class NoticeDaoImpl implements NoticeDao {
         LocalDate now = LocalDate.now().minusDays(7);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd, HH:mm:ss");
         return sdf.format(now);
+    }
+
+    @Override
+    public int getCountUsersNotices(int userId) {
+        Session session = null;
+        BigInteger count = null;
+    try {
+        session = this.sessionFactory.openSession();
+        session.beginTransaction();
+    count = (BigInteger) session.createSQLQuery("SELECT COUNT(ID) " +
+                "FROM NOTICES WHERE USER_ID=:id").
+                setParameter("id", userId).getSingleResult();
+        session.getTransaction().commit();
+    }
+    catch(Exception e){
+        if(session != null && session.getTransaction() != null){
+            session.getTransaction().rollback();
+            if(e instanceof NoResultException){
+                return 0;
+            }
+        }
+    }
+    if(count == null) return 0;
+    return count.intValue();
     }
 }

@@ -419,12 +419,14 @@ function findNotice(container) {
                 dataType: 'json',
                 responseType: 'json',
                 success: function (list) {
-                    sortNoticesNodes();
                     let notices = JSON.parse(JSON.stringify(list));
-                        if(notices.length !== 0) {
+                    let length = notices.length;
+                        if(length !== 0) {
                             for(let notice of notices){
-                                if(!noticeAdded(notice)) addNotice(notice);
+                                if(!noticeAdded(notice)){ addNotice(notice);}
                         }
+                            let noticesCount = notices[0]['count'];
+                            if(noticesCount > 3){ createShowAllBtn() }
                         if(!container.classList.contains('active')) container.classList.add('active');
                     }
                 }
@@ -501,40 +503,13 @@ document.addEventListener('click', (e) => {
             }
 });
 
-
-function sortNotices(n1, n2){
-    let id1 = Number(n1.children[2].innerText);
-    let id2 = Number(n2.children[2].innerText);
-    let result = 0;
-    if(id1 > id2) {
-        result = 1;
-    }
-    
-    else {
-        result =  - 1;
-    }
-    return result;
-    
-}
-
-function sortNoticesNodes(){
-    let notices = document.querySelectorAll('.notice-container ol li');
-    let array = [];
-    for(let notice of notices){
-        array.push(notice);
-    }
-    array.sort((i1, i2) => { return sortNotices(i1, i2); });
-    
-    let index = 0;
-    while(index < notices.length){
-        let newNode = array[index];
-        let oldNode = notices.item(index);
-      
-        noticeContainer.children[0].replaceChild(newNode, oldNode);
-        
-        index ++ ;
-   
-}
+function createShowAllBtn() {
+    let ol = noticeContainer.children[0];
+    if(ol.children.length === 4) return ;
+    let showBtn = document.createElement('span');
+    showBtn.innerText = "show all";
+    showBtn.classList.add('show-btn');
+    ol.appendChild(showBtn);
 }
 
 

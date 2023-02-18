@@ -8,8 +8,6 @@ import online.book.store.entity.User;
 
 import java.lang.reflect.Field;
 
-@Getter
-@Setter
 @NoArgsConstructor
 public class UserDto extends AbstractUserBuilder {
 
@@ -79,7 +77,67 @@ public class UserDto extends AbstractUserBuilder {
                 buildUser();
     }
 
+    public String getLogin() {
+        return login;
+    }
 
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
+    public boolean isAdmin() {
+        return isAdmin;
+    }
 
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    public String getSessionid() {
+        return sessionid;
+    }
+
+    public void setSessionid(String sessionid) {
+        this.sessionid = sessionid;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
+    }
 }

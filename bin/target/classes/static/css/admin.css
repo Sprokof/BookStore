@@ -1,0 +1,149 @@
+.container textarea {
+    overflow: auto;
+
+    resize: none;
+
+    width: 270px;
+    height: 70px;
+
+    background: #f6f6f6;
+    border: 1px solid #cecece;
+    border-radius: 8px;
+    padding: 8px 0 8px 10px;
+    outline: none;
+
+}
+
+.book-element {
+    margin-bottom: 20px;
+    width: 270px;
+}
+
+.book-element label {
+    margin-left: 10px;
+    margin-bottom: -5px;
+}
+
+.book-element input[type=text]{
+    border: 1px solid #cecece;
+    background: #F6F6f6;
+    border-radius: 8px;
+    outline: none;
+    width: 270px;
+    height: 40px;
+    padding-left: 10px;
+    padding-top: -15px;
+}
+
+.file-load {
+    margin-bottom: 10px;
+}
+
+.file-load label{
+    margin-bottom: -3px;
+    margin-left: 5px;
+}
+
+.file-load-block {
+    width: 270px;
+    height: 35px;
+    overflow: hidden;
+    position: relative;
+    outline: none;
+}
+
+
+.file-load-block input[type=file] {
+    opacity: 0;
+    filter: alpha(opacity=0);
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 35px;
+    font-size: 600px;
+    z-index: 2;
+    outline: none;
+    width: 100px;
+
+}
+
+.file-load-block input[type=text] {
+    z-index: 1;
+    width: 160px;
+    padding-right: 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #000;
+    -o-text-overflow: ellipsis;
+    border-radius: 5px;
+    padding-left: 8px;
+
+}
+
+.file-load-block .button-hover {
+    box-shadow: 0 0 2px #ccc;
+}
+
+.file-load-block .image-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100px;
+    height: 28px;
+    border: 1px solid #ccc;
+    background: snow;
+    color: #1e1e1e;
+    border-radius: 5px;
+    box-shadow: inset 0 2px 2px #ccc;
+}
+
+.container {
+    max-width: 320px;
+    background-color: white;
+    z-index: 0;
+    margin-top: 5%;
+    margin-left: 35%!important;
+
+}
+
+.container h3 {
+    margin-left: 70px;
+    font-family: "Cascadia Code", sans-serif;
+    margin-bottom: 35px;
+
+}
+
+.container .submit-btn {
+    margin-top: 20px;
+    background-color: black;
+    width: 270px;
+    border-radius: 20px;
+    height: 50px;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.container .submit-btn span {
+    font-size: 20px;
+    color: white;
+}
+
+.container .submit-btn:hover{
+    background-color: #1b1b1b;
+}
+
+.error-message {
+    font-size: 13px;
+}
+
+.error-message.active {
+    transition: 0.2s ease-in-out;
+    display: block;
+}
+
+.book-element.compression {
+    margin-bottom: -10px;
+}
+

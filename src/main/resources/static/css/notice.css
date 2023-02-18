@@ -78,3 +78,23 @@
     display: none;
 }
 
+.notices .show-btn {
+    background: #b4ad9e;
+    position: relative;
+    left: 40%;
+    border: none;
+    cursor: pointer;
+    border-bottom: 2px solid whitesmoke;
+    color: whitesmoke;
+    text-transform: uppercase;
+    display: inline-block;
+
+}
+
+.notices .show-btn:hover {
+    transition: 0.3s ease-in-out;
+    color: silver;
+    border-bottom: 2px solid silver;
+
+}
+

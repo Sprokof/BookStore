@@ -1,0 +1,222 @@
+#book-info {
+    position: absolute;
+    left: 10%;
+    top: 15%;
+    z-index: 0;
+}
+
+.container .book-image {
+    width: 270px;
+    height: 410px;
+    border: 3px solid silver;
+    padding: 5px;
+}
+
+.container .item-container {
+    display: flex;
+    width: 90%;
+    overflow-y: hidden;
+}
+
+.container .item-container .book-details {
+    height: 30%;
+    width: 35%;
+}
+
+.container .item-container .buttons {
+    margin-top: 20%;
+    margin-left: -35%;
+}
+
+.container .item-container .buttons button {
+    background: black;
+    border-radius: 8px;
+    padding: 4px 8px;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    border: 2px solid steelblue;
+    outline: none;
+}
+
+.container .item-container .buttons button:hover {
+    background: #222222;
+}
+
+.container .book-details {
+    margin-left: 10px;
+}
+
+.container .details-container {
+    position: relative;
+    right: 15px;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.container .details-container .nav-tabs {
+    overflow-y: hidden;
+}
+
+.container .details-container .nav-tabs .nav-item .nav-link {
+    color: dimgrey;
+}
+
+.container .details-container .nav-tabs .nav-item .nav-link.active {
+    color: black;
+}
+
+.star-rating {
+    color: black;
+}
+
+.container hr {
+    border-top: 1px solid dimgrey;
+    width: 70%;
+}
+
+#book-info .details-container.compression {
+    width: 80%;
+    margin-left: -3px;
+}
+
+#book-info.compression {
+    left: 25%;
+}
+
+#book-info .row-review {
+    display: flex;
+    border-bottom: 1px solid #5f5f5b;
+    margin-bottom: 15px;
+    width: 100%;
+    overflow-y: hidden;
+}
+
+#book-info .row-review .review-item {
+    padding-left: 10px;
+}
+
+#book-info .row-review .review {
+    width: 85%;
+}
+
+#book-info .row-review .score{
+    position: relative;
+    width: 10%;
+    left: 5%;
+    top: 10%;
+    height: 50px;
+    transform: translateY(10%);
+}
+
+#book-info .score .post-date {
+    color: slategrey;
+    margin-left: 5px;
+}
+
+.add-review-btn {
+    margin-top: 5%;
+    margin-left: 45%;
+    width: 100px;
+    z-index: 0;
+}
+
+.add-review-btn .fa.fa-plus {
+    color: green;
+    font-weight: 600;
+    font-size: 50px;
+    cursor: pointer;
+    margin-left: 20%;
+}
+
+.add-review-btn .fa.fa-plus:hover{
+    color: darkgreen;
+}
+
+#book-info p {
+    text-transform: uppercase;
+}
+
+#book-info .new-review-btn {
+   display: block;
+   height: 70px;
+   width: 130px;
+   margin-left: 91%;
+   margin-top: 5%;
+}
+
+#book-info .new-review-btn i{
+    color: green;
+    cursor: pointer;
+    font-size: 20px;
+    margin-left: 30%;
+    line-height: 17px;
+    overflow-y: hidden;
+}
+
+#book-info .new-review-btn i:hover {
+    color: darkgreen;
+}
+
+#book-info .new-review-btn p {
+    font-size: 12px;
+}
+
+#book-info .load-btn {
+    width: 80%;
+    color: slategrey;
+    border: 2px solid silver;
+    background: white;
+    border-radius: 8px;
+    position: relative;
+    margin-top: 2%;
+    left: 10%;
+    outline: none;
+}
+
+#book-info .load-btn:hover {
+    background: whitesmoke;
+}
+
+#book-info .load-btn.disable {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+#book-info .row-review.hide {
+    display: none;
+}
+
+#book-info .row-review.reveal {
+    transition: 0.5s ease-in-out;
+    display: flex;
+}
+
+#book-info .notice-btn {
+    background: whitesmoke;
+    border-radius: 8px;
+    border: 2px solid silver;
+    color: #1b1b1b;
+    font-family: "Cascadia Code", sans-serif;
+    font-weight: 500;
+    padding: 4px;
+    cursor: pointer;
+    text-transform: uppercase;
+    margin-top: 10px;
+}
+
+#book-info .notice-btn:hover {
+    background: silver;
+}
+
+#book-info .notice-btn.create {
+    transition: 150ms ease;
+    pointer-events: none;
+    color: silver;
+}
+
+#book-info .buttons button.non-active {
+    opacity: 0.6;
+    pointer-events: none;
+}
+

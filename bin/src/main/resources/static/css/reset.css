@@ -1,0 +1,96 @@
+.reset {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.25);
+    width: 300px;
+    padding: 20px 30px;
+    background: #F6F6f6;
+    box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    opacity: 0;
+    overflow-y: hidden;
+    z-index: 1;
+    top: -450%;
+    border: solid 1px #b4ad9e;
+
+}
+
+.reset .form {
+    margin-top: -15px;
+}
+
+.reset .form h2 {
+    text-align: center;
+    color: #222;
+    margin: 10px 0 10px;
+    font-size: 25px;
+    font-family: "Cascadia Mono", sans-serif;
+}
+
+
+
+.reset .form .form-element input{
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+    outline: none;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.reset .form .form-element button{
+    width: 100%;
+    height: 40px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    background: #222;
+    color: #f5f5f5;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+.reset .form-element a:hover {
+    color: darkblue;
+}
+
+.reset.down {
+    top: 50%;
+}
+
+.reset.visible{
+    opacity: 1;
+}
+
+
+.reset .close-reset-btn {
+    position: absolute;
+    right: 10px;
+    top: 8px;
+    width: 15px;
+    height: 15px;
+    background: #888;
+    color: #eee;
+    text-align: center;
+    line-height: 15px;
+    border-radius: 15px;
+    cursor: pointer;
+    overflow-y: hidden;
+}
+
+.close-reset-btn:hover {
+    background-color: #333333;
+}
+
+#resend-link {
+    width: 82px;
+    margin-left: 64%;
+}
+
+.reset .form .form-element a.disable {
+    pointer-events: none;
+    color: red!important;
+}
+

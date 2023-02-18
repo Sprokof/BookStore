@@ -1,0 +1,38 @@
+<div class="login" id="popup-login" th:fragment="login-body">
+    <div class="close-login-btn" id="close-login"> &times; </div>
+    <div class="form">
+        <h2> Log in </h2>
+
+            <div class="form-element" id="input-login">
+                <label for="login"> Login </label>
+                <input type="text" id="login" placeholder="Enter Username Or Email">
+                <p class="error-message" id="login-error"></p>
+            </div>
+
+
+        <div class="form-element" id="input-password">
+            <label for="log-password"> Password </label>
+            <input type="password" id="log-password" placeholder="Enter password">
+            <p class="error-message" id="log-password-error"></p>
+        </div>
+
+        <div class="remember-me">
+            <label for="rem-me" style="margin-left: 5px; font-size: 15px"> Remember me </label>
+            <input id="rem-me" type="checkbox">
+        </div>
+
+        <div class="form-element">
+            <button id="login-btn"> Log in </button>
+        </div>
+
+        <div class="form-element" id="sign-link">
+            <a style="margin-top: 10px" id="sign-up"> Sign Up </a>
+        </div>
+
+        <div class="form-element" id="reset-link">
+            <a id="reset"> Reset password </a>
+        </div>
+
+    </div>
+</div>
+

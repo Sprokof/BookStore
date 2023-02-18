@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:fragment="category-head">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.3.1/css/bootstrap.min.css" th:href="@{webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/categories.css" th:href="@{/css/categories.css}">
+</head>
+<body th:fragment="category-menu">
+<div class="container" id="container-select">
+    <div class="select-btn">
+        <span class="btn-text"> Select Book Categories </span>
+        <span class="arrow-down" id="arrow">
+                <i class="fas fa-chevron-down"></i>
+            </span>
+    </div>
+    <ul class="list-items">
+        <li class="item">
+                <span class="checkbox">
+                    <i class="fas fa-check"></i>
+                </span>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

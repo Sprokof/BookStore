@@ -8,7 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class NoticeDto {
     private String noticeMessage;
     private String noticeDate;
@@ -18,11 +17,12 @@ public class NoticeDto {
     private String status;
 
 
-    public NoticeDto(int id, String noticeMessage, String noticeDate, String status) {
+    public NoticeDto(int id, String noticeMessage, String noticeDate, String status, int count) {
         this.id = id;
         this.noticeMessage = noticeMessage;
         this.noticeDate = noticeDate;
         this.status = status;
+        this.count = count;
     }
 
     public NoticeDto(int count) {

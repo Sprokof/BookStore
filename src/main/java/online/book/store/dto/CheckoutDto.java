@@ -1,16 +1,12 @@
 package online.book.store.dto;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import online.book.store.builder.AbstractCheckoutBuilder;
 import online.book.store.entity.Checkout;
-import online.book.store.hash.SHA256;
-import org.springframework.beans.factory.annotation.Value;
-import org.thymeleaf.spring5.expression.Fields;
 
-import javax.persistence.Column;
 import java.lang.reflect.Field;
 
 

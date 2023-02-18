@@ -1,0 +1,244 @@
+.login {
+    position: absolute;
+    top: -150%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.25);
+    width: 300px;
+    padding: 20px 30px;
+    background: #F6F6f6;
+    box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    opacity: 0;
+    overflow-y: hidden;
+    z-index: 1;
+    border: solid 1px #b4ad9e;
+}
+
+.login .form {
+    margin-top: -15px;
+}
+
+.login .form h2 {
+    text-align: center;
+    color: #222;
+    margin: 10px 0 10px;
+    font-size: 25px;
+    font-family: "Cascadia Mono", sans-serif;
+}
+
+.form .form-element {
+    margin: 10px 0;
+}
+
+.form .form-element label {
+    font-size: 14px;
+    color: #222;
+    margin-bottom: -10px;
+    margin-left: 5px!important;
+}
+
+.login .form .form-element input[type="text"],
+.login .form .form-element input[type="password"]{
+    margin-top: 10px;
+    display: block;
+    width: 100%;
+    outline: none;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.login .form .form-element button{
+    width: 100%;
+    height: 40px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    background: #222;
+    color: #f5f5f5;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+.login .form .form-element button:hover {
+    background-color: #1e1e1e;
+}
+
+.form-element a {
+    display: block;
+    text-align: right;
+    font-size: 15px;
+    color: steelblue!important;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+
+}
+
+#sign-link {
+    width: 50px;
+    margin-left: 78%;
+}
+
+#reset-link {
+    width: 100px;
+    margin-left: 56%;
+}
+
+
+.form-element a:hover {
+    color: darkblue!important;
+}
+
+.login.down {
+    top: 52%;
+}
+
+.login.visible{
+    transition-delay: 300ms;
+    opacity: 1;
+}
+
+.close-login-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 15px;
+    height: 15px;
+    background: #888;
+    color: #eee;
+    text-align: center;
+    line-height: 15px;
+    border-radius: 15px;
+    cursor: pointer;
+    overflow-y: hidden;
+}
+
+.close-login-btn:hover {
+    background-color: #333333;
+}
+
+.open {
+    overflow: hidden;
+}
+
+.form .remember-me {
+    width: 100%;
+    height: 30px;
+    overflow-y: hidden;
+    outline: none;
+}
+
+
+.form .remember-me input {
+    margin-top: 5px;
+    float: left;
+}
+
+.error-message {
+    margin-left: 5px;
+    margin-top: 2px;
+    color: red;
+    font-family: "Cascadia Code", sans-serif;
+    display: none;
+    padding-bottom: -10px;
+}
+
+.form .form-element .error-message{
+    font-size: 12px;
+}
+
+.error-message.active {
+    transition: 0.2s ease-in-out;
+    display: block;
+}
+
+.form .form-element.compression {
+    margin-bottom: -20px;
+}
+
+.form .remember-me {
+    margin-left: 1px;
+    margin-bottom: -5px;
+}
+.form .remember-me input {
+    outline: none;
+}
+
+.notice-message{
+    position: absolute;
+    width: 330px;
+    border: 3px solid #b4ad9e;
+    border-radius: 20px;
+    background-color: whitesmoke;
+    height: 120px;
+    top: -100%;
+    opacity: 0;
+    margin-left: 35%;
+    z-index: 1;
+    -webkit-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    -moz-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+}
+
+.notice-message header {
+    margin-top: 20px;
+}
+
+.notice-message header span {
+    margin-left: 16%;
+    font-size: 16px;
+    font-family: "Cascadia Mono", sans-serif;
+    font-weight: 600;
+    color: black;
+}
+
+.notice-message button {
+    margin-top: 5%;
+    margin-left: 35%;
+    border-radius: 10%;
+    background-color: #333333;
+    font-family: "Cascadia Code", sans-serif;
+    border: 3px solid #b4ad9e;
+    width: 100px;
+    justify-content: center;
+    height: 50px;
+}
+
+.notice-message button span {
+    color: white;
+}
+
+.notice-message button:hover {
+    background-color: #555555;
+}
+
+.notice-message .close-notice-message-btn {
+    position: absolute;
+    background: gray;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    margin-top: 2%;
+    margin-left: 91%;
+    border: 3px solid #5f5f5b;
+    color: white;
+    text-align: center;
+    line-height: 15px;
+    cursor: pointer;
+    overflow-y: hidden;
+}
+
+.notice-message .close-notice-message-btn:hover {
+    transition: 0.3s ease-in-out;
+    background: #1b1b1b;
+}
+
+.notice-message.show{
+    top: 55%;
+    opacity: 1;
+}
+
+
+

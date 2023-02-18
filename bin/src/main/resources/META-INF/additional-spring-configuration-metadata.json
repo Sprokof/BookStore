@@ -1,0 +1,23 @@
+{
+  "properties": [
+    {
+      "name": "email",
+      "type": "java.lang.String",
+      "description": "Description for email."
+    },
+    {
+      "name": "images",
+      "type": "java.lang.String",
+      "description": "Description for images."
+    },
+    {
+      "name": "admin.email",
+      "type": "java.lang.String",
+      "description": "Description for admin.email."
+    },
+    {
+      "name": "geo.key",
+      "type": "java.lang.String",
+      "description": "Description for geo.key."
+    }
+  ] }

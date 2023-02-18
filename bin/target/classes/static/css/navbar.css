@@ -1,0 +1,269 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Calibri", sans-serif;
+    overflow-x: hidden;
+}
+
+body {
+    min-height: 100vh;
+    background-size: cover;
+    background: white;
+}
+
+.sidebar {
+    background: white;
+    width: 290px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    transition: 0.3s ease;
+    transition-property: left;
+    overflow-y: auto;
+    z-index: 1;
+}
+
+.sidebar.active{
+    left: 0;
+}
+
+.sidebar .item .sub-menu .sub-item:hover {
+    margin-top: 1px;
+    color: dimgrey!important;
+}
+
+.sidebar .item .sub-btn:hover{
+    color: #1b1b1b;
+}
+
+.container-fluid {
+    width: 100%;
+}
+
+.container-fluid.compression {
+    margin-left: 230px;
+}
+
+#menu.compression {
+    margin-right: 230px;
+}
+
+.sidebar .menu {
+    width: auto;
+    margin-top: 20px;
+}
+
+.sidebar .menu .item {
+    position: relative;
+    cursor: pointer;
+}
+
+.sidebar .menu .item .sub-menu .sub-item {
+    color: grey;
+}
+
+
+.sidebar .menu .item a{
+    color: #b4ad9e;
+    background: white;
+    font-size: 16px;
+    display: block;
+    padding: 5px 30px;
+    line-height: 60px;
+    text-decoration: none;
+    text-align: center;
+
+}
+
+.sidebar .menu .item .main:hover {
+    color: #1b1b1b;
+    transition: 0.3s ease;
+}
+
+.sidebar .menu .item .main::after {
+    content: '';
+    display: block;
+    width: 100%;
+    background-color: black;
+    height: 1px;
+    transform: scale(0);
+    transition: all 0.3s;
+    align-items: center;
+}
+
+
+.sidebar .menu .item .main:hover::after {
+    margin-bottom: 1px;
+    transform: scale(1);
+}
+
+.sidebar .menu .item i {
+    margin-right: 15px;
+}
+
+.sidebar .menu .item a .dropdown{
+    position: absolute;
+    right: auto;
+    margin: 22px;
+    transition: 0.3s ease;
+}
+
+.sidebar .menu .item .sub-menu {
+    background: rgba(255, 255, 255, 0.1);
+    display: none;
+    border-top: 1px solid gainsboro;
+    border-bottom: 1px solid gainsboro;
+}
+
+.sidebar .menu .item .sub-menu .sub-item {
+    padding-left: 70px;
+}
+
+.rotate {
+    transform: rotate(90deg);
+}
+
+.fa-bars {
+    color: black;
+    cursor: pointer;
+}
+
+#navbarSupportedContent ul li a {
+    color: #b4ad9e;
+}
+
+#navbarSupportedContent ul li a:hover {
+    color: black;
+}
+
+header .nav-item{
+    margin-left: 35px;
+    cursor: pointer;
+}
+
+header .nav-item a::after {
+    content: '';
+    display: block;
+    width: 100%;
+    background-color: #1b1b1b;;
+    height: 1px;
+    transform: scale(0);
+    transition: all 0.3s;
+}
+
+header .nav-item a:hover::after {
+    transform: scale(1);
+}
+
+.nav-item input {
+    border: solid 1px #b4ad9e;
+    padding-left: 10px;
+    width: 170px;
+    border-radius: 3px;
+    outline: 3px;
+    height: 30px;
+}
+
+.nav-item .fa-search {
+    color: slategray;
+    margin-top: 10px;
+    margin-left: 5px;
+
+}
+
+.nav-item .fa-search:hover {
+    color: #1b1b1b;
+}
+
+.sidebar .item .sub-menu.none {
+    border-top: none;
+}
+
+.accept-message {
+    position: relative;
+    left: 4%;
+    width: 95%;
+    background-color: red;
+    height: 20px;
+    overflow-y: hidden;
+    border-radius: 2px;
+}
+
+.accept-message p {
+    color: white;
+    text-align: center;
+    margin-top: -2px;
+}
+
+.accept-message p a {
+    cursor: pointer;
+}
+
+.accept-message p a:hover {
+    color: silver!important;
+}
+
+#sidebar.reveal {
+    height: 100%;
+}
+
+.about {
+    background: whitesmoke;
+    width: 280px;
+    text-align: center;
+    padding: 3px 3px;
+    border-radius: 15px;
+    border: 2px solid slategrey;
+    opacity: 0;
+    -webkit-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    -moz-box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    box-shadow: 9px 13px 25px 0 rgba(0, 0, 0, 0.18);
+    position: absolute;
+    top: 30%;
+    left: 50%;
+
+}
+
+.about.show {
+    transition: 300ms ease-out;
+    opacity: 1;
+    z-index: 1;
+}
+
+.bell {
+    margin-top: 12px;
+    width: 25px;
+    height: 15px;
+    overflow-y: hidden;
+}
+
+.bell i {
+    color: #5f5f5b;
+}
+
+.bell i:hover {
+    color: #1e1e1e;
+}
+
+.bell .notice-count {
+   color: darkred;
+   font-weight: 700;
+   overflow-y: hidden;
+   position: relative;
+   bottom: 28px;
+   left: 2px;
+   z-index: 1;
+   font-family: 'Cascadia Code', sans-serif ;
+   text-align: center;
+   font-size: 12px;
+   display: none;
+
+}
+
+.category {}
+
+.sidebar i {
+    font-size: 15px;
+}

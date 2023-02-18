@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/noresult.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/account.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/notice.css}">
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}">
+    <script src="https://kit.fontawesome.com/3577b7bc4a.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/4.3.1/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+<div th:insert="~{navbar :: navbar}"></div>
+<div class="account-container">
+    <header>
+        <h3>Personal Info</h3>
+    </header>
+    <div class="personal-info">
+        <div class="email">
+            <label for="email">Email</label>
+            <a class="change-link">change</a>
+            <input id="email" type="text" th:value="${user.email}">
+        </div>
+
+        <div class="username">
+            <label for="acc-username">Username</label>
+            <input id="acc-username" type="text" th:value="${user.username}">
+            <p class="error-message" id="acc-username-error"></p>
+        </div>
+
+        <div class="password">
+            <label for="password">Password</label>
+            <a class="change-link">change</a>
+            <input id="password" type="text">
+        </div>
+        <p class="sign-up-date" th:text="${'Registration date: ' + user.date}"></p>
+        <button class="save-btn">save changes</button>
+    </div>
+
+    <div class="change-email-container">
+        <header>
+            <p>Change email</p>
+            <p>We will send an activation email to the new address.
+                Until you confirm the change of email,
+                the profile will be valid: <span style="color: green" th:text="${user.email}"></span></p>
+        </header>
+        <div class="new-email">
+            <label for="new-email">New email</label>
+            <input id="new-email" type="email" placeholder="New email" minlength="5">
+            <p class="error-message" id="new-email-error"
+               style="margin-top: 2px; float: left"></p>
+        </div>
+        <button class="acc-btn">send</button>
+    </div>
+
+    <div class="change-password-container">
+        <header>
+            <p>Change password</p>
+        </header>
+        <div class="password-block">
+
+            <div class="new-password">
+                <label for="acc-new-password">New password</label>
+                <input id="acc-new-password" type="password" placeholder="New password">
+                <p class="error-message" id="acc-new-password-error"></p>
+            </div>
+
+            <div class="confirm-new-password">
+                <label for="acc-confirm-new-password">Confirm password</label>
+                <input id="acc-confirm-new-password" type="password" placeholder="Confirm password">
+                <p class="error-message" id="acc-confirm-new-password-error"></p>
+           </div>
+
+        </div>
+        <button class="acc-btn">save</button>
+    </div>
+
+</div>
+</body>
+<script type="module" th:src="@{/js/login.js}"></script>
+<script type="module" th:src="@{/js/reset.js}"></script>
+<script type="module" th:src="@{/js/confirmReset.js}"></script>
+<script type="module" th:src="@{/js/validation.js}"></script>
+<script type="module" th:src="@{/js/registration.js}"></script>
+<script type="module" th:src="@{/js/navbar.js}"></script>
+<script type="module" th:src="@{/js/notice.js}"></script>
+<script type="module" th:src="@{/js/main.js}"></script>
+<script type="module" th:src="@{/js/account.js}"></script>
+</html>
