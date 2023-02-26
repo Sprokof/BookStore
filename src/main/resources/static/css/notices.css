@@ -98,3 +98,35 @@
 
 }
 
+.non-active-container {
+    position: absolute;
+    display: none;
+    background: whitesmoke;
+    border: 1px solid silver;
+    border-radius: 10px;
+    width: 230px;
+    padding: 4px;
+    z-index: 1;
+    left: 65%;
+}
+
+.non-active-container .text {
+    color: #1e1e1e;
+    margin-left: 4px;
+}
+
+.non-active-container .show-btn {
+    color: #555555!important;
+    margin-left: 75px;
+    cursor: pointer;
+    font-weight: 400;
+}
+
+.non-active-container .show-btn:hover {
+    color: #1b1b1b!important;
+}
+
+.non-active-container.show {
+    transition: 0.3s ease-in-out;
+    display: block;
+}

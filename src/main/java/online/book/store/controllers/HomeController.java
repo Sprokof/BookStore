@@ -20,9 +20,7 @@ public class HomeController {
     @GetMapping(value = {"/", "/home"})
     public String home(Model model) {
         List<Book> books = bookService.getPopularBooks();
-        if(books == null || books.isEmpty()){
-            return "result";
-        }
+        if(books == null || books.isEmpty()) return "result";
         model.addAttribute("books", books);
         return "home";
     }

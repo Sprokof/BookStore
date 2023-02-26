@@ -1,0 +1,109 @@
+.notifications-container {
+    position: relative;
+    left: 10%;
+    margin-top: 5%;
+    width: 80%;
+    height: auto;
+}
+
+.notifications-container .nav {
+    position: relative;
+    left: 30%;
+    height: 75px;
+}
+
+.notifications-container .nav-link  {
+    color: dimgrey;
+    font-weight: 500;
+    height: 100%;
+    font-size: 20px;
+    line-height: 80px;
+}
+
+.notifications-container .nav-link.active {
+    color: black!important;
+    border: none;
+}
+
+.notifications-container .nav-link:hover {
+    border: none;
+    color: black;
+    transition: 0.3s ease-in-out;
+}
+
+.notifications-container .notices {
+    position: relative;
+    left: 30%;
+    width: 50%;
+    height: auto;
+}
+
+.notifications-container .notice {
+    list-style-type: none;
+    background: #fff;
+    border: 1px solid silver;
+    height: 60px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    padding: 0 5px 5px;
+    overflow-y: hidden;
+
+
+}
+
+.notifications-container .notice .text {
+    height: 70%;
+    display: inline-block;
+    width: 95%;
+}
+
+.notifications-container .notice .date {
+    color: silver;
+    display: inline-block;
+    width: 170px;
+    height: 20px;
+    overflow-y: hidden;
+    position: relative;
+    bottom: 20px;
+}
+
+.notifications-container .read-btn {
+    color: #555555;
+    background: snow;
+    border-radius: 10px;
+    padding: 2px;
+    cursor: pointer;
+    border: 1px silver solid;
+    outline: none;
+    float: right;
+    position: relative;
+    top: -17px;
+}
+
+.notifications-container .read-btn:hover {
+    transition: 0.3s ease-in-out;
+    background: silver;
+    color: #1e1e1e;
+}
+
+.notifications-container .read-btn.non-active {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.notifications-container .status, .id {
+    display: none;
+}
+
+.non-active-container {
+    display: none;
+}
+
+.notifications-container .message {
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: 500;
+    font-family: "Cascadia Code", sans-serif;
+    margin-top: 30px;
+    margin-left: 20px;
+}

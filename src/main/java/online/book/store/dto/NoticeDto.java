@@ -13,14 +13,15 @@ public class NoticeDto {
     private String noticeDate;
     private int count;
     private int id;
-
     private String status;
 
+    private String exists;
 
-    public NoticeDto(int id, String noticeMessage, String noticeDate, String status, int count) {
+
+    public NoticeDto(int id, String noticeMessage, String date, String time, String status, int count) {
         this.id = id;
         this.noticeMessage = noticeMessage;
-        this.noticeDate = noticeDate;
+        this.noticeDate = String.format("%s, %s", date, time);
         this.status = status;
         this.count = count;
     }
@@ -30,4 +31,7 @@ public class NoticeDto {
     }
 
 
+    public NoticeDto(boolean exists) {
+        this.exists = String.valueOf(exists);
+    }
 }

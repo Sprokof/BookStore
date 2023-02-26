@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,7 +55,7 @@ public class NoticeServiceImpl implements NoticeService {
         }).start();
     }
 
-    private void removeBook(Book book){
+    private void removeBook(Book book) {
         int bookId = book.getId();
         this.waitListService.deleteBookFromWaitsLists(bookId);
         book.setAvailable(BookStatus.AVAILABLE);
@@ -67,10 +68,10 @@ public class NoticeServiceImpl implements NoticeService {
         List<Notice> notices = this.noticeDao.getFewUsersNotices(userId, 3);
         int count = this.noticeDao.getCountUsersNotices(userId);
         return notices.stream().map((n) -> new NoticeDto(n.getId(), n.getMessage(),
-                        n.getStamp(), n.getStatus(), count)).collect(Collectors.toList());
+                n.getDate(), n.getTime(), n.getStatus(), count)).collect(Collectors.toList());
     }
 
-   
+
     @Override
     public NoticeDto getCountNewUsersNotices(User user) {
         int count = this.noticeDao.getCountNewUsersNotices(user.getId());
@@ -94,7 +95,23 @@ public class NoticeServiceImpl implements NoticeService {
         new Thread(() -> {
             while ((true)) {
                 this.noticeDao.setAllReadNoticesToOld();
+                this.noticeDao.deleteAllOldNotices();
             }
         }).start();
+    }
+
+    @Override
+    public List<List<Notice>> allUserNotices(String login) {
+        List<Notice> all = this.noticeDao.getAllUsersNotices(login);
+        List<Notice> reads = this.noticeDao.getAllReadNotices(login);
+        List<List<Notice>> notices = new ArrayList<>();
+        notices.add(all);
+        notices.add(reads);
+        return notices;
+    }
+
+    @Override
+    public NoticeDto noticesExists(String sessionid) {
+        return new NoticeDto(this.noticeDao.noticesExists(sessionid));
     }
 }

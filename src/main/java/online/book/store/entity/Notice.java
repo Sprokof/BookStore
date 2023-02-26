@@ -26,9 +26,13 @@ public class Notice {
     @Setter
     private String message;
 
-    @Column(name = "time_stamp")
+    @Column(name = "datestamp")
     @Getter
-    private String stamp;
+    private String date;
+
+    @Column(name = "timestamp")
+    @Getter
+    private String time;
 
     @Column(name = "status")
     @Getter
@@ -51,13 +55,17 @@ public class Notice {
 
     public Notice(NoticeMessage message){
         this.message = message.getMessage();
-        this.stamp = timestamp();
+        this.date = stamps()[0];
+        this.time = stamps()[1];
         this.status = NoticeStatus.NEW.getStatus();
     }
 
-    private String timestamp() {
+    private String[] stamps() {
         Date now = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd, HH:mm:ss");
-        return sdf.format(now);
+        String result = sdf.format(now);
+        String date = result.substring(0, result.indexOf(","));
+        String time = result.substring(result.indexOf(",") + 2);
+        return new String[]{date, time};
     }
 }

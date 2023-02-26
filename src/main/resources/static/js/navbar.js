@@ -1,8 +1,11 @@
 import {logout, updateUser, userEmail} from "./validation.js"
 import {blockBackgroundHtml, openLoginNotice} from "./notice.js";
 import {currentLocation, deleteUser, sessionActive, userAccept} from "./main.js";
+
 let bell = document.querySelector('.bell');
 let noticeContainer = document.querySelector('.notice-container');
+let nonActiveNoticeContainer = document.querySelector('.non-active-container');
+
 
 
 
@@ -28,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (session['adminSession']) { createAdmins(menu); }
             createCartItemLink();
-            setInterval(updateNoticesCount, 300);
+            setInterval(findNewNotices, 300);
 
         }
     clearSearchValue();
@@ -380,9 +383,10 @@ function createAdmins(menu) {
         menu.appendChild(item);
 }
 
-bell.onclick = () => { findNotice(noticeContainer); };
+bell.onclick = () => { initNotice(noticeContainer); };
 
-function updateNoticesCount() {
+function findNewNotices() {
+        if(currentLocation()[1] === 'notices') return ;
         let sessionid = getUser()['sessionid'];
         $.ajax({
             type: "GET",
@@ -407,8 +411,9 @@ function updateNoticesCount() {
         });
 }
 
-function findNotice(container) {
-        if(!sessionActive()) return ;
+function initNotice(container) {
+    if(currentLocation()[1] === 'notices') return ;
+    if(!sessionActive()) return ;
         let sessionid = getUser()['sessionid'];
             $.ajax({
                 type: "GET",
@@ -421,13 +426,19 @@ function findNotice(container) {
                 success: function (list) {
                     let notices = JSON.parse(JSON.stringify(list));
                     let length = notices.length;
-                        if(length !== 0) {
-                            for(let notice of notices){
-                                if(!noticeAdded(notice)){ addNotice(notice);}
+                    if (length !== 0) {
+                        for (let notice of notices) {
+                            if (!noticeAdded(notice)) {
+                                addNotice(notice);
+                            }
                         }
-                            let noticesCount = notices[0]['count'];
-                            if(noticesCount > 3){ createShowAllBtn() }
-                        if(!container.classList.contains('active')) container.classList.add('active');
+                        let noticesCount = notices[0]['count'];
+                        if (noticesCount > 3) {
+                            createShowAllBtn()
+                        }
+                        if (!container.classList.contains('active')) container.classList.add('active');
+                    } else {
+                        if (noticesExists()) showAllWindow();
                     }
                 }
             });
@@ -476,7 +487,7 @@ function noticeAdded(notice){
         return false;
 }
 
-function markAsRead(btn, id) {
+export function markAsRead(btn, id) {
         let noticeDto = { "id" : id };
     $.ajax({
         type: "POST",
@@ -497,10 +508,16 @@ function setBtnViewToRead(btn) {
 }
 
 document.addEventListener('click', (e) => {
-            if(!noticeContainer.classList.contains('active')) return ;
-            if(!noticeContainer.contains(e.target)) {
-                noticeContainer.classList.remove('active');
-            }
+    if (noticeContainer.classList.contains('active')) {
+        if (!noticeContainer.contains(e.target))
+            noticeContainer.classList.remove('active');
+    }
+    else {
+        if (nonActiveNoticeContainer.classList.contains('show')) {
+            if (!nonActiveNoticeContainer.contains(e.target))
+                nonActiveNoticeContainer.classList.remove('show');
+        }
+    }
 });
 
 function createShowAllBtn() {
@@ -509,7 +526,38 @@ function createShowAllBtn() {
     let showBtn = document.createElement('span');
     showBtn.innerText = "show all";
     showBtn.classList.add('show-btn');
+    showBtn.onclick = () => { openNotificationsPage(); }
     ol.appendChild(showBtn);
 }
 
+function openNotificationsPage(){
+    let login = getUser()['login'];
+    document.location.href = "/notices/all?user=" + login;
+}
+
+function noticesExists(){
+    let sessionid = getUser()['sessionid'];
+    let request = null;
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "/notice/exist",
+        headers: {"session": sessionid},
+        cache: false,
+        dataType: 'json',
+        async: false,
+        success : (dto) => {
+            request = JSON.parse(JSON.stringify(dto));
+        }
+    });
+    return request['exists'];
+}
+
+function showAllWindow(){
+    let btn = nonActiveNoticeContainer.children[1];
+    btn.onclick = () => {
+        openNotificationsPage();
+    }
+    nonActiveNoticeContainer.classList.add('show');
+}
 

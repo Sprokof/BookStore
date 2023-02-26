@@ -7,14 +7,13 @@ import online.book.store.entity.User;
 import online.book.store.enums.NoticeStatus;
 import online.book.store.service.NoticeService;
 import online.book.store.service.SessionService;
+import online.book.store.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,6 +23,9 @@ public class NoticeController {
 
     @Autowired
     private NoticeService noticeService;
+
+    @Autowired
+    private UserService service;
 
     @Autowired
     private SessionService sessionService;
@@ -48,5 +50,20 @@ public class NoticeController {
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 
+    @GetMapping("/notices/all")
+    public String allNotices(@RequestParam("user") String login, Model model){
+        List<List<Notice>> notices = this.noticeService.allUserNotices(login);
+        int size = notices.get(0).size();
+        if(size == 0) return "result";
+        model.addAttribute("all", notices.get(0));
+        model.addAttribute("read", notices.get(1));
+        return "notifications";
+    }
+
+    @GetMapping("/notice/exist")
+    public ResponseEntity<NoticeDto> noticeExist(@RequestHeader("session") String sessionid){
+           NoticeDto dto = this.noticeService.noticesExists(sessionid);
+           return ResponseEntity.ok(dto);
+    }
 
 }

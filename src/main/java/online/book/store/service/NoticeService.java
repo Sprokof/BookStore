@@ -16,4 +16,6 @@ public interface NoticeService extends CommandLineRunner {
     NoticeDto getCountNewUsersNotices(User user);
     void setNoticeStatus(int noticeId, NoticeStatus status);
     Notice getNoticeById(int id);
+    List<List<Notice>> allUserNotices(String login);
+    NoticeDto noticesExists(String sessionid);
 }

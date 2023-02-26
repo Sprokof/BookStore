@@ -86,8 +86,8 @@ public class StoreController{
     }
 
     @GetMapping("/notice")
-    public String about () {
-        return "noticeWindow";
+    public String notice () {
+        return "notice";
     }
 
 
