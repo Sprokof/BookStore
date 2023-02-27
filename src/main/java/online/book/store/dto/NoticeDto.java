@@ -14,14 +14,13 @@ public class NoticeDto {
     private int count;
     private int id;
     private String status;
-
     private String exists;
 
 
-    public NoticeDto(int id, String noticeMessage, String date, String time, String status, int count) {
+    public NoticeDto(int id, String noticeMessage, String date, String status, int count) {
         this.id = id;
         this.noticeMessage = noticeMessage;
-        this.noticeDate = String.format("%s, %s", date, time);
+        this.noticeDate = date;
         this.status = status;
         this.count = count;
     }

@@ -31,7 +31,7 @@
             <ul class="notices">
                 <li th:each="notice : ${all}" class="notice">
                     <span class="text" th:text="${notice.message}"></span>
-                    <span class="date" th:text="${notice.date + ', ' + notice.time}"></span>
+                    <span class="date" th:text="${notice.date}"></span>
                     <button class="read-btn">mark as read</button>
                     <p class="status" th:text="${notice.status}"></p>
                     <p class="id" th:text="${notice.id}"></p>
@@ -48,7 +48,7 @@
                     <ul class="notices">
                         <li th:each="notice : ${read}" class="notice">
                             <span class="text" th:text="${notice.message}"></span>
-                            <span class="date" th:text="${notice.date + ', ' + notice.time}"></span>
+                            <span class="date" th:text="${notice.date + ', ' + notice}"></span>
                         </li>
                     </ul>
                 </div>

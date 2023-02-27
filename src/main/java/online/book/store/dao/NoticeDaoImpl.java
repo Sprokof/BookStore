@@ -113,12 +113,15 @@ public class NoticeDaoImpl implements NoticeDao {
         try {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
-            session.createSQLQuery("UPDATE NOTICES SET STATUS=:old " +
-                                "WHERE cast(DATESTAMP as date) " +
+            session.createSQLQuery("UPDATE NOTICES SET STATUS=:old, " +
+                            "STATUS_CHANGE_DATE=:scd " +
+                                "WHERE cast(STATUS_CHANGE_DATE as date) " +
                             "<= cast(:date as date) and STATUS=:read").
                     setParameter("old", NoticeStatus.OLD.getStatus()).
                     setParameter("read", NoticeStatus.READ.getStatus()).
-                    setParameter("date", nowMinusDays(7)).
+                    setParameter("scd", nowMinusDays(0).
+                            replaceAll("'", "")).
+                    setParameter("date", nowMinusDays(4)).
                     executeUpdate();
 
             session.getTransaction().commit();
@@ -256,9 +259,9 @@ public class NoticeDaoImpl implements NoticeDao {
             session = this.sessionFactory.openSession();
             session.beginTransaction();
             session.createSQLQuery("DELETE FROM NOTICES " +
-                            "WHERE cast(DATESTAMP as date) " +
+                            "WHERE cast(STATUS_CHANGE_DATE as date) " +
                             "<= cast(:date as date) and STATUS=:old").
-                    setParameter("date", nowMinusDays(10)).
+                    setParameter("date", nowMinusDays(3)).
                     setParameter("old", NoticeStatus.OLD.getStatus()).
                     executeUpdate();
 

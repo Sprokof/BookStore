@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,7 +70,7 @@ public class NoticeServiceImpl implements NoticeService {
         List<Notice> notices = this.noticeDao.getFewUsersNotices(userId, 3);
         int count = this.noticeDao.getCountUsersNotices(userId);
         return notices.stream().map((n) -> new NoticeDto(n.getId(), n.getMessage(),
-                n.getDate(), n.getTime(), n.getStatus(), count)).collect(Collectors.toList());
+                n.getDate(), n.getStatus(), count)).collect(Collectors.toList());
     }
 
 
@@ -82,6 +84,7 @@ public class NoticeServiceImpl implements NoticeService {
     public void setNoticeStatus(int noticeId, NoticeStatus status) {
         Notice notice = getNoticeById(noticeId);
         notice.setStatus(status.getStatus());
+        notice.setChangeDate(datestamp());
         this.noticeDao.updateNotice(notice);
     }
 
@@ -113,5 +116,11 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public NoticeDto noticesExists(String sessionid) {
         return new NoticeDto(this.noticeDao.noticesExists(sessionid));
+    }
+
+    private String datestamp() {
+        Date now = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(now);
     }
 }

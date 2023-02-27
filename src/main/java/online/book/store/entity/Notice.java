@@ -30,9 +30,10 @@ public class Notice {
     @Getter
     private String date;
 
-    @Column(name = "timestamp")
+    @Column(name = "status_change_date")
     @Getter
-    private String time;
+    @Setter
+    private String changeDate;
 
     @Column(name = "status")
     @Getter
@@ -55,17 +56,13 @@ public class Notice {
 
     public Notice(NoticeMessage message){
         this.message = message.getMessage();
-        this.date = stamps()[0];
-        this.time = stamps()[1];
+        this.date = datestamp();
         this.status = NoticeStatus.NEW.getStatus();
     }
 
-    private String[] stamps() {
+    private String datestamp() {
         Date now = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd, HH:mm:ss");
-        String result = sdf.format(now);
-        String date = result.substring(0, result.indexOf(","));
-        String time = result.substring(result.indexOf(",") + 2);
-        return new String[]{date, time};
+        return sdf.format(now);
     }
 }
