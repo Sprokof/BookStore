@@ -51,7 +51,7 @@ public class NoticeController {
     }
 
     @GetMapping("/notices/all")
-    public String allNotices(@RequestParam("user") String login, Model model){
+    public String allNotices(@RequestParam("user") String login, Model model) {
         List<List<Notice>> notices = this.noticeService.allUserNotices(login);
         int size = notices.get(0).size();
         if(size == 0) return "result";
