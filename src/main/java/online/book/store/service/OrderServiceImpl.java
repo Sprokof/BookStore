@@ -1,5 +1,7 @@
 package online.book.store.service;
 
+import cache.LFUCache;
+import cache.LFUCacheSingleton;
 import online.book.store.dao.OrderDao;
 import online.book.store.entity.*;
 import online.book.store.enums.OrderStatus;
@@ -17,6 +19,8 @@ import java.util.Locale;
 @Service
 @Component
 public class OrderServiceImpl implements OrderService{
+    private final LFUCache cache = LFUCacheSingleton.cacheInstance();
+
 
     @Autowired
     private UserService userService;
@@ -40,6 +44,7 @@ public class OrderServiceImpl implements OrderService{
             user.addOrder(order);
         });
 
+        cache.updateIfExist(getUserData(user), user);
         userService.updateUser(user);
 
     }
@@ -83,11 +88,12 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public void deleteDeliveredOrders() {
+    public void deleteDeliveredOrders(User user) {
         String currentDate = LocalDate.now().toString();
         String statement = "DELETE FROM ORDERS_DETAILS WHERE " +
                 "cast(LAST_DELIVERY_DATE as date) <= " + "cast('" + currentDate + "' as date)";
         this.orderDao.deleteOrders(statement);
+        cache.updateIfExist(getUserData(user), user);
     }
 
     private void setOrderStatus(Order order){
@@ -109,5 +115,9 @@ public class OrderServiceImpl implements OrderService{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         formatter = formatter.withLocale(Locale.ENGLISH);
         return LocalDate.parse(date, formatter);
+    }
+
+    private String[] getUserData(User user){
+        return new String[]{user.getUsername(), user.getEmail()};
     }
 }

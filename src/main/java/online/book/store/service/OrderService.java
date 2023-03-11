@@ -8,5 +8,5 @@ import java.util.List;
 public interface OrderService {
     void addOrders(User user);
     List<Order> getSortedOrders(List<Order> orders);
-    void deleteDeliveredOrders();
+    void deleteDeliveredOrders(User user);
 }

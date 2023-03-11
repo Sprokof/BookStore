@@ -1,6 +1,8 @@
 package online.book.store.service;
 
 
+import cache.LFUCache;
+import cache.LFUCacheSingleton;
 import online.book.store.dao.BookDao;
 import online.book.store.dao.CartDao;
 import online.book.store.dto.CartDto;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @Component
 public class CartServiceImpl implements CartService {
+    private final LFUCache cache = LFUCacheSingleton.cacheInstance();
 
     @Autowired
     private CartDao cartDao;
@@ -40,6 +43,7 @@ public class CartServiceImpl implements CartService {
         CartItem cartItem = new CartItem();
         cartItem.setBook(book);
         cart.addItem(cartItem).updatePrices();
+        cache.updateIfExist(getUserData(cart), cart.getUser());
         updateCart(cart);
 
     }
@@ -48,6 +52,7 @@ public class CartServiceImpl implements CartService {
     public int removeBookFromCart(Book book, Cart cart){
         CartItem cartItem = getCartItemByBook(cart, book);
         cart.removeItem(cartItem).updatePrices();
+        cache.updateIfExist(getUserData(cart), cart.getUser());
         deleteCartItem(cartItem);
         updateCart(cart);
         return 200;
@@ -89,15 +94,19 @@ public class CartServiceImpl implements CartService {
     public void clearCart(Cart cart) {
         List<CartItem> cartItems = cart.getCartItems();
         List<CartItem> tempList = new LinkedList<>();
-        for(CartItem item : cartItems){
+        for (CartItem item : cartItems) {
             tempList.add(item);
             this.cartDao.deleteCartItem(item);
         }
-        for(CartItem item : tempList){
+        for (CartItem item : tempList) {
             cartItems.remove(item);
         }
         cart.updatePrices();
-    updateCart(cart);
+        updateCart(cart);
+    }
+
+    private String[] getUserData(Cart cart){
+        return new String[]{cart.getUser().getUsername(), cart.getUser().getEmail()};
     }
 
 

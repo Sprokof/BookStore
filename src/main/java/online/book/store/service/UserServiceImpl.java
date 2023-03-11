@@ -1,8 +1,9 @@
 package online.book.store.service;
 
+import cache.LFUCache;
+import cache.LFUCacheSingleton;
 import online.book.store.dao.UserDaoImpl;
 import online.book.store.dao.UserDao;
-import online.book.store.dto.UserDto;
 import online.book.store.entity.Cart;
 import online.book.store.entity.User;
 
@@ -15,13 +16,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
-
 
 @Service
 @Component
 public class UserServiceImpl implements UserService {
+    private final LFUCache cache = LFUCacheSingleton.cacheInstance();
+
 
     @Value("${admin.email}")
     private transient String adminEmail;
@@ -31,6 +31,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByLogin(String login) {
+       User user;
+        if (this.cache.keyExist(login)) {
+           user = (User) this.cache.get(login);
+        } else {
+            user = this.userDao.getUserByLogin(login.replaceAll("\".*\"", ""));
+            this.cache.put(login, user);
+       }
         return this.userDao.getUserByLogin(login.replaceAll("\".*\"", ""));
     }
 
@@ -78,6 +85,7 @@ public class UserServiceImpl implements UserService {
         if(email.equals(adminEmail)) return Role.ADMIN;
         return Role.USER;
     }
+
 }
 
 

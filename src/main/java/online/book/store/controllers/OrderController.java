@@ -33,8 +33,8 @@ public class OrderController {
 
     @GetMapping("/orders")
     public String orders(@RequestParam ("user") String login, Model model){
-        this.orderService.deleteDeliveredOrders();
         User user = this.userService.getUserByLogin(login);
+        this.orderService.deleteDeliveredOrders(user);
         List<Order> userOrders = user.getOrders();
         if(userOrders.isEmpty()){
             return "result";

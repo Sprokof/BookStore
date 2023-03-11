@@ -1,7 +1,7 @@
 package online.book.store.service;
 
-import cache.LRUCache;
-import cache.LRUCacheSingleton;
+import cache.LFUCache;
+import cache.LFUCacheSingleton;
 import online.book.store.dao.SessionDao;
 import online.book.store.dto.SessionDto;
 import online.book.store.dto.UserDto;
@@ -9,13 +9,12 @@ import online.book.store.entity.User;
 import online.book.store.entity.UserSession;
 import online.book.store.enums.Role;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SessionServiceImpl implements SessionService{
 
-    private final LRUCache<String, Object> cache = LRUCacheSingleton.cacheInstance();
+    private final LFUCache cache = LFUCacheSingleton.cacheInstance();
 
     @Autowired
     private SessionDao sessionDao;
@@ -46,15 +45,15 @@ public class SessionServiceImpl implements SessionService{
     @Override
     public User getCurrentUser(String sessionid) {
         if(!sessionExist(sessionid)) return null;
-        User user;
-        if(this.cache.keyExist(sessionid)){
-            user = (User) this.cache.get(sessionid);
-        }
-        else {
-            user = this.sessionDao.getSessionById(sessionid).getUser();
-            this.cache.put(sessionid, user);
-        }
-        return user;
+        //User user;
+        //if(this.cache.keyExist(sessionid)){
+          //  user = (User) this.cache.get(sessionid);
+        //}
+       // else {
+         //   user = this.sessionDao.getSessionById(sessionid).getUser();
+           // this.cache.put(sessionid, user);
+       // }
+        return this.sessionDao.getSessionById(sessionid).getUser();
     }
 
     @Override

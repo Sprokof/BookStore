@@ -1,10 +1,13 @@
 package online.book.store.service;
 
+import cache.LFUCache;
+import cache.LFUCacheSingleton;
 import online.book.store.dao.BookDao;
 import online.book.store.dao.WishlistDao;
 import online.book.store.dto.WishlistDto;
 import online.book.store.engines.Page;
 import online.book.store.entity.Book;
+import online.book.store.entity.User;
 import online.book.store.entity.Wishlist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,7 @@ import java.util.List;
 @Component
 public class WishlistServiceImpl implements WishlistService{
 
+    private final LFUCache cache = LFUCacheSingleton.cacheInstance();
     @Autowired
     private WishlistDao wishlistDao;
 
@@ -28,6 +32,7 @@ public class WishlistServiceImpl implements WishlistService{
     @Override
     public HttpStatus removeFromWishlist(Book book, Wishlist wishlist) {
         wishlist.remove(book);
+        cache.updateIfExist(getUserData(wishlist), wishlist);
         updateWishlist(wishlist);
         return HttpStatus.OK;
     }
@@ -35,7 +40,9 @@ public class WishlistServiceImpl implements WishlistService{
     @Override
     public void addBookToWishlist(Book book, Wishlist wishlist) {
         wishlist.addBook(book);
+        cache.updateIfExist(getUserData(wishlist), wishlist);
         updateWishlist(wishlist);
+
     }
 
     @Override
@@ -61,4 +68,10 @@ public class WishlistServiceImpl implements WishlistService{
         }
         return rows;
     }
+
+    private String[] getUserData(Wishlist wishlist){
+        return new String[] {wishlist.getUser().getEmail(),
+                wishlist.getUser().getUsername()};
+    }
+
 }

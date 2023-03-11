@@ -214,7 +214,6 @@ export function currentLocation(){
 
 export function userAccept(){
     let login = userEmail();
-    console.log(login);
     if(login === null) return null;
     let accept;
     $.ajax({
