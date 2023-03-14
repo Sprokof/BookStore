@@ -31,14 +31,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByLogin(String login) {
-       User user;
-        if (this.cache.keyExist(login)) {
-           user = (User) this.cache.get(login);
-        } else {
-            user = this.userDao.getUserByLogin(login.replaceAll("\".*\"", ""));
-            this.cache.put(login, user);
-       }
-        return this.userDao.getUserByLogin(login.replaceAll("\".*\"", ""));
+       if(cache.keyExist(login)) return (User) cache.get(login);
+       User user = this.userDao.getUserByLogin(login);
+       cache.put(login, user);
+       return user;
     }
 
 

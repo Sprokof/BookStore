@@ -9,18 +9,18 @@ public class LFUCache {
     private final TreeMap<Integer, DoubleLinkedList> freqMap;
 
     private int capacity;
-    private int size;
+
 
     public LFUCache(int capacity) {
         this.capacity = capacity;
         this.valueMap = new HashMap<>();
         this.countMap = new HashMap<>();
         this.freqMap = new TreeMap<>();
-        this.size = 0;
+
     }
 
     public Object get(String key){
-        if(!valueMap.containsKey(key) || size == 0) return null;
+        if(!valueMap.containsKey(key) || capacity == 0) return null;
 
         Node nodeToDelete = valueMap.get(key);
         Node node = new Node(key, nodeToDelete.value);
@@ -33,13 +33,12 @@ public class LFUCache {
         countMap.put(key, freq + 1);
         freqMap.computeIfAbsent(freq + 1, k -> new DoubleLinkedList()).add(node);
 
-        size ++ ;
         return valueMap.get(key).value;
     }
 
-    public void put(String key, Object value){
+    public void put(String key, Object value) {
         Node node = new Node(key, value);
-        if(!valueMap.containsKey(key) && size > 0) {
+        if (!valueMap.containsKey(key) && capacity > 0) {
             if (valueMap.size() == capacity) {
                 int lowestKey = freqMap.firstKey();
                 Node nodeToDelete = freqMap.get(lowestKey).head();
@@ -53,21 +52,22 @@ public class LFUCache {
             freqMap.computeIfAbsent(1, k -> new DoubleLinkedList()).add(node);
             valueMap.put(key, node);
             countMap.put(key, 1);
+
+        }
+        else if (capacity > 0) {
+            Node nodeToDelete = valueMap.get(key);
+            int freq = countMap.get(key);
+            freqMap.get(freq).remove(nodeToDelete);
+            removeIfListEmpty(freq);
+            valueMap.remove(key);
+            countMap.remove(key);
+
+            valueMap.put(key, node);
+            countMap.put(key, 1);
+            freqMap.computeIfAbsent(freq + 1, k -> new DoubleLinkedList()).add(node);
+
         }
 
-    else if(size > 0) {
-        Node nodeToDelete = valueMap.get(key);
-        int freq = countMap.get(key);
-        freqMap.get(freq).remove(nodeToDelete);
-        removeIfListEmpty(freq);
-        valueMap.remove(key);
-        countMap.remove(key);
-
-        valueMap.put(key, node);
-        countMap.put(key, 1);
-        freqMap.computeIfAbsent(freq + 1, k-> new DoubleLinkedList()).add(node);
-
-    }
 
     }
 
@@ -79,16 +79,19 @@ public class LFUCache {
 
     public void updateIfExist(String[] keys, Object value){
         for(String key : keys){
-            if(valueMap.containsKey(key)) put(key, value);
+            if(valueMap.containsKey(key)){
+                Node node = new Node(key, value);
+                valueMap.put(key, node);
+            }
         }
     }
 
 
     public void remove(String key){
         Node nodeToDelete = valueMap.get(key);
+        int freq = countMap.get(key);
         valueMap.remove(key);
         countMap.remove(key);
-        int freq = countMap.get(key);
         freqMap.get(freq).remove(nodeToDelete);
 
     }

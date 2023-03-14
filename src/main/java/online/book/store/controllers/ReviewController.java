@@ -34,14 +34,14 @@ public class ReviewController {
     @PostMapping("/reviews/post")
     public ResponseEntity<HttpStatus> postReview (@RequestBody BookReviewDto bookReviewDto){
         String sessionid = bookReviewDto.getSessionid();
-        User user = this.sessionService.getCurrentUser(sessionid);
+        User user = this.sessionService.getCurrentUser(sessionid, true);
         this.bookReviewService.addReview(bookReviewDto, user);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
     @GetMapping("/reviews/exist")
     public ResponseEntity<BookReviewDto> reviewExist(@RequestHeader("session") String sessionid, @RequestParam("isbn") String isbn){
-        User user = this.sessionService.getCurrentUser(sessionid);
+        User user = this.sessionService.getCurrentUser(sessionid, true);
         Book book = this.bookService.getBookByIsbn(isbn);
         return ResponseEntity.ok(this.bookReviewService.reviewExist(book, user));
     }

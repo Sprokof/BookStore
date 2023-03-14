@@ -18,7 +18,7 @@ import java.util.List;
 
 
 @Controller
-public class StoreController{
+public class StoreController {
 
     @Autowired
     private CategoryService categoryService;
@@ -85,10 +85,6 @@ public class StoreController{
         return ResponseEntity.ok(userDto);
     }
 
-    @GetMapping("/notice")
-    public String notice () {
-        return "notice";
-    }
 
 
 

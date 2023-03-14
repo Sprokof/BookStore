@@ -47,7 +47,7 @@ public class OrderController {
     @PostMapping("/orders/add")
     public ResponseEntity<HttpStatus> addOrder(@RequestBody OrderDto orderDto){
         String sessionid = orderDto.getSessionid();
-        User user = sessionService.getCurrentUser(sessionid);
+        User user = sessionService.getCurrentUser(sessionid, true);
         orderService.addOrders(user);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }

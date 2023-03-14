@@ -43,16 +43,11 @@ public class SessionServiceImpl implements SessionService{
     }
 
     @Override
-    public User getCurrentUser(String sessionid) {
+    public User getCurrentUser(String sessionid, boolean useCache) {
         if(!sessionExist(sessionid)) return null;
-        //User user;
-        //if(this.cache.keyExist(sessionid)){
-          //  user = (User) this.cache.get(sessionid);
-        //}
-       // else {
-         //   user = this.sessionDao.getSessionById(sessionid).getUser();
-           // this.cache.put(sessionid, user);
-       // }
+        if(useCache && this.cache.keyExist(sessionid)) {
+            return (User) this.cache.get(sessionid);
+        }
         return this.sessionDao.getSessionById(sessionid).getUser();
     }
 

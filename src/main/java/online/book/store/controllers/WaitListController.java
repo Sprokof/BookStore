@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
         String sessionid = waitListDto.getSessionid();
         System.out.println(sessionid);
         Book book = this.bookService.getBookByIsbn(isbn);
-        WaitList waitList = this.sessionService.getCurrentUser(sessionid).getWaitList();
+        WaitList waitList = this.sessionService.getCurrentUser(sessionid, false).getWaitList();
         System.out.println(waitList == null);
         this.waitListService.addToWaitList(book, waitList);
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.*;
 
     @GetMapping("/waitlist/contains")
     public ResponseEntity<WaitListDto> contains(@RequestHeader("session") String sessionid, @RequestParam("isbn") String isbn){
-        WaitList waitList = this.sessionService.getCurrentUser(sessionid).getWaitList();
+        WaitList waitList = this.sessionService.getCurrentUser(sessionid, false).getWaitList();
         int bookId = this.bookService.getBookIdByISBN(isbn);
         return ResponseEntity.ok(this.waitListService.contains(bookId, waitList));
     }

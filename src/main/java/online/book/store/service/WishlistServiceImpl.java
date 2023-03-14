@@ -32,7 +32,7 @@ public class WishlistServiceImpl implements WishlistService{
     @Override
     public HttpStatus removeFromWishlist(Book book, Wishlist wishlist) {
         wishlist.remove(book);
-        cache.updateIfExist(getUserData(wishlist), wishlist);
+        cache.updateIfExist(getUserData(wishlist), wishlist.getUser());
         updateWishlist(wishlist);
         return HttpStatus.OK;
     }
@@ -40,7 +40,7 @@ public class WishlistServiceImpl implements WishlistService{
     @Override
     public void addBookToWishlist(Book book, Wishlist wishlist) {
         wishlist.addBook(book);
-        cache.updateIfExist(getUserData(wishlist), wishlist);
+        cache.updateIfExist(getUserData(wishlist), wishlist.getUser());
         updateWishlist(wishlist);
 
     }

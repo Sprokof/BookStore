@@ -24,7 +24,7 @@ public class AccountServiceImpl implements AccountService{
     public void sendNewEmailMessage(UserDto userDto, UserService userService) {
         String newEmail = userDto.getEmail();
         String sessionid = userDto.getSessionid();
-        User user = sessionService.getCurrentUser(sessionid);
+        User user = sessionService.getCurrentUser(sessionid, true);
         String newToken = this.signService.generateToken(newEmail);
         user.setToken(newToken);
         userService.updateUser(user);
@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void confirmNewPassword(UserDto userDto, UserService userService) {
         String sessionid = userDto.getSessionid();
-        User user = this.sessionService.getCurrentUser(sessionid);
+        User user = this.sessionService.getCurrentUser(sessionid, false);
         String password = user.getPassword();
         user.setPassword(SHA256.hash(password));
         userService.updateUser(user);
@@ -56,7 +56,7 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void confirmNewUsername(UserDto userDto, UserService userService) {
         String sessionid = userDto.getSessionid();
-        User user = this.sessionService.getCurrentUser(sessionid);
+        User user = this.sessionService.getCurrentUser(sessionid, false);
         user.setUsername(userDto.getUsername());
         userService.updateUser(user);
     }

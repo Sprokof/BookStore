@@ -32,14 +32,14 @@ public class NoticeController {
 
     @GetMapping(value = "/notice/get")
     public ResponseEntity<List<NoticeDto>> newNotice(@RequestHeader("session") String sessionid) {
-        User user = this.sessionService.getCurrentUser(sessionid);
+        User user = this.sessionService.getCurrentUser(sessionid, false);
         return ResponseEntity.ok(this.noticeService.getAllNewNotice(user));
 
     }
 
     @GetMapping(value = "/notice/count/get")
     public ResponseEntity<NoticeDto> countNotices(@RequestHeader("session") String sessionid) {
-        User user = this.sessionService.getCurrentUser(sessionid);
+        User user = this.sessionService.getCurrentUser(sessionid, false);
         return ResponseEntity.ok(this.noticeService.getCountNewUsersNotices(user));
     }
 

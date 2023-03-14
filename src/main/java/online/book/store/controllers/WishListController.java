@@ -47,7 +47,7 @@ public class WishListController {
         String isbn = wishlistDto.getIsbn();
         Book book = bookService.getBookByIsbn(isbn);
         String sessionid = wishlistDto.getSessionid();
-        Wishlist userWishlist = sessionService.getCurrentUser(sessionid).getWishList();
+        Wishlist userWishlist = sessionService.getCurrentUser(sessionid, true).getWishList();
         HttpStatus status = wishlistService.removeFromWishlist(book, userWishlist);
         return ResponseEntity.ok(status);
     }
@@ -57,7 +57,7 @@ public class WishListController {
         String isbn = wishlistDto.getIsbn();
         Book book = bookService.getBookByIsbn(isbn);
         String sessionid = wishlistDto.getSessionid();
-        Wishlist userWishlist = sessionService.getCurrentUser(sessionid).getWishList();
+        Wishlist userWishlist = sessionService.getCurrentUser(sessionid,true).getWishList();
         wishlistService.addBookToWishlist(book, userWishlist);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
@@ -65,7 +65,7 @@ public class WishListController {
 
     @GetMapping("/wishlist/item/contains")
     public ResponseEntity<WishlistDto> contains(@RequestHeader("session") String sessionid, @RequestParam("isbn") String isbn){
-        Wishlist userWishlist = sessionService.getCurrentUser(sessionid).getWishList();
+        Wishlist userWishlist = sessionService.getCurrentUser(sessionid, true).getWishList();
         return ResponseEntity.ok(wishlistService.contains(isbn, userWishlist));
     }
 

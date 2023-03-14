@@ -44,7 +44,7 @@ public class CartController {
     public ResponseEntity<Integer> removeBook(@RequestBody CartDto cartDto){
         String isbn = cartDto.getIsbn();
         String sessionid = cartDto.getSessionid();
-        User user = sessionService.getCurrentUser(sessionid);
+        User user = sessionService.getCurrentUser(sessionid, true);
         Book book = bookService.getBookByIsbn(isbn);
         int code = cartService.removeBookFromCart(book, user.getCart());
         return ResponseEntity.ok(code);
@@ -54,7 +54,7 @@ public class CartController {
     public ResponseEntity<HttpStatus> addBook(@RequestBody CartDto cartDto){
         String isbn = cartDto.getIsbn();
         String sessionid = cartDto.getSessionid();
-        User user = sessionService.getCurrentUser(sessionid);
+        User user = sessionService.getCurrentUser(sessionid, true);
         Book book = bookService.getBookByIsbn(isbn);
         cartService.addBookToCart(book, user.getCart());
         return ResponseEntity.ok(HttpStatus.CREATED);
@@ -63,7 +63,7 @@ public class CartController {
 
     @GetMapping("/cart/item/contains")
     public ResponseEntity<CartDto> contains(@RequestHeader("session") String sessionid, @RequestParam String isbn){
-        User user = sessionService.getCurrentUser(sessionid);
+        User user = sessionService.getCurrentUser(sessionid, true);
         Book book = bookService.getBookByIsbn(isbn);
         return ResponseEntity.ok(cartService.contains(user.getCart(), isbn));
     }
@@ -71,7 +71,7 @@ public class CartController {
     @GetMapping("/cart/item/quantity")
     public ResponseEntity<CartDto> itemsQuantity(@RequestHeader("session") String sessionid){
         if(!sessionService.sessionExist(sessionid)) return ResponseEntity.ok(new CartDto(0));
-        Cart cart = this.sessionService.getCurrentUser(sessionid).getCart();
+        Cart cart = this.sessionService.getCurrentUser(sessionid, true).getCart();
         return ResponseEntity.ok(cartService.getItemsQuantity(cart));
     }
 
@@ -80,7 +80,7 @@ public class CartController {
         String sessionid = cartItemDto.getSessionid();
         String isbn = cartItemDto.getIsbn();
         int quantity = Integer.parseInt(cartItemDto.getQuantity());
-        User user = sessionService.getCurrentUser(sessionid);
+        User user = sessionService.getCurrentUser(sessionid, true);
         Cart cart = user.getCart();
         Book book = bookService.getBookByIsbn(isbn);
         CartItem cartItem = cartService.getCartItemByBook(cart, book);

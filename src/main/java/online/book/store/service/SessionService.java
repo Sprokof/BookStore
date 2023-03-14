@@ -11,7 +11,7 @@ public interface SessionService {
     boolean sessionExist(String id);
     UserSession getSessionById(String sessionId);
     boolean sessionActive(String sessionId);
-    User getCurrentUser(String sessionid);
+    User getCurrentUser(String sessionid, boolean useCache);
     SessionDto getSessionData(UserDto userDto);
     void sessionInvalidate(String sessionid);
     boolean adminSession(UserSession userSession);
